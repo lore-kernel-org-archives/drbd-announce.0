@@ -1,18 +1,18 @@
 Return-Path: <philipp.reisner@linbit.com>
 Received: from mescal.linbit (213-229-1-138.sdsl-line.inode.at [213.229.1.138])
-	by mail.linbit.com (LINBIT Mail Daemon) with ESMTP id AD82B14318
+	by mail.linbit.com (LINBIT Mail Daemon) with ESMTP id 1F8CF1432B
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 25 Jan 2005 16:24:06 +0100 (CET)
+	Thu, 27 Jan 2005 09:46:12 +0100 (CET)
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Date: Tue, 25 Jan 2005 16:27:09 +0100
+Date: Thu, 27 Jan 2005 09:46:12 +0100
 MIME-Version: 1.0
 Content-Type: text/plain;
   charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Content-Disposition: inline
-Message-Id: <200501251627.10026.philipp.reisner@linbit.com>
-Subject: [DRBD-announce] drbd-0.7.9.tar.gz
+Message-Id: <200501270946.12946.philipp.reisner@linbit.com>
+Subject: [DRBD-announce] drbd-0.7.9.tar.gz has severe bug!
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,12 +26,10 @@ List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hi,
 
-This is clearly a release of the SuSE people:
-
-0.7.9 (api:77/proto:74)
-=2D----
- * A fix that makes DRBD work on SLES9 SP1 kernel, and
-   probabely will be also necessary for Linux-2.6.11
+Please do not use drbd-0.7.9, it has a memory corruption bug. Please
+continue to use drbd-0.7.8 for the meantime. Latest with the release of
+Linux-2.6.11 there will be a new DRBD release (0.7.10), that will work=20
+with that kernel.
 
 =2DPhilipp
 =2D-=20
