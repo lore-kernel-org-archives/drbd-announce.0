@@ -1,17 +1,17 @@
 Return-Path: <philipp.reisner@linbit.com>
 Received: from mescal.linbit (213-229-1-138.sdsl-line.inode.at [213.229.1.138])
-	by mail.linbit.com (LINBIT Mail Daemon) with ESMTP id AD57E142F6
-	for <drbd-announce@lists.linbit.com>; Mon, 10 May 2004 15:12:11 +0200 (CEST)
+	by mail.linbit.com (LINBIT Mail Daemon) with ESMTP id 3D44F14030
+	for <drbd-announce@lists.linbit.com>; Fri, 18 Jun 2004 15:18:32 +0200 (CEST)
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Date: Mon, 10 May 2004 15:12:11 +0200
+Date: Fri, 18 Jun 2004 15:18:31 +0200
 MIME-Version: 1.0
 Content-Disposition: inline
 Content-Type: text/plain;
   charset="iso-8859-1"
 Content-Transfer-Encoding: 8bit
-Message-Id: <200405101512.11151.philipp.reisner@linbit.com>
-Subject: [DRBD-announce] drbd-0.7_pre7.tar.gz
+Message-Id: <200406181518.31657.philipp.reisner@linbit.com>
+Subject: [DRBD-announce] drbd-0.7_pre8.tar.gz
 Sender: drbd-announce-admin@lists.linbit.com
 Errors-To: drbd-announce-admin@lists.linbit.com
 Reply-To: drbd-user@lists.linbit.com
@@ -24,37 +24,43 @@ List-Unsubscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=unsubscribe>
 List-Archive: <http://lists.linbit.com/pipermail/drbd-announce/>
 
-Hi,
+Hi!
 
-Last week Lars and I had a DRBD session here in Vienna. With the exception 
-of a few beers in the evenings we spent most of the time on ...
+This has the codename Release-Candidate-1
 
-- finding interesting bugs in DRBD-0.7 
-  Thinking/discussing bugs as team is a lot more productive than
-  trying to find them as alone...
-- a lot of testing
-- working on automatic testing...
-- discussing the further roadmap, even bejond drbd-0.7
+What happened in the last month:
 
-I think this are the most important changes to the DRBD-0.7-pre6 release,
-but I know that this list is incomplete for sure:
+* Zero-copy IO disabled for now, since it cases data-corruption after
+  resync. This will be investigated further...
+* Bitmap code rewritten and seperated into own source file.
+  In the progress a few bugs were discovered and fixed.
+* New metadata flag MDF_FullSync to indicate that we need a full sync 
+  next time. -> This makes sure that we never loose a full sync event,
+  even if we crash during writing the bitmap.
+* PARTNER_CONSISTENT flag, so we won't sync against or read from
+  some inconsistent peer.
+* sync handshake improved. detects split brain, detects inconsistent 
+  local or peer data, detects whether full sync is neccessary.
+* moved syncer handshake and detach ioctl into their own functions
+* meta data is initialised as inconsistent, need full sync.
+* Added the "on-disconnect stand_allone;" and the ko-count options.
+* Some work on drbdsetup's man page.
+* Added "drbddisk [resource] status" for integration with heartbeat.
+* Improved module usage count.
+* Included the CTH (cluster test harness) for automatic testing.
 
-* Fixed a bug in the LRU cache. 
-  [Was the reason for the "lg_get() failed!" message]
-* Fixed the disconnect behaviour (Including inter-thread
-  synchronisation, various counters and countless other small problems)
-* Fixed the cleanup path of the drbd_worker() thread
-* Fixed a request leakage in case we have to drop the connection.
-* Made drbd_rs_begin_io() interruptible, to avoid a deadlock in the
-  drop-connection path.
-* Fixed a bug in the sync-groups implementaion. (drbd_resume_lower_sg())
-* drbd_send_cmd_dontwait() got removed, IO-hints are sent by the worker now..
-* The format of configuration was changed. 
-  Before 'keyword=value' now 'keyword value;'
-* Much better error reporting of drbdadm's config file scanner.
+It behaves quite good in the automatic test suite by now, but
+a few things remain to be done:
+
++ Find out how to use zero-copy-IO properly.
++ More work on the open issues with XFS ( seems to be realated
+  to blocksizes != 4k)
++ Find and fix more bugs.
 
 You can download it from LINBIT's download area as .tar.gz or
-fetch it from CVS. Now it is the time to test it on your systems!
+fetch it from CVS as tag "rel-0_7-pre8".
+
+Happy testing !
 
 -Philipp
 -- 
