@@ -1,17 +1,17 @@
 Return-Path: <philipp.reisner@linbit.com>
-Received: from amd.localdomain (chello080110205223.112.11.tuwien.teleweb.at [80.110.205.223])
-	by mail.linbit.com (LINBIT Mail Daemon) with ESMTP id 7053714018
-	for <drbd-announce@lists.linbit.com>; Sun,  1 Feb 2004 21:57:42 +0100 (CET)
+Received: from mescal.linbit (213-229-1-138.sdsl-line.inode.at [213.229.1.138])
+	by mail.linbit.com (LINBIT Mail Daemon) with ESMTP id 77B42142F3
+	for <drbd-announce@lists.linbit.com>; Tue, 10 Feb 2004 15:24:43 +0100 (CET)
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Date: Sun, 1 Feb 2004 21:57:41 +0100
+Date: Tue, 10 Feb 2004 15:24:42 +0100
 MIME-Version: 1.0
 Content-Type: text/plain;
-  charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+  charset="iso-8859-1"
+Content-Transfer-Encoding: 8bit
 Content-Disposition: inline
-Message-Id: <200402012157.42040.philipp.reisner@linbit.com>
-Subject: [DRBD-announce] drbd-0.7_pre4.tar.gz
+Message-Id: <200402101524.42861.philipp.reisner@linbit.com>
+Subject: [DRBD-announce] drbd-0.6.11.tar.gz
 Sender: drbd-announce-admin@lists.linbit.com
 Errors-To: drbd-announce-admin@lists.linbit.com
 Reply-To: drbd-user@lists.linbit.com
@@ -26,36 +26,24 @@ List-Archive: <http://lists.linbit.com/pipermail/drbd-announce/>
 
 Hi,
 
-It is nearly two month that I release the last prerelease of 
-DRBD-0.7, and therefore a lot has happened in the mean time.
+I think that this will be the last drbd-0.6.x release. (In case 
+there is an issue with 0.6.11, there will be a .12 release of course.)
 
- * -pre4, builds, loads, and even survives the some basic 
-   tests on _LINUX-2.6.1_ ! 
- * It looks already quite good on Linux-2.4.x
+* Updates to the debian directory (mostly by David Krovich)
+* Documentation updates by Lars Ellenberg and Helmut Wollmersdorfer.
+* Updates to the build system by Lars Ellenberg.
+* Sending of IO hints is done non-blocking, by Lars Ellenberg.
+* Code to make IOCTLs work on 64/32 bit platforms (PPC64, SPARC64, AMD64)
+* Some code cleanups by LGE.
 
-The things that are missing/broken (I remember now)
- 
- * Online resizing will fail with internal metadata
- * The alternative to "do_panic" is still not yet implemented
+I think the real highlights are the improvements to the documentation.
 
-What you should check out:
-
- * All the activity-log and persistant bitmap work is finished 
-   and in very good shape. You well never again have to wait
-   until a FullSync is done.
- * The drbdadm tool
-
-Unfortunately the only available documentation are the comments
-in the samle configuration file. 
-
-BTW, drbdadm will look first for /etc/drbd-07.conf and then for
-     /etc/drbd.conf, while drbd-0.6 only looks for /etc/drbd.conf
-
-!!! BIG WARNING !!!
-  Although it might work quite well in some tests, this is 
-  development code. Do not think about replacing drbd-0.6.10
-  on your production system with this.
-!!! 
+In case you are running on drbd-0.6.10 I do not think that it is
+worth the trouble to upgrade to 0.6.11.
 
 -Philipp
+-- 
+: Dipl-Ing Philipp Reisner                      Tel +43-1-8178292-50 :
+: LINBIT Information Technologies GmbH          Fax +43-1-8178292-82 :
+: Schönbrunnerstr 244, 1120 Vienna, Austria    http://www.linbit.com :
 
