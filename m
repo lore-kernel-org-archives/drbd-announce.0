@@ -1,15 +1,15 @@
 Return-Path: <philipp.reisner@linbit.com>
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: annoucements@drbd.org
-Date: Fri, 27 Aug 2004 15:31:58 +0200
+Date: Thu, 9 Sep 2004 23:13:44 +0200
 MIME-Version: 1.0
 Content-Disposition: inline
 Content-Type: text/plain;
   charset="iso-8859-1"
 Content-Transfer-Encoding: 8bit
-Message-Id: <200408271531.59546.philipp.reisner@linbit.com>
+Message-Id: <200409092313.44641.philipp.reisner@linbit.com>
 Cc: 
-Subject: [DRBD-announce] drbd-0.7.3.tar.gz
+Subject: [DRBD-announce] drbd-0.7.4.tar.gz
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -23,28 +23,38 @@ List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hi,
 
-Only minor things changes. Maybe you want to upgrade your 0.7.2 installation
-sometimes to 0.7.3, but there is no need to hurry.
+I had the chance to install DRBD-0.7.3 on a SLES 8 system, and in
+the progress I discovered a quite bad problem with Linux-2.4.x
+and HIGHMEM. (This problem with HIGHMEM on Linux-2.4.x causes
+DRBD to  drop connection and reconnect quite often, which in 
+turn uncovered an other problem with caused the resync
+progress to starve). -- BTW, all this happenden because a 
+paying custromer asked us to install drbd-0.7.x on the
+Linux-2.4.x based system.
 
-0.7.3 (api:75/proto:74)
+The other important fix is the support of devices bigger than
+2TB.
+
+So, you want to upgrade to this release, if you have huge
+devices, or if you want to run on Linux-2.4.x with HIGHMEM.
+
+Otherwise, this release offers nothing new for you.
+
+0.7.4 (api:76/proto:74)
 -----
- * Fixed minor bugs in the handling of the generation counters.
- * prevent possible in-kernel buffer overflow in drbd_proc.c
- * Fixed debian's postinst script to create /dev/drbd? instead of /dev/nb?
- * drbd status:
-   be nice to heartbeat, include "OK" in output.
- * added FullSync meta data flag to read/write gc.pl
- * make the RHEL3 happy (page_count no longer in mm.h, but in mm_inline.h)
- * [Patch by Pavel Semerad]. Also use the drbd_devfs_name on Linux-2.4.x
- * fix missing dependencies on drbd_config.h
-
-Please note the new download URL:
-
-http://oss.linbit.com/
-
-No account creation necessary any longer!
+ * Fixed a critical bug with Linux-2.4.x and HIGHMEM!
+ * Fixed a bug that only showed up with the HIGHMEM problem on 
+   Linux-2.4.x -> It caused the resync process to starve.
+ * The drbd.spec file now creates /dev/drbd in the post-install stage.
+ * Fixed support for more than 2TB storage. Now DRBD supports up to
+   3.99TB storage. It will also tell you, that it is not supported if 
+   you try to set up a bigger device.
+ * Debian's build rules file now knows about the adjust_drbd_config_h.sh
+   file.
+ * DRBD_DISABLE_SENDPAGE available in drbd_config.h
 
 -Philipp
+
 -- 
 : Dipl-Ing Philipp Reisner                      Tel +43-1-8178292-50 :
 : LINBIT Information Technologies GmbH          Fax +43-1-8178292-82 :
