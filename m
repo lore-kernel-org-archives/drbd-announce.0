@@ -1,14 +1,14 @@
 Return-Path: <philipp.reisner@linbit.com>
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: annoucements@drbd.org
-Date: Tue, 6 Jul 2004 13:28:15 +0200
+Date: Fri, 9 Jul 2004 14:42:48 +0200
 MIME-Version: 1.0
 Content-Disposition: inline
 Content-Type: text/plain;
   charset="iso-8859-1"
 Content-Transfer-Encoding: 8bit
-Message-Id: <200407061328.15791.philipp.reisner@linbit.com>
-Subject: [DRBD-announce] drbd-0.7_pre9.tar.gz
+Message-Id: <200407091442.48179.philipp.reisner@linbit.com>
+Subject: [DRBD-announce] drbd-0.7_pre10.tar.gz
 Sender: drbd-announce-admin@lists.linbit.com
 Errors-To: drbd-announce-admin@lists.linbit.com
 Reply-To: drbd-user@lists.linbit.com
@@ -21,32 +21,24 @@ List-Unsubscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=unsubscribe>
 List-Archive: <http://lists.linbit.com/pipermail/drbd-announce/>
 
-Hi!
+Hi,
 
-This time we have nealy no fixes to the generic code. The first item
-is a optimization (which was one of the goals of drbd-0.7), but most
-of the fixes are either for Linux-2.4.x or for other architectures.
-It feels like we will have a final release really soon. 
+Unfortunately a bug in the bitmap code was introduced with -pre9,
+therefore -pre10 so soon after -pre9.
 
-* Reenabled zero copy IO for protocols B and C. (Zero copy IO is not
-  used with protocol A)
-* Implemented the unpopular user dialog in the boot process.
-* Some fixes for Linux-2.4.x compatibility.
-* drbd.conf man page updated
-* Bugfixes for 64bit architectures
-* Ensured protocol compatibility between hosts of different word sizes
-  (Tested with i386 and alpha)
-* Support for meta-data on block devices with hardsect size != 512 Byte
-  (e.g. dasd on s390x)
-* New debian subdir
+* A fix to a generic bug in the bitmap code introduced with the -pre9 
+  release (with the 64 bit work)
+* A fix to a bug in the bitmap code only relevant for 64 bit platforms.
+* Better 2.4.x compatibility and compatiblity to 2.4.x vendor kernels.
+* Improvements in the way to deal with incompatible protocol releases.
+* Added the "dialog-refresh" config option.
 
-You can download it from LINBIT's download area as .tar.gz or
-fetch it from CVS as tag "rel-0_7-pre9".
+We are discussing one more protocol change before the 0.7-final release,
+so one more -pre release is possible. 
 
-Please test it in your pre- production environments, in all your
-test clusters you have... 
+ETA for 0.7-final is the 16th of July.
 
--Philipp
+-philipp
 -- 
 : Dipl-Ing Philipp Reisner                      Tel +43-1-8178292-50 :
 : LINBIT Information Technologies GmbH          Fax +43-1-8178292-82 :
