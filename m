@@ -1,14 +1,14 @@
 Return-Path: <philipp.reisner@linbit.com>
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: annoucements@drbd.org
-Date: Fri, 9 Jul 2004 14:42:48 +0200
+Date: Thu, 15 Jul 2004 14:37:50 +0200
 MIME-Version: 1.0
 Content-Disposition: inline
 Content-Type: text/plain;
   charset="iso-8859-1"
 Content-Transfer-Encoding: 8bit
-Message-Id: <200407091442.48179.philipp.reisner@linbit.com>
-Subject: [DRBD-announce] drbd-0.7_pre10.tar.gz
+Message-Id: <200407151437.50829.philipp.reisner@linbit.com>
+Subject: [DRBD-announce] drbd-0.6.13.tar.gz
 Sender: drbd-announce-admin@lists.linbit.com
 Errors-To: drbd-announce-admin@lists.linbit.com
 Reply-To: drbd-user@lists.linbit.com
@@ -23,22 +23,24 @@ List-Archive: <http://lists.linbit.com/pipermail/drbd-announce/>
 
 Hi,
 
-Unfortunately a bug in the bitmap code was introduced with -pre9,
-therefore -pre10 so soon after -pre9.
+On request, here is one more 0.6.x release.
 
-* A fix to a generic bug in the bitmap code introduced with the -pre9 
-  release (with the 64 bit work)
-* A fix to a bug in the bitmap code only relevant for 64 bit platforms.
-* Better 2.4.x compatibility and compatiblity to 2.4.x vendor kernels.
-* Improvements in the way to deal with incompatible protocol releases.
-* Added the "dialog-refresh" config option.
+0.6.13 (api:64/proto:62)
+------
+  *) failing io if != Primary
+  *) reparent_to_init
+  *) drbd_panic
+  *) script fixes
+  *) documentation updates
+  *) example drbd.conf update
 
-We are discussing one more protocol change before the 0.7-final release,
-so one more -pre release is possible. 
+All the changes are rather unspectecular.
 
-ETA for 0.7-final is the 16th of July.
+* In case you already run 0.6.12 stay with this release.
+* In case you run an older release you should consinder to update
+  to this one.
 
--philipp
+-Philipp
 -- 
 : Dipl-Ing Philipp Reisner                      Tel +43-1-8178292-50 :
 : LINBIT Information Technologies GmbH          Fax +43-1-8178292-82 :
