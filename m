@@ -1,17 +1,17 @@
 Return-Path: <philipp.reisner@linbit.com>
 Received: from mescal.linbit (213-229-1-138.sdsl-line.inode.at [213.229.1.138])
-	by mail.linbit.com (LINBIT Mail Daemon) with ESMTP id 0BA8314018
-	for <drbd-announce@lists.linbit.com>; Wed, 10 Mar 2004 16:07:43 +0100 (CET)
+	by mail.linbit.com (LINBIT Mail Daemon) with ESMTP id C030B14018
+	for <drbd-announce@lists.linbit.com>; Thu,  1 Apr 2004 17:25:10 +0200 (CEST)
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Date: Wed, 10 Mar 2004 16:07:42 +0100
+Date: Thu, 1 Apr 2004 17:25:10 +0200
 MIME-Version: 1.0
 Content-Disposition: inline
 Content-Type: text/plain;
   charset="iso-8859-1"
 Content-Transfer-Encoding: 8bit
-Message-Id: <200403101607.42364.philipp.reisner@linbit.com>
-Subject: [DRBD-announce] drbd-0.6.12.tar.gz
+Message-Id: <200404011725.10107.philipp.reisner@linbit.com>
+Subject: [DRBD-announce] drbd-0.7_pre6.tar.gz
 Sender: drbd-announce-admin@lists.linbit.com
 Errors-To: drbd-announce-admin@lists.linbit.com
 Reply-To: drbd-user@lists.linbit.com
@@ -24,21 +24,26 @@ List-Unsubscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=unsubscribe>
 List-Archive: <http://lists.linbit.com/pipermail/drbd-announce/>
 
-Hi,
+A lot has happened...
 
-Once again I think that this will be the last 0.6.x release.
+* Documentation fixes to drbdadm's man page [by Helmut Wollmersdorfer].
+* Rearrenged some things to ease monolithic kernel builds with DRBD
+  [by Kees Cook].
+* Replaced calls to blk_run_queues() with blk_run_queue()
+* Lots of fixes to make it actually work with SCSI devices on Linux-2.6.
+* Fixed a lot of SMP issues!
+* 64bit fixes (tested on a pair of opterons)
+* Clear on-disk-bitmap in case something is set in the bitmap and
+  no resync will happen.
+* Some work on kernel-threads, zombie prevention and inter thread signalling.
+* We are free of any sleep_on()s! We use wait_event() everywhere.
+* A bugfix to the AL code! (The newly added extent was too early visible
+  in the hash table.)
+* Implemented a cleanup mode for the workqueue. -- Now we free everything
+  from the workqueue correctly, even after loss of connection.
+* Completed the "on-io-error" code.
 
-Here is the changelog:
-
-0.6.12 (api:64/proto:62)
-------
-  *) With the non-blocking IO hints, a bug was introduced that could
-     lead to partially sent IO hints. -> loss of connetion. 
-     This issue is fixed now.
-  *) Fix to range check of nice value in drbdsetup
-  *) Updates to build system (Makefile, Makefile.SuSE-9.0)
-
-In case you run 0.6.11 I think you should upgrade to 0.6.12.
+...but there are still things to do...
 
 -Philipp
 -- 
