@@ -1,18 +1,18 @@
 Return-Path: <philipp.reisner@linbit.com>
-Received: from mescal.linbit (213-229-1-138.sdsl-line.inode.at [213.229.1.138])
-	by mail.linbit.com (LINBIT Mail Daemon) with ESMTP id 1F8CF1432B
+Received: from [10.9.9.50] (213-229-1-138.sdsl-line.inode.at [213.229.1.138])
+	by mail.linbit.com (LINBIT Mail Daemon) with ESMTP id 10E4214314
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 27 Jan 2005 09:46:12 +0100 (CET)
+	Mon, 31 Jan 2005 13:36:38 +0100 (CET)
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Date: Thu, 27 Jan 2005 09:46:12 +0100
+Date: Mon, 31 Jan 2005 13:37:22 +0100
 MIME-Version: 1.0
 Content-Type: text/plain;
   charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Content-Disposition: inline
-Message-Id: <200501270946.12946.philipp.reisner@linbit.com>
-Subject: [DRBD-announce] drbd-0.7.9.tar.gz has severe bug!
+Message-Id: <200501311337.22840.philipp.reisner@linbit.com>
+Subject: [DRBD-announce] drbd-0.7.10.tar.gz
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,10 +26,24 @@ List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hi,
 
-Please do not use drbd-0.7.9, it has a memory corruption bug. Please
-continue to use drbd-0.7.8 for the meantime. Latest with the release of
-Linux-2.6.11 there will be a new DRBD release (0.7.10), that will work=20
-with that kernel.
+In order to fix the drbd-0.7.9 desaster here is 0.7.10.
+
+0.7.10 (api:77/proto:74)
+=2D----
+ * 0.7.9 had a memory corruption bug and memory leakage (BIOs).
+   This time I did the clone_bio() fix myself, and this release is
+   supposed to work with SLES9 SP1, Linux-2.6.11 and Linux-2.6.12.
+
+NOTE: These bugs were introduced with 0.7.9, so in case you=20
+      run 0.7.8 you do not need to upgrdate to 0.7.10.
+
+The reason for the hurry was because SUSE released their=20
+SLES9-SP1 kernel with some patches from upcomming Linux-2.6.11.=20
+DRBD (0.7.8) was not compatible with this changes.
+
+I have learned my lession about making releases.
+
+http://oss.linbit.com/drbd/0.7/drbd-0.7.10.tar.gz
 
 =2DPhilipp
 =2D-=20
