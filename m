@@ -1,14 +1,14 @@
 Return-Path: <philipp.reisner@linbit.com>
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: annoucements@drbd.org
-Date: Fri, 16 Jul 2004 10:56:48 +0200
+Date: Fri, 30 Jul 2004 15:59:36 +0200
 MIME-Version: 1.0
 Content-Disposition: inline
 Content-Type: text/plain;
   charset="iso-8859-1"
 Content-Transfer-Encoding: 8bit
-Message-Id: <200407161056.49093.philipp.reisner@linbit.com>
-Subject: [DRBD-announce] drbd-0.7.0.tar.gz
+Message-Id: <200407301559.36975.philipp.reisner@linbit.com>
+Subject: [DRBD-announce] drbd-0.7.1.tar.gz
 Sender: drbd-announce-admin@lists.linbit.com
 Errors-To: drbd-announce-admin@lists.linbit.com
 Reply-To: drbd-user@lists.linbit.com
@@ -21,53 +21,39 @@ List-Unsubscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=unsubscribe>
 List-Archive: <http://lists.linbit.com/pipermail/drbd-announce/>
 
-This opens a new series of stable releases.
+Hi,
 
-0.7.0 (api:74/proto:74)
----
-  Drbd-0.7 was actually forked off from drbd-0.6.1 (actually -pre18). 
+Here is the first update in the 0.7 series. 
+There where no really critical bugs found, although the missing handling
+of the timeout and human counters in the meta-data makes the update
+to this release highly recommended.
 
-  *) Complete new way of doing resynchronisation. Does no longer need
-     to do tricks with the nice value, and delivers very good performace.
-  *) Decoupling of role assignment (primary/secondary) from the direction
-     of resynchronisation. (Necessary for primary/primary)
-  *) All "ack" and "ping" packets now go through the msock. 
-     (Prerequisite for primary/primary)
-  *) Reworked a lot of internals to work with sector_t instead of
-     blocknumbers. DRBD works now with XFS, and will be complete
-     immune to changes in the block size.
-  *) Reworked the tl_ code, the user no longer has to specify the size
-     for a preallocated transfer-log.
-  *) Improved metadata; Ao the device size is now stored in metadata,
-     users no longer need to configure it.
-  *) Online resizing via "drbdsetup resize"
-  *) Resynchronisation groups "drbdsetup syncer -g"
-  *) New (very short!) sys-v init scripts, new userland tool "drbdadm"
-  *) Changes to the way we allocate memory. We want to survive hard OOM
-     situations. (partially done, partially ongoing work) 
-  *) Implemented the Activity-Log and the persistent bitmap.
+0.7.1 (api:75/proto:74)
+-----
+  *) Upgrade instructions for 0.6.x -> 0.7.0 and 0.7.0 -> 0.7.1
+  *) Workaround for XFS' IO requests with page count of zero.
+  *) Handle the human and the timeout count correctly in the new init script.
+  *) The implementation of the incon-degr-cmd was missing, added.
+  *) Longer timeouts in drbdadm for drbdsetup commands witch operate on 
+     meta data.
+  *) New major number 147 (officially registered at lanana.org).
+  *) Added a missing w_resume_next_wg() in case we stop syncing because
+     of connection loss.
+  *) Fixed a Linux-2.2-ismus in recieve_data_tail(). Should considerably
+     speed up protocols A and B.
+  *) Some work on vendor kernel compatibility
 
-Of course there are a few things that are not as they should be, 
-the first thing that comes to mind is that a comprehensive 
-upgrade guide is still missing.
 
-Here is the WARNING for the not so experienced users:
+I have to stress that we got an officially major number, and that
+we changed DRBD to use that new major number by default. See
+http://svn.drbd.org/drbd/tags/drbd-0.7.1/upgrade_0.7.0_to_0.7.1.txt
+for more details.
 
-********************************************************************
- Upgrading from drbd-0.6.x to drbd-0.7.x is not trivial, and should
- only be done if you _really_ _understand_ how drbd-0.7.x stores 
- its metadata.
-********************************************************************
+If you are upgrading from an 0.6.x release please have a look at
+http://svn.drbd.org/drbd/tags/drbd-0.7.1/upgrade_0.6.x_to_0.7.0.txt
 
- We will add the missing upgrade guide, updated .spec files, missing
- translations (this is a hint to people who can do translations) etc...
- in subsequent releases.
-
-The important thing is that from now on roling upgrades will be possible
-for all drbd-0.7.x releases.
-
-BTW, next week I am on holiday, and there is no internet on 
-     the sailing boat :)
+You can find the .tgz at LINBIT's area
+http://www.linbit.com/29.html?&L=1
 
 -Philipp
 -- 
