@@ -1,17 +1,14 @@
-Return-Path: <kim.carstens@linbit.com>
-Received: from maithai.linbit (213-229-1-138.sdsl-line.inode.at [213.229.1.138])
-	by mail.linbit.com (LINBIT Mail Daemon) with ESMTP id E8B7914030
-	for <drbd-announce@lists.linbit.com>; Mon,  5 Jan 2004 10:23:01 +0100 (CET)
-From: Kim Carstens <kim.carstens@linbit.com>
-To: drbd-announce@lists.linbit.com
-Date: Mon, 5 Jan 2004 10:23:01 +0100
+Return-Path: <philipp.reisner@linbit.com>
+From: Philipp Reisner <philipp.reisner@linbit.com>
+To: Drbd-announce@lists.linbit.com
+Date: Mon, 5 Jan 2004 11:21:13 +0100
 MIME-Version: 1.0
 Content-Type: text/plain;
-  charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+  charset="iso-8859-1"
+Content-Transfer-Encoding: 8bit
 Content-Disposition: inline
-Message-Id: <200401051023.01489.kim.carstens@linbit.com>
-Subject: [Drbd-announce] test mail
+Message-Id: <200401051121.13451.philipp.reisner@linbit.com>
+Subject: [Drbd-announce] test
 Sender: drbd-announce-admin@lists.linbit.com
 Errors-To: drbd-announce-admin@lists.linbit.com
 List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
@@ -23,7 +20,14 @@ List-Unsubscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=unsubscribe>
 List-Archive: <http://lists.linbit.com/pipermail/drbd-announce/>
 
-test mail number one for drbd-announce!
+Hi, 
 
-kim
+The only thing I have to announce today, is that kim was so 
+kind to set up all the mailinglists.
+
+-Philipp
+-- 
+: Dipl-Ing Philipp Reisner                      Tel +43-1-8178292-50 :
+: LINBIT Information Technologies GmbH          Fax +43-1-8178292-82 :
+: Schönbrunnerstr 244, 1120 Vienna, Austria    http://www.linbit.com :
 
