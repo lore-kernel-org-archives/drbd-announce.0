@@ -1,15 +1,16 @@
 Return-Path: <philipp.reisner@linbit.com>
 From: Philipp Reisner <philipp.reisner@linbit.com>
+Date: Wed, 29 Sep 2004 10:51:13 +0200
 To: annoucements@drbd.org
-Date: Thu, 9 Sep 2004 23:13:44 +0200
 MIME-Version: 1.0
-Content-Disposition: inline
 Content-Type: text/plain;
   charset="iso-8859-1"
-Content-Transfer-Encoding: 8bit
-Message-Id: <200409092313.44641.philipp.reisner@linbit.com>
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+Message-Id: <200409291051.13362.philipp.reisner@linbit.com>
 Cc: 
-Subject: [DRBD-announce] drbd-0.7.4.tar.gz
+Subject: [DRBD-announce] [SECURITY] permissions on automatically generated
+	/dev/drbdX
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -21,41 +22,27 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Hi,
 
-I had the chance to install DRBD-0.7.3 on a SLES 8 system, and in
-the progress I discovered a quite bad problem with Linux-2.4.x
-and HIGHMEM. (This problem with HIGHMEM on Linux-2.4.x causes
-DRBD to  drop connection and reconnect quite often, which in 
-turn uncovered an other problem with caused the resync
-progress to starve). -- BTW, all this happenden because a 
-paying custromer asked us to install drbd-0.7.x on the
-Linux-2.4.x based system.
 
-The other important fix is the support of devices bigger than
-2TB.
+----------  Forwarded Message  ----------
 
-So, you want to upgrade to this release, if you have huge
-devices, or if you want to run on Linux-2.4.x with HIGHMEM.
+Subject: [DRBD-user] [SECURITY] permissions on automatically 
+generated /dev/drbdX
+Date: Monday 27 September 2004 19:51
+From: Lars Ellenberg <Lars.Ellenberg@linbit.com>
+To: drbd-user@lists.linbit.com
 
-Otherwise, this release offers nothing new for you.
+I just noticed that the permissions on /dev/drbdX generated during make
+install (or by the debian, rpm, gentoo scripts for that matter) where
+dependend on the umask, and may lead to globally accessable devices,
+which may be a security risk.
+  brw-rw-r--    1 root     root     147,   0 2004-09-27 14:06 /dev/drbd0
 
-0.7.4 (api:76/proto:74)
------
- * Fixed a critical bug with Linux-2.4.x and HIGHMEM!
- * Fixed a bug that only showed up with the HIGHMEM problem on 
-   Linux-2.4.x -> It caused the resync process to starve.
- * The drbd.spec file now creates /dev/drbd in the post-install stage.
- * Fixed support for more than 2TB storage. Now DRBD supports up to
-   3.99TB storage. It will also tell you, that it is not supported if 
-   you try to set up a bigger device.
- * Debian's build rules file now knows about the adjust_drbd_config_h.sh
-   file.
- * DRBD_DISABLE_SENDPAGE available in drbd_config.h
+please all verify and if neccessary, do chmod 0660 /dev/drbd* !
 
--Philipp
+I changed all mknod $something in svn to mknod -m 0660 $samething.
 
--- 
-: Dipl-Ing Philipp Reisner                      Tel +43-1-8178292-50 :
-: LINBIT Information Technologies GmbH          Fax +43-1-8178292-82 :
-: Schönbrunnerstr 244, 1120 Vienna, Austria    http://www.linbit.com :
+thanks,
+
+
+ Lars Ellenberg
