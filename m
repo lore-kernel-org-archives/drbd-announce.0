@@ -1,17 +1,17 @@
 Return-Path: <philipp.reisner@linbit.com>
 Received: from mescal.linbit (213-229-1-138.sdsl-line.inode.at [213.229.1.138])
-	by mail.linbit.com (LINBIT Mail Daemon) with ESMTP id 77B42142F3
-	for <drbd-announce@lists.linbit.com>; Tue, 10 Feb 2004 15:24:43 +0100 (CET)
+	by mail.linbit.com (LINBIT Mail Daemon) with ESMTP id E1A7014018
+	for <drbd-announce@lists.linbit.com>; Thu, 19 Feb 2004 17:36:43 +0100 (CET)
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Date: Tue, 10 Feb 2004 15:24:42 +0100
+Date: Thu, 19 Feb 2004 17:36:43 +0100
 MIME-Version: 1.0
 Content-Type: text/plain;
   charset="iso-8859-1"
 Content-Transfer-Encoding: 8bit
 Content-Disposition: inline
-Message-Id: <200402101524.42861.philipp.reisner@linbit.com>
-Subject: [DRBD-announce] drbd-0.6.11.tar.gz
+Message-Id: <200402191736.43206.philipp.reisner@linbit.com>
+Subject: [DRBD-announce] drbd-0.7_pre5.tar.gz
 Sender: drbd-announce-admin@lists.linbit.com
 Errors-To: drbd-announce-admin@lists.linbit.com
 Reply-To: drbd-user@lists.linbit.com
@@ -26,20 +26,34 @@ List-Archive: <http://lists.linbit.com/pipermail/drbd-announce/>
 
 Hi,
 
-I think that this will be the last drbd-0.6.x release. (In case 
-there is an issue with 0.6.11, there will be a .12 release of course.)
+* Forwarded documentation from drbd-0.6.11 and wrote a draft drbdadm man page
+* Lots of updates to the build system
+* introduced on-io-error=pass_on|panic|detach replaces do-panic
+* More sanity checks to the set_disk ioctl and command
+* Made the diskless mode work, intoduced the detach ioctl and command
+* Lars rewrote the make_request function to support on-io-error=detach
+  also for local IO errors on the primary
+* Removed the UNCONFIG_BOTH ioctl
+* Removed the secondary_remote ioctls/commands
+* 64 bit fixes for
+  . CONFIG_LBD (64 bit sector_t on 32 bit arch)
+  . pure 64 bit architectures
+  . 32bit userland / 64 bit kernel architectures (AMD64/Sparc64...)
+* Fixes to drbdadm
 
-* Updates to the debian directory (mostly by David Krovich)
-* Documentation updates by Lars Ellenberg and Helmut Wollmersdorfer.
-* Updates to the build system by Lars Ellenberg.
-* Sending of IO hints is done non-blocking, by Lars Ellenberg.
-* Code to make IOCTLs work on 64/32 bit platforms (PPC64, SPARC64, AMD64)
-* Some code cleanups by LGE.
+There is still some cleanup work to do, _but_ basically we are
+feature complete for drbd-0.7. 
 
-I think the real highlights are the improvements to the documentation.
+It compiles and basically works on Linux-2.4.x and Linux-2.6.x
 
-In case you are running on drbd-0.6.10 I do not think that it is
-worth the trouble to upgrade to 0.6.11.
+So far no tests on SMP were performed. -- Do not expect too much 
+on SMP systems with this release. This is one of the areas I have
+to work on next. (Over the course of development we probabely 
+ introduced some loose ends, but yes, SMP locking was considered
+ during the whole development process)
+
+Now it is your turn to help testing this and to write reproducible 
+bug reports ! 
 
 -Philipp
 -- 
