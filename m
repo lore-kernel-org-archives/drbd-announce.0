@@ -1,14 +1,14 @@
 Return-Path: <philipp.reisner@linbit.com>
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: annoucements@drbd.org
-Date: Fri, 30 Jul 2004 15:59:36 +0200
+Date: Fri, 6 Aug 2004 15:05:35 +0200
 MIME-Version: 1.0
 Content-Disposition: inline
 Content-Type: text/plain;
   charset="iso-8859-1"
 Content-Transfer-Encoding: 8bit
-Message-Id: <200407301559.36975.philipp.reisner@linbit.com>
-Subject: [DRBD-announce] drbd-0.7.1.tar.gz
+Message-Id: <200408061505.35587.philipp.reisner@linbit.com>
+Subject: [DRBD-announce] drbd-0.7.2.tar.gz
 Sender: drbd-announce-admin@lists.linbit.com
 Errors-To: drbd-announce-admin@lists.linbit.com
 Reply-To: drbd-user@lists.linbit.com
@@ -23,29 +23,29 @@ List-Archive: <http://lists.linbit.com/pipermail/drbd-announce/>
 
 Hi,
 
-Here is the first update in the 0.7 series. 
-There where no really critical bugs found, although the missing handling
-of the timeout and human counters in the meta-data makes the update
-to this release highly recommended.
+Once again we hope that this release will be the latest and greatest for
+more than one week. The fixes for DRBD on LVM/MD made this release
+necessary.
 
-0.7.1 (api:75/proto:74)
+0.7.2 (api:75/proto:74)
 -----
-  *) Upgrade instructions for 0.6.x -> 0.7.0 and 0.7.0 -> 0.7.1
-  *) Workaround for XFS' IO requests with page count of zero.
-  *) Handle the human and the timeout count correctly in the new init script.
-  *) The implementation of the incon-degr-cmd was missing, added.
-  *) Longer timeouts in drbdadm for drbdsetup commands witch operate on 
-     meta data.
-  *) New major number 147 (officially registered at lanana.org).
-  *) Added a missing w_resume_next_wg() in case we stop syncing because
-     of connection loss.
-  *) Fixed a Linux-2.2-ismus in recieve_data_tail(). Should considerably
-     speed up protocols A and B.
-  *) Some work on vendor kernel compatibility
+  *) Propper handling of backing storage devices that occasionally fail 
+     READA (=read ahead) requests. (E.g. LVM and MD)
+  *) DRBD now fails READA requests itself, if a resynchronisation is running
+     and it would need to fetch the block from its peer.
+  *) "drbdadm adjust" had a race, which caused random errors. ( Missing
+     waitpid() ). Fixed now.
+  *) Popper substract SyncPause times from the syncer performance numbers.
+  *) Fix to the syncer progress bar in /proc/drbd.
+  *) Fix to debian build rules.
+
+In case everything works for you with a 0.7.0 or 0.7.1 installation 
+you might consider to stay with that release. Although that race condition
+in drbdadm is a stong argument to upgrade even for those, who do not
+use LVM or MD.
 
 
-I have to stress that we got an officially major number, and that
-we changed DRBD to use that new major number by default. See
+In case you are upgarding from an 0.7.0 to this release please read
 http://svn.drbd.org/drbd/tags/drbd-0.7.1/upgrade_0.7.0_to_0.7.1.txt
 for more details.
 
