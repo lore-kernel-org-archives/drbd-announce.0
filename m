@@ -1,18 +1,18 @@
 Return-Path: <philipp.reisner@linbit.com>
 Received: from [10.9.9.50] (213-229-1-138.sdsl-line.inode.at [213.229.1.138])
-	by mail.linbit.com (LINBIT Mail Daemon) with ESMTP id 10E4214314
+	by mail.linbit.com (LINBIT Mail Daemon) with ESMTP id 4AE8D14362
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 31 Jan 2005 13:36:38 +0100 (CET)
+	Mon, 20 Jun 2005 11:30:33 +0200 (CEST)
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Date: Mon, 31 Jan 2005 13:37:22 +0100
+Date: Mon, 20 Jun 2005 11:30:34 +0200
 MIME-Version: 1.0
 Content-Type: text/plain;
   charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Content-Disposition: inline
-Message-Id: <200501311337.22840.philipp.reisner@linbit.com>
-Subject: [DRBD-announce] drbd-0.7.10.tar.gz
+Message-Id: <200506201130.34588.philipp.reisner@linbit.com>
+Subject: [DRBD-announce] drbd-0.7.11.tar.gz
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,26 +26,45 @@ List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hi,
 
-In order to fix the drbd-0.7.9 desaster here is 0.7.10.
+By the beginning of June I realized that there was no DRBD release in the=20
+last 4 month, people could get the impression that the development stalled.
+This is not the case! There were just no bugs in 0.7.10 that triggered the
+release of 0.7.11 . So here is a "time triggered" release:
 
-0.7.10 (api:77/proto:74)
+0.7.11 (api:77/proto:74)
 =2D----
- * 0.7.9 had a memory corruption bug and memory leakage (BIOs).
-   This time I did the clone_bio() fix myself, and this release is
-   supposed to work with SLES9 SP1, Linux-2.6.11 and Linux-2.6.12.
+ * The upper limit of the runtime tuning parameter max_buffers
+   was ways too low for today's IBM storage controllers.
+   Was 32 - 10000 ; Now it is 32 - 131072 ( Now one could
+   allow DRBD to allocate up to half a gigabyte of memory as
+   receive buffers)
+ * A fix to the Makefiles to make building of RPMs work on RAHS4.
+ * A workaround to have DBRD running on PPC64 with Linux-2.4.x kernels,
+   on Linux-2.6.x everything was fine already.
+ * Removal of dead code (busy_blocks).
+ * LINBIT drbd rpms now conflict with km_drbd
+   (SuSE's kernel module source hook)
+ * possibly existing /lib/modules/*/extra/drbd.ko are renamed to .orig in t=
+he
+   post-install scripts to avoid conflicts with existing modules from
+   distribution kernel packages
+ * fixed flex input buffer overflow
+   drbdadm_scanner.fl produced tokens of arbitrary length due to excessive =
+use
+   of "+" and "*" modifiers. Now these are replaced with "{x,y}" modifiers,=
+ so
+   it should no longer segfault, which was actually observed e.g. with long
+   continuous comment blocks (~5k).
 
-NOTE: These bugs were introduced with 0.7.9, so in case you=20
-      run 0.7.8 you do not need to upgrdate to 0.7.10.
+No need to upgrade for you in case you are happy with 0.7.10.
+=46or new systems please use "seven-eleven".
 
-The reason for the hurry was because SUSE released their=20
-SLES9-SP1 kernel with some patches from upcomming Linux-2.6.11.=20
-DRBD (0.7.8) was not compatible with this changes.
+  http://oss.linbit.com/drbd/0.7/drbd-0.7.11.tar.gz
+  http://www.linbit.com/support/drbd-0.7.11/
 
-I have learned my lession about making releases.
+BTW, It was tagged and packaged by Lars on the 8th of June.=20
 
-http://oss.linbit.com/drbd/0.7/drbd-0.7.10.tar.gz
-
-=2DPhilipp
+ Philipp
 =2D-=20
 : Dipl-Ing Philipp Reisner                      Tel +43-1-8178292-50 :
 : LINBIT Information Technologies GmbH          Fax +43-1-8178292-82 :
