@@ -1,19 +1,19 @@
 Return-Path: <philipp.reisner@linbit.com>
-Received: from mescal.linbit (213-229-1-138.sdsl-line.inode.at [213.229.1.138])
+Received: from mescal.linbit (office.linbit [213.229.1.138])
 	(using TLSv1 with cipher RC4-MD5 (128/128 bits))
 	(No client certificate requested)
-	by mail.linbit.com (LINBIT Mail Daemon) with ESMTP id 158B31431D
+	by mail.linbit.com (LINBIT Mail Daemon) with ESMTP id 28E9A1608E
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 17 Oct 2005 18:06:46 +0200 (CEST)
+	Tue, 20 Dec 2005 11:34:36 +0100 (CET)
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Date: Mon, 17 Oct 2005 18:10:16 +0200
+Date: Tue, 20 Dec 2005 11:34:37 +0100
 MIME-Version: 1.0
 Content-Type: text/plain;
   charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Content-Disposition: inline
-Message-Id: <200510171810.16884.philipp.reisner@linbit.com>
+Message-Id: <200512201134.37568.philipp.reisner@linbit.com>
 Subject: [DRBD-announce] drbd-0.7.14.tar.gz
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
@@ -26,26 +26,31 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-0.7.14 (api:77/proto:74)
+Hi,
+
+0.7.15 (api:77/proto:74)
 =2D----
- * Fixed a SMP race condition introduced in 0.7.12, that could cause
-   a lockup on a busy node in Primary/SyncSource state.
- * In case a disc failes during a read requests, the read requests
-   is reissued to the peer. Now it also tells the peer that the disk
-   broke.=20
-   Without that fix this bug could cause a resync in the wrong direction
-   after a cluster restart.
- * Some improvements to the documentation.
+ * Fixed a bug in the GC code that could cause a resync attempt
+   in the wrong direction.
+ * Made DRBD's compat_ioctls work with kernels higher than 2.6.14. This
+   means DRBD builds on AMD64/x86_64 with 2.6.15 and higher again.
+ * drbdadm no longer looks in the current directory for its
+   backend programs (=3Ddrbdsetup), but instead looks in the directory
+   of the drbdadm executable and in $PATH.
+ * Removed the examples from manpage, added a pointer to the HA-wiki.
 
-Well, it is a shame, that there was still a problem introduced with=20
-that 0.7.12 release.
 
-Users of SMP machines should really really avoid 0.7.13. Now everything
-works, but in case you have an outage of one node, it might cause the
-primary to freeze during the resync process.
+The first bugfix might sound very critical, but it only affects the=20
+situation immediately after the initial sync (that one that is started
+with the --do-what-I-say option). In case DRBD gets restarted once=20
+the bug no longer gets triggered.
 
-http://oss.linbit.com/drbd/0.7/drbd-0.7.14.tar.gz
-http://www.linbit.com/support/drbd-0.7.14/
+I do not see an urgent need to update your 0.7.14 installations, but
+you should use 0.7.15 with new installations of course.
+
+http://oss.linbit.com/drbd/0.7/drbd-0.7.15.tar.gz
+http://www.linbit.com/support/drbd-0.7.15/
+http://svn.drbd.org/drbd/tags/drbd-0.7.15/
 
 =2DPhilipp
 =2D-=20
