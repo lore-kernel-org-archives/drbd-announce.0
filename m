@@ -1,20 +1,20 @@
 Return-Path: <philipp.reisner@linbit.com>
 Received: from mescal.linbit (office.linbit [213.229.1.138])
-	(using TLSv1 with cipher EXP1024-RC4-SHA (56/128 bits))
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by mail.linbit.com (LINBIT Mail Daemon) with ESMTP id 072F22CE6E4E
+	by mail.linbit.com (LINBIT Mail Daemon) with ESMTP id D283D2CF7154
 	for <drbd-announce@lists.linbit.com>;
-	Wed,  2 Aug 2006 11:49:13 +0200 (CEST)
+	Mon,  2 Oct 2006 11:14:52 +0200 (CEST)
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Date: Wed, 2 Aug 2006 11:49:14 +0200
+Date: Mon, 2 Oct 2006 11:14:54 +0200
 MIME-Version: 1.0
 Content-Type: text/plain;
   charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Content-Disposition: inline
-Message-Id: <200608021149.14996.philipp.reisner@linbit.com>
-Subject: [DRBD-announce] drbd-0.7.21.tar.gz
+Message-Id: <200610021114.55092.philipp.reisner@linbit.com>
+Subject: [DRBD-announce] drbd-8.0pre5.tar.gz
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,26 +26,24 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Hi There,
+The good news are: pre5 is much more stable and usable than any other 8.0=20
+prerelease before.
 
-After we where pointed at the "syncer stalled" after reconnect symptom.
-Lars tested disconnect/reconnect in a tight loop. This brought up
-some issues, we fixed.
+8.0pre5 (api:84/proto:83)
+=2D-------
+ * The request code was completely rewritten.
+ * The write conflict detection code for primary-primary is currently
+   broken, but will be fixed soon.
+ * drbdsetup is no longer based on IOCTL but works now via=20
+   netlink/connector.
+ * drbd_panic() is on its way out.
+ * A runtime configurable tracing framework got added.
+ * A lot of effort was put into finding and fixing bugs.
 
-0.7.21 (api:79/proto:74)
-=2D----
- * Fixed the "syncer stalled" after reconnect symptom.
- * Fixed the "stalled in WFParams" after reconnect symptom. The cause
-   of this bug was actually a misuse of the data socket.
- * Allow to set the uplug_watermark to 1, only usefull for very strange
-   cases.
+http://oss.linbit.com/drbd/8.0/drbd-8.0pre5.tar.gz
+http://svn.drbd.org/drbd/tags/drbd-8.0pre5/
 
-This makes DRBD to cause no troubles, in case the replication link
-is badly broken...=20
-
-http://oss.linbit.com/drbd/0.7/drbd-0.7.21.tar.gz
-http://svn.drbd.org/drbd/tags/drbd-0.7.21/
-http://www.linbit.com/support/drbd-0.7.21/ (completed in about 2 hours)
+Happy testing, happy early-adoping ;)
 
 =2DPhilipp
 =2D-=20
