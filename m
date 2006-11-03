@@ -2,19 +2,19 @@ Return-Path: <philipp.reisner@linbit.com>
 Received: from mescal.linbit (office.linbit [213.229.1.138])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by mail.linbit.com (LINBIT Mail Daemon) with ESMTP id 693662D99A19
+	by mail.linbit.com (LINBIT Mail Daemon) with ESMTP id 232AC2D9E3BE
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 24 Oct 2006 15:08:49 +0200 (CEST)
+	Fri,  3 Nov 2006 15:46:06 +0100 (CET)
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Date: Tue, 24 Oct 2006 15:08:48 +0200
+Date: Fri, 3 Nov 2006 15:46:07 +0100
 MIME-Version: 1.0
 Content-Type: text/plain;
   charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Content-Disposition: inline
-Message-Id: <200610241508.49069.philipp.reisner@linbit.com>
-Subject: [DRBD-announce] drbd-0.7.22.tar.gz
+Message-Id: <200611031546.07875.philipp.reisner@linbit.com>
+Subject: [DRBD-announce] drbd-8.0pre6.tar.gz
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,34 +26,30 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Hi,=20
+Hi,
 
-While working on drbd-8.0 and rewriting a lot of stuff there,
-we noticed a bug in the previous handling of protocol A and B.
+Now drbd-8.0 really looks good. Besides the missing documentation
+updates it is rather complete now.=20
 
-In case you are using protocol A or B you should upgrade
-to this version !
+=46or the first time I am thinking about using drbd-8.0 on my own
+production systems....
 
-0.7.22 (api:79/proto:74)
-=2D----
- * Fixed bugs in the implementation of protocol A and B.
-   we noticed that in protocol A and B, on connection loss,
-   we could "forget" to set certain areas out of sync.
-   so resync in those protocol has been broken all along!
- * Fix races between failure in drbd_send_dblock
-   and concurrently running tl_clear
- * Fix potential access-afer-free in drbd_dio_end
- * Fix possible list corruption respective resulting deadlock in=20
-   receive_DataRequest
- * Improved the drbd_thread_stop / start code
- * Gracefull removal of devfs and other updates.
- * Implemented the "freeze_io" option for "on-disconnect"
+8.0pre6 (api:85/proto:85)
+=2D-------
+ * All panic() calls where removed from DRBD.
+ * IO errors while accessing the backing storage device are now handled
+   correct.
+ * Conflict detection for two primaries is in place and tested.
+ * More tracing stuff
+ * Lots of bugs found and fixed
 
-http://oss.linbit.com/drbd/0.7/drbd-0.7.22.tar.gz
-http://www.linbit.com/support/drbd-0.7.22/
-http://svn.drbd.org/drbd/tags/drbd-0.7.22/
+http://oss.linbit.com/drbd/8.0/drbd-8.0pre6.tar.gz
+http://svn.drbd.org/drbd/tags/drbd-8.0pre6/
 
-=2DPhil
+BTW, Please also report spelling errors...
+It is time to fix those also.
+
+=2DPhilipp
 =2D-=20
 : Dipl-Ing Philipp Reisner                      Tel +43-1-8178292-50 :
 : LINBIT Information Technologies GmbH          Fax +43-1-8178292-82 :
