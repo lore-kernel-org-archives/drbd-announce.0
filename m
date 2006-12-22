@@ -1,20 +1,20 @@
 Return-Path: <philipp.reisner@linbit.com>
-Received: from mescal.linbit (office.linbit [213.229.1.138])
+Received: from mescal.linbit (unknown [86.59.100.100])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by mail.linbit.com (LINBIT Mail Daemon) with ESMTP id 232AC2D9E3BE
+	by mail.linbit.com (LINBIT Mail Daemon) with ESMTP id 2F4742CFF5DB
 	for <drbd-announce@lists.linbit.com>;
-	Fri,  3 Nov 2006 15:46:06 +0100 (CET)
+	Fri, 22 Dec 2006 16:49:16 +0100 (CET)
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Date: Fri, 3 Nov 2006 15:46:07 +0100
+Date: Fri, 22 Dec 2006 16:49:16 +0100
 MIME-Version: 1.0
 Content-Type: text/plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+  charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-Message-Id: <200611031546.07875.philipp.reisner@linbit.com>
-Subject: [DRBD-announce] drbd-8.0pre6.tar.gz
+Message-Id: <200612221649.17070.philipp.reisner@linbit.com>
+Subject: [DRBD-announce] drbd-8.0rc1.tar.gz
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -28,29 +28,28 @@ List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hi,
 
-Now drbd-8.0 really looks good. Besides the missing documentation
-updates it is rather complete now.=20
+This is Release Candidate 1 of DRBD-8.0 . It survived a lot of testing
+in various testing environments and pre production installations.
 
-=46or the first time I am thinking about using drbd-8.0 on my own
-production systems....
+8.0rc1 (api:86/proto:85)
+--------
+ * The drbd-peer-outdater got updated to work in multi node heartbeat
+   clusters. (But we still not suceeded to get this into Heartbeat's 
+   repository accepted.)
+ * Fixed resync decission after a crash in a pri-pri cluster.
+ * Implemented the ping-timeout option for "sub-second" failover clusters.
+ * Implemented all the "violently" options in the reconnect handling.
+ * Updated man pages of drbd.conf and drbdsetup.
+ * Removed the "self-claiming" on secondary nodes.
+ * Fixed an uncountable number of bugs.
 
-8.0pre6 (api:85/proto:85)
-=2D-------
- * All panic() calls where removed from DRBD.
- * IO errors while accessing the backing storage device are now handled
-   correct.
- * Conflict detection for two primaries is in place and tested.
- * More tracing stuff
- * Lots of bugs found and fixed
+http://oss.linbit.com/drbd/8.0/drbd-8.0rc1.tar.gz
+http://svn.drbd.org/drbd/tags/drbd-8.0rc1/
 
-http://oss.linbit.com/drbd/8.0/drbd-8.0pre6.tar.gz
-http://svn.drbd.org/drbd/tags/drbd-8.0pre6/
+Happy Xmas and happy early adopting.
 
-BTW, Please also report spelling errors...
-It is time to fix those also.
-
-=2DPhilipp
-=2D-=20
+-philipp
+-- 
 : Dipl-Ing Philipp Reisner                      Tel +43-1-8178292-50 :
 : LINBIT Information Technologies GmbH          Fax +43-1-8178292-82 :
-: Sch=F6nbrunnerstr 244, 1120 Vienna, Austria    http://www.linbit.com :
+: Vivenotgasse 48, 1120 Vienna, Austria        http://www.linbit.com :
