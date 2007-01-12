@@ -2,19 +2,19 @@ Return-Path: <philipp.reisner@linbit.com>
 Received: from mescal.linbit (unknown [86.59.100.100])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by mail.linbit.com (LINBIT Mail Daemon) with ESMTP id 2F4742CFF5DB
+	by mail.linbit.com (LINBIT Mail Daemon) with ESMTP id D205B2D9E014
 	for <drbd-announce@lists.linbit.com>;
-	Fri, 22 Dec 2006 16:49:16 +0100 (CET)
+	Fri, 12 Jan 2007 13:39:03 +0100 (CET)
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Date: Fri, 22 Dec 2006 16:49:16 +0100
+Date: Fri, 12 Jan 2007 13:39:05 +0100
 MIME-Version: 1.0
 Content-Type: text/plain;
   charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-Message-Id: <200612221649.17070.philipp.reisner@linbit.com>
-Subject: [DRBD-announce] drbd-8.0rc1.tar.gz
+Message-Id: <200701121339.05902.philipp.reisner@linbit.com>
+Subject: [DRBD-announce] drbd-0.7.23.tar.gz
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,29 +26,19 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Hi,
+Hi, 
 
-This is Release Candidate 1 of DRBD-8.0 . It survived a lot of testing
-in various testing environments and pre production installations.
+We need to follow the mainline kernel.
 
-8.0rc1 (api:86/proto:85)
---------
- * The drbd-peer-outdater got updated to work in multi node heartbeat
-   clusters. (But we still not suceeded to get this into Heartbeat's 
-   repository accepted.)
- * Fixed resync decission after a crash in a pri-pri cluster.
- * Implemented the ping-timeout option for "sub-second" failover clusters.
- * Implemented all the "violently" options in the reconnect handling.
- * Updated man pages of drbd.conf and drbdsetup.
- * Removed the "self-claiming" on secondary nodes.
- * Fixed an uncountable number of bugs.
+0.7.23 (api:79/proto:74)
+-----
+ * Made it to compile on 2.6.19.
 
-http://oss.linbit.com/drbd/8.0/drbd-8.0rc1.tar.gz
-http://svn.drbd.org/drbd/tags/drbd-8.0rc1/
+http://oss.linbit.com/drbd/0.7/drbd-0.7.23.tar.gz
+http://www.linbit.com/support/drbd-0.7.23/
+http://svn.drbd.org/drbd/tags/drbd-0.7.23/
 
-Happy Xmas and happy early adopting.
-
--philipp
+-Phil
 -- 
 : Dipl-Ing Philipp Reisner                      Tel +43-1-8178292-50 :
 : LINBIT Information Technologies GmbH          Fax +43-1-8178292-82 :
