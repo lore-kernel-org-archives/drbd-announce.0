@@ -2,19 +2,19 @@ Return-Path: <philipp.reisner@linbit.com>
 Received: from mescal.linbit (unknown [86.59.100.100])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by mail.linbit.com (LINBIT Mail Daemon) with ESMTP id D205B2D9E014
+	by mail.linbit.com (LINBIT Mail Daemon) with ESMTP id CC3C12D9DB69
 	for <drbd-announce@lists.linbit.com>;
-	Fri, 12 Jan 2007 13:39:03 +0100 (CET)
+	Wed, 17 Jan 2007 18:22:23 +0100 (CET)
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Date: Fri, 12 Jan 2007 13:39:05 +0100
+Date: Wed, 17 Jan 2007 18:22:24 +0100
 MIME-Version: 1.0
 Content-Type: text/plain;
   charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-Message-Id: <200701121339.05902.philipp.reisner@linbit.com>
-Subject: [DRBD-announce] drbd-0.7.23.tar.gz
+Message-Id: <200701171822.24967.philipp.reisner@linbit.com>
+Subject: [DRBD-announce] drbd-8.0rc2.tar.gz
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -28,15 +28,25 @@ List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hi, 
 
-We need to follow the mainline kernel.
+I expect that this _is_ the last release candidate of drbd-8.0
 
-0.7.23 (api:79/proto:74)
------
- * Made it to compile on 2.6.19.
+8.0rc2 (api:86/proto:86)
+--------
+ * Added the well known automagiacally adjust drbd_config.h to
+   make drbd compile on every by vendor's backports defaced 
+   kernel. ( Linux-2.6.x only of course )
+ * Fixed races with starting and finishing resync processes 
+   while heavy application IO is going on.
+ * Ported DRBD to the new crypto API (and added a emulation of the
+   now API on top of the old one for older 2.6.x kernels)
+ * Code to perform better on ethernet networks with jumbo
+   frames.
+ * Bugfixes to our request code (race conditions).
+ * Every error code that is returned by drbdsetup has a 
+   textual description by now.
 
-http://oss.linbit.com/drbd/0.7/drbd-0.7.23.tar.gz
-http://www.linbit.com/support/drbd-0.7.23/
-http://svn.drbd.org/drbd/tags/drbd-0.7.23/
+http://oss.linbit.com/drbd/8.0/drbd-8.0rc2.tar.gz
+http://svn.drbd.org/drbd/tags/drbd-8.0rc2/
 
 -Phil
 -- 
