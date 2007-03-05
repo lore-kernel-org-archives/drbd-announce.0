@@ -2,19 +2,19 @@ Return-Path: <philipp.reisner@linbit.com>
 Received: from mescal.linbit (unknown [86.59.100.100])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by mail.linbit.com (LINBIT Mail Daemon) with ESMTP id ED3822D9DFA0
+	by mail.linbit.com (LINBIT Mail Daemon) with ESMTP id 8C5042DEAC75
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 24 Jan 2007 16:42:25 +0100 (CET)
+	Mon,  5 Mar 2007 12:42:04 +0100 (CET)
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Date: Wed, 24 Jan 2007 16:42:23 +0100
+Date: Mon, 5 Mar 2007 12:42:27 +0100
 MIME-Version: 1.0
 Content-Type: text/plain;
   charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-Message-Id: <200701241642.23457.philipp.reisner@linbit.com>
-Subject: [DRBD-announce] drbd-8.0.0.tar.gz
+Message-Id: <200703051242.27753.philipp.reisner@linbit.com>
+Subject: [DRBD-announce] drbd-8.0.1.tar.gz
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,68 +26,52 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Hi There,
+Tara! The first maintenance release of the 8.0 code:
 
-We have something to celebrate here...
-
-   DRBD - 8.0.0
-   ============
-
-This is the official entry to the changelog:
-
-8.0.0 (api:86/proto:86)
+8.0.1 (api:86/proto:86)
 --------
- * No effecitve changes to rc2.
+ * Fixed some race conditions that could trigger an OOPS when the loca disk
+   fails and DRBD detaches itself from the failing disk.
+ * Added a missing call to drbd_try_outdate_peer().
+ * LVM's LVs expose ambiguous queue settings. When a RAID-0 (md) PV is
+   used the present a segment size of 64k but at the same time allow only
+   8 sectors. Fixed DRBD to deal with that fact corretly.
+ * New option "always-asbp" to also use the after-after-split-brain-policy
+   handlers, even it is not possible to determine from the UUIDs that
+   the data of the two nodes was related in the past.
+ * More verbosity in case a bio_add_page() fails.
+ * Replaced kmalloc()/memset() with kzmalloc(), and a wrapper for older kernls
+ * A fast version of drbd_al_to_on_disk_bm(). This is necessary for short
+   (even sub-second) switchover times while having large "al-extents"
+   settings.
+ * Fixed drbdadm's array overflows (of on stack objects)
+ * drbdsetup can now dump its usage in a XML format
+ * New init script for gentoo
+ * Fixed Typos in the usage of /proc/sysrq-trigger in the example config.
 
 
-But I want to remind you about the changes relative to the 0.7
-release of DRBD:
-----------------
- * Removed support for Linux-2.4.x
- * Cleanup of the wire protocol.
- * Added optional peer authentication with a shared secret.
- * Consolidated state changes into a central function.
- * Improved, tunable after-split-brain recovery strategies.
- * Always verify all IDs used in the protocol that are used as pointers.
- * Introduced the "outdate" disk state, and commands for managing it.
- * Introduced the "drbdmeta" command, and require the user to create
-   meta-data explicitly.
- * Support for primary/primary (for OCFS2, GFS...)
- * Replaced the sync-groups with the sync-after mechanism.
- * The "common" section in the configuration file.
- * Replaced the generation counters (GCs) with data-generation-UUIDs
- * Improved performance by using Linux-2.6's BIOs with up to 32k per
-   IO request. Before we transferred only up to 4k per IO request.
- * A Warning if the disk sizes are more than 10% different.
- * A connection teardown packet to differentiate between a crash
-   of the peer and a peer that is shut down gracefully.
- * External imposable SyncPause states, to serialize DRBD's resynchronisation
-   with the resynchronisation of backing storage's RAID configurations.
- * Backing storage can be hot added to disk less nodes.
- * Prepared for advanced integration to Heartbeat-2.0
- * Changed internal APIs so that missed writes of the meta-data super
-   block are reported as they happen.
- * The http://usage.drbd.org sub project.
- * Rewrote the scanner/parser of drbd.conf. 10 times smaller/faster and
-   easier to maintain.
- * Asynchronous meta-data IO [ Code drop from the DRBD+ branch ]
+The release of 8.0.0 happened 6 weeks ago. There were quite a number of
+bugs found and fixed, but non of them was so critical that we decided
+to do an release immediately.
 
-http://oss.linbit.com/drbd/8.0/drbd-8.0.0.tar.gz
-http://svn.drbd.org/drbd/tags/drbd-8.0.0/
-http://www.linbit.com/support/drbd-8.0.0/
+What I want to express is, that I am quite pleased with the quality of
+DRBD-8.0.x so far.
 
-To have our release policy more transparent in the future:
+This should not downplay the need to upgrade to 8.0.1 in case you
+are using your DRBD cluster in production on real disks (disks 
+that can fail), as opposed to local RAID sets (which I usually
+not expect to report errors to the upper layers).
 
-Bugfix releases will increase the 3rd number, e.g. 8.0.1, 8.0.2 etc...
+A word on http://usage.drbd.org . It is quite pleasant that the
+ratio of download to participation in usage.drbd.org rose since
+the release of 8.0.0 .
+We have 1871 downloads to 450 nodes that admit that they run drbd-8.0.0.
 
-Releases that introduce small new features will increase the second
-number, resetting the third number: 8.1.0 etc...
+Here are the links:
 
-In the next weeks we will try to update the http://www.drbd.org
-with a bit of new content.
-
-Oh, yes, and then we will prepare it for inclusion into 
-Linus' mainline Linux.
+http://oss.linbit.com/drbd/8.0/drbd-8.0.1.tar.gz
+http://svn.drbd.org/drbd/tags/drbd-8.0.1/
+http://www.linbit.com/support/drbd-8.0.1/
 
 -Phil
 -- 
