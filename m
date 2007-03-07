@@ -1,20 +1,14 @@
 Return-Path: <philipp.reisner@linbit.com>
-Received: from mescal.linbit (unknown [86.59.100.100])
-	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mail.linbit.com (LINBIT Mail Daemon) with ESMTP id 8C5042DEAC75
-	for <drbd-announce@lists.linbit.com>;
-	Mon,  5 Mar 2007 12:42:04 +0100 (CET)
 From: Philipp Reisner <philipp.reisner@linbit.com>
-To: drbd-announce@lists.linbit.com
-Date: Mon, 5 Mar 2007 12:42:27 +0100
+To: drbd-user@lists.linbit.com, drbd-announce@lists.linbit.com
+Date: Wed, 7 Mar 2007 13:43:22 +0100
 MIME-Version: 1.0
 Content-Type: text/plain;
   charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-Message-Id: <200703051242.27753.philipp.reisner@linbit.com>
-Subject: [DRBD-announce] drbd-8.0.1.tar.gz
+Message-Id: <200703071343.22834.philipp.reisner@linbit.com>
+Subject: [DRBD-announce] Attention drbd-8.0.x users, bug in connector
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,52 +20,42 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Tara! The first maintenance release of the 8.0 code:
+Hi,
 
-8.0.1 (api:86/proto:86)
---------
- * Fixed some race conditions that could trigger an OOPS when the loca disk
-   fails and DRBD detaches itself from the failing disk.
- * Added a missing call to drbd_try_outdate_peer().
- * LVM's LVs expose ambiguous queue settings. When a RAID-0 (md) PV is
-   used the present a segment size of 64k but at the same time allow only
-   8 sectors. Fixed DRBD to deal with that fact corretly.
- * New option "always-asbp" to also use the after-after-split-brain-policy
-   handlers, even it is not possible to determine from the UUIDs that
-   the data of the two nodes was related in the past.
- * More verbosity in case a bio_add_page() fails.
- * Replaced kmalloc()/memset() with kzmalloc(), and a wrapper for older kernls
- * A fast version of drbd_al_to_on_disk_bm(). This is necessary for short
-   (even sub-second) switchover times while having large "al-extents"
-   settings.
- * Fixed drbdadm's array overflows (of on stack objects)
- * drbdsetup can now dump its usage in a XML format
- * New init script for gentoo
- * Fixed Typos in the usage of /proc/sysrq-trigger in the example config.
+DRBD-8.x.y uses the connector to for the communication between
+drbdsetup and DRBD's kernel code. The connector is included in the 
+mainline kernel since linux-2.6.9 or so.
 
+Unfortunately we found a bug in the connector code that might affect
+all users of DRBD-8.x.y.
 
-The release of 8.0.0 happened 6 weeks ago. There were quite a number of
-bugs found and fixed, but non of them was so critical that we decided
-to do an release immediately.
+So far we where only able to trigger the bug on SMP machines, although
+I think theoretically it is possible to hit the bug on an UP machine as well.
 
-What I want to express is, that I am quite pleased with the quality of
-DRBD-8.0.x so far.
+In case you hit it, you get an OOPS message like this in your
+kernel log:
 
-This should not downplay the need to upgrade to 8.0.1 in case you
-are using your DRBD cluster in production on real disks (disks 
-that can fail), as opposed to local RAID sets (which I usually
-not expect to report errors to the upper layers).
+Mar  7 11:08:54 sour kernel: Unable to handle kernel NULL pointer dereference at 0000000000000000 RIP:
+Mar  7 11:08:54 sour kernel: [<0000000000000000>] _stext+0x7fdff0e0/0xe0
+Mar  7 11:08:54 sour kernel: PGD 76e2b067 PUD 71d70067 PMD 0
+Mar  7 11:08:54 sour kernel: Oops: 0010 [1] SMP
+Mar  7 11:08:54 sour kernel: CPU 0
+[...]
+Mar  7 11:08:54 sour kernel: Call Trace:
+Mar  7 11:08:54 sour kernel: [<ffffffff881c0124>] :cn:cn_queue_wrapper+0x61/0x121
+Mar  7 11:08:54 sour kernel: [<ffffffff881c00c3>] :cn:cn_queue_wrapper+0x0/0x121
+Mar  7 11:08:54 sour kernel: [<ffffffff80247169>] run_workqueue+0x8f/0x137
+Mar  7 11:08:54 sour kernel: [<ffffffff80243dcf>] worker_thread+0x0/0x14a
+[...]
 
-A word on http://usage.drbd.org . It is quite pleasant that the
-ratio of download to participation in usage.drbd.org rose since
-the release of 8.0.0 .
-We have 1871 downloads to 450 nodes that admit that they run drbd-8.0.0.
+And all communication with DRBD in the kernel is cut off.
 
-Here are the links:
+The bugfix was submitted to LKML for inclusion in the mainline kernel.
+As of writing this mail, it has been signed off by the maintainer of
+the connector, I expect it to arrive in the mainline kernel soon.
 
-http://oss.linbit.com/drbd/8.0/drbd-8.0.1.tar.gz
-http://svn.drbd.org/drbd/tags/drbd-8.0.1/
-http://www.linbit.com/support/drbd-8.0.1/
+Here is the patch, in case you want to fix your system really soon.
+http://lists.linbit.com/pipermail/drbd-dev/2007-March/000681.html
 
 -Phil
 -- 
