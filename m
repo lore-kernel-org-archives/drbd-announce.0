@@ -1,14 +1,21 @@
 Return-Path: <philipp.reisner@linbit.com>
+Received: from amd.localdomain (chello080108092198.22.11.tuwien.teleweb.at
+	[80.108.92.198])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mail.linbit.com (LINBIT Mail Daemon) with ESMTP id 83CA22E1169E
+	for <drbd-announce@lists.linbit.com>;
+	Sat,  7 Apr 2007 10:18:22 +0200 (CEST)
 From: Philipp Reisner <philipp.reisner@linbit.com>
-To: drbd-user@lists.linbit.com, drbd-announce@lists.linbit.com
-Date: Wed, 7 Mar 2007 13:43:22 +0100
+To: drbd-announce@lists.linbit.com
+Date: Sat, 7 Apr 2007 10:18:22 +0200
 MIME-Version: 1.0
 Content-Type: text/plain;
   charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-Message-Id: <200703071343.22834.philipp.reisner@linbit.com>
-Subject: [DRBD-announce] Attention drbd-8.0.x users, bug in connector
+Message-Id: <200704071018.22538.philipp.reisner@linbit.com>
+Subject: [DRBD-announce] drbd-8.0.2.tar.gz
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -22,43 +29,41 @@ List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hi,
 
-DRBD-8.x.y uses the connector to for the communication between
-drbdsetup and DRBD's kernel code. The connector is included in the 
-mainline kernel since linux-2.6.9 or so.
+It is time to get all the post 8.0.1 fixes out of the door:
 
-Unfortunately we found a bug in the connector code that might affect
-all users of DRBD-8.x.y.
+8.0.2 (api:86/proto:86)
+--------
+ * Removed a bug that could cause an OOPS in drbd_al_to_on_disk_bm()
+ * Improved the robustness of the UUID based algorithm that decides
+   about the resync direction.
+ * Fixed the error handling in case a the open() of a backing
+   blockdevice fails.
+ * Fixed a race condition that could cause a "drbdadm disconnect" to hang.
+ * More verbosity in we can not claim a backing block device.
+ * More verbosity and paranoia in the bitmap area.
+ * On some vendor kernels 8.0.1 did not load because of kzalloc. fixed.
+ * Fault injection can now not only be turned on or off, but can be
+   enabled on a per device basis.
+ * Fixed the scripts and files needed to build drbd into a kernel.
 
-So far we where only able to trigger the bug on SMP machines, although
-I think theoretically it is possible to hit the bug on an UP machine as well.
 
-In case you hit it, you get an OOPS message like this in your
-kernel log:
+The first on the list is the real nasty one. It might only bite you if
+you do a switchover after a lot of IO-activity, and that IO must
+be 100% scattered, no sequential accesses.  (the AL must be full)
 
-Mar  7 11:08:54 sour kernel: Unable to handle kernel NULL pointer dereference at 0000000000000000 RIP:
-Mar  7 11:08:54 sour kernel: [<0000000000000000>] _stext+0x7fdff0e0/0xe0
-Mar  7 11:08:54 sour kernel: PGD 76e2b067 PUD 71d70067 PMD 0
-Mar  7 11:08:54 sour kernel: Oops: 0010 [1] SMP
-Mar  7 11:08:54 sour kernel: CPU 0
-[...]
-Mar  7 11:08:54 sour kernel: Call Trace:
-Mar  7 11:08:54 sour kernel: [<ffffffff881c0124>] :cn:cn_queue_wrapper+0x61/0x121
-Mar  7 11:08:54 sour kernel: [<ffffffff881c00c3>] :cn:cn_queue_wrapper+0x0/0x121
-Mar  7 11:08:54 sour kernel: [<ffffffff80247169>] run_workqueue+0x8f/0x137
-Mar  7 11:08:54 sour kernel: [<ffffffff80243dcf>] worker_thread+0x0/0x14a
-[...]
+  (Actually I am still impressed that this issue was triggered
+   by an user at all.)
 
-And all communication with DRBD in the kernel is cut off.
+The bug of fix number two can be reproduces by resetting a SyncTarget
+node, while it is in the "WFBitMapT" state. It is a small time-
+window, but it can happen...
 
-The bugfix was submitted to LKML for inclusion in the mainline kernel.
-As of writing this mail, it has been signed off by the maintainer of
-the connector, I expect it to arrive in the mainline kernel soon.
 
-Here is the patch, in case you want to fix your system really soon.
-http://lists.linbit.com/pipermail/drbd-dev/2007-March/000681.html
+Nothing hair-raising, but users of 8.0.x should definitely upgrade
+to 8.0.2.
+
+http://oss.linbit.com/drbd/8.0/drbd-8.0.2.tar.gz
+http://svn.drbd.org/drbd/tags/drbd-8.0.2/
+http://www.linbit.com/support/drbd-8.0.2/
 
 -Phil
--- 
-: Dipl-Ing Philipp Reisner                      Tel +43-1-8178292-50 :
-: LINBIT Information Technologies GmbH          Fax +43-1-8178292-82 :
-: Vivenotgasse 48, 1120 Vienna, Austria        http://www.linbit.com :
