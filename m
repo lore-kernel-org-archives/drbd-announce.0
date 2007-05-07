@@ -1,20 +1,21 @@
 Return-Path: <philipp.reisner@linbit.com>
-Received: from mescal.linbit (unknown [86.59.100.100])
+Received: from amd.localdomain (chello080108092198.22.11.tuwien.teleweb.at
+	[80.108.92.198])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by mail.linbit.com (LINBIT Mail Daemon) with ESMTP id 1FFB32DEACD5
+	by mail.linbit.com (LINBIT Mail Daemon) with ESMTP id 2F2262E0373D
 	for <drbd-announce@lists.linbit.com>;
-	Mon,  7 May 2007 16:48:10 +0200 (CEST)
+	Mon,  7 May 2007 20:05:44 +0200 (CEST)
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Date: Mon, 7 May 2007 16:48:08 +0200
+Date: Mon, 7 May 2007 20:05:52 +0200
 MIME-Version: 1.0
 Content-Type: text/plain;
   charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-Message-Id: <200705071648.08950.philipp.reisner@linbit.com>
-Subject: [DRBD-announce] drbd-0.7.24.tar.gz
+Message-Id: <200705072005.52664.philipp.reisner@linbit.com>
+Subject: [DRBD-announce] drbd-8.0.3.tar.gz
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,20 +27,24 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Not much interesting on this front...
+Hi there,
 
-0.7.24 (api:79/proto:74)
------
- * Fixed leakage of bios in case we are diskless.
- * A fix to the device name guessing code.
- * Made it to compile on 2.6.21 and gcc-4.1 without warnings.
+Although it seems to be quite hard to trigger these race conditions,
+you are for sure better off if you have a DRBD release with these fixes 
+on your production clusters...
 
-http://oss.linbit.com/drbd/0.7/drbd-0.7.24.tar.gz
-http://www.linbit.com/support/drbd-0.7.24/
-http://svn.drbd.org/drbd/tags/drbd-0.7.24/
+8.0.3 (api:86/proto:86)
+--------
+ * Fixed a race condition that could cause us to continue to traverse a bio
+   after it was freed. (led to an OOPS)
+ * Fixed a race condition that could cause us to use members of an ee, after
+   it was freed. (led to various weirdness)
+ * Language fixes for the man pages.
+ * The drbdsetup commands (events, wait-connect,...) release the lock now.
+ * Minor fixes and updates to the user land tools and to the peer outdater.
+
+http://oss.linbit.com/drbd/8.0/drbd-8.0.3.tar.gz
+http://www.linbit.com/support/drbd-8.0.3/
+http://svn.drbd.org/drbd/tags/drbd-8.0.3/
 
 -Phil
--- 
-: Dipl-Ing Philipp Reisner                      Tel +43-1-8178292-50 :
-: LINBIT Information Technologies GmbH          Fax +43-1-8178292-82 :
-: Vivenotgasse 48, 1120 Vienna, Austria        http://www.linbit.com :
