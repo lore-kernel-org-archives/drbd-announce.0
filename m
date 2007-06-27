@@ -1,21 +1,20 @@
 Return-Path: <philipp.reisner@linbit.com>
-Received: from amd.localdomain (chello080108092198.22.11.tuwien.teleweb.at
-	[80.108.92.198])
+Received: from mescal.linbit (office.linbit [86.59.100.100])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by mail.linbit.com (LINBIT Mail Daemon) with ESMTP id 2F2262E0373D
+	by mail.linbit.com (LINBIT Mail Daemon) with ESMTP id D6E1B2E07893
 	for <drbd-announce@lists.linbit.com>;
-	Mon,  7 May 2007 20:05:44 +0200 (CEST)
+	Wed, 27 Jun 2007 17:31:17 +0200 (CEST)
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Date: Mon, 7 May 2007 20:05:52 +0200
+Date: Wed, 27 Jun 2007 17:31:16 +0200
 MIME-Version: 1.0
 Content-Type: text/plain;
   charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-Message-Id: <200705072005.52664.philipp.reisner@linbit.com>
-Subject: [DRBD-announce] drbd-8.0.3.tar.gz
+Message-Id: <200706271731.16625.philipp.reisner@linbit.com>
+Subject: [DRBD-announce] drbd-8.0.4.tar.gz
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -27,24 +26,38 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Hi there,
+Hi,
 
-Although it seems to be quite hard to trigger these race conditions,
-you are for sure better off if you have a DRBD release with these fixes 
-on your production clusters...
+The list got long, most of the issues are *really* hard to trigger,
+or triggered by unusual usage. But nevertheless, it is a good idea
+to upgrade.
 
-8.0.3 (api:86/proto:86)
+
+8.0.4 (api:86/proto:86)
 --------
- * Fixed a race condition that could cause us to continue to traverse a bio
-   after it was freed. (led to an OOPS)
- * Fixed a race condition that could cause us to use members of an ee, after
-   it was freed. (led to various weirdness)
- * Language fixes for the man pages.
- * The drbdsetup commands (events, wait-connect,...) release the lock now.
- * Minor fixes and updates to the user land tools and to the peer outdater.
+ * Fixed an OOPS in case you do an invalidate on an diskless device. And
+   made invalidates on diskless devices possible by using drbdmeta.
+ * Fix for an possbile OOPS in drbd_al_to_on_disk_bm().
+ * Fix for a possible OOPS. This issue was triggered when you do an
+   attach very soon (ms) after the disk was dropped.
+ * Fix for a race condition in receive_state(). Symptom was that the
+   resync stalls at 100% on a node.
+ * Some block devices fail requests by clearing the BIO_UOTODATE flag
+   (that is ok), but not returning an error (that is strange).
+   We now deal with that correctly.
+ * Drbdadm's parser will now reject config files with resources with
+   missing "on" sections. (Instead of segfaulting)
+ * Init script continues in case the setup of a single resource failes.
+ * Improvements to the "drbdsetup events" interface: Updates about
+   the resync progress and initial state of all devices if called with "-a".
+ * The benchmark/dm program can now also create curstom bandwith loads.
 
-http://oss.linbit.com/drbd/8.0/drbd-8.0.3.tar.gz
-http://www.linbit.com/support/drbd-8.0.3/
-http://svn.drbd.org/drbd/tags/drbd-8.0.3/
+http://www.linbit.com/support/drbd-8.0.4/
+http://oss.linbit.com/drbd/8.0/drbd-8.0.4.tar.gz
+http://svn.drbd.org/drbd/tags/drbd-8.0.4/
 
 -Phil
+-- 
+: Dipl-Ing Philipp Reisner                      Tel +43-1-8178292-50 :
+: LINBIT Information Technologies GmbH          Fax +43-1-8178292-82 :
+: Vivenotgasse 48, 1120 Vienna, Austria        http://www.linbit.com :
