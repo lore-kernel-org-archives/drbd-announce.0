@@ -1,20 +1,20 @@
 Return-Path: <philipp.reisner@linbit.com>
-Received: from mescal.linbit (office.linbit [86.59.100.100])
+Received: from mescal.linbit (unknown [81.16.158.130])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by mail.linbit.com (LINBIT Mail Daemon) with ESMTP id D6E1B2E07893
+	by mail.linbit.com (LINBIT Mail Daemon) with ESMTP id 46E502E2DB28
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 27 Jun 2007 17:31:17 +0200 (CEST)
+	Fri,  3 Aug 2007 12:39:09 +0200 (CEST)
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Date: Wed, 27 Jun 2007 17:31:16 +0200
+Date: Fri, 3 Aug 2007 12:39:08 +0200
 MIME-Version: 1.0
 Content-Type: text/plain;
   charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-Message-Id: <200706271731.16625.philipp.reisner@linbit.com>
-Subject: [DRBD-announce] drbd-8.0.4.tar.gz
+Message-Id: <200708031239.08270.philipp.reisner@linbit.com>
+Subject: [DRBD-announce] drbd-8.0.5.tar.gz
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -28,33 +28,46 @@ List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hi,
 
-The list got long, most of the issues are *really* hard to trigger,
-or triggered by unusual usage. But nevertheless, it is a good idea
-to upgrade.
+Nearly all on the list are rather exotic corner cases, but due
+to the length of the list, it might be a good idea to upgrade.
 
-
-8.0.4 (api:86/proto:86)
+8.0.5 (api:86/proto:86)
 --------
- * Fixed an OOPS in case you do an invalidate on an diskless device. And
-   made invalidates on diskless devices possible by using drbdmeta.
- * Fix for an possbile OOPS in drbd_al_to_on_disk_bm().
- * Fix for a possible OOPS. This issue was triggered when you do an
-   attach very soon (ms) after the disk was dropped.
- * Fix for a race condition in receive_state(). Symptom was that the
-   resync stalls at 100% on a node.
- * Some block devices fail requests by clearing the BIO_UOTODATE flag
-   (that is ok), but not returning an error (that is strange).
-   We now deal with that correctly.
- * Drbdadm's parser will now reject config files with resources with
-   missing "on" sections. (Instead of segfaulting)
- * Init script continues in case the setup of a single resource failes.
- * Improvements to the "drbdsetup events" interface: Updates about
-   the resync progress and initial state of all devices if called with "-a".
- * The benchmark/dm program can now also create curstom bandwith loads.
+ * Changed the default behaviour of the init script. Now the init
+   script terminates in case the devices refuse to because they
+   had a split brain. Introduced an option to preserve the old
+   behaviour.
+ * Fixed a bug where the local_cnt could get imbalanced upon a
+   state change.
+ * Fixed an bug in the UUID algorithm, that could lead to both
+   sides in cs:WFBitMapT state. It was triggered when the disk
+   on the SyncTarget gets detached and attached.
+ * Implemented proper size checking on strings that get communicated
+   with DRBD's netlink protocol.
+ * Changed the maximal length of device names from 32 characters to
+   128 characters. (udev based disk names might be very long nowadays)
+ * Fixed the after-sb-0pri policies discard-younger/discard-older
+ * When the resync speed was changed to a considerably lower
+   value while resync was running, it could happen that we erronously
+   decremented the local_cnt too often.
+ * Fixed a bug in the UUID code, that caused drbd to erronously report
+   a split brain after changing the role of a diskless node multiple
+   times.
+ * Both nodes ended up in SyncSource when a state change occured on
+   one node while the disk state on the other node is in the temporal
+   'Negotiating' state. Fixed got fixed.
+ * drbdmeta's parse/scan code for meta-data dumps got fixed for
+   huge devices, and an improved error reporting.
+ * drbdadm had difficulties with option values of type string that
+   start with an digit. Fixed.
+ * Fixed a code path that should it make possible to unload the
+   module even in case some of our receive buffers leaked.
+ * The usermode helper program is now user definable. It is no
+   longer hardcoded set to 'drbdadm'.
 
-http://www.linbit.com/support/drbd-8.0.4/
-http://oss.linbit.com/drbd/8.0/drbd-8.0.4.tar.gz
-http://svn.drbd.org/drbd/tags/drbd-8.0.4/
+http://www.linbit.com/support/drbd-8.0.5/
+http://oss.linbit.com/drbd/8.0/drbd-8.0.5.tar.gz
+http://svn.drbd.org/drbd/tags/drbd-8.0.5/
 
 -Phil
 -- 
