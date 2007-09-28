@@ -1,20 +1,20 @@
 Return-Path: <philipp.reisner@linbit.com>
-Received: from mescal.linbit (unknown [81.16.158.130])
+Received: from mescal.linbit (office.linbit [86.59.100.100])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by mail.linbit.com (LINBIT Mail Daemon) with ESMTP id 6C4562E3856D
+	by mail.linbit.com (LINBIT Mail Daemon) with ESMTP id 25FDB2E3D415
 	for <drbd-announce@lists.linbit.com>;
-	Mon,  3 Sep 2007 13:54:50 +0200 (CEST)
+	Fri, 28 Sep 2007 14:15:58 +0200 (CEST)
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Date: Mon, 3 Sep 2007 13:54:48 +0200
+Date: Fri, 28 Sep 2007 14:15:56 +0200
 MIME-Version: 1.0
 Content-Type: text/plain;
   charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-Message-Id: <200709031354.49202.philipp.reisner@linbit.com>
-Subject: [DRBD-announce] drbd-8.0.6.tar.gz
+Message-Id: <200709281415.56934.philipp.reisner@linbit.com>
+Subject: [DRBD-announce] drbd-8.2.0.tar.gz
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,38 +26,44 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Hi,
+There are some news!
 
-The reason to have another maintenance release only 4 weeks after
-the last one is the DRBD deadlocked on Linux-2.6.22 and newer. 
+You probably wonder what happened to 8.1. 8.1 is still around. It
+is our code branch that we prepare for the inclusion into mainline
+Linux.
 
-Altough we have a few bugfixes on the list, I do not see a need
-to upgrade from 8.0.5 to 8.0.6.
+In the mean time it became necessary to have a code branch for new
+features as well. This is 8.2.
 
-8.0.6 (api:86/proto:86)
+There are no fundamental differences between the 8.x branches so
+far. Also we will continue to fix bugs in the 8.0.y branch and
+propagate it to the other 8.x branches.
+
+8.0.x   Stable and very conservative release policy.
+8.1     Necessary changes to get DRBD into mainline Linux.
+8.2.y   New features. Linux-2.6 like development model.
+
+BTW, in 8.2 we also have changes to the on-the-wire DRBD
+protocol, but they are done in a backwards compatible way. I.e.
+it is possible to connect a drbd-8.0.x to drbd-8.2.x, but the
+new "data-integrity-alg" feature only works when both sides
+are drbd-8.2.x. (Rolling upgrades possible!)
+
+Here is the changelog entry:
+
+8.2.0 (api:86/proto:86-87)
 --------
- * Fixed DRBD to not deadlock while doing bitmap updates on Linux
-   2.6.22 and later.
- * Make it compile on Linux-2.6.22 and later.
- * Removed a hardcoded path to docbook DTDs from our sgml files,
-   maybe improving the situation with building the documentation.
- * When a drbd connect attempt gets accepted onto a other program,
-   that simply closes the socket, drbd stays for some seconds in the
-   "BrokenPipe" network state. When one removed the network
-   config during that time, drbd OOPSed. This is fixed now.
- * drbdmeta can now also initialize meta data on meta devices
-   smaller than 128MB.
- * Added an explicit NULL argument to our ioctl() calls in drbdmeta.
- * Added scripts/block-drbd, which is a nice way hand over DRBD
-   role assignment to Xen, allowing one to do Xen live migrations
-   in a sane way.
- * Added scripts/pretty-proc-drbd.sh
- * Added an option to drbd.conf which instructs the init script
-   to promote DRBD devices to primary role upon machine start up.
+ * Branch for new features after 8.1 and 8.0. We will do a number of
+   features that do not fiddle with the general architecture of DRBD.
+   This will be like the the current Linux-2.6 development model.
+ * Implemented the data-integrity-alg option. When this is set to
+   one of the kernel's hash algorithms, such a hash is shipped with
+   every user-data carrying packet. In case user-data is corrupted
+   on the network DRBD protests by dropping the connection.
 
-http://www.linbit.com/support/drbd-8.0.6/
-http://oss.linbit.com/drbd/8.0/drbd-8.0.6.tar.gz
-http://svn.drbd.org/drbd/tags/drbd-8.0.6/
+http://svn.drbd.org/drbd/tags/drbd-8.2.0/
+http://oss.linbit.com/drbd/8.2/drbd-8.2.0.tar.gz
+http://www.linbit.com/support/drbd-8.2.0/ [ not yet there, but soon ]
 
 -Phil
 -- 
