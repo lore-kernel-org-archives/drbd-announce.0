@@ -2,19 +2,19 @@ Return-Path: <philipp.reisner@linbit.com>
 Received: from mescal.linbit (unknown [81.16.158.130])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by mail.linbit.com (LINBIT Mail Daemon) with ESMTP id 8C11A2E08432
+	by mail.linbit.com (LINBIT Mail Daemon) with ESMTP id B40062E08F4F
 	for <drbd-announce@lists.linbit.com>;
-	Fri, 19 Oct 2007 15:09:45 +0200 (CEST)
+	Fri,  2 Nov 2007 15:55:11 +0100 (CET)
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Date: Fri, 19 Oct 2007 15:09:44 +0200
+Date: Fri, 2 Nov 2007 15:55:10 +0100
 MIME-Version: 1.0
 Content-Type: text/plain;
   charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-Message-Id: <200710191509.44515.philipp.reisner@linbit.com>
-Subject: [DRBD-announce] drbd-0.7.25.tar.gz, ond of life of 0.7 and GIT
+Message-Id: <200711021555.10580.philipp.reisner@linbit.com>
+Subject: [DRBD-announce] drbd-8.0.7.tar.gz and drbd-8.2.1.tar.gz
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,38 +26,54 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-HI,
+Hi,
 
-First of all there is the last planed 0.7 release.
+We have a double release!
 
-0.7.25 (api:79/proto:74)
------
- * Made it to compile on Linux-2.4 again.
- * Backported a fix to not deadlock on 2.6.22 and later.
+No need for urgent upgrade. No hair-rising bugs found. For new
+systems please use the new releases of course.
 
-We will not backport any futher things down to the 0.7 branch.
-We will do another 0.7 release only in case a bug in 0.7.25
-needs to be fixed.
+If you plan to use online resizing (esp. online shrinking) 
+updating to this release is strongly encouraged.
 
-Support for DRBD-0.7 with our commercial support offerings will 
-continue until 2008-10-31. All users of drbd-0.7 are requested
-to upgrade to drbd-8 before that date.
 
-Your choices are drbd-8.0.x (currently 8.0.6),
-and drbd-8.2.x (currently 8.2.0).
+8.0.7 (api:86/proto:86)
+--------
+ * Fixed drbdmeta's conversion of 07 style meta data.
+ * Handle the failure of vmalloc() in the bitmap code more gracefully.
+ * Do not pause resync on unconfigured devices.
+ * Added missing piecos of the implementation of the "pri-lost" handler.
+ * Added the "split-brain" handler.
+ * Drop the network config after failure to authenticate.
+ * Made it to compile on Linux-2.6.24-rc1.
+ * Fixed an unlikely race that could cause a device to get stuck
+   in SyncPause.
+ * Online resizing failed to start resync properly (although it
+   set up all the meta data correct). Fixed that.
+ * Minor improvements to documentation and error messages.
 
-8.0 will only receive bug fixes, while 8.2 will also get new
-features with future releases.
+http://www.linbit.com/support/drbd-8.0.7/
+http://oss.linbit.com/drbd/8.0/drbd-8.0.7.tar.gz
 
-http://oss.linbit.com/drbd/0.7/drbd-0.7.25.tar.gz
-http://www.linbit.com/support/drbd-0.7.25/
+8.2.1 (api:86/proto:86-87)
+--------
+ * Fixed the OOPS when _not_ using a shared secret on kernels
+   before Linux-2.6.19 (=old crypto API).
+ * Support for drbd-porxy's configuration directives in drbdadm.
+ * Look for /etc/drbd-82.conf before drbd-08.conf before drbd.conf
+ * drbdadm now allowes one to move the device, disk and meta-disk
+   statements out of the host ("on") sections into the resource
+   section. This allows you to shorten your config files.
+ * Merged all changes from 8.0.6 -> 8.0.7 to 8.2
 
-You might noticed that there is no SVN tag url for that release.
+http://www.linbit.com/support/drbd-8.2.1/
+http://oss.linbit.com/drbd/8.2/drbd-8.2.1.tar.gz
 
-We switched from subversion to git. At http://www.drbd.org/latest.html 
-you can read how to get DRBD's source out of our git repository.
+PS: The tags are not yet visible in the public git repository, but hat
+    will happen soon. (I am not yet familiar with all the details of
+    GIT's tags...)
 
--phil
+-Phil
 -- 
 : Dipl-Ing Philipp Reisner                      Tel +43-1-8178292-50 :
 : LINBIT Information Technologies GmbH          Fax +43-1-8178292-82 :
