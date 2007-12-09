@@ -1,20 +1,19 @@
 Return-Path: <philipp.reisner@linbit.com>
-Received: from mescal.linbit (unknown [81.16.158.130])
-	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mail.linbit.com (LINBIT Mail Daemon) with ESMTP id B40062E08F4F
+Received: from quad.localdomain (chello080108092198.22.11.tuwien.teleweb.at
+	[80.108.92.198])
+	by mail.linbit.com (LINBIT Mail Daemon) with ESMTP id 7CE5C2E10AA0
 	for <drbd-announce@lists.linbit.com>;
-	Fri,  2 Nov 2007 15:55:11 +0100 (CET)
+	Sun,  9 Dec 2007 20:23:48 +0100 (CET)
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Date: Fri, 2 Nov 2007 15:55:10 +0100
+Date: Sun, 9 Dec 2007 20:23:48 +0100
 MIME-Version: 1.0
 Content-Type: text/plain;
   charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-Message-Id: <200711021555.10580.philipp.reisner@linbit.com>
-Subject: [DRBD-announce] drbd-8.0.7.tar.gz and drbd-8.2.1.tar.gz
+Message-Id: <200712092023.48076.philipp.reisner@linbit.com>
+Subject: [DRBD-announce] drbd-8.0.8.tar.gz
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -28,50 +27,34 @@ List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hi,
 
-We have a double release!
+The usual number of bug fixes. The first item on the list is a
+bit worrying. Although it has no known impact, it might be a good
+idea to update to 8.0.8 since the possible effects are not exactly
+known.
 
-No need for urgent upgrade. No hair-rising bugs found. For new
-systems please use the new releases of course.
-
-If you plan to use online resizing (esp. online shrinking) 
-updating to this release is strongly encouraged.
-
-
-8.0.7 (api:86/proto:86)
+8.0.8 (api:86/proto:86)
 --------
- * Fixed drbdmeta's conversion of 07 style meta data.
- * Handle the failure of vmalloc() in the bitmap code more gracefully.
- * Do not pause resync on unconfigured devices.
- * Added missing piecos of the implementation of the "pri-lost" handler.
- * Added the "split-brain" handler.
- * Drop the network config after failure to authenticate.
- * Made it to compile on Linux-2.6.24-rc1.
- * Fixed an unlikely race that could cause a device to get stuck
-   in SyncPause.
- * Online resizing failed to start resync properly (although it
-   set up all the meta data correct). Fixed that.
- * Minor improvements to documentation and error messages.
+ * Improvements to the bitmap code. (The old code might reenabled
+   interrupts by accident)
+ * Fixed a endian issue in the wirte protocol. C bit-fields are
+   might by layed out differently on little/big endian machines.
+ * Drbdadm's adjust forgot sometimes to adjust options values that
+   where inherited from the common section, fixed that.
+ * Removed dopd. It gets (and should be) shipped with heartbeat.
+ * When peer authentication is enabled, you could trick drbd to send
+   a state report packet before it authenticated itself. Fixed that.
+ * Added robustness to resync pause/continue.
+ * Drbdsetup should not report a random error if no netlink
+   answer is received from the drbd module.
+ * Fixes to error code pathes. ( drbd_drain_block() and lc_alloc() )
+ * Fixed a possible OOPS in case one manages to loose disk and
+   network concurrently. (iSCSI disk and network over same switch)
+ * Fixed the broadcasting of state change events to userspace.
 
-http://www.linbit.com/support/drbd-8.0.7/
-http://oss.linbit.com/drbd/8.0/drbd-8.0.7.tar.gz
+http://www.linbit.com/support/drbd-8.0.8/
+http://oss.linbit.com/drbd/8.0/drbd-8.0.8.tar.gz
 
-8.2.1 (api:86/proto:86-87)
---------
- * Fixed the OOPS when _not_ using a shared secret on kernels
-   before Linux-2.6.19 (=old crypto API).
- * Support for drbd-porxy's configuration directives in drbdadm.
- * Look for /etc/drbd-82.conf before drbd-08.conf before drbd.conf
- * drbdadm now allowes one to move the device, disk and meta-disk
-   statements out of the host ("on") sections into the resource
-   section. This allows you to shorten your config files.
- * Merged all changes from 8.0.6 -> 8.0.7 to 8.2
-
-http://www.linbit.com/support/drbd-8.2.1/
-http://oss.linbit.com/drbd/8.2/drbd-8.2.1.tar.gz
-
-PS: The tags are not yet visible in the public git repository, but hat
-    will happen soon. (I am not yet familiar with all the details of
-    GIT's tags...)
+PS: This time it the tag in git is already there...
 
 -Phil
 -- 
