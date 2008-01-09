@@ -1,19 +1,15 @@
 Return-Path: <philipp.reisner@linbit.com>
-Received: from quad.localdomain (chello080108092198.22.11.tuwien.teleweb.at
-	[80.108.92.198])
-	by mail.linbit.com (LINBIT Mail Daemon) with ESMTP id 7CE5C2E10AA0
-	for <drbd-announce@lists.linbit.com>;
-	Sun,  9 Dec 2007 20:23:48 +0100 (CET)
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Date: Sun, 9 Dec 2007 20:23:48 +0100
+Date: Wed, 9 Jan 2008 16:16:18 +0100
 MIME-Version: 1.0
 Content-Type: text/plain;
   charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-Message-Id: <200712092023.48076.philipp.reisner@linbit.com>
-Subject: [DRBD-announce] drbd-8.0.8.tar.gz
+Message-Id: <200801091616.18480.philipp.reisner@linbit.com>
+Cc: drbd-user@lists.linbit.com
+Subject: [DRBD-announce] drbd-8.2.3.tar.gz and gitweb online
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -27,34 +23,44 @@ List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hi,
 
-The usual number of bug fixes. The first item on the list is a
-bit worrying. Although it has no known impact, it might be a good
-idea to update to 8.0.8 since the possible effects are not exactly
-known.
+And finally here is a new drbd-8.2 release: 8.2.3
 
-8.0.8 (api:86/proto:86)
+8.2.3 (api:86/proto:86-88)
 --------
- * Improvements to the bitmap code. (The old code might reenabled
-   interrupts by accident)
- * Fixed a endian issue in the wirte protocol. C bit-fields are
-   might by layed out differently on little/big endian machines.
- * Drbdadm's adjust forgot sometimes to adjust options values that
-   where inherited from the common section, fixed that.
- * Removed dopd. It gets (and should be) shipped with heartbeat.
- * When peer authentication is enabled, you could trick drbd to send
-   a state report packet before it authenticated itself. Fixed that.
- * Added robustness to resync pause/continue.
- * Drbdsetup should not report a random error if no netlink
-   answer is received from the drbd module.
- * Fixes to error code pathes. ( drbd_drain_block() and lc_alloc() )
- * Fixed a possible OOPS in case one manages to loose disk and
-   network concurrently. (iSCSI disk and network over same switch)
- * Fixed the broadcasting of state change events to userspace.
+ * Released the online-verify feature from DRBD+ into drbd-8.2
+ * Fixed the data-integrity-alg feature to work correctly
+   in 'allow-two-primaries' mode.
+ * Significant latency improvement: Implemented sane default
+   CPU bindings (affinity mask) of threads, and added the tuning
+   option 'cpu-mask'.
+ * A completely new drbdmeta - finally dealing with
+   all drbd-0.7 to drbd-8.x conversion cases correctly.
+ * Merged all changes from 8.0.7 -> 8.0.8 into 8.2
 
-http://www.linbit.com/support/drbd-8.0.8/
-http://oss.linbit.com/drbd/8.0/drbd-8.0.8.tar.gz
+The most outstanding thing of course is the new online verify feature,
+which allows you to do (e.g. monthly) integrity checks of your
+cluster setup.
 
-PS: This time it the tag in git is already there...
+The sane defaults for DRBD's kernel threads can improve performance
+of some database workloads significantly.
+
+You can find more details here 
+http://blogs.linbit.com/florian/2008/01/09/drbd-823-released/
+
+Due to the long time between the release of 8.0.8 and 8.2.3 we
+do not only have all the fixes up to 8.0.8 in this 8.2 release,
+but also fixes that where found after the release of 8.0.8.
+
+The attentive reader might have noticed that drbd-8.2.2 was not announced.
+Although such a tag exists (and the source.tar.gz was available for download
+for a few hours) we consider it as not released (no announcement).
+We retired it after we realized bugs in it.
+
+Oh, and finally we have a gitweb instance online. http://git.drbd.org/
+
+http://git.drbd.org/?p=drbd-8.2.git;a=tag;h=drbd-8.2.3
+http://oss.linbit.com/drbd/8.2/drbd-8.2.3.tar.gz
+http://www.linbit.com/support/drbd-8.2.3/
 
 -Phil
 -- 
