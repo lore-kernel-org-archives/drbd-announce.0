@@ -1,15 +1,20 @@
 Return-Path: <philipp.reisner@linbit.com>
+Received: from mescal.linbit (unknown [81.16.158.130])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mail.linbit.com (LINBIT Mail Daemon) with ESMTP id 675BD2E11332
+	for <drbd-announce@lists.linbit.com>;
+	Fri, 11 Jan 2008 16:49:45 +0100 (CET)
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Date: Wed, 9 Jan 2008 16:16:18 +0100
+Date: Fri, 11 Jan 2008 16:49:44 +0100
 MIME-Version: 1.0
 Content-Type: text/plain;
   charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-Message-Id: <200801091616.18480.philipp.reisner@linbit.com>
-Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-8.2.3.tar.gz and gitweb online
+Message-Id: <200801111649.44501.philipp.reisner@linbit.com>
+Subject: [DRBD-announce] drbd-8.2.4.tar.gz
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -23,44 +28,25 @@ List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hi,
 
-And finally here is a new drbd-8.2 release: 8.2.3
-
-8.2.3 (api:86/proto:86-88)
+8.2.4 (api:86/proto:86-88)
 --------
- * Released the online-verify feature from DRBD+ into drbd-8.2
- * Fixed the data-integrity-alg feature to work correctly
-   in 'allow-two-primaries' mode.
- * Significant latency improvement: Implemented sane default
-   CPU bindings (affinity mask) of threads, and added the tuning
-   option 'cpu-mask'.
- * A completely new drbdmeta - finally dealing with
-   all drbd-0.7 to drbd-8.x conversion cases correctly.
- * Merged all changes from 8.0.7 -> 8.0.8 into 8.2
+ * Fixed the online-verify and data-integrity-alg features.
+   While preparing DRBD for Linux-2.6.24 a bug was introduced
+   that rendered most digest based functionality in DRBD useless.
 
-The most outstanding thing of course is the new online verify feature,
-which allows you to do (e.g. monthly) integrity checks of your
-cluster setup.
+You do not need to upgrade from 8.2.3 in case you do not want
+to use online-verify. 
+If you want to use online-verify or the data-integrity feature
+you have to upgrade, because they do not work in 8.2.3 and will
+never ever find or report any inconsistencies or data transmission
+corruptions.
 
-The sane defaults for DRBD's kernel threads can improve performance
-of some database workloads significantly.
+Well, yes. We have heard of release candidates, and now the time
+has come for us jump onto this bandwagon... ;)
 
-You can find more details here 
-http://blogs.linbit.com/florian/2008/01/09/drbd-823-released/
-
-Due to the long time between the release of 8.0.8 and 8.2.3 we
-do not only have all the fixes up to 8.0.8 in this 8.2 release,
-but also fixes that where found after the release of 8.0.8.
-
-The attentive reader might have noticed that drbd-8.2.2 was not announced.
-Although such a tag exists (and the source.tar.gz was available for download
-for a few hours) we consider it as not released (no announcement).
-We retired it after we realized bugs in it.
-
-Oh, and finally we have a gitweb instance online. http://git.drbd.org/
-
-http://git.drbd.org/?p=drbd-8.2.git;a=tag;h=drbd-8.2.3
-http://oss.linbit.com/drbd/8.2/drbd-8.2.3.tar.gz
-http://www.linbit.com/support/drbd-8.2.3/
+http://oss.linbit.com/drbd/8.2/drbd-8.2.4.tar.gz
+http://git.drbd.org/?p=drbd-8.2.git;a=tag;h=drbd-8.2.4
+http://www.linbit.com/support/
 
 -Phil
 -- 
