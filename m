@@ -1,19 +1,20 @@
 Return-Path: <philipp.reisner@linbit.com>
-Received: from quad.localdomain (chello080108092198.22.11.tuwien.teleweb.at
-	[80.108.92.198])
-	by mail.linbit.com (LINBIT Mail Daemon) with ESMTP id A23302DEACD6
+Received: from mescal.linbit (unknown [81.16.158.130])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mail.linbit.com (LINBIT Mail Daemon) with ESMTP id 6DFA72DEACD6
 	for <drbd-announce@lists.linbit.com>;
-	Wed,  6 Feb 2008 22:36:31 +0100 (CET)
+	Thu,  7 Feb 2008 16:40:05 +0100 (CET)
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Date: Wed, 6 Feb 2008 22:36:27 +0100
+Date: Thu, 7 Feb 2008 16:40:04 +0100
 MIME-Version: 1.0
 Content-Type: text/plain;
   charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-Message-Id: <200802062236.27144.philipp.reisner@linbit.com>
-Subject: [DRBD-announce] drbd-8.0.9.tar.gz
+Message-Id: <200802071640.04281.philipp.reisner@linbit.com>
+Subject: [DRBD-announce] drbd-8.0.10.tar.gz
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -27,11 +28,14 @@ List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hi,
 
-And one more time I have to give the advice to update to this
-release in case you run an earlier 8.0 release. While all these
-fixes do not affect you as long everything works in your clusters,
-these fixes might prevent you from further troubles if something
-breaks.
+It happened again. Only hour after the release was finally tagged,
+an important issue was found. Do not use 8.0.9!
+
+8.0.10 (api:86/proto:86)
+--------
+ * Fixed a race condition in the disconnect code path that could cause
+   the pending count to not return to zero. This means that the
+   next role change will block forever.
 
 8.0.9 (api:86/proto:86)
 --------
@@ -53,11 +57,9 @@ breaks.
  * Made '/etc/init.d/drbd status' to print a nice overview.
  * Made it to compile on Linux-2.6.24.
 
-http://oss.linbit.com/drbd/8.0/drbd-8.0.9.tar.gz
-http://git.drbd.org/?p=drbd-8.0.git;a=tag;h=drbd-8.0.9
-http://www.linbit.com/support/drbd-8.0.9
-
-PS: The 8.2.5 release will follow soon.
+http://oss.linbit.com/drbd/8.0/drbd-8.0.10.tar.gz
+http://git.drbd.org/?p=drbd-8.0.git;a=tag;h=drbd-8.0.10
+http://www.linbit.com/support/drbd-8.0.10/
 
 -Phil
 -- 
