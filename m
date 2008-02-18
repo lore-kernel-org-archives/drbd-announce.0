@@ -1,15 +1,15 @@
 Return-Path: <philipp.reisner@linbit.com>
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Date: Wed, 13 Feb 2008 16:44:18 +0100
+Date: Mon, 18 Feb 2008 18:14:53 +0100
 MIME-Version: 1.0
 Content-Type: text/plain;
   charset="utf-8"
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-Message-Id: <200802131644.18375.philipp.reisner@linbit.com>
+Message-Id: <200802181814.54009.philipp.reisner@linbit.com>
 Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-8.0.11.tar.gz
+Subject: [DRBD-announce] drbd-8.2.5-rc1
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -21,50 +21,28 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Hi,
+Hi there,
 
-The first one on the list is really awkward. Therefore it is better
-to not use 8.0.10 (and not 8.0.9).
+It is time to update bring all the fixes we had in 8.0.x 
+also into a 8.2.x release.
 
-8.0.11 (api:86/proto:86)
+This is the release candidate for drbd-8.2.5, which will
+eventually become drbd-8.2.5 if no blocking issue is found 
+until Wednesday 2008-02-20. 
+
+8.2.5 (api:86/proto:86-88)
 --------
- * If we had no IO while a device was connected it could happen that
-   the pending count was erroneously decreased to -1 at disconnect.
-   Fixed.
- * Fixed a race that could deadlock worker and receiver while
-   disconnecting a diskless node from a primary peer.
- * Fixed a minimal meory leak, upon each module unload of DRBD.
+ * Fixed a race between online-verify and application writes.
+   It caused drbd to report false positives, and very likely
+   deadlocked immediately afterwards.
+ * When DRBD is build for kernels older than 2.6.16 mutexes are
+   provided by a wrapper include file which is shipped with DRBD.
+   We had a bug in there that caused one of DRBD's threads to
+   lockup after the first connection loss. Fixed.
+ * Merged all changes from 8.0.8 -> 8.0.11 into 8.2
 
-8.0.10 (api:86/proto:86)
---------
- * Fixed a race condition in the disconnect code path that could cause
-   the pending count to not return to zero. This means that the
-   next role change will block forever.
-
-8.0.9 (api:86/proto:86)
---------
- * In case our backing devices support write barriers and cache
-   flushes, we use these means to ensure data integrity in
-   the presence of volatile disk write caches and power outages.
- * Fixed DRBD to no longer log
-   "Sync bitmap getting lost (drbd_bm_set_bits_in_irq: (!b->bm))"
-   endlessly after the local disk was lost.
- * Fixed protocol A for BIOs larger than the page size. If you
-   hit the bug, DBBD would simply lose connection.
- * Don't accidentally truncate the device in case a secondary with
-   a too small disk gets connected.
- * Changed state processing so that state changes visible
-   via the drbdsetup events interface are always in the right order.
- * Made drbddisk's exit codes more LSB compliant.
- * Back-ported the new drbdmeta to drbd-8.0 (from drbd-8.2).
- * More robustness to the code that establishes connections.
- * Made '/etc/init.d/drbd status' to print a nice overview.
- * Made it to compile on Linux-2.6.24.
-
-
-http://git.drbd.org/?p=drbd-8.0.git;a=tag;h=drbd-8.0.11
-http://oss.linbit.com/drbd/8.0/drbd-8.0.11.tar.gz
-http://www.linbit.com/support/drbd-8.0.11/
+http://oss.linbit.com/drbd/8.2/drbd-8.2.5-rc1.tar.gz
+http://git.drbd.org/?p=drbd-8.2.git;a=tag;h=drbd-8.2.5-rc1
 
 -Phil
 -- 
