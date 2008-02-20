@@ -1,15 +1,15 @@
 Return-Path: <philipp.reisner@linbit.com>
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Date: Mon, 18 Feb 2008 18:14:53 +0100
+Date: Wed, 20 Feb 2008 22:53:34 +0100
 MIME-Version: 1.0
 Content-Type: text/plain;
-  charset="utf-8"
+  charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-Message-Id: <200802181814.54009.philipp.reisner@linbit.com>
+Message-Id: <200802202253.34534.philipp.reisner@linbit.com>
 Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-8.2.5-rc1
+Subject: [DRBD-announce] drbd-8.2.5.tar.gz
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -21,14 +21,10 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Hi there,
+Hi,
 
-It is time to update bring all the fixes we had in 8.0.x 
-also into a 8.2.x release.
-
-This is the release candidate for drbd-8.2.5, which will
-eventually become drbd-8.2.5 if no blocking issue is found 
-until Wednesday 2008-02-20. 
+Especially in case you run drbd-8.2.4 on a Linux kernel
+of 2.6.16 or older you want to upgrade to this version.
 
 8.2.5 (api:86/proto:86-88)
 --------
@@ -41,8 +37,9 @@ until Wednesday 2008-02-20.
    lockup after the first connection loss. Fixed.
  * Merged all changes from 8.0.8 -> 8.0.11 into 8.2
 
-http://oss.linbit.com/drbd/8.2/drbd-8.2.5-rc1.tar.gz
-http://git.drbd.org/?p=drbd-8.2.git;a=tag;h=drbd-8.2.5-rc1
+http://oss.linbit.com/drbd/8.2/drbd-8.2.5.tar.gz
+http://git.drbd.org/?p=drbd-8.2.git;a=tag;h=drbd-8.2.5
+http://www.linbit.com/support/drbd-8.2.5/
 
 -Phil
 -- 
