@@ -1,15 +1,15 @@
 Return-Path: <philipp.reisner@linbit.com>
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Date: Thu, 24 Apr 2008 15:01:10 +0200
+Date: Thu, 15 May 2008 11:03:35 +0200
 MIME-Version: 1.0
 Content-Type: text/plain;
-  charset="us-ascii"
+  charset="utf-8"
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-Message-Id: <200804241501.10761.philipp.reisner@linbit.com>
+Message-Id: <200805151103.36052.philipp.reisner@linbit.com>
 Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-8.0.12.tar.gz
+Subject: [DRBD-announce] drbd-8.2.6rc1.tar.gz
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -23,48 +23,47 @@ List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hi,
 
-After two weeks of having it in release candidate status,
-we finally dare to release it.
+The final 8.2.6 release will happen in a few days.
 
-The important fixes are
+Please help testing the new before-resync-target handler and
+the default implementation of it called snapshot-resync-target-lvm.sh .
 
-  When connecting large DRBD volumes it might got stuck while
-  doing the bitmap exchange.
+As the name implies this allowes one to take a snapshot of a
+volume just in the moment before it become target of a 
+resynchronisation process.
 
-  When using DRBD on top of iSCSI volumes and running the
-  replication traffic and the iSCSI traffic via the same switch
-  you might loose a disk and the network rather concurrently.
-  DRBD now deals more gracefull with the recovery out of such a mess.
+The obvious benefit of this is, that it in case your primary node
+dies during the resync, you still have an consistent albeit
+a bit outdated copy of your important data in the snapshot.
 
-  Got the exit codes for dopd (drbd-outdate-peer-daemon) right. 
+While this might appear as a must have, it has to be pointed
+out that the LVM snapshot code might have bring considerable
+loss of performance to the resync speed.
 
-The complete changelog:
+PS: Using a bigger chunksize of lvcreate (-c) was always
+    beneficial in my test so far.
 
-8.0.12 (api:86/proto:86)
+The Changelog:
+
+8.2.6rc1 (api:86/proto:86-88)
 --------
- * Corrected lock-out of application IO during bitmap IO.
-   (Only triggered issues with multi-terrabyte volumes)
- * If an attach would causes a split-brain,
-   abort the attach, do not drop the connection
- * A node without data (no disk, no connection) only accepts data
-   (attach or connect) if that data matches the last-known data
- * Fixed various race conditions between state transitions
- * Various bugfixes to issues found by using the sparse tool
- * Corrected the exit codes of drbdsetup/drbdadm to match
-   the expectations of dopd (drbd-outdate-peer-daemon)
- * Corrected the online changing of the number of AL extents while
-   application IO is in flight.
- * Two new config options no-disk-flushes and no-md-flushes to disable
-   the use of io subsystem flushes and barrier BIOs.
- * Make it compile on Linux-2.6.25
- * Support for standard disk stats
- * Work on stalling issues of the resync process
- * drbdsetup /dev/drbdX down no longer fails for non-existing minors
- * Added wipe-md to drbdadm
+ * The details of the LRU data structures is now hidden from
+   /proc/drbd but can be re-enabled by echoing 1 to
+   /sys/module/drbd/parameters/proc_details
+ * Bash completion support for drbdadm (Installs on all distributions
+   but RedHat, since they lack the /etc/bash_completion.d directory)
+ * Fixed the out-of-sync handler it never fired.
+ * Added the before-resync-target handler, and a default
+   implementation of a handler that snapshots the target
+   of a resynchronisation in case it is a LVM2 logic volume.
+ * Improved error messages and documentation in regards to
+   false positives of online verify and data-integrity-alg
+   mechanisms in the presence of ReiserFS or the Linux
+   swap code.
+ * Merged all changes from 8.0.11 -> 8.0.12 into 8.2
 
-http://git.drbd.org/?p=drbd-8.0.git;a=tag;h=drbd-8.0.12
-http://oss.linbit.com/drbd/8.0/drbd-8.0.12.tar.gz
-http://www.linbit.com/support/drbd-8.0.12/
+http://git.drbd.org/?p=drbd-8.2.git;a=tag;h=drbd-8.2.6rc1
+http://oss.linbit.com/drbd/8.2/drbd-8.2.6rc1.tar.gz
 
 -Phil
 -- 
