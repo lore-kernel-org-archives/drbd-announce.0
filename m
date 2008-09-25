@@ -1,15 +1,14 @@
-Return-Path: <philipp.reisner@linbit.com>
-From: Philipp Reisner <philipp.reisner@linbit.com>
+Return-Path: <johannes.thoma@linbit.com>
+From: Johannes Thoma <johannes.thoma@linbit.com>
 To: drbd-announce@lists.linbit.com
-Date: Mon, 4 Aug 2008 17:34:38 +0200
+Date: Thu, 25 Sep 2008 13:26:42 +0200
 MIME-Version: 1.0
 Content-Type: text/plain;
-  charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+  charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Content-Disposition: inline
-Message-Id: <200808041734.38820.philipp.reisner@linbit.com>
-Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-8.0.13.tar.gz
+Message-Id: <200809251326.43309.johannes.thoma@linbit.com>
+Subject: [DRBD-announce] A regression test suite for DRBD
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -21,31 +20,34 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Hi,
+Dear all,=20
 
-In case you plan to online resize a device, you should better
-upgrade to this release first. Other than that, this release does
-not have any spectacular fixes.
+We proudly announce our new regression test suite for DRBD. Several
+issues discovered during our tests will be fixed in the upcoming 8.2.7 DRBD
+release.=20
 
-8.0.13 (api:86/proto:86)
---------
- * Fixed online resizing if there is application IO on the fly when the
-   resize is triggered.
- * Fixed online resizing if it is triggered from the secondary node.
- * Fixed a possible deadlock in case "become-primary-on-both" is used, and
-   a resync starts
- * Fixed the invocation of the pri-on-incon-degr handler
- * Fixed the exit codes of drbdsetup
- * sock_create_lite() to avoid a socket->sk leak
- * Auto-tune socket buffers if sndbuf-size is set to zero
- * Made it to compile on Linux-2.6.26
+We would like to invite everybody to write tests and help make DRBD more=20
+stable and robust.=20
 
-http://git.drbd.org/?p=drbd-8.0.git;a=tag;h=drbd-8.0.13
-http://oss.linbit.com/drbd/8.0/drbd-8.0.13.tar.gz
-http://www.linbit.com/support/drbd-8.0.13/
+To get a source .tar.gz, go to:
 
--Phil
--- 
-: Dipl-Ing Philipp Reisner                      Tel +43-1-8178292-50 :
-: LINBIT Information Technologies GmbH          Fax +43-1-8178292-82 :
-: Vivenotgasse 48, 1120 Vienna, Austria        http://www.linbit.com :
+http://oss.linbit.com/drbd-testsuite/=20
+
+To access the latest source of drbd-testsuite, do:
+
+git-clone http://git.drbd.org/drbd-testsuite.git
+
+
+Please direct comments, suggestions and patches to the drbd-dev mailing lis=
+t.
+Thank you.
+
+
+=2D Johannes
+
+=2D-=20
+: DI. Johannes Thoma =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
+=A0 =A0Tel +43-1-8178292-62 :
+: LINBIT Information Technologies GmbH =A0 =A0 =A0 =A0 =A0 =A0Fax +43-1-817=
+8292-82 :
+: Vivenotgasse 48, A-1120 Vienna/Europe =A0 http://www.linbit.com :
