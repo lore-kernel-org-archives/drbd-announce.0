@@ -1,15 +1,14 @@
 Return-Path: <philipp.reisner@linbit.com>
 From: Philipp Reisner <philipp.reisner@linbit.com>
-To: drbd-announce@lists.linbit.com
-Date: Fri, 12 Dec 2008 17:42:37 +0100
+To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
+Date: Thu, 18 Dec 2008 19:46:56 +0100
 MIME-Version: 1.0
 Content-Type: text/plain;
   charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-Message-Id: <200812121742.38271.philipp.reisner@linbit.com>
-Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-8.3.0rc3.tar.gz
+Message-Id: <200812181946.56945.philipp.reisner@linbit.com>
+Subject: [DRBD-announce] drbd-8.3.0.tar.gz
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -23,20 +22,45 @@ List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hi,
 
-We realised some loose ends in drbdadm's features. Due to these
-changes in drbdadm we are postponing the 8.3.0 final release again
-for some days.
-No changes in the kernel code from rc2 to rc3.
+This is the release containing all the features that formed DRBD+ before:
+ * bit map in unmaped pages -> device sizes > 4TB (up to 16TB currently)
+ * DRBD stacking -> replication to a 3rd node (even 4 are supported)
+ * checksum based resync -> Speeds up resync processes over slow networks.
 
-8.3.0rc3 (api:86/proto:86-89)
---------
- * Better support of drbd-proxy in stacked setups
- * Allow two stacked-on-top-of sections per resource (4 node setups)
- * Support for device stacking in the RHCS resource agent
- * More build compatibility with older vendor kernels
+Besides these highlight, again a number of bugs was fixed, see the first five
+items on the change log. Users of drbd-8.2.7 should upgrade to 8.3.0 .
 
-http://oss.linbit.com/drbd/8.3/drbd-8.3.0rc3.tar.gz
-http://git.drbd.org/?p=drbd-8.3.git;a=tag;h=drbd-8.3.0rc3
+BTW, this is the successor of drbd-8.2.7 and the drbd-8.2.x branch. 
+
+8.3.0 (api:86/proto:86-89)
+ --------
+  * Fixed 'sleep with spinlock held' in case online verify found a difference
+  * Fixed error code pathes in request processing.
+  * Fix for stack smashing in drbdmeta
+  * Fixed a bug that could lead to a crash when detaching/attaching
+    on the primary under heavy IO (Bugz 171)
+  * Fixed a bug in the new epoch code (introduced with 8.2.7).
+    Might cause crash at reconnect after connection loss during heavy IO
+    (Bugz 160)
+  * Fixed a bug in drbdsetup that could cause drbdsetup wait-connect to
+    miss the connection event.
+  * Fixed a race condition in the new barrier code. (Reordered barrier ACKs)
+  * Do not rely on blkdev_issue_flush() returning ENOTSUPP
+  * bitmap in unmapped pages = support for devices > 4TByte (was DRBD+)
+  * checksum based resync (was DRBD+)
+  * support for stacked resource (was DRBD+)
+  * Added support for stacked resources to the bash completion stuff
+  * Added missing documentation (manpages)
+  * Fixed drbdadm handlers for stacked resources
+  * Support of drbd-proxy in stacked setups
+  * RedHat cluster suite (rgmanager) integration scripts
+  * Renamed 'state' to 'role'
+  * More build compatibility with older vendor kernels
+  * Added drbd-overview.pl to the packages
+
+http://oss.linbit.com/drbd/8.3/drbd-8.3.0.tar.gz
+http://git.drbd.org/?p=drbd-8.3.git;a=tag;h=drbd-8.3.0
+http://www.linbit.com/support/drbd-8.3.0/
 
 -Phil
 -- 
@@ -46,4 +70,3 @@ http://git.drbd.org/?p=drbd-8.3.git;a=tag;h=drbd-8.3.0rc3
 : http://www.linbit.com
 
 DRBD(R) and LINBIT(R) are registered trademarks of LINBIT, Austria.
-
