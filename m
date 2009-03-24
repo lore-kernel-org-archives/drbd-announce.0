@@ -1,15 +1,20 @@
 Return-Path: <philipp.reisner@linbit.com>
+Received: from fat-tyre.localnet (unknown [86.59.100.100])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mail09.linbit.com (LINBIT Mail Daemon) with ESMTPS id 7D637106818D
+	for <drbd-announce@lists.linbit.com>;
+	Tue, 24 Mar 2009 18:34:58 +0100 (CET)
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Date: Tue, 17 Mar 2009 16:26:19 +0100
+Date: Tue, 24 Mar 2009 18:34:57 +0100
 MIME-Version: 1.0
 Content-Type: text/plain;
   charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-Message-Id: <200903171626.19578.philipp.reisner@linbit.com>
-Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-8.3.1rc1.tar.gz
+Message-Id: <200903241834.57806.philipp.reisner@linbit.com>
+Subject: [DRBD-announce] drbd-8.0.15.tar.gz
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -23,48 +28,32 @@ List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hi,
 
-Let me point out a few highlights:
-
-*) Use drbd-overview instead of 'cat /proc/drbd'
-
-*) The udev rule provides you nice symlinks for the drbd device nodes:
-
-   /dev/drbd/by-res/foo-bar
-
-*) include statement:
-   Although we have not yet changed the configuration examples, but now
-   it is possible to have a drbd.conf that looks like this:
-
-   include "/etc/drbd.d/global_shared.conf"
-   include "/etc/drbd.d/*.res"
-
-*) the congested_fn should improve overall system performance on machines
-   with hight IO load.
-
-*) The outdate-wfc-timeout allows one to tune the wait-for-connect 
-   time down to 1 second in case the peer is already outdated.
-
-8.3.1rc1 (api:86/proto:86-89)
+8.0.15 (api:86/proto:86)
 --------
- * Fixed drbdadm invalidate on disconnected devices (reg in 8.2.7)
  * Adding a missing range check in ensure_mdev()
- * Implemented a congested_fn; the kernel can keep its pdflushes running now
- * Improvements the connection code for high latency links
- * Fix for several potential memory leaks when allocating a device
- * Use an additional meta data bit to store the fact of an old crashed primary
- * Udev rule that populates /dev/drbd/by-res/ and /dev/drbd/by-disk/
- * New timeout option: outdated-wfc-timeout
- * New drbdmeta option: --ignore-sanity-checks
- * Include statement for drbd.conf
- * Improvements to drbd-overview.pl
- * Fixed snapshot-resync-target-lvm.sh to work with more than 10 devices
- * Do not force a full resync after a detach on a primary node
+ * Fix for several potential memory leaks when allocating a device (Bugz 135)
+ * Fixed error code pathes in request processing (Bugz 149)
+ * Fixed an minor issue with the exposed data UUID logic (Bugz 164)
+ * Fixed tight attach/detach loops (Bugz 171)
+ * Fixed drbdadm adjust, when a running config contains "--discard-my-data" (Bugz 201)
+ * Fix stack smashing in drbdmeta
+ * Adding a missing range check in ensure_mdev() (Bugz 199)
  * Compatibility with Linux 2.6.27 and 2.6.28
 
-http://oss.linbit.com/drbd/8.3/drbd-8.3.1rc1.tar.gz
-http://git.drbd.org/?p=drbd-8.3.git;a=tag;h=drbd-8.3.1rc1
+Although it is not explicitly in the (now official) Changelog it also works 
+with the recently released Linux 2.6.29.
 
-Testing and comments welcome!
+BTW, drbd-8.3.1 will follow in a few days.
+
+If your DRBD is older than 8.0.8 you have to upgrade!
+
+If your DRBD is older than 8.0.12 you should upgrade.
+
+PS: We already support SLES11
+
+http://oss.linbit.com/drbd/8.0/drbd-8.0.15.tar.gz
+http://git.drbd.org/?p=drbd-8.0.git;a=commit;h=drbd-8.0.15
+http://www.linbit.com/support/drbd-8.0.15/
 
 -Phil
 -- 
