@@ -1,20 +1,17 @@
 Return-Path: <philipp.reisner@linbit.com>
-Received: from fat-tyre.localnet (unknown [86.59.100.100])
-	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mail09.linbit.com (LINBIT Mail Daemon) with ESMTPS id 7D637106818D
-	for <drbd-announce@lists.linbit.com>;
-	Tue, 24 Mar 2009 18:34:58 +0100 (CET)
 From: Philipp Reisner <philipp.reisner@linbit.com>
-To: drbd-announce@lists.linbit.com
-Date: Tue, 24 Mar 2009 18:34:57 +0100
+To: drbd-user@lists.linbit.com
+Date: Wed, 25 Mar 2009 17:18:41 +0100
+References: <200903241837.00249.philipp.reisner@linbit.com>
+In-Reply-To: <200903241837.00249.philipp.reisner@linbit.com>
 MIME-Version: 1.0
 Content-Type: text/plain;
-  charset="us-ascii"
+  charset="iso-8859-1"
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-Message-Id: <200903241834.57806.philipp.reisner@linbit.com>
-Subject: [DRBD-announce] drbd-8.0.15.tar.gz
+Message-Id: <200903251718.41585.philipp.reisner@linbit.com>
+Cc: drbd-announce@lists.linbit.com
+Subject: [DRBD-announce] issue with the init script on SLES10
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,34 +23,47 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Hi,
+To our SLES10 users,
 
-8.0.15 (api:86/proto:86)
---------
- * Adding a missing range check in ensure_mdev()
- * Fix for several potential memory leaks when allocating a device (Bugz 135)
- * Fixed error code pathes in request processing (Bugz 149)
- * Fixed an minor issue with the exposed data UUID logic (Bugz 164)
- * Fixed tight attach/detach loops (Bugz 171)
- * Fixed drbdadm adjust, when a running config contains "--discard-my-data" (Bugz 201)
- * Fix stack smashing in drbdmeta
- * Adding a missing range check in ensure_mdev() (Bugz 199)
- * Compatibility with Linux 2.6.27 and 2.6.28
+With the 8.0.15 release the init script was changed to be
+more LSB compliant. Unfortunately it turned out that on SLES10
+it prints awkward error messages instead of nice log messages,
+although it does what it should do.
 
-Although it is not explicitly in the (now official) Changelog it also works 
-with the recently released Linux 2.6.29.
+Here is the diff to have a nicely working init script for SLES10
 
-BTW, drbd-8.3.1 will follow in a few days.
+Online: 
+http://git.drbd.org/?p=drbd-8.0.git;a=blobdiff;f=scripts/drbd;h=f2b0506e385532e9169dd69d71be15bffd50f3fe;hp=2e2ec293b9fdbde2d47cf46420e7272b52201260;hb=16bc8d063424a9d47bc3c679b770a8cad8530909;hpb=7a69c1d5fce483730b7483b03c94c866a0283360
 
-If your DRBD is older than 8.0.8 you have to upgrade!
+I will release 8.0.16 with only that change applied soon.
 
-If your DRBD is older than 8.0.12 you should upgrade.
+The complete patch:
 
-PS: We already support SLES11
+diff --git a/scripts/drbd b/scripts/drbd
+index 2e2ec29..f2b0506 100755
+--- a/scripts/drbd
++++ b/scripts/drbd
+@@ -31,7 +31,9 @@ test -f $DRBDADM || exit 5
 
-http://oss.linbit.com/drbd/8.0/drbd-8.0.15.tar.gz
-http://git.drbd.org/?p=drbd-8.0.git;a=commit;h=drbd-8.0.15
-http://www.linbit.com/support/drbd-8.0.15/
+ if [ -f /lib/lsb/init-functions ]; then
+     . /lib/lsb/init-functions
+-else
++fi
++
++if ! type log_daemon_msg &>/dev/null ; then
+     function log_daemon_msg
+     {
+        if [ -z "${2:-}" ]; then
+@@ -40,7 +42,9 @@ else
+        fi
+        echo -n "$1: $2"
+     }
++fi
+
++if ! type log_end_msg &>/dev/null ; then
+     function log_end_msg
+     {
+         echo "."
 
 -Phil
 -- 
