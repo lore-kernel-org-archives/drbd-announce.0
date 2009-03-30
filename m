@@ -1,15 +1,15 @@
-Return-Path: <philipp.reisner@linbit.com>
-From: Philipp Reisner <philipp.reisner@linbit.com>
-To: drbd-announce@lists.linbit.com,
- drbd-user@lists.linbit.com
-Date: Fri, 27 Mar 2009 14:13:33 +0100
+Return-Path: <rasto.levrinc@linbit.com>
+From: Rasto Levrinc <rasto.levrinc@linbit.com>
+To: drbd-mc@lists.linbit.com,
+ drbd-announce@lists.linbit.com
+Date: Mon, 30 Mar 2009 15:54:06 +0200
 MIME-Version: 1.0
 Content-Type: text/plain;
   charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-Message-Id: <200903271413.33855.philipp.reisner@linbit.com>
-Subject: [DRBD-announce] drbd-8.3.1.tar.gz and drbd-8.0.16.tar.gz
+Message-Id: <200903301554.07426.rasto.levrinc@linbit.com>
+Subject: [DRBD-announce] DRBD Management Console 0.1.3
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -23,71 +23,37 @@ List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hi,
 
-Let me point out a few highlights:
+This is the next DRBD-MC beta release 0.1.3. Most notably in this release 
+the saving and loading of the XML config file and administration of clusters 
+was redesigned.
 
-*) Use drbd-overview instead of 'cat /proc/drbd'
+Here is the complete changelog:
 
-*) The udev rule provides you nice symlinks for the drbd device nodes:
+* making ssh port configurable, fixing timeouts for ssh as well
+* new load system
+* fixing behavior: when one node comes after it was down 
+* passwords that were entered correctly once, do not have to be entered 
+again
+* adding buttons for removing, stopping and starting of the clusters, 
+removing being still disabled
+* Sles11 support, the DRBD part
+* fixing package detection for Sles10
+* small dialog fixes
+* fixed race in progress indicator
+* fedora support was added
+* added more Redhat/Centos/Rhel 5.1 and 5.2 versions 
+* allowing hostnames with domain name
+* adding "no hard disc" icon
+* slightly changing the color of the second host
 
-   /dev/drbd/by-res/foo-bar
+http://www.drbd.org/mc/management-console/
+http://oss.linbit.com/drbd-mc/drbd-mc-0.1.3.tar.gz
+http://oss.linbit.com/drbd-mc/DMC-0.1.3.jar
 
-*) include statement:
-   Although we have not yet changed the configuration examples, but now
-   it is possible to have a drbd.conf that looks like this:
+Rasto Levrinc
 
-   include "/etc/drbd.d/global_shared.conf"
-   include "/etc/drbd.d/*.res"
-
-*) the congested_fn should improve overall system performance on machines
-   with hight IO load.
-
-*) The outdate-wfc-timeout allows one to tune the wait-for-connect 
-   time down to 1 second in case the peer is already outdated.
-
-The changelog:
-
-8.3.1 (api:86/proto:86-89)
---------
- * Fixed drbdadm invalidate on disconnected devices (reg in 8.2.7)
- * Fixed a hard to trigger spinlock deadlock when using device stacking
-   with the upper device having a smaller minor number than the lower device.
-   (Bugz 210)
- * Adding a missing range check in ensure_mdev()
- * Implemented a congested_fn; the kernel can keep its pdflushes running now
- * Improvements the connection code for high latency links
- * Fix for several potential memory leaks when allocating a device
- * Use an additional meta data bit to store the fact of an old crashed primary
- * Udev rule that populates /dev/drbd/by-res/ and /dev/drbd/by-disk/
- * New timeout option: outdated-wfc-timeout
- * New drbdmeta option: --ignore-sanity-checks
- * Include statement for drbd.conf
- * Improvements to drbd-overview.pl
- * Fixed snapshot-resync-target-lvm.sh to work with more than 10 devices
- * Do not force a full resync after a detach on a primary node
- * Compatibility with Linux 2.6.27, 2.6.28 and 2.6.29
-
-http://oss.linbit.com/drbd/8.3/drbd-8.3.1.tar.gz
-http://git.drbd.org/?p=drbd-8.3.git;a=commit;h=drbd-8.3.1
-http://www.linbit.com/support/drbd-8.3.1/
-
-
-And, since the init script of 8.0.15 is broken on some distributions, here
-is 8.0.15 with a micro patch, now 8.0.16.
-
-8.0.16 (api:86/proto:86)
---------
- * Fixed the init script to work with all flavors of LSB
-
-http://oss.linbit.com/drbd/8.0/drbd-8.0.16.tar.gz
-http://git.drbd.org/?p=drbd-8.0.git;a=commit;h=drbd-8.0.16
-http://www.linbit.com/support/drbd-8.0.16/
-
--Phil
 -- 
-: Dipl-Ing Philipp Reisner
-: LINBIT | Your Way to High Availability
-: Tel: +43-1-8178292-50, Fax: +43-1-8178292-82
-: http://www.linbit.com
-
+: Dipl-Ing Rastislav Levrinc
+: http://www.drbd.org/mc/management-console/
 DRBD(R) and LINBIT(R) are registered trademarks of LINBIT, Austria.
 
