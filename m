@@ -2,15 +2,15 @@ Return-Path: <rasto.levrinc@linbit.com>
 From: Rasto Levrinc <rasto.levrinc@linbit.com>
 To: drbd-mc@lists.linbit.com,
  drbd-announce@lists.linbit.com
-Date: Mon, 30 Mar 2009 15:54:06 +0200
+Date: Mon, 20 Apr 2009 13:51:38 +0200
 MIME-Version: 1.0
 Content-Type: text/plain;
   charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-Message-Id: <200903301554.07426.rasto.levrinc@linbit.com>
-Subject: [DRBD-announce] DRBD Management Console 0.1.3
-Reply-To: drbd-user@lists.linbit.com
+Message-Id: <200904201351.39652.rasto.levrinc@linbit.com>
+Subject: [DRBD-announce] DRBD Management Console 0.2.0
+Reply-To: drbd-user@lists.linbit.com, drbd-mc@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
 List-Unsubscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
@@ -23,35 +23,24 @@ List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hi,
 
-This is the next DRBD-MC beta release 0.1.3. Most notably in this release 
-the saving and loading of the XML config file and administration of clusters 
-was redesigned.
+This is the next DRBD-MC beta release 0.2.0. In this release there are not 
+many user-visible changes, but much have changed under the hood: The DRBD-MC 
+does not use mgmtd anymore but talks to the cib directly through the 
+sockets, so there is no need for hb/pacemaker gui/client packages, mgmtd 
+etc. packages on the servers anymore.
 
 Here is the complete changelog:
 
-* making ssh port configurable, fixing timeouts for ssh as well
-* new load system
-* fixing behavior: when one node comes after it was down 
-* passwords that were entered correctly once, do not have to be entered 
-again
-* adding buttons for removing, stopping and starting of the clusters, 
-removing being still disabled
-* Sles11 support, the DRBD part
-* fixing package detection for Sles10
-* small dialog fixes
-* fixed race in progress indicator
-* fedora support was added
-* added more Redhat/Centos/Rhel 5.1 and 5.2 versions 
-* allowing hostnames with domain name
-* adding "no hard disc" icon
-* slightly changing the color of the second host
+* removed dependency on mgmtd
+* fixed error in the configure DRBD device dialog box
+* adding more information about services in the graph
+* adding Lenny 5.0.1 version
 
 http://www.drbd.org/mc/management-console/
-http://oss.linbit.com/drbd-mc/drbd-mc-0.1.3.tar.gz
-http://oss.linbit.com/drbd-mc/DMC-0.1.3.jar
+http://oss.linbit.com/drbd-mc/drbd-mc-0.2.0.tar.gz
+http://oss.linbit.com/drbd-mc/DMC-0.2.0.jar
 
 Rasto Levrinc
-
 -- 
 : Dipl-Ing Rastislav Levrinc
 : http://www.drbd.org/mc/management-console/
