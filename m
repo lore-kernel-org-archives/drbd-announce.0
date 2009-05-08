@@ -2,14 +2,14 @@ Return-Path: <rasto.levrinc@linbit.com>
 From: Rasto Levrinc <rasto.levrinc@linbit.com>
 To: drbd-mc@lists.linbit.com,
  drbd-announce@lists.linbit.com
-Date: Mon, 20 Apr 2009 13:51:38 +0200
+Date: Fri, 8 May 2009 12:13:55 +0200
 MIME-Version: 1.0
 Content-Type: text/plain;
   charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-Message-Id: <200904201351.39652.rasto.levrinc@linbit.com>
-Subject: [DRBD-announce] DRBD Management Console 0.2.0
+Message-Id: <200905081213.55786.rasto.levrinc@linbit.com>
+Subject: [DRBD-announce] DRBD Management Console 0.2.1
 Reply-To: drbd-user@lists.linbit.com, drbd-mc@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -23,24 +23,48 @@ List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hi,
 
-This is the next DRBD-MC beta release 0.2.0. In this release there are not 
-many user-visible changes, but much have changed under the hood: The DRBD-MC 
-does not use mgmtd anymore but talks to the cib directly through the 
-sockets, so there is no need for hb/pacemaker gui/client packages, mgmtd 
-etc. packages on the servers anymore.
+This is the next DRBD-MC beta release 0.2.1. In this release some important 
+and some less important bugs were fixed. The Heartbeat/Pacemaker 
+installation was improved and now it is possible to choose from more 
+installation methods, the default being the installation from opensuse.org 
+repositories if available.
 
 Here is the complete changelog:
 
-* removed dependency on mgmtd
-* fixed error in the configure DRBD device dialog box
-* adding more information about services in the graph
-* adding Lenny 5.0.1 version
+* group actions are fixed to be performed on its resources
+* removed host scores from group
+* adding more information to the DRBD graph
+* adding swap info to the DRBD graph
+* fixed lvm info in the graph
+* fixed resizing of the vertices
+* changed vertex animations
+* adding different heartbeat installation methods
+* showing also device mapper devices that are not lvm
+* fixing the Heartbeat lib and lib64 paths on different distributions
+* fixing the edges in the Heartbeat graph
+* checking the locations of the cib sockets
+* fixing the reverse order action
+* fixed cib events for hb >= 2.99.0
+* fixing bug in dialogs where text could be obscured
+* fixed removing of the group
+* fixed 'starting before' service that is in the group... 
+* fixing a race during repainting of the menu tree
+* sorting mount points alphabetically
+* using wildcards for distribution versions, instead of defining
+  them all the time 
+* fixing repainting of the menu tree
+* fixing create DRBD meta-data dialog
+* fixing create filesystem dialog
+* fixed remembering of dsa and rsa passwords
+* fixed save checkbox in cluster finish dialog
+* and some code cleanup
 
 http://www.drbd.org/mc/management-console/
-http://oss.linbit.com/drbd-mc/drbd-mc-0.2.0.tar.gz
-http://oss.linbit.com/drbd-mc/DMC-0.2.0.jar
+http://oss.linbit.com/drbd-mc/drbd-mc-0.2.1.tar.gz
+http://oss.linbit.com/drbd-mc/DMC-0.2.1.jar
 
 Rasto Levrinc
+
 -- 
 : Dipl-Ing Rastislav Levrinc
 : http://www.drbd.org/mc/management-console/
