@@ -1,15 +1,15 @@
-Return-Path: <rasto.levrinc@linbit.com>
-From: Rasto Levrinc <rasto.levrinc@linbit.com>
-To: drbd-mc@lists.linbit.com,
- drbd-announce@lists.linbit.com
-Date: Thu, 4 Jun 2009 10:27:23 +0200
+Return-Path: <philipp.reisner@linbit.com>
+From: Philipp Reisner <philipp.reisner@linbit.com>
+To: drbd-announce@lists.linbit.com
+Date: Mon, 8 Jun 2009 17:43:01 +0200
 MIME-Version: 1.0
-Content-Type: Text/Plain;
+Content-Type: text/plain;
   charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-Message-Id: <200906041027.25559.rasto.levrinc@linbit.com>
-Subject: [DRBD-announce] DRBD Management Console 0.2.3
+Message-Id: <200906081743.02016.philipp.reisner@linbit.com>
+Cc: drbd-user@lists.linbit.com
+Subject: [DRBD-announce] drbd-8.3.2rc1.tar.gz
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -23,43 +23,55 @@ List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hi,
 
-This is the next DRBD-MC beta release 0.2.3. In this release different
-methods to install DRBD in different Linux distribution were added, including
-the one from source. An important bug, where colocations were created in
-different order as anybody would expect, was fixed as well.
+The new feature to highlight is the bitmap compression:
 
-Here is the complete changelog:
+  For big devices replicated via rather low bandwidth links,
+  the time for the bitmap exchange gets non negligible. You as
+  administrator will notice this, because DRBD freezes all 
+  application IO during bitmap exchange i.e. during a phase
+  while establishing a connection.
 
-* fedora 10's OCF locations were fixed
+  From now on you can enable bitmap compression "use-rle" and
+  the bitmap will be compressed before exchange, speeding up
+  that process by a very large factor 100 - many thousand.
 
-* rcS scripts in the HB/Pacemaker installation were added, so that 
-HB/Pacemaker starts after a reboot
+We started a new effort to get DRBD merged into Linux mainline. The
+result of that cleanup work was merged back into DRBD mainline.
+-> The patch between 8.3.1 and 8.3.2 will touch nearly every line.
 
-* distribution detection was improved
+8.3.2rc1 (api:86/proto:86-90)
+--------
+ * Fixed the "Not a digest" issue for hash functions already ported to shash
+ * Fixed a race condition between device configuration and de-configuration
+ * Fixed: The sync-after logic modified flags of an unconfigured
+   device. This caused very weird symptoms later. (Bugz 214)
+ * Fixed a possible imbalance of the 'pe' counter during online verify
+ * Fix for potential segfaults in drbdadm's sh-status & status commands
+ * Correctly clean up resync status if a detach interrupts a resync (Bugz 223)
+ * Reasonable error reporting if 'drbdadm invalidate' fails because resync already runs
+ * New module parameter: disable_sendpage. Workaround for a Xen on DRBD issue
+ * Allow detach while being SyncTarget (Bugz 221)
+ * Optional RLE compression of the bitmap exchange ('use-rle' keyword)
+ * Rewrite of the LRU code
+ * Allow to skip initial resync: 'drbdadm -- --clear-bitmap new-current-uuid'
+ * Upon request of Dolphin NICS: The 'sci' keyword is now called 'ssocks'
+ * An OCF resource agent for pacemaker
+ * crm-fence-peer.sh: A fence peer handler using pacemaker constraints
+ * /etc/init.d/drbd stop now works completely independent of the config file
+ * arbitrary custom device names (prefix drbd_ required)
+ * Code cleanups for Linux mainline submission (no functional change)
+ * Using Linux's own tracing framework instead of our own
+ * Compatibility with Linux 2.6.30
 
-* support for opensuse 11 was added
+http://git.drbd.org/?p=drbd-8.3.git;a=tag;h=drbd-8.3.2rc1
+http://oss.linbit.com/drbd/8.3/drbd-8.3.2rc1.tar.gz
 
-* different DRBD installation methods including installation from source were 
-added
-
-* initial colocation direction, so that it matches the order constraint was 
-fixed
-
-* "I am new here" button with help text for people to get started, was 
-added.
-
-* detection of disconnection of a host or hosts was fixed
-
-* a bug where exiting of the DMC could hang was fixed.
-
-http://www.drbd.org/mc/management-console/
-http://oss.linbit.com/drbd-mc/drbd-mc-0.2.3.tar.gz
-http://oss.linbit.com/drbd-mc/DMC-0.2.3.jar
-
-Rasto Levrinc
-
+-phil
 -- 
-: Dipl-Ing Rastislav Levrinc
-: http://www.drbd.org/mc/management-console/
+: Dipl-Ing Philipp Reisner
+: LINBIT | Your Way to High Availability
+: Tel: +43-1-8178292-50, Fax: +43-1-8178292-82
+: http://www.linbit.com
+
 DRBD(R) and LINBIT(R) are registered trademarks of LINBIT, Austria.
 
