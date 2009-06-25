@@ -1,15 +1,15 @@
 Return-Path: <philipp.reisner@linbit.com>
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Date: Mon, 8 Jun 2009 17:43:01 +0200
+Date: Thu, 25 Jun 2009 17:50:48 +0200
 MIME-Version: 1.0
-Content-Type: text/plain;
+Content-Type: Text/Plain;
   charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-Message-Id: <200906081743.02016.philipp.reisner@linbit.com>
+Message-Id: <200906251750.48646.philipp.reisner@linbit.com>
 Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-8.3.2rc1.tar.gz
+Subject: [DRBD-announce] drbd-8.3.2rc2.tar.gz
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -23,23 +23,16 @@ List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hi,
 
-The new feature to highlight is the bitmap compression:
+Please help testing this pre release, before we tag the final DRBD-8.3.2 !!
 
-  For big devices replicated via rather low bandwidth links,
-  the time for the bitmap exchange gets non negligible. You as
-  administrator will notice this, because DRBD freezes all 
-  application IO during bitmap exchange i.e. during a phase
-  while establishing a connection.
+Highlights:
+ * optional compression of the bitmap exchange
+ * new OCF resource agent
+ * fencing callback, working on top of CRM-constraints
 
-  From now on you can enable bitmap compression "use-rle" and
-  the bitmap will be compressed before exchange, speeding up
-  that process by a very large factor 100 - many thousand.
+Full changelog:
 
-We started a new effort to get DRBD merged into Linux mainline. The
-result of that cleanup work was merged back into DRBD mainline.
--> The patch between 8.3.1 and 8.3.2 will touch nearly every line.
-
-8.3.2rc1 (api:86/proto:86-90)
+8.3.2rc2 (api:86/proto:86-90)
 --------
  * Fixed the "Not a digest" issue for hash functions already ported to shash
  * Fixed a race condition between device configuration and de-configuration
@@ -55,18 +48,20 @@ result of that cleanup work was merged back into DRBD mainline.
  * Rewrite of the LRU code
  * Allow to skip initial resync: 'drbdadm -- --clear-bitmap new-current-uuid'
  * Upon request of Dolphin NICS: The 'sci' keyword is now called 'ssocks'
+ * Allow more than two host ('on' keyword) sections, new drbdadm option '--peer'
+ * New, alternate keyword 'floating' for host sections, for matching by ip-address
  * An OCF resource agent for pacemaker
  * crm-fence-peer.sh: A fence peer handler using pacemaker constraints
  * /etc/init.d/drbd stop now works completely independent of the config file
  * arbitrary custom device names (prefix drbd_ required)
  * Code cleanups for Linux mainline submission (no functional change)
  * Using Linux's own tracing framework instead of our own
- * Compatibility with Linux 2.6.30
+ * Compatibility with Linux 2.6.30 and 2.6.31-rc1
 
-http://git.drbd.org/?p=drbd-8.3.git;a=tag;h=drbd-8.3.2rc1
+http://git.drbd.org/?p=drbd-8.3.git;a=tag;h=drbd-8.3.2rc2
 http://oss.linbit.com/drbd/8.3/drbd-8.3.2rc1.tar.gz
 
--phil
+-Phil
 -- 
 : Dipl-Ing Philipp Reisner
 : LINBIT | Your Way to High Availability
