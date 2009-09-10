@@ -1,15 +1,15 @@
 Return-Path: <philipp.reisner@linbit.com>
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Date: Fri, 28 Aug 2009 15:19:45 +0200
+Date: Thu, 10 Sep 2009 15:47:19 +0200
 MIME-Version: 1.0
-Content-Type: Text/Plain;
+Content-Type: text/plain;
   charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-Message-Id: <200908281519.45821.philipp.reisner@linbit.com>
+Message-Id: <200909101547.21688.philipp.reisner@linbit.com>
 Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-8.3.3rc1.tar.gz
+Subject: [DRBD-announce] drbd-8.3.3rc2.tar.gz
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -25,28 +25,36 @@ Hi,
 
 Please help testing this pre release...
 
-Highlights:
- * Infiniband support via SDP
+Changes since rc1:
 
-8.3.3rc1 (api:86/proto:86-91)
+* Improvements to crm-fence-peer
+* A few minor issues were found in the UUID processing since 8.3.3rc1.
+
+Complete Changelog:
+
+8.3.3rc2 (api:86/proto:86-91)
 --------
  * Correctly deal with large bitmaps (Bugz 239, 240)
- * Fiexed a segfault in drbdadm's parser for unknown sync-after dependencies
+ * Fixed a segfault in drbdadm's parser for unknown sync-after dependencies
  * DRBD_PEER was not set for handlers (introduced in 8.3.2) (Bugz 241)
  * Fixed a bug that could cause reads off diskless DRBD devices to get very slow
  * Fixed a deadlock possible when IO errors occure during resync (Bugz 224)
  * Do not do a full sync in case P_SYNC_UUID packet gets lost (Bugz 244)
  * Do not forget a resync in case the last ACK of a resync gets lost
+ * The UUID compare function now handles more cases when connection/disk got
+   lost during UUID updates (Bugz 251, 254)
  * If a resource gets renamed (only) update its /dev/
+ * drbdsetup get-gi/show-gi sometimes warned about unknown tags (Bugz 253)
  * Fixed many spelling errors
+ * Improvements on the crm-fence-peer Pacemaker integration
  * Do not upgrade a Consistent disk to UpToDate when the fence-peer handler
    can not reach the peer (Bugz 198)
  * Support for Infiniband via SDP (sockets direct protocol)
  * Install bash completion stuff on SLES11
  * Following Linux upstream changes 2.6.31
 
-http://git.drbd.org/?p=drbd-8.3.git;a=tag;h=drbd-8.3.3rc1
-http://oss.linbit.com/drbd/8.3/drbd-8.3.3rc1.tar.gz
+http://git.drbd.org/?p=drbd-8.3.git;a=tag;h=drbd-8.3.3rc2
+http://oss.linbit.com/drbd/8.3/drbd-8.3.3rc2.tar.gz
 
 -Phil
 -- 
