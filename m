@@ -1,15 +1,15 @@
 Return-Path: <philipp.reisner@linbit.com>
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Date: Thu, 10 Sep 2009 15:47:19 +0200
+Date: Tue, 29 Sep 2009 15:00:49 +0200
 MIME-Version: 1.0
 Content-Type: text/plain;
   charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-Message-Id: <200909101547.21688.philipp.reisner@linbit.com>
+Message-Id: <200909291500.51184.philipp.reisner@linbit.com>
 Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-8.3.3rc2.tar.gz
+Subject: [DRBD-announce] drbd-8.3.3rc3.tar.gz
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -23,16 +23,31 @@ List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hi,
 
-Please help testing this pre release...
+We are still holding our breath how and when DRBD will land in 
+Linux mainline. I was told, that it can go in after 2.6.32-rc1
+since it is a driver and not a patch to the more central parts
+of the kernel. It will go in through Jens Axboe, although I
+do not know when exactly.
 
-Changes since rc1:
+To relieve the strain a bit, here is an other rc of DRBD-8.3.3
 
-* Improvements to crm-fence-peer
-* A few minor issues were found in the UUID processing since 8.3.3rc1.
 
-Complete Changelog:
+The main difference to rc2 is that the default values of
+sndbuf-size rcvbuf-size where changed to 0 (auto tune). 
+They have been 128k before.
 
-8.3.3rc2 (api:86/proto:86-91)
+  This take the burden to get the socket send buffer tunes
+  right off the administrator, but make sure that TCP's sysctls
+  settings are sane. I.e.
+
+  net.core.rmem_max = 10485760 (byte per socket)
+  net.core.wmem_max = 10485760 (byte per socket)
+  net.ipv4.tcp_rmem = 65536 87380 10485760 (min/def/max byte per socket)
+  net.ipv4.tcp_wmem = 65536 65536 10485760 (min/def/max byte per socket)
+  net.ipv4.tcp_mem = 128000 170666 256000  (min/pressure/max pages in total)
+
+
+8.3.3rc3 (api:86/proto:86-91)
 --------
  * Correctly deal with large bitmaps (Bugz 239, 240)
  * Fixed a segfault in drbdadm's parser for unknown sync-after dependencies
@@ -45,6 +60,7 @@ Complete Changelog:
    lost during UUID updates (Bugz 251, 254)
  * If a resource gets renamed (only) update its /dev/
  * drbdsetup get-gi/show-gi sometimes warned about unknown tags (Bugz 253)
+ * Autotune sndbuf-size and rcvbuf-size by default
  * Fixed many spelling errors
  * Improvements on the crm-fence-peer Pacemaker integration
  * Do not upgrade a Consistent disk to UpToDate when the fence-peer handler
@@ -53,10 +69,9 @@ Complete Changelog:
  * Install bash completion stuff on SLES11
  * Following Linux upstream changes 2.6.31
 
-http://git.drbd.org/?p=drbd-8.3.git;a=tag;h=drbd-8.3.3rc2
-http://oss.linbit.com/drbd/8.3/drbd-8.3.3rc2.tar.gz
+http://git.drbd.org/?p=drbd-8.3.git;a=tag;h=drbd-8.3.3rc3
+http://oss.linbit.com/drbd/8.3/drbd-8.3.3rc3.tar.gz
 
--Phil
 -- 
 : Dipl-Ing Philipp Reisner
 : LINBIT | Your Way to High Availability
