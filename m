@@ -1,15 +1,15 @@
 Return-Path: <philipp.reisner@linbit.com>
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Date: Tue, 29 Sep 2009 15:00:49 +0200
+Date: Mon, 5 Oct 2009 18:17:11 +0200
 MIME-Version: 1.0
 Content-Type: text/plain;
   charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-Message-Id: <200909291500.51184.philipp.reisner@linbit.com>
+Message-Id: <200910051817.12071.philipp.reisner@linbit.com>
 Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-8.3.3rc3.tar.gz
+Subject: [DRBD-announce] drbd-8.3.3.tar.gz
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -23,18 +23,33 @@ List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hi,
 
-We are still holding our breath how and when DRBD will land in 
-Linux mainline. I was told, that it can go in after 2.6.32-rc1
-since it is a driver and not a patch to the more central parts
-of the kernel. It will go in through Jens Axboe, although I
-do not know when exactly.
+The most noticeable highlight of this release is the support for 
+the Infiniband stack via SDP. If you want to use DRBD with 
+Infiniband/SDP make sure that you run on OFED-1.4.2.
 
-To relieve the strain a bit, here is an other rc of DRBD-8.3.3
+  Thanks to logicworks (www.logicworks.net) for sponsoring the 
+  Infiniband work.
+
+If you are using dopd/drbd-peer-outdater and you are currently running
+on drbd-8.3.2 you need to upgrade to 8.3.3 (due to bug 241).
+
+Also the email notification scripts are affected by bug 241. If
+you are using them, please upgrade to 8.3.3.
+
+To all other users we recommend the upgrade as well, as a number
+of non critical bugs where fixed.
+
+Regarding kernel inclusion:
+
+  Now it is clear that DRBD will not be part of Linux-2.6.32. 
+  Linus told us the he is happy to pull DRBD during the 2.6.33 merge 
+  window.
 
 
-The main difference to rc2 is that the default values of
-sndbuf-size rcvbuf-size where changed to 0 (auto tune). 
-They have been 128k before.
+Another important note:
+
+The default values of sndbuf-size rcvbuf-size where changed to 0 
+(auto tune). They have been 128k before.
 
   This take the burden to get the socket send buffer tunes
   right off the administrator, but make sure that TCP's sysctls
@@ -47,7 +62,8 @@ They have been 128k before.
   net.ipv4.tcp_mem = 128000 170666 256000  (min/pressure/max pages in total)
 
 
-8.3.3rc3 (api:86/proto:86-91)
+
+8.3.3 (api:86/proto:86-91)
 --------
  * Correctly deal with large bitmaps (Bugz 239, 240)
  * Fixed a segfault in drbdadm's parser for unknown sync-after dependencies
@@ -69,9 +85,11 @@ They have been 128k before.
  * Install bash completion stuff on SLES11
  * Following Linux upstream changes 2.6.31
 
-http://git.drbd.org/?p=drbd-8.3.git;a=tag;h=drbd-8.3.3rc3
-http://oss.linbit.com/drbd/8.3/drbd-8.3.3rc3.tar.gz
+http://oss.linbit.com/drbd/8.3/drbd-8.3.3.tar.gz
+http://git.drbd.org/?p=drbd-8.3.git;a=tag;h=drbd-8.3.3
+http://www.linbit.com/support/drbd-8.3.3/
 
+-Phil
 -- 
 : Dipl-Ing Philipp Reisner
 : LINBIT | Your Way to High Availability
