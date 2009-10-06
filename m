@@ -1,17 +1,15 @@
 Return-Path: <philipp.reisner@linbit.com>
 From: Philipp Reisner <philipp.reisner@linbit.com>
-To: drbd-announce@lists.linbit.com,
- drbd-user@lists.linbit.com
-Date: Tue, 6 Oct 2009 12:37:10 +0200
-References: <200910051817.12071.philipp.reisner@linbit.com>
-In-Reply-To: <200910051817.12071.philipp.reisner@linbit.com>
+To: drbd-announce@lists.linbit.com
+Date: Tue, 6 Oct 2009 17:31:56 +0200
 MIME-Version: 1.0
-Content-Type: Text/Plain;
-  charset="iso-8859-1"
+Content-Type: text/plain;
+  charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-Message-Id: <200910061237.10633.philipp.reisner@linbit.com>
-Subject: Re: [DRBD-announce] drbd-8.3.3.tar.gz
+Message-Id: <200910061731.56700.philipp.reisner@linbit.com>
+Cc: drbd-user@lists.linbit.com
+Subject: [DRBD-announce] drbd-8.3.4.tar.gz
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -25,13 +23,24 @@ List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hi,
 
-drbd-8.3.3 is probably broken for SLES9 and RHEL4 and all other
-distributions/kernels which do not come with the connector
-(cn module). Which are all kernels before 2.6.14.
+drbd-8.3.3 is perfectly fine. Only a small glitch in the
+backported connector code slipped in during preparation
+of 8.3.3. This only affects systems with kernel 2.6.13 and
+older.
 
-We will keep you updated.
+When install drbd-8.3.3 on such a system drbdsetup will
+not work at all.
 
--phil
+For users of more recent kernels, no upgrade necessary.
+
+8.3.4 (api:86/proto:86-91)
+--------
+ * Fixed a regression in the connector backport introduced with 8.3.3.
+   Affected only kernels older than 2.6.14. I.e. RHEL4 and SLES9.
+
+http://oss.linbit.com/drbd/8.3/drbd-8.3.4.tar.gz
+http://git.drbd.org/?p=drbd-8.3.git;a=tag;h=drbd-8.3.4
+http://www.linbit.com/support/drbd-8.3.4/
 -- 
 : Dipl-Ing Philipp Reisner
 : LINBIT | Your Way to High Availability
