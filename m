@@ -1,13 +1,15 @@
 Return-Path: <rasto.levrinc@linbit.com>
-Message-ID: <60195.62.178.141.196.1255077191.squirrel@mail.linbit.com>
-Date: Fri, 9 Oct 2009 10:33:11 +0200 (CEST)
-From: "Rasto Levrinc" <rasto.levrinc@linbit.com>
-To: drbd-mc@lists.linbit.com
+From: Rasto Levrinc <rasto.levrinc@linbit.com>
+To: drbd-mc@lists.linbit.com, drbd-announce@lists.linbit.com,
+	pacemaker@oss.clusterlabs.org, linux-ha@lists.linux-ha.org
+Date: Wed, 28 Oct 2009 11:04:35 +0100
 MIME-Version: 1.0
-Content-Type: text/plain;charset=iso-8859-15
-Content-Transfer-Encoding: 8bit
-Cc: drbd-announce@lists.linbit.com
-Subject: [DRBD-announce] DRBD Management Console 0.4.0
+Content-Type: Text/Plain;
+  charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+Message-Id: <200910281104.35794.rasto.levrinc@linbit.com>
+Subject: [DRBD-announce] DRBD Management Console 0.4.1
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -21,52 +23,70 @@ List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hi,
 
-This is the next DRBD-MC beta release 0.4.0.
+This is the next DRBD-MC beta release 0.4.1. DRBD-MC is a Java GUI that 
+helps to configure DRBD/Pacemaker/Corosync/Openais/Heartbeat clusters. With 
+DRBD-MC it is surprisingly easy to configure a subset of Pacemaker that is 
+needed for DRBD, but it also may be useful for Pacemaker clusters without 
+DRBD. You can connect with DRBD-MC to your existing clusters via SSH and see 
+it for yourself, or you can start from scratch and DRBD-MC will install and 
+configure everything for you.
 
-Many people have asked about master/slave support, so here it is. Now you
-can configure and use Linbit:DRBD Resource Agent and other master/slave or
-clone resources.
+In this release there is not any new great feature like last time, but there 
+are some incremental improvements. The performance of loading and adding of 
+services was improved, so now if you can run gta4 on your system, you should 
+not have any problem to run this, even at the same time!
 
-As a matter of fact with the gui it is so easy to setup a master/slave
-DRBD resource agent, that it will hopefully stop all this
-you-can-do-everything-with-crm-tool crowd. While they can setup everything
-as well, it will take them 10 times as long and will make 7 typos in
-important places and configure everything upside down. Yes, all this is a
-bit of exaggeration, but I saw something like that happening. :)
+Host, resources etc. action menus were cleaned up. Yes, you can actually 
+right-click on stuff in the graphs and do stuff there! In Pacemaker graph it 
+is now possible to see immediately, if resource was migrated, unmanaged, 
+host is in standby or other stuff you have done and may have forgotten. See 
+all this in one screenshot:
 
-You should be using the new Linbit:DRBD RA only if you have one of the
-latest DRBDs installed >= 8.3.3 and Pacemaker or get at least the newest
-Linbit:DRBD RA. You can set it up also for ancient Heartbeats 2.1.4 and
-2.1.3, if there are such things, but it may work funny.
+http://oss.linbit.com/drbd-mc/img/drbd-mc-0.4.1.png
 
-If you are upgrading, do not get alarmed, I have changed some colors in
-order to make the graphical representation a bit less confusing, so it may
-confuse you a bit at first.
+At the moment we live through unhappy times of transition from Heartbeat to 
+Pacemaker with or without Heartbeat or Openais and from Openais to Corosync 
+with or without Openais, on top of that some of the components do not work 
+with some versions but work with other, in short you may experience problems 
+installing the beast. The DRBD-MC helps to install recent binary packages on 
+following distributions:
 
-In this release there are many bugs fixed, but this being a .0 release,
-there may be some new rough edges and it can be actually less stable than
-the previous release.
+Fedora 11, Fedora 10, RHEL 5, RHEL 4, Centos 5, SLES 10, SLES 11,
+Opensuse 11.1, Ubuntu Hardy and Ubuntu Karmic.
 
-Here is the complete changelog:
-* master / slave support was added
-* operation combo boxes were fixed
-* Fedora11 Openais + Pacemaker repository was added
-* new madkiss Debian Lenny repository was added (it does not work out of
-the box at the moment)
-* support for device minor X syntax in drbd.conf was added
-* host scores were reworked
-* /dev/mapper... devices in drbd.conf are allowed now
-* colors of hosts were changed
-* graphical representation of resources, groups and hosts was improved
-* tooltips for DRBD 8.3.3 were fixed
-* action menu was fixed
-* and countless small things
+The following distributions work with DRBD-MC but contain only old not
+recommended Heartbeat binary packages:
+
+Debian Lenny (but new packages are underway), Ubuntu Intrepid, Ubuntu Jaunty
+and Openfiler.
+
+You can get DRBD-MC here:
 
 http://www.drbd.org/mc/management-console/
-http://oss.linbit.com/drbd-mc/drbd-mc-0.4.0.tar.gz
-http://oss.linbit.com/drbd-mc/DMC-0.4.0.jar
+http://oss.linbit.com/drbd-mc/drbd-mc-0.4.1.tar.gz
+http://oss.linbit.com/drbd-mc/DMC-0.4.1.jar
+
+Here is the almost complete changelog:
+* menu items to create a kernel panic or reboot for cluster testing were 
+added ("are you sure" dialog will come in the next release)
+* cleanup is called automatically before applying changes to a failed 
+service (making life even easier)
+* support for Ubuntu Karmic was added (they  keep renaming the distro)
+* support for Openfiler was added (because it was there)
+* check for DRBD-MC available upgrade was added (calling home)
+* filename were the saving is done is shown during saving (so you know where 
+is this file from)
+* "always" and "never" keywords for host scores were added (infinity
+and -infinity were too mathematical for a GUI)
+* "after" option for drbd.conf was fixed
+* --auto option for automatic GUI testing was added (now I can lay back and 
+test it at the same time)
+* Pacemaker installation on some distributions was fixed (I actually tested 
+it this time)
+* apply button not being enabled for new services was fixed
 
 Rasto Levrinc
+
 -- 
 : Dipl-Ing Rastislav Levrinc
 : DRBD-MC http://www.drbd.org/mc/management-console/
