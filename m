@@ -1,15 +1,15 @@
-Return-Path: <rasto.levrinc@linbit.com>
-From: Rasto Levrinc <rasto.levrinc@linbit.com>
-To: drbd-mc@lists.linbit.com, drbd-announce@lists.linbit.com,
-	pacemaker@oss.clusterlabs.org, linux-ha@lists.linux-ha.org
-Date: Wed, 28 Oct 2009 11:04:35 +0100
+Return-Path: <philipp.reisner@linbit.com>
+From: Philipp Reisner <philipp.reisner@linbit.com>
+To: drbd-announce@lists.linbit.com
+Date: Wed, 28 Oct 2009 12:57:07 +0100
 MIME-Version: 1.0
 Content-Type: Text/Plain;
   charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-Message-Id: <200910281104.35794.rasto.levrinc@linbit.com>
-Subject: [DRBD-announce] DRBD Management Console 0.4.1
+Message-Id: <200910281257.07609.philipp.reisner@linbit.com>
+Cc: drbd-user@lists.linbit.com
+Subject: [DRBD-announce] drbd-8.3.5.tar.gz
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -23,73 +23,56 @@ List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hi,
 
-This is the next DRBD-MC beta release 0.4.1. DRBD-MC is a Java GUI that 
-helps to configure DRBD/Pacemaker/Corosync/Openais/Heartbeat clusters. With 
-DRBD-MC it is surprisingly easy to configure a subset of Pacemaker that is 
-needed for DRBD, but it also may be useful for Pacemaker clusters without 
-DRBD. You can connect with DRBD-MC to your existing clusters via SSH and see 
-it for yourself, or you can start from scratch and DRBD-MC will install and 
-configure everything for you.
+I am not proud to write another announcement e-mail only 12 days after
+the previous one.
 
-In this release there is not any new great feature like last time, but there 
-are some incremental improvements. The performance of loading and adding of 
-services was improved, so now if you can run gta4 on your system, you should 
-not have any problem to run this, even at the same time!
+When Bug 258 strikes, DRBD's receiver thread is blocked, IO is frozen,
+your only way out is to reboot the machine.
 
-Host, resources etc. action menus were cleaned up. Yes, you can actually 
-right-click on stuff in the graphs and do stuff there! In Pacemaker graph it 
-is now possible to see immediately, if resource was migrated, unmanaged, 
-host is in standby or other stuff you have done and may have forgotten. See 
-all this in one screenshot:
+To trigger it, you need to drive DRBD into "starving on activity log",
+and then interrupt the network connection.
 
-http://oss.linbit.com/drbd-mc/img/drbd-mc-0.4.1.png
+  "starving on activity log" means, that maximal number of hot activity
+  log entries is reached, and therefore new IO requests has to wait
+  until a previous one is finished. You can watch this by:
 
-At the moment we live through unhappy times of transition from Heartbeat to 
-Pacemaker with or without Heartbeat or Openais and from Openais to Corosync 
-with or without Openais, on top of that some of the components do not work 
-with some versions but work with other, in short you may experience problems 
-installing the beast. The DRBD-MC helps to install recent binary packages on 
-following distributions:
+  echo 1 > /sys/module/drbd/parameters/proc_details
+  watch -n 1 cat /proc/drbd
 
-Fedora 11, Fedora 10, RHEL 5, RHEL 4, Centos 5, SLES 10, SLES 11,
-Opensuse 11.1, Ubuntu Hardy and Ubuntu Karmic.
+  Look for "act_log: used:XX/YY". You trigger the bug when XX gets as
+  high as YY and you have an interruption of you network connectivity
+  in that moment.
 
-The following distributions work with DRBD-MC but contain only old not
-recommended Heartbeat binary packages:
+  The likelihood gets increased by...
+    * heavy write IO on your DRBD device.
+    * the replication link has higher latency, i.e. "long distance".
 
-Debian Lenny (but new packages are underway), Ubuntu Intrepid, Ubuntu Jaunty
-and Openfiler.
+It is really hard to trigger, but I recommend to upgrade from 8.3.3 or
+8.3.4 to 8.3.5.
 
-You can get DRBD-MC here:
+If you are mirroring via a long distance link, typically in a tree
+node configuration I _URGE_ you to upgrade.
 
-http://www.drbd.org/mc/management-console/
-http://oss.linbit.com/drbd-mc/drbd-mc-0.4.1.tar.gz
-http://oss.linbit.com/drbd-mc/DMC-0.4.1.jar
+8.3.5 (api:86/proto:86-91)
+--------
+ * Fixed a regression introduced shortly before 8.3.3, which might
+   case a deadlock in DRBD's disconnect code path. (Bugz 258)
+ * Fixed drbdsetup X resume-io which is needed for the recovery
+   from the effects of broken fence-peer scripts. (Bugz 256)
+ * Do not reduce master score of a current Primary on connection loss,
+   to avoid unnecessary migrations
+ * Do not display the usage count dialog for /etc/inti.d/drbd status
 
-Here is the almost complete changelog:
-* menu items to create a kernel panic or reboot for cluster testing were 
-added ("are you sure" dialog will come in the next release)
-* cleanup is called automatically before applying changes to a failed 
-service (making life even easier)
-* support for Ubuntu Karmic was added (they  keep renaming the distro)
-* support for Openfiler was added (because it was there)
-* check for DRBD-MC available upgrade was added (calling home)
-* filename were the saving is done is shown during saving (so you know where 
-is this file from)
-* "always" and "never" keywords for host scores were added (infinity
-and -infinity were too mathematical for a GUI)
-* "after" option for drbd.conf was fixed
-* --auto option for automatic GUI testing was added (now I can lay back and 
-test it at the same time)
-* Pacemaker installation on some distributions was fixed (I actually tested 
-it this time)
-* apply button not being enabled for new services was fixed
+http://oss.linbit.com/drbd/8.3/drbd-8.3.5.tar.gz
+http://git.drbd.org/?p=drbd-8.3.git;a=tag;h=drbd-8.3.5
+http://www.linbit.com/support/drbd-8.3.5/
 
-Rasto Levrinc
-
+-Phil
 -- 
-: Dipl-Ing Rastislav Levrinc
-: DRBD-MC http://www.drbd.org/mc/management-console/
-: DRBD/HA support and consulting http://www.linbit.com/
+: Dipl-Ing Philipp Reisner
+: LINBIT | Your Way to High Availability
+: Tel: +43-1-8178292-50, Fax: +43-1-8178292-82
+: http://www.linbit.com
+
 DRBD(R) and LINBIT(R) are registered trademarks of LINBIT, Austria.
 
