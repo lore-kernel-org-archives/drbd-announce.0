@@ -1,15 +1,15 @@
 Return-Path: <philipp.reisner@linbit.com>
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Date: Wed, 28 Oct 2009 12:57:07 +0100
+Date: Mon, 9 Nov 2009 11:06:51 +0100
 MIME-Version: 1.0
-Content-Type: Text/Plain;
+Content-Type: text/plain;
   charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-Message-Id: <200910281257.07609.philipp.reisner@linbit.com>
+Message-Id: <200911091106.52244.philipp.reisner@linbit.com>
 Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-8.3.5.tar.gz
+Subject: [DRBD-announce] (drbd-8.3.6.tar.gz)
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -23,51 +23,32 @@ List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hi,
 
-I am not proud to write another announcement e-mail only 12 days after
-the previous one.
+I am writing this announcement just for sake of completeness. The only
+reason for the 8.3.6 release are the new spec files for the RPM packages. 
+These are now compliant with Fedora's packaging guidelines.
 
-When Bug 258 strikes, DRBD's receiver thread is blocked, IO is frozen,
-your only way out is to reboot the machine.
+The changes to the code are negligible.
 
-To trigger it, you need to drive DRBD into "starving on activity log",
-and then interrupt the network connection.
+In that process, the whole way of building DRBD was changed. I.e. you
+need now to call ./configure before you call make.
 
-  "starving on activity log" means, that maximal number of hot activity
-  log entries is reached, and therefore new IO requests has to wait
-  until a previous one is finished. You can watch this by:
+Upgrade policy:
+  If you are at 8.3.5, please stay there, no need to upgrade!
 
-  echo 1 > /sys/module/drbd/parameters/proc_details
-  watch -n 1 cat /proc/drbd
+We do not (yet) provide binary packages for our customers, because we have
+to adjust our build infrastructure first. 
 
-  Look for "act_log: used:XX/YY". You trigger the bug when XX gets as
-  high as YY and you have an interruption of you network connectivity
-  in that moment.
+Note:
+  The DRBD Users Guide's section on RPM building will get updated soon.
+  As it is now, it is wrong for building 8.3.6 RPMs.
 
-  The likelihood gets increased by...
-    * heavy write IO on your DRBD device.
-    * the replication link has higher latency, i.e. "long distance".
-
-It is really hard to trigger, but I recommend to upgrade from 8.3.3 or
-8.3.4 to 8.3.5.
-
-If you are mirroring via a long distance link, typically in a tree
-node configuration I _URGE_ you to upgrade.
-
-8.3.5 (api:86/proto:86-91)
+8.3.6 (api:86/proto:86-91)
 --------
- * Fixed a regression introduced shortly before 8.3.3, which might
-   case a deadlock in DRBD's disconnect code path. (Bugz 258)
- * Fixed drbdsetup X resume-io which is needed for the recovery
-   from the effects of broken fence-peer scripts. (Bugz 256)
- * Do not reduce master score of a current Primary on connection loss,
-   to avoid unnecessary migrations
- * Do not display the usage count dialog for /etc/inti.d/drbd status
+ * Make sure that we ship all unplug events
+ * Introduced autoconf, new RPM packaging
 
-http://oss.linbit.com/drbd/8.3/drbd-8.3.5.tar.gz
-http://git.drbd.org/?p=drbd-8.3.git;a=tag;h=drbd-8.3.5
-http://www.linbit.com/support/drbd-8.3.5/
-
--Phil
+http://oss.linbit.com/drbd/8.3/drbd-8.3.6.tar.gz
+http://git.drbd.org/?p=drbd-8.3.git;a=tag;h=drbd-8.3.6
 -- 
 : Dipl-Ing Philipp Reisner
 : LINBIT | Your Way to High Availability
