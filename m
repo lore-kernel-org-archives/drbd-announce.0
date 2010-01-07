@@ -1,15 +1,14 @@
-Return-Path: <rasto.levrinc@linbit.com>
-From: Rasto Levrinc <rasto.levrinc@linbit.com>
-To: drbd-mc@lists.linbit.com, drbd-announce@lists.linbit.com,
-	pacemaker@oss.clusterlabs.org, linux-ha@lists.linux-ha.org
-Date: Thu, 7 Jan 2010 11:38:28 +0100
+Return-Path: <philipp.reisner@linbit.com>
+From: Philipp Reisner <philipp.reisner@linbit.com>
+To: drbd-announce@lists.linbit.com
+Date: Thu, 7 Jan 2010 13:50:25 +0100
 MIME-Version: 1.0
-Content-Type: Text/Plain;
+Content-Type: text/plain;
   charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Message-Id: <201001071138.29262.rasto.levrinc@linbit.com>
-Subject: [DRBD-announce] DRBD Management Console 0.5.0
+Message-Id: <201001071350.25981.philipp.reisner@linbit.com>
+Cc: drbd-user@lists.linbit.com
+Subject: [DRBD-announce] drbd-8.3.7rc2.tar.gz
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -21,79 +20,47 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Hi,
+Good start into 2010!
 
-This is the next DRBD-MC beta release 0.5.0. DRBD-MC is a Java GUI that 
-helps to configure DRBD/Pacemaker/Corosync/Openais/Heartbeat clusters.
+The second release candidate of 8.3.7 is intended to be the least RC.
 
-You can get DRBD-MC here:
+Please help testing, especially if the update procedure for RPMs
+works for you.
 
-http://www.drbd.org/mc/management-console/
-http://oss.linbit.com/drbd-mc/drbd-mc-0.5.0.tar.gz
-http://oss.linbit.com/drbd-mc/DMC-0.5.0.jar
+8.3.7rc2 (api:86/proto:86-91)
+--------
+ * Lots of fixes to the new RPM packaging
+ * Lots of fixes to the autoconfig stuff
+ * Following the rename of CONFIG_LBD to CONFIG_LBDAF
+ * Silenced an assert. Could trigger after changing write ordering (Bugz 261)
+ * Fixed a race condition between detach and ongoing IO. Very hard to
+   trigger, caused an OOPS in make_request/drbd_make_request. (Bugz 262)
+ * Fixed a regression in the resync handshake code introduced before 8.3.3.
+   That bug causes DRBD to block during the initial handshake when a partial
+   resync is not possible but a full resync is necessary. Happens very rarely.
+   (Bugz 260)
+ * Corrected a null test in the authentication code, found by conccinelle,
+   thanks to upstream integration. The chance to trigger that was probably 10^-9
+ * crm-fence-peer.sh is now also usable if DRBD is managed from the xen block
+   helper script
+ * Fixes to the init script's dependencies
+ * Backported cleanups that where contributed to the in kernel DRBD
+ * Allow online resizing of disconnected devices, new option to drbdsetup
+   drbdsetup /dev/drbdX resize --assume-peer-has-space
+ * Allow multiple after options in the syncer section for stacked setups
+ * Correctly process relative paths in include statements in drbd.conf
+ * New option (-t) for drbdadm to test syntax of config snippets
+ * Following Linux upstream changes 2.6.32 (SHASH and in_flight issues)
+ * New /etc/drbd.conf example that suggests the use of /etc/drbd.d/xxx.res
 
-You can start it with help of Java Web-Start or you can download it and 
-start it with "java -jar DMC-0.5.0.jar" command.
+http://git.drbd.org/?p=drbd-8.3.git;a=tag;h=drbd-8.3.7rc2
+http://oss.linbit.com/drbd/8.3/drbd-8.3.7rc2.tar.gz
 
-One of the new great features in this release is the ptest integration in 
-the GUI. It's something like What-If machine or a ptest before commit, if 
-you are CRM shell fan, but without hassle of finding out about ptest and 
-making the sense of its output. It works with Pacemaker (not older 
-Heartbeats) and anytime you are about to do something, you will see what 
-will happen. This tests are executed as you hover with your mouse pointer 
-over some buttons or pull-down menus and you see what will happen in the 
-graph and in the tooltips. It is kind of difficult to describe because it is 
-entirely a new GUI element I've just invented and I hope everyone will love 
-it, not hate it.
-
-Similarly any time you do some change in DRBD config a dry-run is performed 
-first and see if something bad is about to happen, for example a full-sync.
-
-In this release a VNC viewer for VirtualDomain resource was added. Well, 
-LINBIT forced me to do it, but it is actually quite neat.
-
-Some people ask about DRBD-MC documentation, there definitely will be one, 
-but at the moment DRBD-MC develops too fast and it would be quite impossible 
-to keep the documentation up-to-date, just like what happened once or twice 
-with Pacemaker documentation. :)
-
-See some new features in the screenshot:
-
-http://oss.linbit.com/drbd-mc/img/drbd-mc-0.5.0.png
-
-Here is the almost complete changelog:
-* race in the menu tree was fixed
-* "create config" dialogs were improved
-* loading from file menu item is now enabled only in god mode
-* handling of newly added services and groups was fixed
-* DRBD meta-data dialog was fixed
-* creating of groups and clones was fixed
-* group services popups were improved
-* removing of not saved services was fixed
-* more than one DRBD meta-data in one block device are allowed now
-* consensus timeout in corosync config was updated
-* Pacemaker installation on 32 bit Redhat distros was fixed
-* Pacemaker installation from clusterlabs repos was fixed
-* Virtual machines submenu was implemented
-* Heartbeat/Pacemaker installation for Centos was added
-* clone service submenu was implemented
-* group popup submenus for every group service was implemented
-* app error is not shown in a new window anymore
-* VNC viewers were added
-* kernel panic and host reboot for testing is now available only in god mode
-* scrollable pulldown menus are now nicer
-* dry-run on mouse-over in DRBD view was added
-* managed/unmanaged information in cluster graph was fixed
-* ptest on mouse-over for hosts, constraints and global config was 
-implemented
-* Fedora 12 support was added
-* ptest for pull down menus was implemented
-* ptest check was implemented
-* Opensuse 11.2 support was added
-
+-Phil
 -- 
-: Dipl-Ing Rastislav Levrinc
-: DRBD-MC http://www.drbd.org/mc/management-console/
-: DRBD/HA support and consulting http://www.linbit.com/
-DRBD(R) and LINBIT(R) are registered trademarks of LINBIT, Austria.
+: Dipl-Ing Philipp Reisner
+: LINBIT | Your Way to High Availability
+: Tel: +43-1-8178292-50, Fax: +43-1-8178292-82
+: http://www.linbit.com
 
+DRBD(R) and LINBIT(R) are registered trademarks of LINBIT, Austria.
