@@ -1,14 +1,15 @@
-Return-Path: <philipp.reisner@linbit.com>
-From: Philipp Reisner <philipp.reisner@linbit.com>
-To: drbd-announce@lists.linbit.com
-Date: Fri, 15 Jan 2010 14:22:21 +0100
+Return-Path: <rasto.levrinc@linbit.com>
+From: Rasto Levrinc <rasto.levrinc@linbit.com>
+To: drbd-mc@lists.linbit.com, drbd-announce@lists.linbit.com,
+	pacemaker@oss.clusterlabs.org, linux-ha@lists.linux-ha.org
+Date: Tue, 26 Jan 2010 11:11:35 +0100
 MIME-Version: 1.0
-Content-Type: text/plain;
+Content-Type: Text/Plain;
   charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Message-Id: <201001151422.21491.philipp.reisner@linbit.com>
-Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-8.3.7.tar.gz
+Content-Disposition: inline
+Message-Id: <201001261111.35863.rasto.levrinc@linbit.com>
+Subject: [DRBD-announce] DRBD Management Console 0.5.1
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -22,86 +23,51 @@ List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hi,
 
-The two highlights of drbd-8.3.7:
+This is the next DRBD-MC beta release 0.5.1. DRBD-MC is a Java GUI that 
+helps to configure DRBD/Pacemaker/Corosync/Openais/Heartbeat clusters.
 
- * New RPM packaging, which is very close to Fedora's packaging rules.
-   In case you are using RPMs make sure that you install the needed
-   subset of RPMs.
+In this minor release many annoying bugs were fixed and some long missing
+features were implemented. For example you can now remove cluster from the 
+GUI without actually editing the XML config file. Finally, in this release 
+stonith devices can be configured and used in the GUI as any other service.
 
-   The drbd-X.X.X-1.ARCH.rpm is now a virtual package that
-   has dependencies on all the components: drbd-utils, drbd-udev,
-   drbd-xen, drbd-bash-completion, drbd-heartbeat and drbd-pacemaker.
+For some advanced folks out there, id-refs for meta-attributes and 
+operations are now parsed and used in the GUI and location constraints can 
+use "ne" operation and not only "eq".
 
-   Those in turn might depend on the component they bridge to drbd.
-   I.e. drbd-udev depends on udev. 
+You can get DRBD-MC here:
 
-   For a hassle free upgrade we omitted a few dependencies:
-   drbd-xen does not depend on xen
-   drbd-pacemaker does not depend on pacemaker
-   drbd-heartbeat does not depend on heartbeat
+http://www.drbd.org/mc/management-console/
+http://oss.linbit.com/drbd-mc/drbd-mc-0.5.1.tar.gz
+http://oss.linbit.com/drbd-mc/DMC-0.5.1.jar
 
-   For new installations I recommend to install drbd-utils and drbd-udev,
-   and the other integration package(s) you need, and to not install
-   the virtual package (drbd).
+You can start it with help of Java Web-Start or you can download it and 
+start it with "java -jar DMC-0.5.1.jar" command.
 
- * New default config that suggests to use config-snippets in /etc/drbd.d/
+See some new features in the screenshot:
 
-   Adding new drbd resources to a pacemaker cluster with the new
-   OCF based resource agent can be a challenging task. The issue
-   is that pacemaker might execute a monitor operation every 
-   second. Since the RA uses drbdadm, it will fail if you have a
-   broken config on your machine. -- Broken configuration files
-   may happen when adding new resources.
+http://oss.linbit.com/drbd-mc/img/drbd-mc-0.5.1.png
 
-   One way out is to split the config into snippets:
-   /etc/drbd.d/global_common.conf and some /etc/drbd.d/*.res
-   A new resource is first created as /etc/drbd.d/something.new
-   Then you check the syntax of the new resource with
-   drbdadm -t /etc/drbd.d/something.new dump something
-   and if it is successful activate that resource by renaming
-   it's config snippet: mv something.new something.res
+Here is the almost complete changelog:
 
-Changelog:
+* config is saved now just before the DRBD-MC exits
+* leading / is now not required for mount point
+* using other operations than "eq" in location constraints was implemented
+* meta-disk on-mouse-over text was fixed
+* combo boxes all around the application were fixed and improved
+* DRBD 8.3.7 installation was fixed
+* id-refs for operations and meta-attributes were implemented
+* stonith devices were added
+* host reconnecting was improved
+* adding-and-removing-of-clusters feature was completed
+* "Remove Marked Clusters" button was implemented
+* drbd.conf parsing was fixed
 
-8.3.7 (api:86/proto:86-91)
---------
- * Lots of fixes to the new RPM packaging
- * Lots of fixes to the autoconfig stuff
- * Following the rename of CONFIG_LBD to CONFIG_LBDAF
- * Silenced an assert. Could trigger after changing write ordering (Bugz 261)
- * Fixed a race condition between detach and ongoing IO. Very hard to
-   trigger, caused an OOPS in make_request/drbd_make_request. (Bugz 262)
- * Fixed a regression in the resync handshake code introduced before 8.3.3.
-   That bug causes DRBD to block during the initial handshake when a partial
-   resync is not possible but a full resync is necessary. Happens very rarely.
-   (Bugz 260)
- * Do not drop into StandAlone mode when connection is lost during authentication
- * Corrected a null test in the authentication code, found by conccinelle,
-   thanks to upstream integration. The chance to trigger that was probably 10^-9.
- * crm-fence-peer.sh is now also usable if DRBD is managed from the xen block
-   helper script
- * Fixes to the init script's dependencies
- * Backported cleanups that where contributed to the in kernel DRBD
- * Allow online resizing of disconnected devices, new option to drbdsetup
-   drbdsetup /dev/drbdX resize --assume-peer-has-space
- * Allow multiple after options in the syncer section for stacked setups
- * Correctly process relative paths in include statements in drbd.conf
- * New option (-t) for drbdadm to test syntax of config snippets
- * Following Linux upstream changes 2.6.32 (SHASH and in_flight issues)
- * New /etc/drbd.conf example that suggests the use of /etc/drbd.d/xxx.res
+Rasto Levrinc
 
-http://oss.linbit.com/drbd/8.3/drbd-8.3.7.tar.gz
-http://git.drbd.org/?p=drbd-8.3.git;a=tag;h=drbd-8.3.7
-
-With this release we have a new policy, that LINBIT's pre build RPMs and 
-DPKGs are available 7 days after the release. This is Friday January 22,
-for drbd-8.3.7.
-
--Phil
 -- 
-: Dipl-Ing Philipp Reisner
-: LINBIT | Your Way to High Availability
-: Tel: +43-1-8178292-50, Fax: +43-1-8178292-82
-: http://www.linbit.com
-
+: Dipl-Ing Rastislav Levrinc
+: DRBD-MC http://www.drbd.org/mc/management-console/
+: DRBD/HA support and consulting http://www.linbit.com/
 DRBD(R) and LINBIT(R) are registered trademarks of LINBIT, Austria.
+
