@@ -2,14 +2,14 @@ Return-Path: <rasto.levrinc@linbit.com>
 From: Rasto Levrinc <rasto.levrinc@linbit.com>
 To: drbd-mc@lists.linbit.com, drbd-announce@lists.linbit.com,
 	pacemaker@oss.clusterlabs.org, linux-ha@lists.linux-ha.org
-Date: Fri, 5 Feb 2010 08:26:05 +0100
+Date: Sun, 28 Feb 2010 12:24:26 +0100
 MIME-Version: 1.0
 Content-Type: Text/Plain;
   charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-Message-Id: <201002050826.06449.rasto.levrinc@linbit.com>
-Subject: [DRBD-announce] DRBD Management Console 0.5.2
+Message-Id: <201002281224.27101.rasto.levrinc@linbit.com>
+Subject: [DRBD-announce] DRBD Management Console 0.6.0
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -23,43 +23,62 @@ List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hi,
 
-This is the next DRBD-MC beta release 0.5.2. DRBD-MC is a Java GUI that 
-helps to configure DRBD/Pacemaker/Corosync/Openais/Heartbeat clusters.
+This is the next DRBD-MC beta release 0.6.0. DRBD-MC is a Java GUI that 
+helps to configure DRBD/Pacemaker/Corosync/Openais/Heartbeat clusters. It is 
+compatible with Heartbeat 2.1.3 to the latest and greatest Pacemaker with 
+both communication stacks and DRBD 8.
 
-In this minor release one major bug is fixed, where in some circumstances the 
-whole GUI starts to acquire large amounts of memory and hangs indefinitely 
-during the initial start. This was introduced in 0.5.1 and it is not a 
-normal behavior even for a Java program.
+Along couple of visual improvements, some missing Pacemaker options and some 
+bugs were fixed. I think that now is about the time, when although you can 
+still shoot yourself in the foot with DRBD-MC while configuring and managing 
+your cluster, you would probably shoot yourself more without it. :-)
+
+This release includes something that will be GUI for cluster-aware virtual 
+machines. It is now possible to set some attributes and see some hardware of 
+VMs if you have some on your cluster. Here is the screenshot:
+
+http://oss.linbit.com/drbd-mc/img/drbd-mc-0.6.0.png
 
 You can get DRBD-MC here:
 
 http://www.drbd.org/mc/management-console/
-http://oss.linbit.com/drbd-mc/drbd-mc-0.5.2.tar.gz
-http://oss.linbit.com/drbd-mc/DMC-0.5.2.jar
+http://oss.linbit.com/drbd-mc/drbd-mc-0.6.0.tar.gz
+http://oss.linbit.com/drbd-mc/DMC-0.6.0.jar
 
 You can start it with help of Java Web-Start or you can download it and 
-start it with "java -Xmx512m -jar DMC-0.5.2.jar" command.
-
-Here is the almost complete changelog:
-* LVM devices are now recognized by Debian
-* a warning is shown, if heartbeat:drbd resource agent is used
-* adding order to the existing colocation was fixed
-* if cibadmin -Q output is not available, cib.xml is used
-* deadlock while loading the cluster was fixed
-* rc.d check on Debian was fixed
-* authkey file for Corosync and Openais installation was added
-* split-brain notification script to the pull down menu was added
-* crypto modules pull down menus to every option that needs it was added
-* online verification was implemented
-* if dopd is is selected, the permissions of DRBD user tool are changed
-* Totally wrong "Heartbeat is unmaintained" text was removed
-* theoretical remaining time for sync is shown in tooltip
-* default for on-io-error was changed to detach
-* cloned groups were fixed
-* wizards were moved to their own subdirectories
-* combo box tool tips were fixed and enhanced
+start it with "java -Xmx512m -jar DMC-0.6.0.jar" command.
+Make sure you use the Java from SUN.
 
 Rasto Levrinc
+
+Here is the changelog:
+* new cluster hosts view was implemented
+* "migrated from" and "force migrate" menu items were implemented
+* allowing /dev/disk/by-uuid/ disks in DRBD, silently converting them for 
+now
+* master-max and master-node-max options were added
+* all resource meta attributes were added
+* ignoring type attributes for ping and pingd for now
+* "changed value" color was changed
+* available services views were improved
+* fix DRBD status updating
+* "suicide" option to "no-quorum-policy" was added
+* read only (for now) disk and interface view for VM GUI was added
+* some GUI visual improvements
+* removing of hosts that are not in cluster was fixed
+* VM GUI improvements
+* getHeartbeatLibPath() called to soon problem was fixed
+* disconnecting when starting host wizard from host was fixed
+* check for DRBD upgrade was disabled for now
+* "All Hosts" view was improved
+* tree menu size is not changed, when user resized it once
+* bugs, with the same host being defined more times, were fixed
+* DRBD, cluster and hw info and status updating was fixed
+* resource animation was improved
+* endless colocation loop check was fixed
+* progress indicator was improved
+* lsb scripts that are executable only by owner are recognized now
+* --slow option to slow down the animations was added
 
 -- 
 : Dipl-Ing Rastislav Levrinc
