@@ -1,14 +1,14 @@
 Return-Path: <philipp.reisner@linbit.com>
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Date: Fri, 21 May 2010 15:02:32 +0200
+Date: Thu, 27 May 2010 17:37:16 +0200
 MIME-Version: 1.0
 Content-Type: text/plain;
   charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Message-Id: <201005211502.32754.philipp.reisner@linbit.com>
+Message-Id: <201005271737.16480.philipp.reisner@linbit.com>
 Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-8.3.8rc1.tar.gz
+Subject: [DRBD-announce] drbd-8.3.8rc2.tar.gz
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -29,19 +29,19 @@ DRBD.
  This is a release candidate, do not use it for production.
  This is a release candidate, do not package it for distributions.
 
-The most outstanding change with this release is, that DRBD now
-can use multiple BIOs (single IO requests) for processing a signle 
-data packat on the receiving side. This allows DRBD in many more 
-cases than before (on LVM's LVs) to process BIOs of a size of up
-to 32k. (Before that DRBD, in many cases, forced the whole stack
-down to a max BIO size of 4k).
+Changes relative to rc1:
+ * Reverted the "late new current UUID" changes, they are not
+   ready for this release.
+ * A few correction to the way we deal with the TCP stack.
+   Should improve latency, and make setting of socket sendbuf 
+   size.
+ * Added missing calls to check-resize to the init script and 
+   the OCF resource agent.
+ * fixed hang on local read errors while disconnected
 
-This is important for hardware setups where both disk IO subsystem 
-and connecting network operate in the area of 10GBit/sec. Those become 
-rapidly more common.
+Change log relative to 8.3.7:
 
-
-8.3.8rc1 (api:88/proto:86-94)
+8.3.8rc2 (api:88/proto:86-94)
 --------
  * Do not expose failed local READs to upper layers, regression introduced
    in 8.3.3
@@ -74,17 +74,14 @@ rapidly more common.
    and to move internal meta-data accordingly
  * Added a control loop, that allows DRBD to find auto tune the resync
    speed, on connections with large queues (drbd-proxy)
- * Create new current UUIDs late, after loosing connection to the peer
  * --dry-run option for connect; disconnects after sync handshake
  * --overwrite-data-of-peer got an alias named --force
  * Improvements to crm-fence-peer
  * Fixed option parsing and stacking in snapshot-resync-target-lvm.sh
  * Compiles on 2.6.33 and 2.6.34
 
-http://git.drbd.org/?p=drbd-8.3.git;a=commit;h=drbd-8.3.8rc1
-http://oss.linbit.com/drbd/8.3/drbd-8.3.8rc1.tar.gz
-
-Happy testing!
+http://git.drbd.org/?p=drbd-8.3.git;a=commit;h=drbd-8.3.8rc2
+http://oss.linbit.com/drbd/8.3/drbd-8.3.8rc2.tar.gz
 
 -Phil
 -- 
