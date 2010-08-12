@@ -2,13 +2,13 @@ Return-Path: <rasto.levrinc@linbit.com>
 From: Rasto Levrinc <rasto.levrinc@linbit.com>
 To: drbd-mc@lists.linbit.com, drbd-announce@lists.linbit.com,
 	pacemaker@oss.clusterlabs.org, linux-ha@lists.linux-ha.org
-Date: Sun, 25 Jul 2010 01:45:18 +0200
+Date: Thu, 12 Aug 2010 09:23:50 +0200
 MIME-Version: 1.0
 Content-Type: Text/Plain;
   charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Message-Id: <201007250145.19619.rasto.levrinc@linbit.com>
-Subject: [DRBD-announce] DRBD MC 0.7.7 / Pacemaker GUI
+Message-Id: <201008120923.50353.rasto.levrinc@linbit.com>
+Subject: [DRBD-announce] DRBD MC 0.7.9 / Pacemaker GUI
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -22,57 +22,51 @@ List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hi,
 
-This is the next DRBD MC beta release 0.7.7. DRBD MC, is a Java application 
+This is the next DRBD MC beta release 0.7.9. DRBD MC, is a Java application 
 that helps to configure DRBD and Pacemaker. You can start DRBD MC on your 
-workstation and connect via SSH to the cluster. DRBD MC is compatible with 
+workstation and connect to the cluster via SSH. DRBD MC is compatible with 
 Heartbeat 2.1.3 to the Pacemaker 1.1.2 with Corosync or Heartbeat and DRBD 
 8.
 
-There are not many new features, this being vacation time and all, but there 
-are some fixes, that it may be worth to upgrade and it happens that DRBD MC 
-is the easiest to upgrade application ever.
+It works with SUN Java 6 and OpenJDK 7. It does not work good with OpenJDK 
+1.6 and this is probably what you have if you have OpenJDK installed as Java 
+at the moment. With OpenJDK 1.6, the so-called fully compatible Java 
+version, it runs slow, experiences random errors or may even hang. Good news 
+is, that this problem will disappear in the future by itself. For now you 
+need to install the SUN Java, that comes with your distribution.
 
-Orphaned resources are now shown, so if all of the sudden many orphan 
-resources show up in the GUI, they are nothing to be worry about, they can 
-be removed or left alone. For some reason removing may not work with recent 
-versions of Pacemaker with Heartbeat, but it works always with Pacemaker on 
-Corosync. If you are hit by this, ignore it simply, they will disappear 
-after next Heartbeat+Pacemaker restart.
+In this release couple of stability issues and annoyances were fixed. The 
+VMs manager part of the program was further developed, so that now it is 
+possible to add new disks and network interfaces to the virtual machines and 
+modify them.
 
-More seriously in the version 1.2.5 corosync -v fills up shared memory. This 
-was fixed before and after this version. Unfortunately DRBD MC checks if 
-version of Corosync changed every minute (it is unlikely but possible) and 
-Corosync 1.2.5 is the version that Andrew Beekhof likes to build and thus it 
-is very popular. DRBD MC has now a workaround for this Corosync version.
+Screenshot:
+
+http://oss.linbit.com/drbd-mc/img/drbd-mc-0.7.9.png
 
 You can get DRBD MC here:
 
 http://www.drbd.org/mc/management-console/
-http://oss.linbit.com/drbd-mc/DMC-0.7.7.jar
-http://oss.linbit.com/drbd-mc/drbd-mc-0.7.7.tar.gz
+http://oss.linbit.com/drbd-mc/DMC-0.7.9.jar
+http://oss.linbit.com/drbd-mc/drbd-mc-0.7.9.tar.gz
 
-You can start it with help of Java Web-Start or you can download it and
-start it with "java -Xmx512m -jar DMC-0.7.7.jar" command. Make sure you use
-the Java from SUN. The openjdk seems to work fine for some time now, but it
-seems to run DRBD MC much slower than the original Java.
-But first of all, please don't run it on one node with X forwarding, but on 
-the desktop.
+You can start it with help of Java Web-Start or you can download it and 
+start it with "java -Xmx512m -jar DMC-0.7.9.jar" command. First of all, 
+please don't run it on one node with X forwarding, but on the desktop.
 
 Here are the most important changes:
-
-* workaround for Corosync 1.2.5 leaking shm with -v option
-* fix standby command so that it works with sudo
-* move "remove all services" to the advanced mode
-* disable menus in DRBD view, for resources that are managed by CRM
-* add support file for Fedora 13 and Opensuse 11.3
-* show orphaned resources
-* when new DRBD device was created, reload filesystem comboboxes
-* save node colors in the graph
-* fix network info
-* remove kex timeout, that causes ssh library to hang
-* fix host scores bug with upper-cased hostnames
-* allow removing of new group services
-* accept +INFINITY scores
+* editable VMS net interfaces and disks
+* order block devices dynamically in the DRBD view
+* fix possible deadlock in Swing
+* show orphaned resources only in advanced mode
+* fix storing of global time values
+* make "DC Version" and "Cluster Infrastructure" fields not editable.
+* fix for adding new services
+* fix removing of items in services menu
+* cleanup group resources after they are removed
+* fix removing of new group
+* show drbddisk RA only if necessary
+* fix expanding of the terminal area
 
 Rasto Levrinc
 
