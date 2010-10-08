@@ -1,13 +1,14 @@
-Return-Path: <rasto.levrinc@linbit.com>
-Message-ID: <61085.62.178.141.198.1286019612.squirrel@mail.linbit.com>
-Date: Sat, 2 Oct 2010 13:40:12 +0200 (CEST)
-From: "Rasto Levrinc" <rasto.levrinc@linbit.com>
-To: drbd-mc@lists.linbit.com, drbd-announce@lists.linbit.com,
-	pacemaker@oss.clusterlabs.org, linux-ha@lists.linux-ha.org
+Return-Path: <philipp.reisner@linbit.com>
+From: Philipp Reisner <philipp.reisner@linbit.com>
+To: drbd-announce@lists.linbit.com
+Date: Fri, 8 Oct 2010 22:01:23 +0200
 MIME-Version: 1.0
-Content-Type: text/plain;charset=iso-8859-15
-Content-Transfer-Encoding: 8bit
-Subject: [DRBD-announce] DRBD MC 0.8.0 / Pacemaker GUI
+Content-Type: text/plain;
+  charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Message-Id: <201010082201.23707.philipp.reisner@linbit.com>
+Cc: drbd-user@lists.linbit.com
+Subject: [DRBD-announce] drbd-8.3.9rc1.tar.gz
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -19,80 +20,62 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Hi,
+Dear DRBD-Users,
 
-This is the next DRBD MC beta release 0.8.0. DRBD MC is a Java application
-that helps to configure DRBD, Pacemaker or both. It uses SSH to connect to
-the cluster from a desktop computer.
+This is a request to test the release candidate one of the upcomming
+8.3.9 release.
 
-Some people have doubts if Java is the right technology for GUI and ask
-why it isn't done in [insert the newest subset-of-Perl language here].
-IMHO it's the same if someone would diss COBOL in 1973, I rest my case. :)
+There are a few interesting changes in this release. The protocol got
+a new header type, that allows us to send more than 64kByte of data
+in one go. As a result, we can now support BIOs up to 128KByte a peace.
 
-If you are a CLI kind of person you probably don't need it, if you like
-BNF notations, syntax errors and people screaming at you - man this, man
-that, if you are into this stuff, there's nothing wrong with it, you don't
-need it. But this is a GUI world and lately people including me don't even
-get a decent keyboard at their workplace, there's no way around it, you
-are going to need this GUI.
+That helps in high performance setups.
 
-In this release the VM part of the GUI was developed and reached almost
-the feature parity with virt-manager. Unlike virt-manager it is
-cluster-aware and it can be run from Windows, yet it still can be run from
-Linux so don't run away. Screenshot:
-
-http://oss.linbit.com/drbd-mc/img/drbd-mc-0.8.0.png
-
-Seemingly faster popups were implemented as well. Especially they seem
-much faster with large groups on slow computers. The trick is, that first
-they pop up and then they load in the background and it feels faster, some
-people do this as well.
-
-You can get DRBD MC here:
-
-http://www.drbd.org/mc/management-console/
-http://oss.linbit.com/drbd-mc/DMC-0.8.0.jar
-http://oss.linbit.com/drbd-mc/drbd-mc-0.8.0.tar.gz
-
-You can download it and start it with "java -jar DMC-0.8.0.jar" command or
-you can use Java Webstart. First of all, please don't run it on one node
-with X forwarding, but on the desktop.
-
-It works with SUN Java 6 and OpenJDK 7. It does not work good with OpenJDK
-1.6 and this is probably what you have if you have OpenJDK installed as
-Java. With this so-called fully compatible Java version it runs slow,
-experiences random errors or may even hang.
-
-DRBD MC is compatible with Heartbeat 2.1.3 to the Pacemaker 1.1.2 with
-Corosync or Heartbeat and DRBD 8.
+Further DRBD got the ability to restart IO requests after IO was
+suspended. This enables us to have the new configuration directive
+on-no-data-accessible as well as to restart IO in other circumstances.
 
 
-Here are the most important changes:
+8.3.9rc1 (api:88/proto:86-95)
+--------
+ * Fixed a race condition between adding and removing network configuration.
+   Lead to a BUG_ON() when triggered.
+ * Fixed spurious full syncs that could happen after an empty resync and
+   concurrent connection loss.
+ * Fixed spurious full syncs that happened when connection got lost while
+   one node was in WFSyncUUID state (Bugz 318)
+ * Fixed a race in the meta-data update code path, that could lead to 
+forgotten
+   updates to the meta-data. That in fact could lead to unexpected behavior
+   at the next connect
+ * Implicitly create unconfigured devices which are referenced in sync-after
+   dependencies.
+ * Allow BIO sizes of up to 128kByte. Note: In case drbd-proxy is used, at 
+least
+   version 1.0.16 of drbd-proxy is required.
+ * New configuration keyword on-no-data-accessible. Possible values
+   io-error, and suspend-io. The default is "io-error", which matches the
+   previous behavior.
+ * If the fencing policy is set to resource-and-stonith, the primary node
+   will creates the new current UUID _after_ the fencing handler
+   returned. (Before it did immediately)
+ * Rewrote the resync speed control loop code. New configuration parameters
+   c-plan-ahead, c-fill-target, c-delay-target, c-max-rate, c-min-rate.
+ * Disable activity log updates when all blocks of an unconnected device is
+   are out of sync. That can be activated by using "invalidate-remote" on an
+   unconnected primary.
+ * Improved IPv6 support: link local addresses
+ * Improved resync speed display in /proc/drbd
 
-* fix DRBD with filesystem in a group
-* rename "Cluster" to "Cluster Manager" in menu
-* enable DRBD menus in unmanaged resources and advanced mode
-* dialog fixes
-* new domain wizard implementation
-* better popup menus
-* fix possible null pointer exception, while removing vertices
-* fix possible race with radio groups
-* fixing a leak while there is no ssh connection
-* using epel 5.4 for redhat/centos distributions
-* test-suite for VMs
-* test-suite for DRBD
-* fix menu tree not updating for orphaned resources
-* split tooltips that are too wide
-* add "stop all services" menu item
-* show in tooltip why a menu item was disabled
-* implement all VM devices
+http://oss.linbit.com/drbd/8.3/drbd-8.3.9rc1.tar.gz
+http://git.drbd.org/?p=drbd-8.3.git;a=commit;h=drbd-8.3.9rc1
 
-Rasto Levrinc
-
+Best,
+ Phil
 -- 
-: Dipl-Ing Rastislav Levrinc
-: DRBD-MC http://www.drbd.org/mc/management-console/
-: DRBD/HA support and consulting http://www.linbit.com/
+: Dipl-Ing Philipp Reisner
+: LINBIT | Your Way to High Availability
+: Tel: +43-1-8178292-50, Fax: +43-1-8178292-82
+: http://www.linbit.com
+
 DRBD(R) and LINBIT(R) are registered trademarks of LINBIT, Austria.
-
-
