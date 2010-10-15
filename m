@@ -1,14 +1,14 @@
 Return-Path: <philipp.reisner@linbit.com>
-From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Date: Fri, 8 Oct 2010 22:01:23 +0200
+From: Philipp Reisner <philipp.reisner@linbit.com>
+Date: Fri, 15 Oct 2010 14:39:47 +0200
 MIME-Version: 1.0
 Content-Type: text/plain;
-  charset="us-ascii"
+  charset="iso-8859-1"
 Content-Transfer-Encoding: 7bit
-Message-Id: <201010082201.23707.philipp.reisner@linbit.com>
+Message-Id: <201010151439.48034.philipp.reisner@linbit.com>
 Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-8.3.9rc1.tar.gz
+Subject: [DRBD-announce] drbd-8.3.9rc2.tar.gz
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -22,36 +22,32 @@ List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Dear DRBD-Users,
 
-This is a request to test the release candidate one of the upcomming
+This is a request to test the release candidate two of the upcoming
 8.3.9 release.
 
-There are a few interesting changes in this release. The protocol got
-a new header type, that allows us to send more than 64kByte of data
-in one go. As a result, we can now support BIOs up to 128KByte a peace.
+Countless CPU cycles where burned by the testing machines in our Lab.
+We get more and more confident that 8.3.9 will be a good release.
 
-That helps in high performance setups.
+You might use our test suite ( http://git.drbd.org/drbd-testsuite.git/ )
+or other means to find regressions or bugs that have been in the
+code since ever. -- We want to hear from you!
 
-Further DRBD got the ability to restart IO requests after IO was
-suspended. This enables us to have the new configuration directive
-on-no-data-accessible as well as to restart IO in other circumstances.
-
-
-8.3.9rc1 (api:88/proto:86-95)
+8.3.9rc2 (api:88/proto:86-95)
 --------
+ * Fix for possible deadlock on IO error during resync
  * Fixed a race condition between adding and removing network configuration.
    Lead to a BUG_ON() when triggered.
  * Fixed spurious full syncs that could happen after an empty resync and
    concurrent connection loss.
  * Fixed spurious full syncs that happened when connection got lost while
    one node was in WFSyncUUID state (Bugz 318)
- * Fixed a race in the meta-data update code path, that could lead to 
-forgotten
+ * Fixed a race in the meta-data update code path, that could lead to forgotten
    updates to the meta-data. That in fact could lead to unexpected behavior
    at the next connect
  * Implicitly create unconfigured devices which are referenced in sync-after
    dependencies.
- * Allow BIO sizes of up to 128kByte. Note: In case drbd-proxy is used, at 
-least
+ * OCF RA now also works with pacemaker 1.1
+ * Allow BIO sizes of up to 128kByte. Note: In case drbd-proxy is used, at least
    version 1.0.16 of drbd-proxy is required.
  * New configuration keyword on-no-data-accessible. Possible values
    io-error, and suspend-io. The default is "io-error", which matches the
@@ -67,8 +63,8 @@ least
  * Improved IPv6 support: link local addresses
  * Improved resync speed display in /proc/drbd
 
-http://oss.linbit.com/drbd/8.3/drbd-8.3.9rc1.tar.gz
-http://git.drbd.org/?p=drbd-8.3.git;a=commit;h=drbd-8.3.9rc1
+http://oss.linbit.com/drbd/8.3/drbd-8.3.9rc2.tar.gz
+http://git.drbd.org/?p=drbd-8.3.git;a=commit;h=drbd-8.3.9rc2
 
 Best,
  Phil
