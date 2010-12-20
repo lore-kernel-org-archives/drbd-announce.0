@@ -1,13 +1,14 @@
-Return-Path: <rasto.levrinc@linbit.com>
-Message-ID: <62313.62.178.141.198.1292613101.squirrel@mail.linbit.com>
-Date: Fri, 17 Dec 2010 20:11:41 +0100 (CET)
-From: "Rasto Levrinc" <rasto.levrinc@linbit.com>
-To: drbd-mc@lists.linbit.com, drbd-announce@lists.linbit.com,
-	pacemaker@oss.clusterlabs.org, linux-ha@lists.linux-ha.org
+Return-Path: <philipp.reisner@linbit.com>
+From: Philipp Reisner <philipp.reisner@linbit.com>
+To: drbd-announce@lists.linbit.com
+Date: Mon, 20 Dec 2010 18:32:32 +0100
 MIME-Version: 1.0
-Content-Type: text/plain;charset=iso-8859-15
-Content-Transfer-Encoding: 8bit
-Subject: [DRBD-announce] DRBD MC 0.8.6 / Pacemaker GUI
+Content-Type: text/plain;
+  charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Message-Id: <201012201832.32401.philipp.reisner@linbit.com>
+Cc: drbd-user@lists.linbit.com
+Subject: [DRBD-announce] drbd-8.3.10rc1.tar.gz
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -21,39 +22,45 @@ List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hi,
 
-This is the next DRBD MC release 0.8.6. DRBD MC is DRBD, Pacemaker and
-Virtual Manager GUI. There can be only one. :)
+This time we have a pretty short change log, but some of those
+short lines have a lot of work in them.
 
-In 0.8.4 were many improvements, but because of a bug in version detection
-it stopped working on old Heartbeats <= 2.1.4. It simply used Pacemaker
-features for this ancient Heartbeat versions, I don't even want to think
-what it was doing to them.
+ DRBD now scales to petabyte devices (on 64 bit platforms)!
 
-You can get DRBD MC here:
+ The other big change is the introduction of the Ahead/Behind mode.
+ It is intended for setups where it is more important to have low IO 
+ latencies that an up-to-date mirror. This can be important for long 
+ distance replication.
 
-http://oss.linbit.com/drbd-mc/
-http://oss.linbit.com/drbd-mc/DMC-0.8.6.jar
-http://oss.linbit.com/drbd-mc/drbd-mc-0.8.6.tar.gz
+Please note: This is a release candidate, not intended for production.
+Please help with testing!
+
+8.3.10rc1 (api:88/proto:86-96)
+--------
+ * Fixed a subtle performance degradation that might affected synchronous
+   work loads (databases) (introduced in 8.3.9)
+ * Fixed a locking regression (introduced in 8.3.9)
+ * Fixed on-no-data-accessible for Primary, SyncTarget nodes (Bugz 332)
+ * Progress bar for online verify
+ * Optionally use the resync speed control loop code for the online verify
+   process as well
+ * Added code to detect false positives when using data-integrity-alg
+ * New config option on-congestion and new connection states ahead and behind
+ * Reduced IO latencies during resync, bitmap exchange and temporal states
+ * Only build a single kernel module package on distributions that provide
+   the infrastructure to have kernel version independent modules
+ * On 64bit architectures allow device sizes up to one petabyte
 
 
-1. You don't need Java on the cluster servers only on your desktop.
-2. Download the DMC-0.8.6.jar file.
-3. Make sure you use SUN Java not the OpenJDK 1.6.
-4. Start it: java -jar DMC-0.8.6.jar
-5. It connects to the cluster via SSH.
-6. If you use it without DRBD, you have to click "Skip" button on couple of
-   places.
+http://oss.linbit.com/drbd/8.3/drbd-8.3.10rc1.tar.gz
+http://git.drbd.org/?p=drbd-8.3.git;a=commit;h=drbd-8.3.10rc1
 
-DRBD MC is compatible with Heartbeat 2.1.3 (from now on) to the Pacemaker
-1.1.3 with Corosync or Heartbeat and DRBD 8.
-
-Rasto Levrinc
-
+Best,
+ Phil
 -- 
-: Dipl-Ing Rastislav Levrinc
-: DRBD MC http://oss.linbit.com/drbd-mc/
-: DRBD MC http://www.drbd.org/mc/management-console/
-: DRBD/HA support and consulting http://www.linbit.com/
+: Dipl-Ing Philipp Reisner
+: LINBIT | Your Way to High Availability
+: Tel: +43-1-8178292-50, Fax: +43-1-8178292-82
+: http://www.linbit.com
+
 DRBD(R) and LINBIT(R) are registered trademarks of LINBIT, Austria.
-
-
