@@ -1,13 +1,14 @@
-Return-Path: <rasto.levrinc@linbit.com>
-Date: Fri, 7 Jan 2011 17:07:01 +0100
-From: Rasto Levrinc <rasto.levrinc@linbit.com>
-To: drbd-mc@lists.linbit.com, drbd-announce@lists.linbit.com,
-	pacemaker@oss.clusterlabs.org, linux-ha@lists.linux-ha.org
-Message-ID: <20110107160701.GA15371@barkeeper1-xen.linbit>
+Return-Path: <philipp.reisner@linbit.com>
+From: Philipp Reisner <philipp.reisner@linbit.com>
+To: drbd-announce@lists.linbit.com
+Date: Wed, 12 Jan 2011 16:14:32 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Subject: [DRBD-announce] DRBD MC 0.8.8 / Pacemaker GUI
+Content-Type: text/plain;
+  charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Message-Id: <201101121614.34676.philipp.reisner@linbit.com>
+Cc: drbd-user@lists.linbit.com
+Subject: [DRBD-announce] drbd-8.3.10rc2.tar.gz
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -21,64 +22,42 @@ List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hi,
 
-This is the next DRBD MC release 0.8.8. DRBD MC is DRBD, Pacemaker and Virtual
-Manager GUI.
+This is the second release candidate for 8.3.10. 
 
-In this release many things were fixed. There is now a revert button, that
-reverts the changes since the last commit, instead of having to restart the
-GUI.
+First of all the embarrassing segfault of drbdadm adjust got
+fixed. Other than that a few details with state transitions
+into and out of the new Ahead/Behind modes needed a few fixes.
 
-Underneath there's a new plugin interface with one plugin, that resizes LVM
-volume with DRBD on it. There will be more plugins available later.
-Although all plugins are/will be open source, the prebuilt plugins are not
-freely available. DRBD MC calls home to check available plugins. To disable
-this check, you can run it with --no-plugin-check option and a tin foil hat :)
+No issues where found in the new support for huge devices (>16TByte).
 
-You can get DRBD MC here:
+Please note: This is a release candidate, not intended for production.
+Please help with testing!
 
-http://oss.linbit.com/drbd-mc/
-http://oss.linbit.com/drbd-mc/DMC-0.8.8.jar
-http://oss.linbit.com/drbd-mc/drbd-mc-0.8.8.tar.gz
+8.3.10rc2 (api:88/proto:86-96)
+--------
+ * Fixed a subtle performance degradation that might affected synchronous
+   work loads (databases) (introduced in 8.3.9)
+ * Fixed a locking regression (introduced in 8.3.9)
+ * Fixed on-no-data-accessible for Primary, SyncTarget nodes (Bugz 332)
+ * Progress bar for online verify
+ * Optionally use the resync speed control loop code for the online verify
+   process as well
+ * Added code to detect false positives when using data-integrity-alg
+ * New config option on-congestion and new connection states ahead and behind
+ * Reduced IO latencies during resync, bitmap exchange and temporal states
+ * Only build a single kernel module package on distributions that provide
+   the infrastructure to have kernel version independent modules
+ * On 64bit architectures allow device sizes up to one petabyte
 
-1. You don't need Java on the cluster servers only on your desktop. 
-2. Download the DMC-0.8.8.jar file.
-3. Make sure you use SUN Java not the OpenJDK 1.6.
-4. Start it: java -jar DMC-0.8.8.jar
-5. It connects to the cluster via SSH.
-6. If you use it without DRBD, you have to click "Skip" button on couple of
-   places.
+http://oss.linbit.com/drbd/8.3/drbd-8.3.10rc2.tar.gz
+http://git.drbd.org/?p=drbd-8.3.git;a=commit;h=drbd-8.3.10rc2
 
-DRBD MC is compatible with Heartbeat 2.1.3 to the Pacemaker 1.1.3 with
-Corosync or Heartbeat and DRBD 8.
-
-he most important changes:
-* fix Corosync installation in fedora 14
-* fix removing of a cloned group
-* rename drbd.d directory after it is not used
-* fix DRBD view not showing some of the lvm devices
-* don't supply sudo password all the time
-* make some buttons more descriptive
-* plugin caching
-* add lvm resize plugin
-* improve start up
-* implement plugin interface
-* VM GUI fixes
-* fix Corosync installation for sles11 sp1
-* use "crm respawn" as default
-* fix setting of locations in cloned groups
-* improve apply button logic
-* add commit buttons
-* add revert buttons
-* disallow spaces in DRBD resource name
-* change menu tree icons to show if resource is running
-* reconnect if ssh port have changed
-* fix available Linbit packages on Centos
-
-Rasto Levrinc
-
+Best,
+ Phil
 -- 
-: Dipl-Ing Rastislav Levrinc
-: DRBD MC http://oss.linbit.com/drbd-mc/
-: DRBD MC http://www.drbd.org/mc/management-console/
-: DRBD/HA support and consulting http://www.linbit.com/
+: Dipl-Ing Philipp Reisner
+: LINBIT | Your Way to High Availability
+: Tel: +43-1-8178292-50, Fax: +43-1-8178292-82
+: http://www.linbit.com
+
 DRBD(R) and LINBIT(R) are registered trademarks of LINBIT, Austria.
