@@ -1,14 +1,14 @@
 Return-Path: <philipp.reisner@linbit.com>
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Date: Wed, 12 Jan 2011 16:14:32 +0100
+Date: Fri, 21 Jan 2011 23:38:19 +0100
 MIME-Version: 1.0
 Content-Type: text/plain;
   charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Message-Id: <201101121614.34676.philipp.reisner@linbit.com>
+Message-Id: <201101212338.20156.philipp.reisner@linbit.com>
 Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-8.3.10rc2.tar.gz
+Subject: [DRBD-announce] drbd-8.3.10rc3.tar.gz
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -22,13 +22,21 @@ List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hi,
 
-This is the second release candidate for 8.3.10. 
+This is the third release candidate for 8.3.10. 
 
-First of all the embarrassing segfault of drbdadm adjust got
-fixed. Other than that a few details with state transitions
-into and out of the new Ahead/Behind modes needed a few fixes.
+We had a hard time to get all the rough edges fixed. But finally
+our test suite no longer finds glitches. We consider the kernel
+code to be frozen with this rc.
 
-No issues where found in the new support for huge devices (>16TByte).
+We take one more week to give interested parties (internal and
+external) the chance to make sure that the new way of packaging
+does not cause any griefs.
+
+On some distros (sles10, sles11, sles11sp1 and rhel6) we will
+have kernel-version independent drbd kernel modules. I.e.
+You will no longer need to fetch/rebuild the DRBD kernel module
+when you install the latest and greatest kernel upgrade from your 
+distribution vendor.
 
 Please note: This is a release candidate, not intended for production.
 Please help with testing!
@@ -49,8 +57,8 @@ Please help with testing!
    the infrastructure to have kernel version independent modules
  * On 64bit architectures allow device sizes up to one petabyte
 
-http://oss.linbit.com/drbd/8.3/drbd-8.3.10rc2.tar.gz
-http://git.drbd.org/?p=drbd-8.3.git;a=commit;h=drbd-8.3.10rc2
+http://oss.linbit.com/drbd/8.3/drbd-8.3.10rc3.tar.gz
+http://git.drbd.org/?p=drbd-8.3.git;a=commit;h=drbd-8.3.10rc3
 
 Best,
  Phil
