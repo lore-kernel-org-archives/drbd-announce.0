@@ -1,13 +1,14 @@
-Return-Path: <rasto.levrinc@linbit.com>
-Date: Mon, 24 Jan 2011 19:21:11 +0100
-From: Rasto Levrinc <rasto.levrinc@linbit.com>
-To: drbd-mc@lists.linbit.com, drbd-announce@lists.linbit.com,
-	pacemaker@oss.clusterlabs.org, linux-ha@lists.linux-ha.org
-Message-ID: <20110124182111.GA21296@barkeeper1-xen.linbit>
+Return-Path: <philipp.reisner@linbit.com>
+From: Philipp Reisner <philipp.reisner@linbit.com>
+To: drbd-announce@lists.linbit.com
+Date: Fri, 28 Jan 2011 15:50:46 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Subject: [DRBD-announce] DRBD MC 0.8.12 / Pacemaker GUI
+Content-Type: text/plain;
+  charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Message-Id: <201101281550.46538.philipp.reisner@linbit.com>
+Cc: drbd-user@lists.linbit.com
+Subject: [DRBD-announce] drbd-8.3.10.tar.gz
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -21,69 +22,42 @@ List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hi,
 
-This is the next DRBD MC release 0.8.12. DRBD MC is DRBD, Pacemaker and
-Virtual Manager GUI.
+We are proud to release The final drbd-8.3.10 release. 
 
-This is a minor release that focuses on fixing bugs and doing what is
-expected, but don't worry, it's not self-aware yet.
+ The outstanding feature is the support for device sizes up
+ to one petabyte. (On 64 bit platforms only).
 
-To keep people from command line longer, there's now start/stop Heartbeat
-option in host popup menus, or start/stop Corosync if this is what you have. 
+ The other big change is the introduction of the Ahead/Behind mode.
+ It is intended for setups where it is more important to have low IO 
+ latencies that an up-to-date mirror. This can be important for long 
+ distance replication.
 
-To do what is right, migrating away a DRBD master/slave resource now works
-so that DRBD is not stopped but stays slave.
+8.3.10 (api:88/proto:86-96)
+--------
+ * Fixed a subtle performance degradation that might affected synchronous
+   work loads (databases) (introduced in 8.3.9)
+ * Fixed a locking regression (introduced in 8.3.9)
+ * Fixed on-no-data-accessible for Primary, SyncTarget nodes (Bugz 332)
+ * Progress bar for online verify
+ * Optionally use the resync speed control loop code for the online verify
+   process as well
+ * Added code to detect false positives when using data-integrity-alg
+ * New config option on-congestion and new connection states ahead and behind
+ * Reduced IO latencies during resync, bitmap exchange and temporal states
+ * Only build a single kernel module package on distributions that provide
+   the infrastructure to have kernel version independent modules
+ * On 64bit architectures allow device sizes up to one petabyte
 
-To make more and more options available, the group attributes "collocated"
-and "ordered" were added. On the other hand these options are an abomination 
-according to Beekhof, and shouldn't be used, so they are hidden in the
-abomination section, I mean advanced section.
+http://oss.linbit.com/drbd/8.3/drbd-8.3.10.tar.gz
+http://git.drbd.org/?p=drbd-8.3.git;a=tag;h=drbd-8.3.10
+http://www.linbit.com/support/drbd-8.3.10/
 
-You can get DRBD MC here:
-
-http://oss.linbit.com/drbd-mc/
-http://oss.linbit.com/drbd-mc/DMC-0.8.12.jar
-http://oss.linbit.com/drbd-mc/drbd-mc-0.8.12.tar.gz
-
-1. You don't need Java on the cluster servers only on your desktop. 
-2. Download the DMC-0.8.12.jar file.
-3. Make sure you use SUN Java not the OpenJDK 1.6.
-4. Start it: java -jar DMC-0.8.12.jar
-5. It connects to the cluster via SSH.
-6. If you use it without DRBD, you have to click "Skip" button on couple of
-   places.
-
-DRBD MC is compatible with Heartbeat 2.1.3 to the Pacemaker 1.1.4 with
-Corosync or Heartbeat and DRBD 8.
-
-The most important changes:
-0.8.12
-* add "ordered" and "collocated" group meta attributes
-* migrate only role=Master in master slave resources
-* start heartbeat/corosync menu items
-* fix status view in the graph
-* fix updating of action menu
-* allow using openais init script if available
-0.8.10
-* fix lvm resizing
-* improve startup
-* disable VM menu items that are used by CRM
-* install make before compiling DRBD on rhel6
-* don't use reload to start the heartbeat
-* fix back buttons in cluster wizard
-* don't migrate group services if migrating everything
-* add rhel6 support file
-* fix offline, online node status
-* fix sudo, allow "require tty" again
-* make the DRBD options work on gentoo
-* enable known hosts file for all osses except of windows
-* fix migrate all resources
-* fix stonith info
-
-Rasto Levrinc
-
+Best,
+ Phil
 -- 
-: Dipl-Ing Rastislav Levrinc
-: DRBD MC http://oss.linbit.com/drbd-mc/
-: DRBD MC http://www.drbd.org/mc/management-console/
-: DRBD/HA support and consulting http://www.linbit.com/
+: Dipl-Ing Philipp Reisner
+: LINBIT | Your Way to High Availability
+: Tel: +43-1-8178292-50, Fax: +43-1-8178292-82
+: http://www.linbit.com
+
 DRBD(R) and LINBIT(R) are registered trademarks of LINBIT, Austria.
