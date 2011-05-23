@@ -1,14 +1,14 @@
 Return-Path: <philipp.reisner@linbit.com>
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Date: Mon, 9 May 2011 18:24:09 +0200
+Date: Mon, 23 May 2011 18:49:31 +0200
 MIME-Version: 1.0
 Content-Type: text/plain;
   charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Message-Id: <201105091824.10153.philipp.reisner@linbit.com>
+Message-Id: <201105231849.32203.philipp.reisner@linbit.com>
 Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-8.4.0rc1.tar.gz
+Subject: [DRBD-announce] drbd-8.3.11rc1.tar.gz
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -22,59 +22,48 @@ List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hi,
 
-A new major release of DRBD is going into feature freeze mode!
+This is a bugfix only release in of the 8.3 code branch.
 
-  The most noticeable change is the support for multiple replicated
-  volumes in a single DRBD connection.
-  Write-ordering is obeyed among all writes in all volumes in a
-  single connection.
-  This feature is really important for users who DRBD for mirroring
-  over longer distances. (Protocol A).
+The most subtlety bug fixed with this release is in the
+area of the max_bio_size negotiation:
+  Over the course of the last releases we where driving up
+  the max_bio_size supported by DRBD. We had an optimistic
+  negotiation of the agreed max_bio_size in place.
+  Now, if one created a device, made it primary, connected
+  it to a peer node with data, and attached the local disk
+  after all that, he could cause DRBD to shrink the
+  max_bio_size with that attach operation.
+  But shrinking the max_bio_size is a problem if a BIO gets
+  created with the old (larger) max_bio_size and gets 
+  submitted when the new (smaller) max_bio_size is set.
 
-  Please see the changelog for all the other cherries ;)
+The other fixes are quite on the same page:
+  Rather not so common cases.
 
-So far it is intended to build on debian-squeeze, ubuntu-lucid,
-RHEL6, SLES11 and SLES11SP1. (Basically kernel 2.6.27 or newer.)
-Support for older distributions will follow with future release
-candidates. 
+Interesting for long distance replication users, is the bugfix
+for establishing connections.
 
 Please note: This is a release candidate, not intended for production.
 Please help with testing!
 
-8.4.0rc1 (api:genl1/proto:86-100)
+8.3.11rc1 (api:88/proto:86-96)
 --------
- * Fixed handling of read errors during online verify
- * Go into inconsistent disk state with on-io-error=pass-on policy
- * Timeouts for requests processing on the peer (previously that
-   worked only if the data socket was congested)
- * Reworked Linux backward compatibility mechanism
- * Conflicting write detection is now based on an interval tree,
-   removed the hash-tables (necessary for the unlimited BIO sizes)
- * Removed the tracing framework
- * Support for multiple volumes (minors, block devices) per connection;
-   up to 65536 volumes per connection supported
- * Reduced IO latencies during some state changes (esp. start resync)
- * New on disk format for the AL: double capacity; 4k aligned IO; same space
- * Multiple AL changes in a single transaction (precondition for
-   unlimited BIO sizes)
- * DRBD no longer imposes any limit on BIO sizes
- * Removed DRBD's limits on the number of minor devices
- * DRBD's minors can now be removed (not only unconfigured)
- * Switched the user space interface form connector to generic netlink
- * drbdadm, configuration changes: volume sections; syncer section removed;
-   bool options got yes/no values, that improves option inheritance;
-   resource options
- * drbdsetup: new commands for creating and removing connections
-   and minors
- * drbdsetup: new commands for changing disk options while the disk
-   is attached; ...for changing net options while the connection is
-   established
- * drbdsetup/drbdadm the wire-protocol is now a regular connection option
- * IO freezing/thawing is done on connection (all volumes) level
- * fencing is done on connection (all volumes) level
+ * Fixed handling of read errors during online verify runs
+ * Fixes for possible distributed deadlocks during online verify and
+   checksum based resync processes
+ * Fixed handling of IO errors with an on-io-error=pass-on policy; the
+   disk state goes to inconsistent
+ * Fixed the behaviour in case ping-timeout and ping-int are set to the
+   same value
+ * Fix for connecting on high latency network links
+ * Fixed state transitions if fence-peer handler returns after connection was
+   established again
+ * Made the max_bio_size negotiation conservative instead of optimistic
+ * Network timeouts for mirrored write requests are now always enforced,
+   no longer only when the socket is congested
 
-http://oss.linbit.com/drbd/8.4/drbd-8.4.0rc1.tar.gz
-http://git.drbd.org/?p=drbd-8.4.git;a=tag;h=drbd-8.4.0rc1
+http://oss.linbit.com/drbd/8.3/drbd-8.3.11rc1.tar.gz
+http://git.drbd.org/?p=drbd-8.3.git;a=commit;h=drbd-8.3.11rc1
 
 Best,
  Phil
