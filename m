@@ -1,14 +1,14 @@
 Return-Path: <philipp.reisner@linbit.com>
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Date: Mon, 23 May 2011 18:49:31 +0200
+Date: Thu, 26 May 2011 19:07:50 +0200
 MIME-Version: 1.0
 Content-Type: text/plain;
   charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Message-Id: <201105231849.32203.philipp.reisner@linbit.com>
+Message-Id: <201105261907.50428.philipp.reisner@linbit.com>
 Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-8.3.11rc1.tar.gz
+Subject: [DRBD-announce] drbd-8.4.0rc2.tar.gz
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -22,48 +22,35 @@ List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hi,
 
-This is a bugfix only release in of the 8.3 code branch.
+We spent a lot of time polishing rough edges in the mass amounts of
+new code. Unfortunately we got only 3 bug reports so far. This is a call 
+for more testing!!!
 
-The most subtlety bug fixed with this release is in the
-area of the max_bio_size negotiation:
-  Over the course of the last releases we where driving up
-  the max_bio_size supported by DRBD. We had an optimistic
-  negotiation of the agreed max_bio_size in place.
-  Now, if one created a device, made it primary, connected
-  it to a peer node with data, and attached the local disk
-  after all that, he could cause DRBD to shrink the
-  max_bio_size with that attach operation.
-  But shrinking the max_bio_size is a problem if a BIO gets
-  created with the old (larger) max_bio_size and gets 
-  submitted when the new (smaller) max_bio_size is set.
+The highlight of the second RC is of course the pacemaker integration.
 
-The other fixes are quite on the same page:
-  Rather not so common cases.
-
-Interesting for long distance replication users, is the bugfix
-for establishing connections.
+With this rc we have the compatibility code in place. It is expected
+to work on kernels 2.6.18 and newer. I.e. RHEL5.
 
 Please note: This is a release candidate, not intended for production.
 Please help with testing!
 
-8.3.11rc1 (api:88/proto:86-96)
+8.4.0rc2 (api:genl1/proto:86-100)
 --------
- * Fixed handling of read errors during online verify runs
- * Fixes for possible distributed deadlocks during online verify and
-   checksum based resync processes
- * Fixed handling of IO errors with an on-io-error=pass-on policy; the
-   disk state goes to inconsistent
- * Fixed the behaviour in case ping-timeout and ping-int are set to the
-   same value
+ * Do not crash if a connection is removed while fence peer handler runs
  * Fix for connecting on high latency network links
  * Fixed state transitions if fence-peer handler returns after connection was
    established again
- * Made the max_bio_size negotiation conservative instead of optimistic
- * Network timeouts for mirrored write requests are now always enforced,
-   no longer only when the socket is congested
+ * Various net options update the peer when changed on one side
+   (protocol, data-integrity-alg, allow-two-primaries, after-sb-*)
+ * drbdadm, fixed: option inheritance, stacked resources, resync-after, ...
+ * When build with --with-legacy-connector it brings all the necessary
+   old executables, and the new tools transparently execute the old
+   ones if necessary
+ * Compatibility code down to at least kernel 2.6.18
+ * Code cleanups ; New way of dealing with default values
 
-http://oss.linbit.com/drbd/8.3/drbd-8.3.11rc1.tar.gz
-http://git.drbd.org/?p=drbd-8.3.git;a=commit;h=drbd-8.3.11rc1
+http://oss.linbit.com/drbd/8.4/drbd-8.4.0rc2.tar.gz
+http://git.drbd.org/?p=drbd-8.4.git;a=tag;h=drbd-8.4.0rc2
 
 Best,
  Phil
