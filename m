@@ -1,14 +1,14 @@
-Return-Path: <philipp.reisner@linbit.com>
-From: Philipp Reisner <philipp.reisner@linbit.com>
+Return-Path: <lars.ellenberg@linbit.com>
+Date: Tue, 7 Jun 2011 14:30:58 +0200
+From: Lars Ellenberg <lars.ellenberg@linbit.com>
 To: drbd-announce@lists.linbit.com
-Date: Thu, 26 May 2011 19:07:50 +0200
+Message-ID: <20110607123058.GD16474@barkeeper1-xen.linbit>
 MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Message-Id: <201105261907.50428.philipp.reisner@linbit.com>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="82I3+IH0IqGh5yIs"
+Content-Disposition: inline
 Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-8.4.0rc2.tar.gz
+Subject: [DRBD-announce] drbd-8.3.11rc2.tar.gz
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -20,44 +20,71 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
+
+--82I3+IH0IqGh5yIs
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
 Hi,
 
-We spent a lot of time polishing rough edges in the mass amounts of
-new code. Unfortunately we got only 3 bug reports so far. This is a call 
-for more testing!!!
+This is the second release candidate for 8.3.11.
 
-The highlight of the second RC is of course the pacemaker integration.
+This will be a maintenance release only,
+we had enough new features in the last releases ;)
 
-With this rc we have the compatibility code in place. It is expected
-to work on kernels 2.6.18 and newer. I.e. RHEL5.
+Still, the usual note applies:
+ This is a release candidate, not intended for production.
+ Please help with testing!=20
 
-Please note: This is a release candidate, not intended for production.
-Please help with testing!
-
-8.4.0rc2 (api:genl1/proto:86-100)
+8.3.11rc2 (api:88/proto:86-96)
 --------
- * Do not crash if a connection is removed while fence peer handler runs
+ * Added missing spinlock in compressed bitmap receive (regression introduc=
+ed
+   in 8.3.10, could lead to "negative" out-of-sync stats and non-terminating
+   resync when "use-rle" is enabled)
+ * Fixed handling of read errors during online verify runs
+ * Fixes for possible distributed deadlocks during online verify and
+   checksum based resync processes
+ * Fixed handling of IO errors with an on-io-error=3Dpass-on policy; the
+   disk state goes to inconsistent
+ * Fixed the behavior in case ping-timeout and ping-int are set to the
+   same value
  * Fix for connecting on high latency network links
- * Fixed state transitions if fence-peer handler returns after connection was
+ * Fixed state transitions if fence-peer handler returns after connection w=
+as
    established again
- * Various net options update the peer when changed on one side
-   (protocol, data-integrity-alg, allow-two-primaries, after-sb-*)
- * drbdadm, fixed: option inheritance, stacked resources, resync-after, ...
- * When build with --with-legacy-connector it brings all the necessary
-   old executables, and the new tools transparently execute the old
-   ones if necessary
- * Compatibility code down to at least kernel 2.6.18
- * Code cleanups ; New way of dealing with default values
+ * Made negotiation of max_bio_size conservative instead of optimistic
+ * Network timeouts for mirrored write requests are now always enforced,
+   no longer only when the socket is congested
 
-http://oss.linbit.com/drbd/8.4/drbd-8.4.0rc2.tar.gz
-http://git.drbd.org/?p=drbd-8.4.git;a=tag;h=drbd-8.4.0rc2
+There is one additional fix, not mentioned yet in the changelog above,
+to a cosmetic bug in the display of resync rates.
+Due to mistaking division for modulo, once you got better than 1 GiByte/s,
+it would only display 1,000,001, then 2,000,002, 3,000,003 and so on
+(if your hardware was good enough).
 
-Best,
- Phil
--- 
-: Dipl-Ing Philipp Reisner
+http://oss.linbit.com/drbd/8.3/drbd-8.3.11rc2.tar.gz
+http://git.drbd.org/?p=3Ddrbd-8.3.git;a=3Dtag;h=3Ddrbd-8.3.11rc2
+
+--=20
+: Lars Ellenberg
 : LINBIT | Your Way to High Availability
-: Tel: +43-1-8178292-50, Fax: +43-1-8178292-82
-: http://www.linbit.com
+: DRBD/HA support and consulting http://www.linbit.com
 
-DRBD(R) and LINBIT(R) are registered trademarks of LINBIT, Austria.
+DRBD=AE and LINBIT=AE are registered trademarks of LINBIT, Austria.
+
+--82I3+IH0IqGh5yIs
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.10 (GNU/Linux)
+
+iEYEARECAAYFAk3uGgIACgkQp+S8HSIpHPDrvgCfdXzyfyxWw9i16BuI/VWpvMRp
+OHwAn342jZOP2/TOZuA69L+d/yVRIHU/
+=57tZ
+-----END PGP SIGNATURE-----
+
+--82I3+IH0IqGh5yIs--
