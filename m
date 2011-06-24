@@ -1,14 +1,14 @@
 Return-Path: <philipp.reisner@linbit.com>
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Date: Wed, 22 Jun 2011 10:21:28 +0200
+Date: Fri, 24 Jun 2011 16:26:57 +0200
 MIME-Version: 1.0
-Content-Type: text/plain;
+Content-Type: Text/Plain;
   charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Message-Id: <201106221021.28608.philipp.reisner@linbit.com>
+Message-Id: <201106241626.57579.philipp.reisner@linbit.com>
 Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-8.3.11rc3.tar.gz
+Subject: [DRBD-announce] drbd-8.4.0rc3.tar.gz
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -22,38 +22,36 @@ List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hi,
 
-The most important fix relative to the last RC, is better handling of
-congested connections. Due to the amount of compatibility wrappers to 
-make it compile on the most recent kernels we do one more RC before the
-final release.
+Since 8.4 is in freeze mode, developers start to tink about drbd-9.
+This thinking process causes a bit of backscatter to 8.4, but since
+8.4 is not yet released, and if this backscatter will make life
+easier in the future it is a good thing.
+
+  So, the most prominent changes, are to make the future transition
+  from drbd-8.4 to drbd-9 a smooth experience.
 
 Please note: This is a release candidate, not intended for production.
 Please help with testing!
 
-8.3.11rc3 (api:88/proto:86-96)
+8.4.0rc3 (api:genl1/proto:86-100)
 --------
- * Added missing spinlock in compressed bitmap receive (regression introduced
-   in 8.3.10, could lead to "negative" out-of-sync stats and non-terminating
-   resync when "use-rle" is enabled)
- * Fixed handling of read errors during online verify runs
- * Fixes for possible distributed deadlocks during online verify and
-   checksum based resync processes
- * Fixed handling of IO errors with an on-io-error=pass-on policy; the
-   disk state goes to inconsistent
- * Fixed the behaviour in case ping-timeout and ping-int are set to the
-   same value
- * Fix for connecting on high latency network links
- * Fixed wrong connection drops ("PingAck did not arrive in time") with
-   asymmetrically congested networks
- * Fixed state transitions if fence-peer handler returns after connection was
-   established again
- * Made negotiation of max_bio_size conservative instead of optimistic
- * Network timeouts for mirrored write requests are now always enforced,
-   no longer only when the socket is congested
+ * Renamed drbdsetup commands: new-connection -> new-resource,
+   del-connection -> del-resource and xml -> xml-help
+ * Renamed a configure option: --with-legacy-connector -> --with-legacy_utils
+ * Renamed drbdadm options --force to --yes
+ * drbdadm now passes drbdsetup options through, without the cumbersome
+   "--" separator. They need to be given after the command on the command
+   line. I.e. "drbdadm primary r0 --force". This is enabled for: attach, 
+   disk-options, new-options, disconnect, resource-options, primary and 
+   new-current-uuid.
+ * Changes from the 8.3 branch up to 8.3.11rc3
+ * Code cleanups ; Removal of compatibility code for kernels older than 2.6.18
 
-http://oss.linbit.com/drbd/8.3/drbd-8.3.11rc3.tar.gz
-http://git.drbd.org/?p=drbd-8.3.git;a=commit;h=drbd-8.3.11rc3
+http://git.drbd.org/?p=drbd-8.4.git;a=tag;h=drbd-8.4.0rc3
+http://oss.linbit.com/drbd/8.4/drbd-8.4.0rc3.tar.gz
 
+Best,
+ Phil
 -- 
 : Dipl-Ing Philipp Reisner
 : LINBIT | Your Way to High Availability
