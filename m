@@ -1,14 +1,14 @@
 Return-Path: <philipp.reisner@linbit.com>
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Date: Wed, 29 Jun 2011 18:39:46 +0200
+Date: Wed, 6 Jul 2011 17:01:25 +0200
 MIME-Version: 1.0
 Content-Type: text/plain;
   charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Message-Id: <201106291839.47335.philipp.reisner@linbit.com>
+Message-Id: <201107061701.25797.philipp.reisner@linbit.com>
 Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-8.3.11.tar.gz
+Subject: [DRBD-announce] drbd-8.4.0rc4.tar.gz
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -22,53 +22,37 @@ List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hi,
 
-This is a bugfix only release in of the 8.3 code branch.
+This is intended to be the final RC. It is inteded to build and work
+on RHEL 5.x (where x >= 3), RHEL 6.x, SELS11SPx, Debian 6, Debian 5
+with backports kernels, Ubuntu 10.04. 
 
-This release has a number of fixes important for long distance
-replication setups. (Items 1, 3, 5, 6, 7 = 5 fixes)
+I think all the issues reported for rc3 where fixed. Please provide
+testing and feedback.
 
-Two fixes people that use backing devices where IO errors might
-occur. (plain disks, or iSCSI with a non infinite time to retain)
+Please note: This is a release candidate, not intended for production.
+Please help with testing!
 
-Item 8  is a fix for a regression introduced with 8.3.9
-Item 9  fixes for the 1PiByte support introduced with 8.3.10
-Item 10 fixes a bug was there since the early days, but it got more
-        likely to trigger with DRBD's rather recent ability to use 
-        bigger BIO sizes
-Item 11 This issue was there since the early days, nobody noticed
-        it before
-
-Although nearly of these fixes are for bugs that are very unlikely to
-trigger, we recommend upgrading to 8.3.11.
-
-8.3.11 (api:88/proto:86-96)
+8.4.0rc4 (api:genl1/proto:86-100)
 --------
- * Added missing spinlock in compressed bitmap receive (regression introduced
-   in 8.3.10, could lead to "negative" out-of-sync stats and non-terminating
-   resync when "use-rle" is enabled)
- * Fixed handling of read errors during online verify runs
- * Fixes for possible distributed deadlocks during online verify and
-   checksum based resync processes
- * Fixed handling of IO errors with an on-io-error=pass-on policy; the
-   disk state goes to inconsistent
- * Fixed the behavior in case ping-timeout and ping-int are set to the
-   same value
- * Fix for connecting on high latency network links
- * Fixed wrong connection drops ("PingAck did not arrive in time") with
-   asymmetrically congested networks
- * Fixed state transitions if fence-peer handler returns after connection was
-   established again
- * Fixes to drbdmeta and drbdsetup for the > 16TByte support
- * Made negotiation of max_bio_size conservative instead of optimistic
- * Network timeouts for mirrored write requests are now always enforced,
-   no longer only when the socket is congested
+ * Enforce application of activity log after primary crash in user space
+ * Features from drbd-8.3: Allow detach from frozen backing devices with the
+   new --force option; configurable timeout for backing devices by the new
+   disk-timeout option
+ * Fixes from drbd-8.3: RHEL 6.1 compatibility, fixes for >16TiB support,
+   fixed bit_size negotiation with drbd < 8.3.7
+ * Fixed state transitions in case attach fails
+ * Fixed OOPS on RHEL5 kernels; By delivering a workaround for a bug in
+   RHEL5's header files
+ * Renamed --dry-run of connect to --tentative; plus alias in drbdsetup
+ * Removed drbdadm --yes option
+ * drbdadm got a "help" sub command, that shows the specific options
+ * drbdadm can now process all options in random order, and ignores the "--"
+   separator; compatibility aliases with the old calling conventions; now it
+   is compatible with the pre 8.4 way of calling.
 
-http://git.drbd.org/?p=drbd-8.3.git;a=tag;h=drbd-8.3.11
-http://oss.linbit.com/drbd/8.3/drbd-8.3.11.tar.gz
-http://www.linbit.com/support/drbd-8.3.11/
+http://git.drbd.org/?p=drbd-8.4.git;a=tag;h=drbd-8.4.0rc4
+http://oss.linbit.com/drbd/8.4/drbd-8.4.0rc4.tar.gz
 
-Best,
- Phil
 -- 
 : Dipl-Ing Philipp Reisner
 : LINBIT | Your Way to High Availability
