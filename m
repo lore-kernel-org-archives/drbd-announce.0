@@ -1,14 +1,13 @@
-Return-Path: <philipp.reisner@linbit.com>
-From: Philipp Reisner <philipp.reisner@linbit.com>
-To: drbd-announce@lists.linbit.com
-Date: Wed, 6 Jul 2011 17:01:25 +0200
+Return-Path: <rasto.levrinc@linbit.com>
+Date: Tue, 12 Jul 2011 08:30:22 +0200
+From: Rasto Levrinc <rasto.levrinc@linbit.com>
+To: drbd-mc@lists.linbit.com, drbd-announce@lists.linbit.com,
+	pacemaker@oss.clusterlabs.org, linux-ha@lists.linux-ha.org
+Message-ID: <20110712063021.GA25101@barkeeper1-xen.linbit>
 MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Message-Id: <201107061701.25797.philipp.reisner@linbit.com>
-Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-8.4.0rc4.tar.gz
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Subject: [DRBD-announce] DRBD MC 0.9.4 / Pacemaker GUI
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -22,41 +21,76 @@ List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hi,
 
-This is intended to be the final RC. It is inteded to build and work
-on RHEL 5.x (where x >= 3), RHEL 6.x, SELS11SPx, Debian 6, Debian 5
-with backports kernels, Ubuntu 10.04. 
+This is the next DRBD:MC release 0.9.4. DRBD:MC is DRBD, Pacemaker and
+Cluster Virtual Manager GUI.
 
-I think all the issues reported for rc3 where fixed. Please provide
-testing and feedback.
+The commands in DRBD 8.4 (the replication software) have changed a lot, but
+you don't have to worry about it if you use DRBD:MC, except some fields got
+shuffled around and there's something called volumes in between.
 
-Please note: This is a release candidate, not intended for production.
-Please help with testing!
+I've noticed that OpenJDK 6 is getting better for some time. Not only the
+Java application starts with it now, after minimum of changes it was running,
+without blowing up the computer.
 
-8.4.0rc4 (api:genl1/proto:86-100)
---------
- * Enforce application of activity log after primary crash in user space
- * Features from drbd-8.3: Allow detach from frozen backing devices with the
-   new --force option; configurable timeout for backing devices by the new
-   disk-timeout option
- * Fixes from drbd-8.3: RHEL 6.1 compatibility, fixes for >16TiB support,
-   fixed bit_size negotiation with drbd < 8.3.7
- * Fixed state transitions in case attach fails
- * Fixed OOPS on RHEL5 kernels; By delivering a workaround for a bug in
-   RHEL5's header files
- * Renamed --dry-run of connect to --tentative; plus alias in drbdsetup
- * Removed drbdadm --yes option
- * drbdadm got a "help" sub command, that shows the specific options
- * drbdadm can now process all options in random order, and ignores the "--"
-   separator; compatibility aliases with the old calling conventions; now it
-   is compatible with the pre 8.4 way of calling.
+Although things fix by themselves occasionally, it turned out that making a
+workaround for one Java version on one platform breaks something on other
+platform, causing a combinatorial explosion of breakages, workarounds a fixes.
+In short I've been for couple of days I've been in a place, we call the Java
+hell.
 
-http://git.drbd.org/?p=drbd-8.4.git;a=tag;h=drbd-8.4.0rc4
-http://oss.linbit.com/drbd/8.4/drbd-8.4.0rc4.tar.gz
+Now it works perfectly with OpenJDK 6, but It is still recommended to run
+it with SUN Java, since OpenJDK is a bit slow in comparison.
+
+You can get DRBD:MC here:
+http://oss.linbit.com/drbd-mc/
+
+Screenshot:
+
+http://oss.linbit.com/drbd-mc/img/drbd-mc-0.9.4.png
+
+1. You don't need Java on the cluster servers only on your desktop. 
+2. Download the DMC-0.9.4.jar file.
+3. Start it: java -jar DMC-0.9.4.jar, or click on the file.
+4. It connects to the cluster via SSH.
+5. If you use it without DRBD, you have to click "Skip" button on couple of
+   places.
+6. It is recommended to use it with SUN Java.
+
+DRBD:MC is compatible with Heartbeat 2.1.3 to the Pacemaker 1.1.5 with
+Corosync or Heartbeat and DRBD 8.
+
+The most important changes:
+*  use get-gi instead of attach to find out if there are meta-data
+*  improve testing framework
+*  fix gnome wnck applet craziness problem on some platforms
+*  --nolrm option to disable showing of resources that are only in LRM
+*  make texts in the graph clearer
+*  fix remove all and stop all functions
+*  fix issues with dialogs on some platforms
+*  fix resource sets
+*  keep options when switching between primitive and clone
+*  reload resync-after combo boxes when there are changes
+*  Opensuse installation for 11-4
+*  fix saving of cloned grouped resource
+*  fix lockup in OpenJDK 6
+*  fix Scientific Linux 5 detection
+*  right KVM emulator defaults for every distro
+*  change "Go Out of Standby" to "Go Online" in menu
+*  cleanup resources only if they need to be
+*  fix saving of VM config
+*  improved CIB communication from the helper programm
+*  fix "IPC Channel to ... is not connected" warning
+*  fix removing of constraints
+*  fix canceling of new DRBD resource
+*  don't reenable apply button for short after applying
+*  8.4.0 volume support
+*  add "adjust all" option to the DRBD host menus
+*  fix ptest with sudo
+
+Rasto Levrinc
 
 -- 
-: Dipl-Ing Philipp Reisner
-: LINBIT | Your Way to High Availability
-: Tel: +43-1-8178292-50, Fax: +43-1-8178292-82
-: http://www.linbit.com
-
+: Dipl-Ing Rastislav Levrinc
+: DRBD MC http://oss.linbit.com/drbd-mc/
+: DRBD/HA support and consulting http://www.linbit.com/
 DRBD(R) and LINBIT(R) are registered trademarks of LINBIT, Austria.
