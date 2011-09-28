@@ -1,14 +1,21 @@
-Return-Path: <philipp.reisner@linbit.com>
-From: Philipp Reisner <philipp.reisner@linbit.com>
-To: drbd-announce@lists.linbit.com
-Date: Mon, 18 Jul 2011 19:13:26 +0200
+Return-Path: <rasto.levrinc@gmail.com>
+Received: from mail-yw0-f54.google.com (mail-yw0-f54.google.com
+	[209.85.213.54]) (using TLSv1 with cipher RC4-SHA (128/128 bits))
+	(No client certificate requested)
+	by mail09.linbit.com (LINBIT Mail Daemon) with ESMTPS id 271DB10556B9
+	for <drbd-announce@lists.linbit.com>;
+	Wed, 28 Sep 2011 10:47:59 +0200 (CEST)
+Received: by ywp17 with SMTP id 17so9608344ywp.27
+	for <drbd-announce@lists.linbit.com>;
+	Wed, 28 Sep 2011 01:47:58 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Message-Id: <201107181913.26358.philipp.reisner@linbit.com>
-Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-8.4.0.tar.gz
+Date: Wed, 28 Sep 2011 10:42:04 +0200
+Message-ID: <CAFiXF+4LZgaEg8gy01Rk38-UE2iZU6A0oeRnEETwK+zsoiCeDw@mail.gmail.com>
+From: Rasto Levrinc <rasto.levrinc@gmail.com>
+To: drbd-mc@lists.linbit.com, pacemaker@oss.clusterlabs.org,
+	linux-ha@lists.linux-ha.org, drbd-announce@lists.linbit.com
+Content-Type: text/plain; charset=ISO-8859-1
+Subject: [DRBD-announce] DMC 0.9.9 - Pacemaker/Storage GUI
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -22,120 +29,54 @@ List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hi,
 
-We are proud to announce the availability of DRBD-8.4.0.
+This is the next DMC release 0.9.9. DMC is Pacemaker, Cluster Virtual Manager
+and Storage/DRBD/LVM GUI.
 
-  The most noticeable change is the support for multiple replicated
-  volumes in a single DRBD connection.
-  Write-ordering is obeyed among all writes in all volumes in a
-  single connection.
-  This feature is really important for users who DRBD for mirroring
-  over longer distances. (Protocol A).
+Focus of this release was on bug fixes and some visual issues. You will now
+find a skip-initial-full-sync checkbox in the DRBD wizard, that, well, skips
+the initial full sync.
 
-We do not only release DRBD-8.4.0 today:
-The DRBD User's Guide was reviewed and updated to match DRBD-8.4.
+You can get DRBD:MC here:
 
-I suggest to everybody who considers to upgrade from 8.3 to 8.4
-to have a look at the "Recent changes" appendix of the UG:
-http://www.drbd.org/users-guide/ap-recent-changes.html
+http://oss.linbit.com/drbd-mc/
 
-  This release brings a new meta-data format. Forward (8.3 -> 8.4)
-  conversion happens complete seamless. Backward conversion
-  is done by a single command (drbdadm apply-al res).
+the latest source is here:
 
-  This release is protocol compatible with all it predecessor. 
-  Although, we do not recommend to run it in 8.3 - 8.4 for long
-  time frames. We recommend to use that capability only for the
-  rolling upgrade.
-
-  drbdadm of 8.4 can parse config files of 8.3. We recommend
-  to switch to the new configuration syntax after the upgrade
-  of both nodes. (Use drbdadm dump to learn about the new
-  config syntax)
+https://github.com/rasto/drbd-mc
 
 
-Support lifecycle
+1. You don't need Java on the cluster servers only on your desktop.
+2. Download the DMC-0.9.9.jar file.
+3. Start it: java -jar DMC-0.9.9.jar, or click on the file.
+4. It connects to the cluster via SSH.
+5. If you use it without DRBD, you have to click "Skip" button on couple of
+   places.
+6. It is recommended to use it with SUN Java.
 
-DRBD-8.0 support will end with December 2011. Please make
-sure to upgrade your systems to 8.3 or 8.4 by then. (There
-was not a single commit to the 8.0 branch in nearly two years
-now)
+DRBD:MC is compatible with Heartbeat 2.1.3 to the Pacemaker 1.1.6 with
+Corosync or Heartbeat and DRBD 8.
 
-We will support DRBD-8.3 until December 2012.
+The most important changes:
+* don't crash if there's explicit order or col in a group
+* drbd graph icon improvements
+* say "enslaving..." instead of "stopping...",
+  when target role is set to slave
+* make drbd.d style config only since DRBD 8.3.7
+* more info in "/proc/drbd" button in drbd view
+* change action-menu appearance
+* implement skip initial sync option in DRBD wizard
+* rename menu items to show what technology is behind them
+* more consistent colors
+* make the menu translucent in on-mouse-over tests instead of transparent
+* fix applying of colocation and order attributes
+* new location for new version check
+* improve progress indicator
+* fix adding new dependent clone not creating the constraints
+* move operating mode panel to the right
+* make left click in the graph show pulldown menu
+* Rearrange "all clusters" tab
+* fix some VMs not showing, if defined only on one host
+* add "none" as file system type option for Filesystem RA
+* workaround for Windows closing service popups
 
-[Customers may have different support agreements. Those are of
- course not affected.]
-
-
-DRBD-proxy compatibility
-
-In case you are using DRBD-proxy, please make sure that you
-DRBD-proxy already support DRBD protocol 100. (DRBD-proxy 3
-does already. If DRBD-proxy 1.0.17 will get support for
-protocol 100 will be decided in the next weeks)
-
-Yes, DRBD-proxy 3.0 is also available as of today!
-
-
-Changelog
-
-8.4.0 (api:genl1/proto:86-100)
---------
- * Fixed handling of read errors during online verify
- * Fix for connecting on high latency network links
- * Fixed state transitions if fence-peer handler returns after connection was
-   established again
- * Go into inconsistent disk state with on-io-error=pass-on policy
- * Timeouts for requests processing on the peer (previously that
-   worked only if the data socket was congested)
- * Reworked Linux backward compatibility mechanism
- * Conflicting write detection is now based on an interval tree,
-   removed the hash-tables (necessary for the unlimited BIO sizes)
- * Removed the tracing framework
- * Support for multiple volumes (minors, block devices) per connection;
-   up to 65536 volumes per connection supported
- * Reduced IO latencies during some state changes (esp. start resync)
- * New on disk format for the AL: double capacity; 4k aligned IO; same space
- * Multiple AL changes in a single transaction (precondition for
-   unlimited BIO sizes)
- * DRBD no longer imposes any limit on BIO sizes
- * Removed DRBD's limits on the number of minor devices
- * DRBD's minors can now be removed (not only unconfigured)
- * Switched the user space interface form connector to generic netlink
- * drbdadm, configuration changes: volume sections; syncer section removed;
-   bool options got yes/no values, that improves option inheritance;
-   resource options
- * drbdsetup: new commands for creating and removing resources
-   and minors
- * drbdsetup: new commands for changing disk options while the disk
-   is attached; ...for changing net options while the connection is
-   established
- * drbdsetup/drbdadm the wire-protocol is now a regular connection option
- * Removed drbdadm option --force
- * IO freezing/thawing is done on connection (all volumes) level
- * fencing is done on connection (all volumes) level
- * Enforce application of activity log after primary crash in user space
- * Features from drbd-8.3: Allow detach from frozen backing devices with the
-   new --force option; configurable timeout for backing devices by the new
-   disk-timeout option
- * Renamed --dry-run of connect to --tentative; plus alias in drbdsetup
- * drbdadm got a "help" sub command, that shows the specific options
- * drbdadm now knows all drbdsetup options, and verify ...
- * drbdadm can now process all options in random order, and ignores the "--"
-   separator; compatibility aliases with the old calling conventions; now it
-   is compatible with the pre 8.4 way of calling.
- * New default values (compared to drbd-8.3) for: minor-count, ko-count, al-extents,
-   c-plan-ahead, c-fill-target, c-min-rate, use-rle, on-io-error
-
-http://www.linbit.com/support/drbd-8.4.0/
-http://git.drbd.org/?p=drbd-8.4.git;a=tag;h=drbd-8.4.0
-http://oss.linbit.com/drbd/8.4/drbd-8.4.0.tar.gz
-
-Best,
- Phil
--- 
-: Dipl-Ing Philipp Reisner
-: LINBIT | Your Way to High Availability
-: Tel: +43-1-8178292-50, Fax: +43-1-8178292-82
-: http://www.linbit.com
-
-DRBD(R) and LINBIT(R) are registered trademarks of LINBIT, Austria.
+Rasto Levrinc
