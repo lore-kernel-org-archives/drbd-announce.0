@@ -1,21 +1,14 @@
-Return-Path: <rasto.levrinc@gmail.com>
-Received: from mail-yw0-f54.google.com (mail-yw0-f54.google.com
-	[209.85.213.54]) (using TLSv1 with cipher RC4-SHA (128/128 bits))
-	(No client certificate requested)
-	by mail09.linbit.com (LINBIT Mail Daemon) with ESMTPS id 271DB10556B9
-	for <drbd-announce@lists.linbit.com>;
-	Wed, 28 Sep 2011 10:47:59 +0200 (CEST)
-Received: by ywp17 with SMTP id 17so9608344ywp.27
-	for <drbd-announce@lists.linbit.com>;
-	Wed, 28 Sep 2011 01:47:58 -0700 (PDT)
+Return-Path: <philipp.reisner@linbit.com>
+From: Philipp Reisner <philipp.reisner@linbit.com>
+To: drbd-announce@lists.linbit.com
+Date: Mon, 10 Oct 2011 13:28:33 +0200
 MIME-Version: 1.0
-Date: Wed, 28 Sep 2011 10:42:04 +0200
-Message-ID: <CAFiXF+4LZgaEg8gy01Rk38-UE2iZU6A0oeRnEETwK+zsoiCeDw@mail.gmail.com>
-From: Rasto Levrinc <rasto.levrinc@gmail.com>
-To: drbd-mc@lists.linbit.com, pacemaker@oss.clusterlabs.org,
-	linux-ha@lists.linux-ha.org, drbd-announce@lists.linbit.com
-Content-Type: text/plain; charset=ISO-8859-1
-Subject: [DRBD-announce] DMC 0.9.9 - Pacemaker/Storage GUI
+Content-Type: text/plain;
+  charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Message-Id: <201110101328.34237.philipp.reisner@linbit.com>
+Cc: drbd-user@lists.linbit.com
+Subject: [DRBD-announce] drbd-8.3.12rc1.tar.gz
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -29,54 +22,35 @@ List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hi,
 
-This is the next DMC release 0.9.9. DMC is Pacemaker, Cluster Virtual Manager
-and Storage/DRBD/LVM GUI.
+Besides releasing fixes for a few minor issues, this brings support for
+detaching from frozen backing devices.
 
-Focus of this release was on bug fixes and some visual issues. You will now
-find a skip-initial-full-sync checkbox in the DRBD wizard, that, well, skips
-the initial full sync.
+Please note: This is a release candidate, not intended for production.
+Please help with testing!
 
-You can get DRBD:MC here:
+8.3.12rc1 (api:88/proto:86-96)
+--------
+ * Fixed a rare compatibility issue with DRBD's older than 8.3.7
+   when negotiating the bio_size
+ * Fixed a rare race condition where an empty resync could stall with
+   if pause/unpause events happen in parallel
+ * Made the re-establishing of connections quicker, if it got a broken pipe
+   once. Previously there was a bug in the code caused it to waste the first
+   successful established connection after a broken pipe event.
+ * crm-fence-peer.sh: Can now deal with multiple DRBD instances being in
+   a master/slave group
+ * Allow detach from frozen backing devices with the new --force option;
+   configurable timeout for backing devices by the new disk-timeout option
 
-http://oss.linbit.com/drbd-mc/
+http://oss.linbit.com/drbd/8.3/drbd-8.3.12rc1.tar.gz
+http://git.drbd.org/?p=drbd-8.3.git;a=commit;h=drbd-8.3.12rc1
 
-the latest source is here:
+Best,
+ Phil
+-- 
+: Dipl-Ing Philipp Reisner
+: LINBIT | Your Way to High Availability
+: Tel: +43-1-8178292-50, Fax: +43-1-8178292-82
+: http://www.linbit.com
 
-https://github.com/rasto/drbd-mc
-
-
-1. You don't need Java on the cluster servers only on your desktop.
-2. Download the DMC-0.9.9.jar file.
-3. Start it: java -jar DMC-0.9.9.jar, or click on the file.
-4. It connects to the cluster via SSH.
-5. If you use it without DRBD, you have to click "Skip" button on couple of
-   places.
-6. It is recommended to use it with SUN Java.
-
-DRBD:MC is compatible with Heartbeat 2.1.3 to the Pacemaker 1.1.6 with
-Corosync or Heartbeat and DRBD 8.
-
-The most important changes:
-* don't crash if there's explicit order or col in a group
-* drbd graph icon improvements
-* say "enslaving..." instead of "stopping...",
-  when target role is set to slave
-* make drbd.d style config only since DRBD 8.3.7
-* more info in "/proc/drbd" button in drbd view
-* change action-menu appearance
-* implement skip initial sync option in DRBD wizard
-* rename menu items to show what technology is behind them
-* more consistent colors
-* make the menu translucent in on-mouse-over tests instead of transparent
-* fix applying of colocation and order attributes
-* new location for new version check
-* improve progress indicator
-* fix adding new dependent clone not creating the constraints
-* move operating mode panel to the right
-* make left click in the graph show pulldown menu
-* Rearrange "all clusters" tab
-* fix some VMs not showing, if defined only on one host
-* add "none" as file system type option for Filesystem RA
-* workaround for Windows closing service popups
-
-Rasto Levrinc
+DRBD(R) and LINBIT(R) are registered trademarks of LINBIT, Austria.
