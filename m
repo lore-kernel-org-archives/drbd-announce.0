@@ -1,14 +1,14 @@
 Return-Path: <philipp.reisner@linbit.com>
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Date: Mon, 10 Oct 2011 13:28:33 +0200
+Date: Fri, 28 Oct 2011 15:58:09 +0200
 MIME-Version: 1.0
 Content-Type: text/plain;
   charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Message-Id: <201110101328.34237.philipp.reisner@linbit.com>
+Message-Id: <201110281558.09961.philipp.reisner@linbit.com>
 Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-8.3.12rc1.tar.gz
+Subject: [DRBD-announce] drbd-8.3.12.tar.gz
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -22,13 +22,13 @@ List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hi,
 
-Besides releasing fixes for a few minor issues, this brings support for
-detaching from frozen backing devices.
+Apart from the usual bug fixes this 8.3 release brings an interesting
+new feature.
 
-Please note: This is a release candidate, not intended for production.
-Please help with testing!
+  DRBD is for the first time capable of detaching from a frozen
+  backing device, which does not complete open IO requests.
 
-8.3.12rc1 (api:88/proto:86-96)
+8.3.12 (api:88/proto:86-96)
 --------
  * Fixed a rare compatibility issue with DRBD's older than 8.3.7
    when negotiating the bio_size
@@ -42,8 +42,9 @@ Please help with testing!
  * Allow detach from frozen backing devices with the new --force option;
    configurable timeout for backing devices by the new disk-timeout option
 
-http://oss.linbit.com/drbd/8.3/drbd-8.3.12rc1.tar.gz
-http://git.drbd.org/?p=drbd-8.3.git;a=commit;h=drbd-8.3.12rc1
+http://oss.linbit.com/drbd/8.3/drbd-8.3.12.tar.gz
+http://git.drbd.org/?p=drbd-8.3.git;a=tag;h=drbd-8.3.12
+http://www.linbit.com/support/drbd-8.3.12/
 
 Best,
  Phil
