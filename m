@@ -1,14 +1,13 @@
 Return-Path: <philipp.reisner@linbit.com>
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Date: Fri, 28 Oct 2011 15:58:09 +0200
+Date: Thu, 01 Dec 2011 17:18:41 +0100
+Message-ID: <1706318.3aS6L6anFi@fat-tyre>
 MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Message-Id: <201110281558.09961.philipp.reisner@linbit.com>
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-8.3.12.tar.gz
+Subject: [DRBD-announce] drbd-8.4.1rc1.tar.gz
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -20,16 +19,28 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Hi,
+Hi everyone,
 
-Apart from the usual bug fixes this 8.3 release brings an interesting
-new feature.
+As drbd-8.4.0 was a huge leap forward for DRBD, we had a few bugs more
+in that .0 release as we wanted to be there. The good news is we are
+on the way with adopting our testing procedures to match the features
+of 8.4.0.
 
-  DRBD is for the first time capable of detaching from a frozen
-  backing device, which does not complete open IO requests.
+As so often also a minor feature crept in: Read load balancing.
+  That might be of interest if you have a faster network between
+  your DRBD nodes in place, and want to benefit of the secondaries
+  IO bandwidth for reading.
 
-8.3.12 (api:88/proto:86-96)
+Please note: This is a release candidate, not intended for production.
+Please help with testing!
+
+8.4.1rc1 (api:genl1/proto:86-100)
 --------
+ * Fixed a bug that might cause in kernel list corruption triggered by
+   simultaneous IO on multiple volumes in a single resource
+ * Fixed an issue in the receiver that could cause connection triggered by
+   simultaneous IO on multiple volumes in a single resource
+ * Consider the discard-my-data flag for all volumes
  * Fixed a rare compatibility issue with DRBD's older than 8.3.7
    when negotiating the bio_size
  * Fixed a rare race condition where an empty resync could stall with
@@ -39,12 +50,10 @@ new feature.
    successful established connection after a broken pipe event.
  * crm-fence-peer.sh: Can now deal with multiple DRBD instances being in
    a master/slave group
- * Allow detach from frozen backing devices with the new --force option;
-   configurable timeout for backing devices by the new disk-timeout option
+ * Optional load balancing for read requests: new keyword "read-balance"
 
-http://oss.linbit.com/drbd/8.3/drbd-8.3.12.tar.gz
-http://git.drbd.org/?p=drbd-8.3.git;a=tag;h=drbd-8.3.12
-http://www.linbit.com/support/drbd-8.3.12/
+http://oss.linbit.com/drbd/8.4/drbd-8.4.1rc1.tar.gz
+http://git.drbd.org/?p=drbd-8.4.git;a=tag;h=drbd-8.4.1rc1
 
 Best,
  Phil
@@ -55,3 +64,4 @@ Best,
 : http://www.linbit.com
 
 DRBD(R) and LINBIT(R) are registered trademarks of LINBIT, Austria.
+
