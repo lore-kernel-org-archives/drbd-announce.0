@@ -1,13 +1,12 @@
 Return-Path: <philipp.reisner@linbit.com>
 From: Philipp Reisner <philipp.reisner@linbit.com>
-To: drbd-announce@lists.linbit.com
-Date: Thu, 01 Dec 2011 17:18:41 +0100
-Message-ID: <1706318.3aS6L6anFi@fat-tyre>
+To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
+Date: Wed, 14 Dec 2011 00:04:45 +0100
+Message-ID: <189120882.i5bAbci32a@quad>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="us-ascii"
-Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-8.4.1rc1.tar.gz
+Subject: [DRBD-announce] drbd-8.4.1rc2.tar.gz
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -19,22 +18,24 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Hi everyone,
+Hi,
 
-As drbd-8.4.0 was a huge leap forward for DRBD, we had a few bugs more
-in that .0 release as we wanted to be there. The good news is we are
-on the way with adopting our testing procedures to match the features
-of 8.4.0.
+Relative to rc1 one ugly bug in the read load balancing code was
+discovered.
 
-As so often also a minor feature crept in: Read load balancing.
-  That might be of interest if you have a faster network between
-  your DRBD nodes in place, and want to benefit of the secondaries
-  IO bandwidth for reading.
+  Local retry of read requests that where scheduled to the peer
+  but failed there was broken.
+
+Other than that we were only able to discover and fix bugs that
+have been in DRBD since ever. Very rare race conditions that
+are also in the 8.3 code base.
+
+If you know any 8.4 specific dysfunctionally please let us know!
 
 Please note: This is a release candidate, not intended for production.
 Please help with testing!
 
-8.4.1rc1 (api:genl1/proto:86-100)
+8.4.1rc2 (api:genl1/proto:86-100)
 --------
  * Fixed a bug that might cause in kernel list corruption triggered by
    simultaneous IO on multiple volumes in a single resource
@@ -52,16 +53,8 @@ Please help with testing!
    a master/slave group
  * Optional load balancing for read requests: new keyword "read-balance"
 
-http://oss.linbit.com/drbd/8.4/drbd-8.4.1rc1.tar.gz
-http://git.drbd.org/?p=drbd-8.4.git;a=tag;h=drbd-8.4.1rc1
+http://oss.linbit.com/drbd/8.4/drbd-8.4.1rc2.tar.gz
+http://git.drbd.org/?p=drbd-8.4.git;a=tag;h=refs/tags/drbd-8.4.1rc2
 
 Best,
  Phil
--- 
-: Dipl-Ing Philipp Reisner
-: LINBIT | Your Way to High Availability
-: Tel: +43-1-8178292-50, Fax: +43-1-8178292-82
-: http://www.linbit.com
-
-DRBD(R) and LINBIT(R) are registered trademarks of LINBIT, Austria.
-
