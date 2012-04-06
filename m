@@ -1,13 +1,13 @@
 Return-Path: <philipp.reisner@linbit.com>
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Date: Tue, 20 Dec 2011 15:37:30 +0100
-Message-ID: <1819472.ZxoYtEPIK5@fat-tyre>
+Date: Fri, 06 Apr 2012 15:01:44 +0200
+Message-ID: <2955762.syLoYvFxf2@fat-tyre>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="us-ascii"
 Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-8.4.1.tar.gz
+Subject: [DRBD-announce] drbd-8.3.13rc1.tar.gz
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -19,61 +19,64 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Hi fellows,
+Hi,
 
-Once again I am proud to announce a new release: 8.4.1
+Compared to 8.3.12 this has only bug fixes. All of them fixing
+bugs that are very hard to trigger, or only affect operation in
+an unnoticed way.
 
-I hope that we have the majority of regressions that where
-introduced with the 8.4 effort identified and fixed now.
+  Nevertheless I need to explain the first item on the list.
+  There are quite a few conditions to be met, in order to
+  trigger this bug:
 
-The bug described by the first item of the changelog can only trigger
-if you use multiple volumes.
+  1) You have a device that actually does write-reordering
+     (I.e. a spinning hard disk (not SSD), without RAID
+     controller in front of it).
+  2) Network connection gets interrupted
+  3) A block on the degraded primary gets modified
+  4) Network connection gets established again, DRBD starts the resync
+  5) The same block on the primary is written again, at the same
+     time the resync process is about to resync it.
+     DRBD orders the operations on the SyncSource right, it orders the
+     write submissions on the SyncTarget right. Though in prior releases 
+     DRBD may submitted the second write before it got completion signaled
+     for the first one.
 
-I advise every user of 8.4.0 to upgrade to 8.4.1, due to the possible
-kernel OOPS (second item on the change log).
+  At the current point in time it is known that there is one hardware
+  and Linux kernel combination out there, where this could lead to a
+  reordering of these two writes on the SyncTarget node. I.e. making
+  it look like, if one write operation was not mirrored.
 
-New features
+Please note: This is a release candidate, not intended for production.
+Please help with testing!
 
- * Read load balancing.
-  That might be of interest if you have a faster network between
-  your DRBD nodes in place, and want to benefit of the secondary's
-  IO bandwidth for reading.
-
- * Works with Linux-3.2
-  It was actually tested with Linux-3.2-rc6, but since the merge
-  window closed long time ago, there is hope that it will also work
-  with the final Linux-3.2.
-
-
-8.4.1 (api:genl1/proto:86-100)
+8.3.13rc1 (api:88/proto:86-96)
 --------
- * Fixed a bug that might cause in kernel list corruption triggered by
-   simultaneous IO on multiple volumes in a single resource
- * Fixed a bug that might cause a kernel OOPS in the worker thread while
-   the receiver tied to establish a connection (drbd-8.4.0 regression)
- * Fixed an issue in the receiver that could cause connection triggered by
-   simultaneous IO on multiple volumes in a single resource
- * Consider the discard-my-data flag for all volumes
- * Fixed attaching to backing devices that do not support barriers/flushes,
-   when barriers/flushes are not disabled by the configuration.
-   (drbd-8.4.0 regression)
- * Fixed a rare compatibility issue with DRBD's older than 8.3.7
-   when negotiating the bio_size
- * Fixed a rare race condition where an empty resync could stall with
-   if pause/unpause events happen in parallel
- * Made the re-establishing of connections quicker, if it got a broken pipe
-   once. Previously there was a bug in the code caused it to waste the first
-   successful established connection after a broken pipe event.
- * crm-fence-peer.sh: Can now deal with multiple DRBD instances being in
-   a master/slave group
- * Optional load balancing for read requests: new keyword "read-balance"
+ * Fixed a write ordering problem on SyncTarget nodes for a write
+   to a block that gets resynced at the same time. The bug can
+   only be triggered with a device that has a firmware that
+   actually reorders writes to the same block
+ * Fixed a race between disconnect and receive_state, that could case
+   a IO lockup
+ * Make sure that hard state changed do not disturb the connection
+   establishing process (I.e. detach due to an IO error). When the
+   bug was triggered it caused a retry in the connect process
+ * Postpone soft state changes to no disturb the connection
+   establishing process (I.e. becoming primary). When the bug
+   was triggered it could case both nodes going into SyncSource state
+ * Fixed a refcount leak that could cause failures when trying to
+   unload a protocol family modules, that was used by DRBD
+ * Deny normal detach (as opposed to --forced) if the user tries
+   to detach from the last UpToDate disk in the resource
+ * Fixed a possible protocol error that could be caused by
+   "unusual" BIOs.
+ * Enforce the disk-timeout option also on meta-data IO operations
 
-http://oss.linbit.com/drbd/8.4/drbd-8.4.1.tar.gz
-http://git.drbd.org/?p=drbd-8.4.git;a=tag;h=drbd-8.4.1
-http://www.linbit.com/support/drbd-8.4.1/
+http://oss.linbit.com/drbd/8.3/drbd-8.3.13rc1.tar.gz
+http://git.drbd.org/gitweb.cgi?p=drbd-8.3.git;a=tag;h=refs/tags/drbd-8.3.13rc1
 
 Best,
- Phil
+ Philipp
 -- 
 : Dipl-Ing Philipp Reisner
 : LINBIT | Your Way to High Availability
