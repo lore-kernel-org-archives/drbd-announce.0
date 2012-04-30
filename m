@@ -1,13 +1,13 @@
 Return-Path: <philipp.reisner@linbit.com>
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Date: Fri, 06 Apr 2012 15:01:44 +0200
-Message-ID: <2955762.syLoYvFxf2@fat-tyre>
+Date: Mon, 30 Apr 2012 17:18:07 +0200
+Message-ID: <2520680.XV8Ro1XoE2@fat-tyre>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="us-ascii"
 Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-8.3.13rc1.tar.gz
+Subject: [DRBD-announce] drbd-8.3.13rc2.tar.gz
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -21,34 +21,18 @@ List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hi,
 
-Compared to 8.3.12 this has only bug fixes. All of them fixing
-bugs that are very hard to trigger, or only affect operation in
-an unnoticed way.
-
-  Nevertheless I need to explain the first item on the list.
-  There are quite a few conditions to be met, in order to
-  trigger this bug:
-
-  1) You have a device that actually does write-reordering
-     (I.e. a spinning hard disk (not SSD), without RAID
-     controller in front of it).
-  2) Network connection gets interrupted
-  3) A block on the degraded primary gets modified
-  4) Network connection gets established again, DRBD starts the resync
-  5) The same block on the primary is written again, at the same
-     time the resync process is about to resync it.
-     DRBD orders the operations on the SyncSource right, it orders the
-     write submissions on the SyncTarget right. Though in prior releases 
-     DRBD may submitted the second write before it got completion signaled
-     for the first one.
-
-  At the current point in time it is known that there is one hardware
-  and Linux kernel combination out there, where this could lead to a
-  reordering of these two writes on the SyncTarget node. I.e. making
-  it look like, if one write operation was not mirrored.
+rc2 looks very promising. I guess it will become final in 
+one week....
 
 Please note: This is a release candidate, not intended for production.
 Please help with testing!
+
+8.3.13rc2 (api:88/proto:86-96)
+--------
+ * Dedicated page pool for meta data IOs
+ * Implemented stable bitmap pages when we do a full write out of
+   the bitmap
+ * Fixed resend/resubmit for requests with disk or network timeout
 
 8.3.13rc1 (api:88/proto:86-96)
 --------
@@ -72,8 +56,8 @@ Please help with testing!
    "unusual" BIOs.
  * Enforce the disk-timeout option also on meta-data IO operations
 
-http://oss.linbit.com/drbd/8.3/drbd-8.3.13rc1.tar.gz
-http://git.drbd.org/gitweb.cgi?p=drbd-8.3.git;a=tag;h=refs/tags/drbd-8.3.13rc1
+http://oss.linbit.com/drbd/8.3/drbd-8.3.13rc2.tar.gz
+http://git.drbd.org/gitweb.cgi?p=drbd-8.3.git;a=tag;h=refs/tags/drbd-8.3.13rc2
 
 Best,
  Philipp
