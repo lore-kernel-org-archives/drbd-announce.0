@@ -1,13 +1,13 @@
 Return-Path: <philipp.reisner@linbit.com>
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Date: Mon, 30 Apr 2012 17:18:07 +0200
-Message-ID: <2520680.XV8Ro1XoE2@fat-tyre>
+Date: Mon, 07 May 2012 16:28 +0200
+Message-ID: <1473974.Qi4yrUQ4t1@fat-tyre>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="us-ascii"
 Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-8.3.13rc2.tar.gz
+Subject: [DRBD-announce] drbd-8.3.13.tar.gz
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -21,45 +21,57 @@ List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hi,
 
-rc2 looks very promising. I guess it will become final in 
-one week....
+Compared to 8.3.12 this release has only bug fixes, no new features.
 
-Please note: This is a release candidate, not intended for production.
-Please help with testing!
+  It is worth noting that all previous DRBD-releases did not enforce
+  correct ordering of (some) write operations on a resync-target node.
 
-8.3.13rc2 (api:88/proto:86-96)
---------
- * Dedicated page pool for meta data IOs
- * Implemented stable bitmap pages when we do a full write out of
-   the bitmap
- * Fixed resend/resubmit for requests with disk or network timeout
+  This can be triggered with the 'cfq' (and possible other) linux
+  disk schedulers. -- It is known that when you stay with an DRBD
+  release before 8.3.13 and switch the scheduler to 'noop', then it is
+  no longer to reproduce the issue.
 
-8.3.13rc1 (api:88/proto:86-96)
+  It is a rare condition, which is hard to trigger, it may causes 
+  corruption in the sense that it looks like if a single block 
+  write was not executed on the secondary.
+  (actually it was overwritten with the previous version of the data,
+   this second write originates from the resync process.)
+
+
+Upgrading to this release is for sure a good idea.
+
+
+8.3.13 (api:88/proto:86-96)
 --------
  * Fixed a write ordering problem on SyncTarget nodes for a write
    to a block that gets resynced at the same time. The bug can
    only be triggered with a device that has a firmware that
    actually reorders writes to the same block
- * Fixed a race between disconnect and receive_state, that could case
+ * Fixed a race between disconnect and receive_state, that could cause
    a IO lockup
+ * Fixed resend/resubmit for requests with disk or network timeout
  * Make sure that hard state changed do not disturb the connection
    establishing process (I.e. detach due to an IO error). When the
    bug was triggered it caused a retry in the connect process
  * Postpone soft state changes to no disturb the connection
    establishing process (I.e. becoming primary). When the bug
-   was triggered it could case both nodes going into SyncSource state
+   was triggered it could cause both nodes going into SyncSource state
  * Fixed a refcount leak that could cause failures when trying to
    unload a protocol family modules, that was used by DRBD
+ * Dedicated page pool for meta data IOs
  * Deny normal detach (as opposed to --forced) if the user tries
    to detach from the last UpToDate disk in the resource
  * Fixed a possible protocol error that could be caused by
    "unusual" BIOs.
  * Enforce the disk-timeout option also on meta-data IO operations
+ * Implemented stable bitmap pages when we do a full write out of
+   the bitmap
 
-http://oss.linbit.com/drbd/8.3/drbd-8.3.13rc2.tar.gz
-http://git.drbd.org/gitweb.cgi?p=drbd-8.3.git;a=tag;h=refs/tags/drbd-8.3.13rc2
+http://oss.linbit.com/drbd/8.3/drbd-8.3.13.tar.gz
+http://git.drbd.org/gitweb.cgi?p=drbd-8.3.git;a=tag;h=refs/tags/drbd-8.3.13
+http://www.linbit.com/support/drbd-8.3.13/
 
-Best,
+Best regards,
  Philipp
 -- 
 : Dipl-Ing Philipp Reisner
