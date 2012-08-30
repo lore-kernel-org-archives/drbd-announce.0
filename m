@@ -1,12 +1,13 @@
 Return-Path: <philipp.reisner@linbit.com>
 From: Philipp Reisner <philipp.reisner@linbit.com>
-To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Date: Thu, 23 Aug 2012 16:49:34 +0200
-Message-ID: <1710770.1nNcrP7vcm@fat-tyre>
+To: drbd-announce@lists.linbit.com
+Date: Thu, 30 Aug 2012 17:19:29 +0200
+Message-ID: <6382224.yI8l76oKXj@fat-tyre>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="us-ascii"
-Subject: [DRBD-announce] drbd-8.4.2rc2.tar.gz
+Cc: drbd-user@lists.linbit.com
+Subject: [DRBD-announce] drbd-8.4.2rc3.tar.gz
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -20,12 +21,23 @@ List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hi,
 
-after countless hours of testing, bug hunting and fixing we are proud to
-present the result of our effort.
+The test clusters are running hot, but it is really looking good
+now. The new request code that was backported from the 9 branch,
+caused a few bugs, but I think that is sorted out now.
+
+Please give it a try and try to break it. We want to hear from
+you before September 6!
 
 Please note: This is a release candidate, not intended for production.
 Please help with testing!
 
+8.4.2rc3 (api:genl1/proto:86-101)
+--------
+ * Fixed IO resuming after connection was established before fence
+   peer handler returned
+ * Fixed an issue in the state engine that could cause state lockup
+   with multiple volumes
+ * Fixed multiple issues with postponed requests (introduced with 8.4.2rc1)
 
 8.4.2rc2 (api:genl1/proto:86-100)
 --------
@@ -67,8 +79,9 @@ Please help with testing!
  * Expose the data generation identifies via sysfs
  * "--stop" option for online verify to specify a stop sector
 
-http://oss.linbit.com/drbd/8.4/drbd-8.4.2rc2.tar.gz
-http://git.drbd.org/gitweb.cgi?p=drbd-8.4.git;a=tag;h=refs/tags/drbd-8.4.2rc2
+
+http://oss.linbit.com/drbd/8.4/drbd-8.4.2rc3.tar.gz
+http://git.drbd.org/gitweb.cgi?p=drbd-8.4.git;a=tag;h=refs/tags/drbd-8.4.2rc3
 
 Best,
  Phil
