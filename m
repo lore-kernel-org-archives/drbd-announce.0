@@ -1,13 +1,13 @@
 Return-Path: <philipp.reisner@linbit.com>
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Date: Thu, 06 Sep 2012 12:13:23 +0200
-Message-ID: <1563953.96duorpRcd@fat-tyre>
+Date: Thu, 04 Oct 2012 11:56:15 +0200
+Message-ID: <1374287.xxZaA70UFG@fat-tyre>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="us-ascii"
 Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-8.4.2.tar.gz
+Subject: [DRBD-announce] drbd-8.3.14rc1.tar.gz
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -19,82 +19,45 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Dear DRBD fellows,
+Hi,
 
-Here it is: drbd-8.4.2 !
+This is the preparation for the last planed 8.3.x release. -- Getting
+the fixes out of the door, that have accumulated over the last 5 month.
 
-For any user of DRBD-8.4 we suggest to upgrade to 8.4.2. Previous
-8.4 releases had multiple bugs, least one of those can cause
-data corruption on a Secondary/Sync target. (In the 8.3 series
-this was already fixed with the 8.3.13 release)
+As usual: Please help testing this release candidate, and report any
+regressions or bugs you can find!
 
-  It is worth noting that all previous DRBD-releases did not enforce
-  correct ordering of (some) write operations on a resync-target node.
+Please note: This is a release candidate, not intended for production.
+Please help with testing!
 
-  This can be triggered with the 'cfq' (and possible other) linux
-  disk schedulers. -- It is known that when you stay with an DRBD
-  release before 8.3.13 and switch the scheduler to 'noop', then it is
-  no longer to reproduce the issue.
-
-  It is a rare condition, which is hard to trigger, it may causes 
-  corruption in the sense that it looks like if a single block 
-  write was not executed on the secondary.
-  (actually it was overwritten with the previous version of the data,
-   this second write originates from the resync process.)
-
-Apart from that those nasty bugs that caused "disk-barrier no" and
-"disk-flushes no" to be ineffective have been removed as well. This
-was the reason why the rumour on the net was "drbd-8.3 is faster than 
-drbd-8.4".
-
-8.4.2 (api:genl1/proto:86-101)
+8.3.14rc1 (api:88/proto:86-97)
 --------
- * Fixed IO resuming after connection was established before fence
-   peer handler returned
- * Fixed an issue in the state engine that could cause state lockup
-   with multiple volumes
- * Write all pages of the bitmap if it gets moved during an
-   online resize operation. (This issue was introduced with 8.3.10)
- * Fixed a race condition could cause DRBD to go through a
-   NetworkFailure state during disconnect
- * Fixed a race condition in the disconnect code path that
-   could lead to a BUG() (introduced with 8.4.0)
- * Fixed a write ordering problem on SyncTarget nodes for a write to a block
-   that gets resynced at the same time. The bug can only be triggered with a
-   device that has a firmware that actually reorders writes to the same
-   block (merged from 8.3.13)
- * Fixed a potential deadlock during restart of conflicting writes
- * Disable the write ordering method "barrier" by default, since it is not
-   possible for a driver to find out if it works reliably since 2.6.36
- * All fixes that went into 8.3.13
- * Removed a null pointer access when using on-congestion policy on a
-   diskless device
- * In case of a graceful detach under IO load, wait for the outstanding
-   IO. (As opposed to aborting IOs as a forcefully detach does)
- * Reinstate disabling AL updates with invalidate-remote (8.4.0 regression)
- * Reinstate the 'disk-barrier no', 'disk-flushes no', and 'disk-drain no'
-   switches (8.4.0 regression)
- * Backported the request code from DRBD-9. Improves handling of many corner
-   cases.
- * Support FLUSH/FUA bio flags
- * Made the establishing of connections faster
- * New option 'al-updates no' to disable writing transactions into the
-   activity log. It is use full if you prefer a full sync after a primary
-   crash, for improved performance of a spread out random write work load
- * Expose the data generation identifies via sysfs
- * "--stop" option for online verify to specify a stop sector
+ * No longer support write-ordering "barrier" on kernels newer than 2.6.36
+   (or RHEL's 2.6.32), since it is no longer supported by the kernel's IO-layer
+ * Fixed the cause of the "ASSERT FAILED tl_hash..." messages
+ * Fixed an OOPS in case a on-congestion policy was set and the node becomes
+   disk less
+ * Fixed a list corruption for read requests that complete with an error
+   after they were aborted
+ * Fixed a kernel panic if the device size was an exact multiple of 128MiB
+ * Finish requests that completed while IO on DRBD was frozen. Before such
+   requests where never completed by DRBD
+ * Fixed a potential memory allocation during deadlock online resize
+ * Online resize with internal meta data failed to write the bitmap to
+   the new on-disk-location after the resize operation. This issue was
+   introduced with 8.3.10
+ * Do not go through NetworkFailure state during a regular disconnect
+ * Improve the handling of read-errors: Make sure that sectors that had a
+   read error are overwritten with data from the peer on the next resync
+ * Expose the data-generation-uuids through /sys/block/drbdXX/drbd/
+ * Add a stop-sector to the online verify feature
+ * Support FLUSH/FUA for layers above DRBD
+ * The new flag --peer-max-bio-size for drbdmeta create-md is of use
+   if you plan to use the device for long time without peer
 
-http://www.linbit.com/support/drbd-8.4.2/
-http://oss.linbit.com/drbd/8.4/drbd-8.4.2.tar.gz
-http://git.drbd.org/gitweb.cgi?p=drbd-8.4.git;a=tag;h=refs/tags/drbd-8.4.2
+http://oss.linbit.com/drbd/8.3/drbd-8.3.14rc1.tar.gz
+http://git.drbd.org/gitweb.cgi?p=drbd-8.3.git;a=tag;h=refs/tags/drbd-8.3.14rc1
 
-best,
+Best,
  Phil
--- 
-: Dipl-Ing Philipp Reisner
-: LINBIT | Your Way to High Availability
-: Tel: +43-1-8178292-50, Fax: +43-1-8178292-82
-: http://www.linbit.com
-
-DRBD(R) and LINBIT(R) are registered trademarks of LINBIT, Austria.
 
