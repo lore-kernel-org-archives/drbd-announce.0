@@ -1,13 +1,13 @@
 Return-Path: <philipp.reisner@linbit.com>
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Date: Thu, 04 Oct 2012 11:56:15 +0200
-Message-ID: <1374287.xxZaA70UFG@fat-tyre>
+Date: Fri, 12 Oct 2012 17:01:26 +0200
+Message-ID: <2161119.I1CzKrTTdf@fat-tyre>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="us-ascii"
 Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-8.3.14rc1.tar.gz
+Subject: [DRBD-announce] drbd-8.3.14rc2.tar.gz
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -21,14 +21,16 @@ List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hi,
 
-This is the preparation for the last planed 8.3.x release. -- Getting
-the fixes out of the door, that have accumulated over the last 5 month.
-
-As usual: Please help testing this release candidate, and report any
-regressions or bugs you can find!
+This is a call for all interested parties to participate in release
+candidate testing! In case you find any regression (or old bug) please
+let us know before October 19.
 
 Please note: This is a release candidate, not intended for production.
-Please help with testing!
+
+8.3.14rc2 (api:88/proto:86-97)
+--------
+ * Fixed a possible NULL pointer deference introduced in rc1, during
+   bitmap write out upon detach
 
 8.3.14rc1 (api:88/proto:86-97)
 --------
@@ -55,8 +57,8 @@ Please help with testing!
  * The new flag --peer-max-bio-size for drbdmeta create-md is of use
    if you plan to use the device for long time without peer
 
-http://oss.linbit.com/drbd/8.3/drbd-8.3.14rc1.tar.gz
-http://git.drbd.org/gitweb.cgi?p=drbd-8.3.git;a=tag;h=refs/tags/drbd-8.3.14rc1
+http://oss.linbit.com/drbd/8.3/drbd-8.3.14rc2.tar.gz
+http://git.drbd.org/gitweb.cgi?p=drbd-8.3.git;a=tag;h=refs/tags/drbd-8.3.14rc2
 
 Best,
  Phil
