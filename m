@@ -1,13 +1,13 @@
 Return-Path: <philipp.reisner@linbit.com>
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Date: Fri, 12 Oct 2012 17:01:26 +0200
-Message-ID: <2161119.I1CzKrTTdf@fat-tyre>
+Date: Fri, 19 Oct 2012 13:53:49 +0200
+Message-ID: <1558204.ziQmZckuvl@fat-tyre>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="us-ascii"
 Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-8.3.14rc2.tar.gz
+Subject: [DRBD-announce] drbd-8.3.14.tar.gz
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -21,18 +21,37 @@ List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hi,
 
-This is a call for all interested parties to participate in release
-candidate testing! In case you find any regression (or old bug) please
-let us know before October 19.
+Besides bug-fixes this release brings support for FLUSH/FUA for the
+layers that get stacked on top of DRBD.
 
-Please note: This is a release candidate, not intended for production.
+  Talking of bugs of previous releases: It needs to be pointed out
+  that as the barrier-support was removed in upstream kernel (2.6.36), 
+  it was no longer save to run DRBD in protocol A or B with barriers
+  enabled.
 
-8.3.14rc2 (api:88/proto:86-97)
---------
- * Fixed a possible NULL pointer deference introduced in rc1, during
-   bitmap write out upon detach
+  In case you...
+  * use protocol A or B
+  AND
+  * have a kernel >= 2.6.36 (or 2.6.32 if it is RHEL6/CentOS6 or other clone)
+  AND
+  * have DRBD <= 8.3.13
+  AND
+  * do not have the option "no-disk-barrier" set. (= barriers enabled)
+  THEN
+  you might get write reordering on secondary, which is bad.
 
-8.3.14rc1 (api:88/proto:86-97)
+  Your possible ways out:
+  * Add "no-disk-barrier" to your config
+  OR
+  * Upgrade to drbd-8.3.14
+
+  Note: You are only affected if all of the 4 conditions are true.
+  You solved the issue if you take _one_ of the two described ways out.
+
+Best,
+  Phil
+
+8.3.14 (api:88/proto:86-97)
 --------
  * No longer support write-ordering "barrier" on kernels newer than 2.6.36
    (or RHEL's 2.6.32), since it is no longer supported by the kernel's IO-layer
@@ -57,9 +76,9 @@ Please note: This is a release candidate, not intended for production.
  * The new flag --peer-max-bio-size for drbdmeta create-md is of use
    if you plan to use the device for long time without peer
 
-http://oss.linbit.com/drbd/8.3/drbd-8.3.14rc2.tar.gz
-http://git.drbd.org/gitweb.cgi?p=drbd-8.3.git;a=tag;h=refs/tags/drbd-8.3.14rc2
+http://www.linbit.com/support/drbd-8.3.14/
+http://oss.linbit.com/drbd/8.3/drbd-8.3.14.tar.gz
+http://git.drbd.org/gitweb.cgi?p=drbd-8.3.git;a=tag;h=refs/tags/drbd-8.3.14
 
-Best,
+best,
  Phil
-
