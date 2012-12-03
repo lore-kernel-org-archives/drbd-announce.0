@@ -1,13 +1,13 @@
 Return-Path: <philipp.reisner@linbit.com>
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Date: Fri, 19 Oct 2012 13:53:49 +0200
-Message-ID: <1558204.ziQmZckuvl@fat-tyre>
+Date: Mon, 03 Dec 2012 11:50:40 +0100
+Message-ID: <7684794.SfV0PgDVb4@fat-tyre>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="us-ascii"
 Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-8.3.14.tar.gz
+Subject: [DRBD-announce] drbd-9.0.0pre1.tar.gz
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -21,64 +21,54 @@ List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hi,
 
-Besides bug-fixes this release brings support for FLUSH/FUA for the
-layers that get stacked on top of DRBD.
+After 18 month of work we are happy that we finished the groundwork
+for the next generation of DRBD.
 
-  Talking of bugs of previous releases: It needs to be pointed out
-  that as the barrier-support was removed in upstream kernel (2.6.36), 
-  it was no longer save to run DRBD in protocol A or B with barriers
-  enabled.
+In this development effort we moved all connection related attributes 
+from the resource object to a dedicated connection object.
+A resource can have multiple connections from now on. The advantages
+of multiple connections over stacking are:
+ * IO is tracked by one activity log (with stacking two ALs)
+ * scales to 31 peers (with stacking to two peers)
+ * Improved handling
 
-  In case you...
-  * use protocol A or B
-  AND
-  * have a kernel >= 2.6.36 (or 2.6.32 if it is RHEL6/CentOS6 or other clone)
-  AND
-  * have DRBD <= 8.3.13
-  AND
-  * do not have the option "no-disk-barrier" set. (= barriers enabled)
-  THEN
-  you might get write reordering on secondary, which is bad.
+The (optional) automatic promote feature opens new ways to integrate
+DRBD with other cluster managers than pacemaker. It is also
+useful to keep the dual-primary time short for live-migrations of
+virtual machines in pacemaker clusters.
 
-  Your possible ways out:
-  * Add "no-disk-barrier" to your config
-  OR
-  * Upgrade to drbd-8.3.14
+Last not least the improvements in the activity log code allow unseen 
+number of IOPS for DRBD replicated storage if the storage is larger 
+than the area covered by the AL.
 
-  Note: You are only affected if all of the 4 conditions are true.
-  You solved the issue if you take _one_ of the two described ways out.
+Please keep in mind that this is the first pre-release, it will be
+easy to find and trigger bugs. We are aware of that and will release
+improved follow releases regularly. -- Please do not send bug reports for
+this pre1 release.
+
+9.0.0pre1 (api:genl1/proto:86-110)
+--------
+ * Support for multiple connections in a single resource; this feature
+   obsoletes device stacking; new configuration keywords: connection,
+   host, node-id, connection-mesh, hosts.
+ * Automatic promote; if a process opens a drbd device for r/w, drbd
+   tries to promotes that resource to primary; it the last process
+   closes the device drbd demotes that resource to secondary; opens
+   fails if promotion fails. This feature obsoletes become-primary-on
+ * Activity log striping; Besides the striping this allows AL
+   sizes of up to 65536.
+ * Non blocking queuing of AL-updates; This change significantly
+   improves the number of IOPs in case the workload does not fit into
+   the configured AL size.
+ * Resync extents are now 128MiByte instead of 16MiBytes
+
+Documentation:
+http://www.drbd.org/users-guide-9.0/
+
+Code:
+http://oss.linbit.com/drbd/9.0/drbd-9.0.0pre1.tar.gz
+http://git.drbd.org/gitweb.cgi?p=drbd-9.0.git;a=tag;h=refs/tags/drbd-9.0.0pre1
 
 Best,
-  Phil
-
-8.3.14 (api:88/proto:86-97)
---------
- * No longer support write-ordering "barrier" on kernels newer than 2.6.36
-   (or RHEL's 2.6.32), since it is no longer supported by the kernel's IO-layer
- * Fixed the cause of the "ASSERT FAILED tl_hash..." messages
- * Fixed an OOPS in case a on-congestion policy was set and the node becomes
-   disk less
- * Fixed a list corruption for read requests that complete with an error
-   after they were aborted
- * Fixed a kernel panic if the device size was an exact multiple of 128MiB
- * Finish requests that completed while IO on DRBD was frozen. Before such
-   requests where never completed by DRBD
- * Fixed a potential memory allocation during deadlock online resize
- * Online resize with internal meta data failed to write the bitmap to
-   the new on-disk-location after the resize operation. This issue was
-   introduced with 8.3.10
- * Do not go through NetworkFailure state during a regular disconnect
- * Improve the handling of read-errors: Make sure that sectors that had a
-   read error are overwritten with data from the peer on the next resync
- * Expose the data-generation-uuids through /sys/block/drbdXX/drbd/
- * Add a stop-sector to the online verify feature
- * Support FLUSH/FUA for layers above DRBD
- * The new flag --peer-max-bio-size for drbdmeta create-md is of use
-   if you plan to use the device for long time without peer
-
-http://www.linbit.com/support/drbd-8.3.14/
-http://oss.linbit.com/drbd/8.3/drbd-8.3.14.tar.gz
-http://git.drbd.org/gitweb.cgi?p=drbd-8.3.git;a=tag;h=refs/tags/drbd-8.3.14
-
-best,
  Phil
+
