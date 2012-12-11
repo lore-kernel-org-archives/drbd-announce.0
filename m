@@ -1,13 +1,13 @@
 Return-Path: <philipp.reisner@linbit.com>
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Date: Mon, 03 Dec 2012 11:50:40 +0100
-Message-ID: <7684794.SfV0PgDVb4@fat-tyre>
+Date: Tue, 11 Dec 2012 10:52:37 +0100
+Message-ID: <2028276.oopXmFtUlb@fat-tyre>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="us-ascii"
 Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-9.0.0pre1.tar.gz
+Subject: [DRBD-announce] drbd-8.3.15rc1.tar.gz
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -21,54 +21,29 @@ List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hi,
 
-After 18 month of work we are happy that we finished the groundwork
-for the next generation of DRBD.
+Although there is a fix for a regression that was introduced with 8.3.12,
+the real trigger for this DRBD release, was the fact that Linux-3.7
+no longer exports a symbol that was used by the out-of-tree DRBD. 
 
-In this development effort we moved all connection related attributes 
-from the resource object to a dedicated connection object.
-A resource can have multiple connections from now on. The advantages
-of multiple connections over stacking are:
- * IO is tracked by one activity log (with stacking two ALs)
- * scales to 31 peers (with stacking to two peers)
- * Improved handling
+As usual: Please help testing this release candidate, and report any
+bugs you can find!
 
-The (optional) automatic promote feature opens new ways to integrate
-DRBD with other cluster managers than pacemaker. It is also
-useful to keep the dual-primary time short for live-migrations of
-virtual machines in pacemaker clusters.
+Please note: This is a release candidate, not intended for production.
+Please help with testing!
 
-Last not least the improvements in the activity log code allow unseen 
-number of IOPS for DRBD replicated storage if the storage is larger 
-than the area covered by the AL.
-
-Please keep in mind that this is the first pre-release, it will be
-easy to find and trigger bugs. We are aware of that and will release
-improved follow releases regularly. -- Please do not send bug reports for
-this pre1 release.
-
-9.0.0pre1 (api:genl1/proto:86-110)
+8.3.15rc1 (api:88/proto:86-97)
 --------
- * Support for multiple connections in a single resource; this feature
-   obsoletes device stacking; new configuration keywords: connection,
-   host, node-id, connection-mesh, hosts.
- * Automatic promote; if a process opens a drbd device for r/w, drbd
-   tries to promotes that resource to primary; it the last process
-   closes the device drbd demotes that resource to secondary; opens
-   fails if promotion fails. This feature obsoletes become-primary-on
- * Activity log striping; Besides the striping this allows AL
-   sizes of up to 65536.
- * Non blocking queuing of AL-updates; This change significantly
-   improves the number of IOPs in case the workload does not fit into
-   the configured AL size.
- * Resync extents are now 128MiByte instead of 16MiBytes
+ * Do not end up in Unconnected state if the connection breaks at a
+   certain point during the handshake (was introduced with 8.3.12)
+ * Closed a race condition between promoting and connection handshake,
+   that could lead to an inconsistent view of the peer's UUIDS
+ * Fixed a race condition that could lead to a full sync, if connection
+   breaks at a certain point while starting a regular resync
+ * Fixed crm-fence-peer.sh for pacemaker 1.1.8
+ * Now builds on Linux-3.7
 
-Documentation:
-http://www.drbd.org/users-guide-9.0/
+http://oss.linbit.com/drbd/8.3/drbd-8.3.15rc1.tar.gz
+http://git.drbd.org/gitweb.cgi?p=drbd-8.3.git;a=tag;h=refs/tags/drbd-8.3.15rc1
 
-Code:
-http://oss.linbit.com/drbd/9.0/drbd-9.0.0pre1.tar.gz
-http://git.drbd.org/gitweb.cgi?p=drbd-9.0.git;a=tag;h=refs/tags/drbd-9.0.0pre1
-
-Best,
+Best regards,
  Phil
-
