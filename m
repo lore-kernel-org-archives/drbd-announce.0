@@ -1,13 +1,13 @@
 Return-Path: <philipp.reisner@linbit.com>
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Date: Tue, 29 Jan 2013 20:45:17 +0100
-Message-ID: <2381391.vsLXpUcJtJ@quad>
+Date: Tue, 05 Feb 2013 18:38:54 +0100
+Message-ID: <12062792.AsKWfi0Ge8@fat-tyre>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="us-ascii"
 Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-8.4.3rc1.tar.gz
+Subject: [DRBD-announce] drbd-8.4.3.tar.gz
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -43,10 +43,8 @@ A bigger (and eventually striped) AL gets created by using the
 
 Non of the bug fixes in this release is really spectacular.
 
-Please note: This is a release candidate, not intended for production.
-Please help with testing!
 
-8.4.3rc1 (api:genl1/proto:86-101)
+8.4.3 (api:genl1/proto:86-101)
 --------
  * Changes from drbd-8.3.14 and drbd-8.3.15
    * Do not end up in Unconnected state if the connection breaks at a
@@ -78,10 +76,16 @@ Please help with testing!
    the configured AL size. (Backport from drbd-9)
  * New options for drbdmeta create-md --al-stripes and --al-stripe-size
    to create a larger and striped AL
+ * Fixed drbdadm adjust of max-bio-bvecs
+ * Fixed a memory leak of 336 byte per attach/detach cycle
+ * Fix a potential null-pointer deference when configuring invalid
+   resync after dependencies
  * Compiles on Linux v3.7
 
-http://oss.linbit.com/drbd/8.4/drbd-8.4.3rc1.tar.gz
-http://git.drbd.org/gitweb.cgi?p=drbd-8.4.git;a=tag;h=refs/tags/drbd-8.4.3rc1
+http://www.linbit.com/support/drbd-8.4.3/
+http://oss.linbit.com/drbd/8.4/drbd-8.4.3.tar.gz
+http://git.drbd.org/gitweb.cgi?p=drbd-8.4.git;a=tag;h=refs/tags/drbd-8.4.3
 
-best,
+Best regards,
  Phil
+
