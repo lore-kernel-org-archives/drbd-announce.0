@@ -1,12 +1,13 @@
 Return-Path: <philipp.reisner@linbit.com>
 From: Philipp Reisner <philipp.reisner@linbit.com>
-To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Date: Wed, 14 Aug 2013 23:13:27 +0200
-Message-ID: <16013273.Rn8n6TS6dV@phil-dell-xps>
+To: drbd-announce@lists.linbit.com
+Date: Sat, 17 Aug 2013 01:52:14 +0200
+Message-ID: <3846600.K5hAWcAjV6@quad>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="us-ascii"
-Subject: [DRBD-announce] drbd-9.0.0pre6.tar.gz & drbd-8.3.16rc1.tar.gz
+Cc: drbd-user@lists.linbit.com
+Subject: [DRBD-announce] drbd-8.4.4rc1.tar.gz
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -20,47 +21,34 @@ List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hi,
 
-this is a *double release* day. On the drbd-9 side great 
-progress was made since the pre5 release. I ask everybody
-interested in drbd9 to check it out and report any
-issues found back to us. 
+And here is the 8.4.4rc1. It mainly contains of fixes. The only
+new feature the online reshaping of the AL-layout.
 
-9.0.0pre6 (api:genl1/proto:86-110)
+BTW, since there are still people installing drbd-8.3 on new systems.
+DRBD-8.4 gives you more performance. See this blog post:
+http://blogs.linbit.com/p/469/843-random-writes-faster/
+
+This is a release candidate. Please help testing.
+
+8.4.4rc1 (api:genl1/proto:86-101)
 --------
- * Fixed the wait-[connect|sync] drbdadm commands. Now they actually
-   work on all three object types (resources, connections, volumes)
- * Fixed the resync vs application IO deadlock on a resync from
-   Primary/SyncSource to Secondary/SyncTarget [Was introduced in
-   drbd9 development]
- * Correctly deal with writes from a Primary on two Secondaries that
-   do a resync
- * New command called "forget-peer". It is used to free a peer-device
-   slot. Online (via drbdsetup) or offline (via drbdmeta)
- * Lots of minor fixes
+ * Changes from 8.3.16
+   * fix decoding of bitmap vli rle for device sizes > 64 TB
+   * fix for deadlock when using automatic split-brain-recovery
+   * only fail empty flushes if no good data is reachable
+   * avoid to shrink max_bio_size due to peer re-configuration
+   * fix resume-io after reconnect with broken fence-peer handler
+   * fencing script improvements
+ * Fixed attaching to disks with fixed size external meta-data
+   (This regressions was introduced with 8.4.3)
+ * Allow online changing of al-stripes and al-stripe-size with the
+   resize command
+ * drbdadm adjust now deals with IP-address changes correctly
+ * Align the internal object model with drbd-9.0 (away from drbd-8.3)
+ * Compiles on Linux v3.10
 
-http://oss.linbit.com/drbd/9.0/drbd-9.0.0pre6.tar.gz
-http://git.drbd.org/gitweb.cgi?p=drbd-9.0.git;a=tag;h=refs/tags/drbd-9.0.0pre6
+http://git.drbd.org/gitweb.cgi?p=drbd-8.4.git;a=tag;h=refs/tags/drbd-8.4.4rc1
+http://oss.linbit.com/drbd/8.4/drbd-8.4.4rc1.tar.gz
 
-
-On the drbd-8.3 side the fix regarding devices larger than
-64TByte shows that our user base is moving to larger
-device sizes. Also note that the crm_fence_peer script
-infrastructure received a number of improvements.
-
-8.3.16rc1 (api:88/proto:86-97)
---------
- * fix decoding of bitmap vli rle for device sizes > 64 TB
- * fix for deadlock when using automatic split-brain-recovery
- * only fail empty flushes if no good data is reachable
- * avoid to shrink max_bio_size due to peer re-configuration
- * fix resume-io after reconnect with broken fence-peer handler
- * fencing script improvements
-
-http://oss.linbit.com/drbd/8.3/drbd-8.3.16rc1.tar.gz
-http://git.drbd.org/gitweb.cgi?p=drbd-8.3.git;a=tag;h=refs/tags/drbd-8.3.16rc1
-
-
-PS: drbd-8.4.4rc1 will arrive in the next days.
-
-Best,
-  Phil
+Best regards,
+ Phil
