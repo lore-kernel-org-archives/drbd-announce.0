@@ -1,13 +1,13 @@
 Return-Path: <philipp.reisner@linbit.com>
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Date: Sat, 28 Sep 2013 01:55:15 +0200
-Message-ID: <2423458.donDEAgrDs@quad>
+Date: Fri, 11 Oct 2013 22:06:05 +0200
+Message-ID: <153506538.TJyKhNrf1x@phil-dell-xps>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="us-ascii"
 Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-8.4.4rc2.tar.gz
+Subject: [DRBD-announce] drbd-8.4.4.tar.gz
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -21,18 +21,15 @@ List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hi,
 
-Most outstanding of the patches that landed in the
-repository since rc1 is: Support for DISCARD requests
+Apart from many fixes to the most outstanding new feature 
+of this release is Support for DISCARD requests
 (in SCSI speak: unmap; ATA speak: trim). This is important
 for use on SSDs or on thinly provisioned storage.
 
-This is a release candidate. Please help testing.
-
-8.4.4rc2 (api:genl1/proto:86-101)
+8.4.4 (api:genl1/proto:86-101)
 --------
  * Changes from 8.3.16
-   * fix potential deadlock when concurrently fencing and establishing a 
-connection
+   * fix potential deadlock when concurrently fencing and establishing a connection
    * fix potential distributed deadlock during verify or resync
    * fix decoding of bitmap vli rle for device sizes > 64 TB
    * fix for deadlock when using automatic split-brain-recovery
@@ -45,6 +42,8 @@ connection
      implement adjust_master_score parameter
    * fix too large bursts for very slow resync rates
    * don't let application IO throttle resync to a stall
+ * Fixed a hole in the challenge-response implementation
+ * Fixed a theoretical IO deadlock (Only triggers with unusual small AL i.e. 7)
  * Fixed attaching to disks with fixed size external meta-data
    (This regressions was introduced with 8.4.3)
  * Fixed a crash when the connection broke at a very exact point in
@@ -56,10 +55,11 @@ connection
  * drbdadm adjust now deals with IP-address changes correctly
  * Align the internal object model with drbd-9.0 (away from drbd-8.3)
  * New drbd-proxy option "bwlimit"; allow proxy options on host level
- * Compiles on Linux v3.10
+ * Compiles on Linux v3.11
 
-http://git.drbd.org/gitweb.cgi?p=drbd-8.4.git;a=tag;h=refs/tags/drbd-8.4.4rc2
-http://oss.linbit.com/drbd/8.4/drbd-8.4.4rc2.tar.gz
+http://www.linbit.com/support/drbd-8.4.4/
+http://git.drbd.org/gitweb.cgi?p=drbd-8.4.git;a=tag;h=refs/tags/drbd-8.4.4
+http://oss.linbit.com/drbd/8.4/drbd-8.4.4.tar.gz
 
 Best,
  Phil
