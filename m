@@ -1,13 +1,13 @@
-Return-Path: <philipp.reisner@linbit.com>
-From: Philipp Reisner <philipp.reisner@linbit.com>
-To: drbd-announce@lists.linbit.com
-Date: Thu, 06 Feb 2014 18:08:42 +0100
-Message-ID: <3088550.3YpodYlol5@fat-tyre>
+Return-Path: <robert.altnoeder@linbit.com>
+Message-ID: <52F3C950.6080308@linbit.com>
+Date: Thu, 06 Feb 2014 18:41:36 +0100
+From: Robert Altnoeder <robert.altnoeder@linbit.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+To: drbd-announce@lists.linbit.com
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
 Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-9.0.0pre8.tar.gz
+Subject: [DRBD-announce] drbdmanage v0.10 initial release
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -21,26 +21,21 @@ List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hi,
 
-The reason for this release is, to have a base drbd for drbdmanage.
-Please look at its announcement e-mail for further information.
+The first test version of drbdmanage, a utility for the automated 
+administration of resources on a multiple node DRBD 9 cluster, has just 
+been released. Please note that this version is not yet suitable for 
+production, and that it only works with the most recent prerelease of 
+DRBD 9 (that is drbd-9.0.0pre8).
 
-Some bugs where fixed. Right now our TODO-lists still have sufficient
-known bugs to keep us busy. -- This release does come without request 
-for sending us bug reports.
+You can find the archives at:
+http://oss.linbit.com/drbdmanage/
 
-9.0.0pre8 (api:genl1/proto:86-110)
---------
- * Fixed an issue with 2-phase commit when the members of
-   the cluster know different numbers of minor devices for the
-   resource
- * drbdsetup events: no longer terminates of 2KiB socket buffer gets full
- * drbdsetup events: output format changed
- * drbdsetup events: terminates if read side of pipe is closed
- * drbd-8.4 merges
- * Minor fixes
+There is also a GIT repository available at:
+http://git.drbd.org/gitweb.cgi?p=drbdmanage.git
 
-http://oss.linbit.com/drbd/9.0/drbd-9.0.0pre8.tar.gz
-http://git.drbd.org/gitweb.cgi?p=drbd-9.0.git;a=tag;h=drbd-9.0.0pre8
+I am looking forward to receiving your comments, bug reports and 
+contributions!
 
-Best regards,
- Phil
+regards,
+Robert
+
