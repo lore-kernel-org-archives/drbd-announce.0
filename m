@@ -1,13 +1,13 @@
 Return-Path: <robert.altnoeder@linbit.com>
-Message-ID: <52F3C950.6080308@linbit.com>
-Date: Thu, 06 Feb 2014 18:41:36 +0100
+Message-ID: <5319F2F6.10709@linbit.com>
+Date: Fri, 07 Mar 2014 17:25:26 +0100
 From: Robert Altnoeder <robert.altnoeder@linbit.com>
 MIME-Version: 1.0
 To: drbd-announce@lists.linbit.com
 Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
 Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbdmanage v0.10 initial release
+Subject: [DRBD-announce] drbdmanage v0.11 update
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -19,23 +19,18 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Hi,
+Hi!
 
-The first test version of drbdmanage, a utility for the automated 
-administration of resources on a multiple node DRBD 9 cluster, has just 
-been released. Please note that this version is not yet suitable for 
-production, and that it only works with the most recent prerelease of 
-DRBD 9 (that is drbd-9.0.0pre8).
+The v0.11 update of drbdmanage has been released. This version 
+implements a self-managed control volume, which makes it easier for 
+administrators to create a new drbdmanage cluster and to integrate new 
+nodes into an existing drbdmanage cluster.
 
-You can find the archives at:
+The archives can be found at:
 http://oss.linbit.com/drbdmanage/
-
-There is also a GIT repository available at:
+or if you prefer to use GIT, the repository is at:
 http://git.drbd.org/gitweb.cgi?p=drbdmanage.git
 
-I am looking forward to receiving your comments, bug reports and 
-contributions!
-
-regards,
+best regards,
 Robert
 
