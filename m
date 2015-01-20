@@ -1,13 +1,13 @@
 Return-Path: <philipp.reisner@linbit.com>
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Date: Fri, 19 Sep 2014 22:04:22 +0200
-Message-ID: <1465123.TPbvGT4quk@phil-dell-xps.local>
+Date: Tue, 20 Jan 2015 13:29:11 +0100
+Message-ID: <2066153.j5FZ22asyV@fat-tyre>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="us-ascii"
 Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-9.0.0pre10.tar.gz & drbd-utils-8.9.2rc1.tar.gz
+Subject: [DRBD-announce] drbd-9.0.0rc1.tar.gz & drbd-utils-8.9.2rc2.tar.gz
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -21,64 +21,81 @@ List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hi,
 
-in drbd-utils a number of fixes got queued up, so it is time
-to start a new release cycle of it.
-Last not least is has a number of important fixes in the
-drbd-9 user-space parts.
+In the last months the focus on the kernel side was to get
+it into shape to form a usable base for drbdmanage and
+the OpenStack cinder driver for drbd.
 
-On the kernel driver side, it is more than 6 month ago, since
-the last pre release. A lot was done in the meantime. The most
-time consuming part was probably the complete merge of the
-drbd-8.4 branch into the drbd-9 branch.
-A lot of progress was made on the stability of the driver.
-Kernel crashes are no longer an issue we are confronted in
-out day to day work on the code. As long as you do not dig
-into our test suite drbd-9 behaves mostly reasonable these 
-days.
+It is time to share the results of this work with a wider
+audience. 
 
-Please let us know if you find issues.
+We are testing here mainly on CentOS 6 VMs. Mirroring
+between up to 8 nodes works usually. Usually no kernel crashes,
+no refcount errors (module unload works), no protocol errors,
+resyncs run in the right direction and do the right blocks.
 
-This are a release candidates. Do not use in production.
+Known issues:
+ * It breaks a lot on pre-empt kernels. (Usual distros not affected)
+ * Concurrent drbdadm down seems to trigger issued
+ * Still possible to deadlock in the write path on a SyncTarget/Primary
+   node. Though does not happen frequently.
+ 
+The fitting drbdmanage will be announced in a few hours
+today.
+
+Please note that drbd-utils-8.9.2rc2 has to be used with the
+drbd-9.0.0rc1 kernel driver. Meta data format for 9.0 was changed
+again. I.e. meta-data created by older tools are not compatible
+with the 9.0.0rc1 kernel driver.
 
 
+drbd
+9.0.0rc1 (api:genl1/proto:86-110)
+--------
+ * some work on drbd-9.0 to drbd-8.4 compatibility
+ * many bug fixes to all areas of the new code; especially the
+   the resync procedure, which is a lot more complex than it's
+   8.4 ancestor
+ * a transport abstraction layer that will allow for alternative
+   transports besides TCP. Planed are RDMA/Infiniband and SCTP
 
-drbd-utils 8.9.2rc1
+http://oss.linbit.com/drbd/9.0/drbd-9.0.0rc1.tar.gz
+http://git.drbd.org/gitweb.cgi?p=drbd-9.0.git;a=tag;h=refs/tags/drbd-9.0.0rc1
+
+
+drbd-utils 
+8.9.2rc2
+--------
+  * drbdadm 9: Log errors to syslog if stderr is not available
+  * init script: fixes for stacked resources
+  * fix regression corner cases in bitmap size calculation
+  * allow create-md to initialize peer-max-bio-size to 1M
+  * make transport selectable
+  * fix aggregating drbdsetup / drbdmeta exit statii
+  * some documentation fixes (content and build)
+  * added direct-connect command
+  * incompatible drbd-9 metadata format changeuse: node_id as index for
+    peer_md instead of the bitmap_index
+  * drbdadm/meta/usage_cnt: ensure output is visible
+  * drbdsetup: fix arguments for all commands expecting a peer_device
+  * exit codes: redefine E_USAGE to 1 (not 3)
+  * some build changes
+  * init script: on start, first try to load the module
+  * drbdsetup events2: Improve how timestamps are assigned
+
+8.9.2rc1
 --------
   * udev rules (symlinks in /dev/by-res and by-disk) got fixed
   * Fixed upper limit for drbd-8.4 activity log entries
   * many fixes to drbdadm adjust and proxy commands for drbd-9
   * rhcs_fence: Do not invoke fence agents in parallel, rewrite in bash
-  * drbdsetup events2 is now also available in drbd-8.4 (backported from
-    drbd-9)
+  * drbdsetup events2 is now also available in drbd-8.4 (backported from drbd-9)
   * reorganized the repository have common code for drbd-9, drbd-8.4
     and drbd-8.3 only once
   * Fix drbd.ocf for resources without volume 0
 
-http://oss.linbit.com/drbd/drbd-utils-8.9.2rc1.tar.gz
-http://git.drbd.org/gitweb.cgi?p=drbd-utils.git;a=tag;h=refs/tags/v8.9.2rc1
+http://oss.linbit.com/drbd/drbd-utils-8.9.2rc2.tar.gz
+http://git.drbd.org/gitweb.cgi?p=drbd-utils.git;a=tag;h=refs/tags/v8.9.2rc2
 
-
-drbd 9.0.0pre10 (api:genl1/proto:86-110)
---------
- * completed the merge from the 8.4 branch (including debugfs)
- * final fixes on the reference counts
- * many fixes to the state engine to express the drbd9 semantics
- * nodes not directly connected to a newly promoted primary
-   now outdate themselves in the two-phase commit operation
- * fix disallowing of detach in case the device is opened
-   read only
- * fixed resync: When a node is SyncSource to multiple targets
-   make sure that all targets get informed about blocks set
-   in sync on the other nodes (Last of those packets was
-   not sent previously)
- * fixed resync: Sometimes froze due to a forgotten act
-   log entry on secondary nodes
- * fixes and improvements to the UUID modifications for resync
-   decissions
- * fixed resync: No longer wake more than one paused resync
-   operations
- * fixed role changes on resources without volumes
-
-http://oss.linbit.com/drbd/9.0/drbd-9.0.0pre10.tar.gz
-http://git.drbd.org/gitweb.cgi?p=drbd-9.0.git;a=tag;h=refs/tags/drbd-9.0.0pre10
+Best regards,
+ phil
 
