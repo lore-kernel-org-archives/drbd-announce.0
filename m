@@ -1,13 +1,15 @@
-Return-Path: <philipp.reisner@linbit.com>
-From: Philipp Reisner <philipp.reisner@linbit.com>
-To: drbd-announce@lists.linbit.com
-Date: Tue, 20 Jan 2015 13:29:11 +0100
-Message-ID: <2066153.j5FZ22asyV@fat-tyre>
+Return-Path: <robert.altnoeder@linbit.com>
+Message-ID: <54BE7AD2.1000301@linbit.com>
+Date: Tue, 20 Jan 2015 16:57:06 +0100
+From: Robert Altnoeder <robert.altnoeder@linbit.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+To: drbd-announce@lists.linbit.com
+References: <2066153.j5FZ22asyV@fat-tyre>
+In-Reply-To: <2066153.j5FZ22asyV@fat-tyre>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
 Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-9.0.0rc1.tar.gz & drbd-utils-8.9.2rc2.tar.gz
+Subject: [DRBD-announce] drbdmanage v0.20 pre-release
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -19,83 +21,51 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Hi,
+Hi everyone,
 
-In the last months the focus on the kernel side was to get
-it into shape to form a usable base for drbdmanage and
-the OpenStack cinder driver for drbd.
+along with the rc1 release of DRBD 9.0.0, we are releasing
+another pre-release of drbdmanage.
 
-It is time to share the results of this work with a wider
-audience. 
+Here are some of the new features of this release:
 
-We are testing here mainly on CentOS 6 VMs. Mirroring
-between up to 8 nodes works usually. Usually no kernel crashes,
-no refcount errors (module unload works), no protocol errors,
-resyncs run in the right direction and do the right blocks.
+- drbdmanage volumes are created with specified net size
+   now; drbdmanage calculates the space required for
+   DRBD meta-data and adds it to the space required for
+   the actual data
 
-Known issues:
- * It breaks a lot on pre-empt kernels. (Usual distros not affected)
- * Concurrent drbdadm down seems to trigger issued
- * Still possible to deadlock in the write path on a SyncTarget/Primary
-   node. Though does not happen frequently.
- 
-The fitting drbdmanage will be announced in a few hours
-today.
+- this also works the other way around: drbdmanage
+   can report the net amount of free space, so that when
+   you create a new DRBD volume, you will have that much
+   space for actual data - because the space required for
+   the resource's meta-data had already been considered
+   when drbdmanage reported the amount of remaining
+   free space
 
-Please note that drbd-utils-8.9.2rc2 has to be used with the
-drbd-9.0.0rc1 kernel driver. Meta data format for 9.0 was changed
-again. I.e. meta-data created by older tools are not compatible
-with the 9.0.0rc1 kernel driver.
+- there is a "free-space n" command now; it tells you
+   the maximum size for an n-tuple redundant volume
 
+- volumes created by drbdmanage do no longer stay
+   in the "Primary" role on one of the drbdmanage nodes
+   after initialization; you can begin to use them immediately
 
-drbd
-9.0.0rc1 (api:genl1/proto:86-110)
---------
- * some work on drbd-9.0 to drbd-8.4 compatibility
- * many bug fixes to all areas of the new code; especially the
-   the resync procedure, which is a lot more complex than it's
-   8.4 ancestor
- * a transport abstraction layer that will allow for alternative
-   transports besides TCP. Planed are RDMA/Infiniband and SCTP
+- creating a new drbdmanage cluster has even more
+   automation built in now;
+   if ssh keys are present, drbdmanage can attempt to
+   run the join command on the newly added node
+   remotely through ssh, so you are no longer
+   required to copy&paste the join command to the
+   new node
 
-http://oss.linbit.com/drbd/9.0/drbd-9.0.0rc1.tar.gz
-http://git.drbd.org/gitweb.cgi?p=drbd-9.0.git;a=tag;h=refs/tags/drbd-9.0.0rc1
+- more comfortable usage: most list output is
+   sorted now, the size argument of the "new-volume"
+   command takes unit suffixes (e.g., "35gb"), and there
+   are shortcut aliases for many commands
+   (for example, try "nn" instead of "new-node")
 
-
-drbd-utils 
-8.9.2rc2
---------
-  * drbdadm 9: Log errors to syslog if stderr is not available
-  * init script: fixes for stacked resources
-  * fix regression corner cases in bitmap size calculation
-  * allow create-md to initialize peer-max-bio-size to 1M
-  * make transport selectable
-  * fix aggregating drbdsetup / drbdmeta exit statii
-  * some documentation fixes (content and build)
-  * added direct-connect command
-  * incompatible drbd-9 metadata format changeuse: node_id as index for
-    peer_md instead of the bitmap_index
-  * drbdadm/meta/usage_cnt: ensure output is visible
-  * drbdsetup: fix arguments for all commands expecting a peer_device
-  * exit codes: redefine E_USAGE to 1 (not 3)
-  * some build changes
-  * init script: on start, first try to load the module
-  * drbdsetup events2: Improve how timestamps are assigned
-
-8.9.2rc1
---------
-  * udev rules (symlinks in /dev/by-res and by-disk) got fixed
-  * Fixed upper limit for drbd-8.4 activity log entries
-  * many fixes to drbdadm adjust and proxy commands for drbd-9
-  * rhcs_fence: Do not invoke fence agents in parallel, rewrite in bash
-  * drbdsetup events2 is now also available in drbd-8.4 (backported from drbd-9)
-  * reorganized the repository have common code for drbd-9, drbd-8.4
-    and drbd-8.3 only once
-  * Fix drbd.ocf for resources without volume 0
-
-http://oss.linbit.com/drbd/drbd-utils-8.9.2rc2.tar.gz
-http://git.drbd.org/gitweb.cgi?p=drbd-utils.git;a=tag;h=refs/tags/v8.9.2rc2
+If you have questions, or if you would like to provide feedback,
+feel free to post to the mailing list, or to visit our IRC channel
+at FreeNode #drbd9+drbdmanage.
 
 Best regards,
- phil
+Robert
 
