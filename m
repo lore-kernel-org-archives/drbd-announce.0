@@ -1,13 +1,13 @@
 Return-Path: <philipp.reisner@linbit.com>
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Date: Thu, 26 Mar 2015 11:08:27 +0100
-Message-ID: <2052558.FXNHCM5iJK@fat-tyre>
+Date: Tue, 07 Apr 2015 21:43:13 +0200
+Message-ID: <1583962.X7na8lOJy6@nuc>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="us-ascii"
 Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-8.4.6rc1.tar.gz AND drbd-utils-8.9.2rc4.tar.gz
+Subject: [DRBD-announce] drbd-8.4.6.tar.gz AND drbd-utils-8.9.2.tar.gz
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -21,19 +21,38 @@ List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hi,
 
-It really got time to push an drbd-8.4 release out. Over the course
-over the last 9 month (yes, 8.4.5 is already nine month old), no
-major issues where discovered.
+I am proud to announce the availability of drbd-8.4.6 and the 
+drbd-utils-8.9.2 packages.
 
-The major driving force in this time period are customers that want
-to see more performance on their latest generation SSDs.
+One reason to be proud are some performance improvements, that
+are useful for users of fast SSDs.
 
-The final release is scheduled in one week from now.
+The other reason to be proud that this release brings two new
+commands to the drbd-8.4 userspace:
 
-Please help testing the release candidate.
+drbdsetup status
+   This command gives you an overview of the resources, devices
+   and connection status. This is the successor of "/proc/drbd".
+   Of course /proc/drbd is still there, and it will stay for all
+   future releases of drbd-8.4.x.
+
+drbdsetup events2
+   This command is the successor of "drbdsetup events".
+
+Both commands form a first link to the world of drbd-9. Both
+commands also exist for drbd-9, both format their output
+in the same way as on drbd-9. 
+
+This allows you to port your monitoring infrastructure to this
+new interface even before drbd-9 is released.
+
+   In drbd-9 /proc/drbd no longer shows resource, device or connection
+   status. The "events" sub-command no longer exists, it is replaced
+   by events2 in drbd-9.
+
 
 drbd
-8.4.6rc1 (api:genl1/proto:86-101)
+8.4.6 (api:genl1/proto:86-101)
 -------
  * fix failing of user space helpers since kernel 3.13. This bug is known as
    'out of mem, failed to invoke fence-peer helper'
@@ -51,12 +70,13 @@ drbd
  * backport of events2 and status commands from drbd9. This allows to be
    DRBD9 compatible starting with this release, and to get used to DRBD9
    compatible status reporting
+ * support for lsblk in drbd
 
-http://oss.linbit.com/drbd/8.4/drbd-8.4.6rc1.tar.gz
-http://git.drbd.org/gitweb.cgi?p=drbd-8.4.git;a=tag;h=refs/tags/drbd-8.4.6rc1
+http://oss.linbit.com/drbd/8.4/drbd-8.4.6.tar.gz
+http://git.drbd.org/gitweb.cgi?p=drbd-8.4.git;a=tag;h=refs/tags/drbd-8.4.6
 
 drbd-utils
-8.9.2rc4
+8.9.2
 --------
   * change systemd unit file: basically just call the init script
   * make some previously hardcoded timeouts configurable
@@ -88,7 +108,8 @@ drbd-utils
     and drbd-8.3 only once
   * Fix drbd.ocf for resources without volume 0
 
-http://oss.linbit.com/drbd/drbd-utils-8.9.2rc4.tar.gz
-http://git.drbd.org/gitweb.cgi?p=drbd-utils.git;a=tag;h=refs/tags/v8.9.2rc4
+http://oss.linbit.com/drbd/drbd-utils-8.9.2.tar.gz
+http://git.drbd.org/gitweb.cgi?p=drbd-utils.git;a=tag;h=refs/tags/v8.9.2
 
- phil
+-phil
+
