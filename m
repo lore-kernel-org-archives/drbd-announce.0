@@ -1,13 +1,13 @@
-Return-Path: <philipp.reisner@linbit.com>
-From: Philipp Reisner <philipp.reisner@linbit.com>
-To: drbd-announce@lists.linbit.com
-Date: Tue, 07 Apr 2015 21:43:13 +0200
-Message-ID: <1583962.X7na8lOJy6@nuc>
+Return-Path: <robert.altnoeder@linbit.com>
+Message-ID: <553E6115.7080408@linbit.com>
+Date: Mon, 27 Apr 2015 18:17:25 +0200
+From: Robert Altnoeder <robert.altnoeder@linbit.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+To: drbd-announce@lists.linbit.com
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
 Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-8.4.6.tar.gz AND drbd-utils-8.9.2.tar.gz
+Subject: [DRBD-announce] drbdmanage v0.34 pre-release
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -19,97 +19,67 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Hi,
+Hello DRBD9 and drbdmanage testers,
 
-I am proud to announce the availability of drbd-8.4.6 and the 
-drbd-utils-8.9.2 packages.
+we have released version 0.34 of drbdmanage today.
 
-One reason to be proud are some performance improvements, that
-are useful for users of fast SSDs.
+Improvements in this release include:
 
-The other reason to be proud that this release brings two new
-commands to the drbd-8.4 userspace:
+- New command line parser with tab-completion and
+   line editing capability in interactive mode
 
-drbdsetup status
-   This command gives you an overview of the resources, devices
-   and connection status. This is the successor of "/proc/drbd".
-   Of course /proc/drbd is still there, and it will stay for all
-   future releases of drbd-8.4.x.
+- New powerful list views that allow drbdmanage
+   to hide distracting information unless it is
+   explicitly requested, and to enablegrouping of
+   list entries
 
-drbdsetup events2
-   This command is the successor of "drbdsetup events".
+- New storage drivers (experimental)
+   The new drivers have a better ability to check whether
+   the storage backend has created or removed a volume
+   as requested by drbdmanage.
+   The new drivers are:
+   * LVM logical volume driver:
+     (Standard logical volumes, no snapshot capability)
+       drbdmanage.storage.lvm_ng.LvmNg
+   * LVM multiple thin pools driver:
+     (One thin pool per new volume and the volume's
+      snapshot/restore volumes)
+       drbdmanage.storage.lvm_thinpool_ng.LvmThinPoolNg
+   * LVM single thin pool driver:
+     (A single shared thin pool for all volumes and snapshots)
+       drbdmanage.storage.lvm_thinlv.LvmThinLv
 
-Both commands form a first link to the world of drbd-9. Both
-commands also exist for drbd-9, both format their output
-in the same way as on drbd-9. 
+   Older implementations of the LVM LV driver and the
+   LVM multi thin pool driver are still included, however, we
+   recommend that you switch to the new drivers, as the old
+   drivers are considered deprecated.
+   Note that the new drivers will be renamed in future versions.
 
-This allows you to port your monitoring infrastructure to this
-new interface even before drbd-9 is released.
+   Configuration file templates for the new drivers are included
+   in the release packages.
 
-   In drbd-9 /proc/drbd no longer shows resource, device or connection
-   status. The "events" sub-command no longer exists, it is replaced
-   by events2 in drbd-9.
+- Fully qualified domain names (FQDN) can be used as a
+   drbdmanage node name now (the dot character is now allowed
+   inside a node name)
 
+- A new connection algorithm connects DRBD9 clients only to
+   server nodes (nodes where a resource has a storage backend),
+   but not to other clients, thereby reducing the number
+   of active network connections
 
-drbd
-8.4.6 (api:genl1/proto:86-101)
--------
- * fix failing of user space helpers since kernel 3.13. This bug is known as
-   'out of mem, failed to invoke fence-peer helper'
- * fix connection timeouts for resources with multiple volumes
- * fix an issue with DRBD on linux software raid by properly remapping
-   bi_bdev
- * fix a (hard to trigger) race condition between promoting to primary an
-   connection handshake. In case the bug was hit the Primary got stuck in
-   WFBitmapS connection state
- * Fix a NULL deref when resuming IO on a diskless primary
- * Fix compile issues with uncommon architectures
- * improvements to asender performance. With high end backing storage and
-   networking equipment you may see IOPS improvements between 25% to 50%.
-   Highest number on a single drbd seen by LINBIT so far: 160000 IOPS
- * backport of events2 and status commands from drbd9. This allows to be
-   DRBD9 compatible starting with this release, and to get used to DRBD9
-   compatible status reporting
- * support for lsblk in drbd
+- Packaging support for the Debian distribution has been added
 
-http://oss.linbit.com/drbd/8.4/drbd-8.4.6.tar.gz
-http://git.drbd.org/gitweb.cgi?p=drbd-8.4.git;a=tag;h=refs/tags/drbd-8.4.6
+You can find the archives at:
+http://oss.linbit.com/drbdmanage/
 
-drbd-utils
-8.9.2
---------
-  * change systemd unit file: basically just call the init script
-  * make some previously hardcoded timeouts configurable
-  * drbdadm: New command peer-device-options
-  * drbd 9: Move max_buffers to net_conf
-  * drbd 9: Log errors to syslog if stderr is not available
-  * init script: fixes for stacked resources
-  * fix regression corner cases in bitmap size calculation
-  * allow create-md to initialize peer-max-bio-size to 1M
-  * drbd 9: make transport selectable
-  * fix aggregating drbdsetup / drbdmeta exit statii
-  * some documentation fixes (content and build)
-  * added direct-connect command
-  * incompatible drbd-9 metadata format change. use: node_id as index for
-    peer_md instead of the bitmap_index
-  * drbdadm/meta/usage_cnt: ensure output is visible
-  * drbdsetup: fix arguments for all commands expecting a peer_device
-  * exit codes: redefine E_USAGE to 1 (not 3)
-  * some build changes
-  * init script: on start, first try to load the module
-  * drbdsetup events2: Improve how timestamps are assigned
-  * udev rules (symlinks in /dev/by-res and by-disk) got fixed
-  * Fixed upper limit for drbd-8.4 activity log entries
-  * many fixes to drbdadm adjust and proxy commands for drbd-9
-  * rhcs_fence: Do not invoke fence agents in parallel, rewrite in bash
-  * drbdsetup events2 is now also available in drbd-8.4 (backported from
-    drbd-9)
-  * reorganized the repository have common code for drbd-9, drbd-8.4
-    and drbd-8.3 only once
-  * Fix drbd.ocf for resources without volume 0
+There is also a GIT repository available at:
+http://git.drbd.org/gitweb.cgi?p=drbdmanage.git
 
-http://oss.linbit.com/drbd/drbd-utils-8.9.2.tar.gz
-http://git.drbd.org/gitweb.cgi?p=drbd-utils.git;a=tag;h=refs/tags/v8.9.2
+This is a release that comes with quite a few changes, so if you have 
+any questions on how to use this new version of drbdmanage or any of its 
+new components, feel free to post to the mailing list or to visit our 
+IRC channel at FreeNode #drbd9+drbdmanage.
 
--phil
+Best regards,
+Robert
 
