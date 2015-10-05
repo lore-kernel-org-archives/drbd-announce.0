@@ -1,13 +1,13 @@
-Return-Path: <philipp.reisner@linbit.com>
-From: Philipp Reisner <philipp.reisner@linbit.com>
-To: drbd-announce@lists.linbit.com
-Date: Fri, 18 Sep 2015 17:47:58 +0200
-Message-ID: <1756978.DIc90az5uK@fat-tyre>
+Return-Path: <robert.altnoeder@linbit.com>
+Message-ID: <56129AE8.5040800@linbit.com>
+Date: Mon, 05 Oct 2015 17:44:40 +0200
+From: Robert Altnoeder <robert.altnoeder@linbit.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+To: drbd-announce@lists.linbit.com
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
 Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-utils-8.9.4.tar.gz
+Subject: [DRBD-announce] drbdmanage v0.50
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -19,31 +19,58 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Hi,
+Dear DRBD9 & drbdmanage users & testers,
 
-this drbd-utils release is triggered by a drbdmanage. Drbdmanage
-needs the ability to have multiple connection-mesh statements
-per resource.
-If you do not use drbdmanage, there is no pressing reason to
-upgrade to this drbd-utils release.
+you may have noticed that we published distribution packages of the new 
+version 0.50 of drbdmanage about two weeks ago, and it has also been on 
+our public GIT for a while. The source package (as a gzipped tar 
+archive) followed today, so all the packages are now available for 
+download at http://oss.linbit.com/drbdmanage/
 
+This version is a major update where the single control volume of 
+previous versions is replaced by a dual-volume control resource to 
+enable recovery of backup data whenever one of the two control volumes 
+is damaged, e.g. due to a sudden power outage while data is being 
+written to the volume.
+For this reason, control volumes of previous drbdmanage versions cannot 
+be used with drbdmanage 0.50.
 
-8.9.4
---------
-  * Add an autoconf switch for building without man pages
-  * Fix compatibility with the musl C library
-  * Introduce the concept of paths within a connection to the config file;
-    add support for paths to drbdadm adjust
-  * Allow multiple connection-mesh statements within one resource
-  * Document peer-device-options on the drbd-9.0 man pages
-  * increase the lower boundary for al-extents from 7 to 67; drbdadm clamps
-    al-extents to 67 implicitly if you configures something lower than 67
-  * Document the events2 command on the drbd-8.4 man page
-  * Fix environment variables for handlers
+Since the last officially published release, v0.43, lots of changes and 
+new features have been implemented:
 
+- Many commands take multiple arguments now (assign, unassign, 
+remove-resource, etc.)
 
-http://oss.linbit.com/drbd/drbd-utils-8.9.4.tar.gz
-http://git.drbd.org/gitweb.cgi?p=drbd-utils.git;a=tag;h=refs/tags/v8.9.4
+- DBus signals: Listeners that will be notified by drbdmanage whenever 
+the state of a resource assignment changes can be implemented using this 
+interface
 
-cheers,
- Phil
+- Control resource quorum: Changes can only be made if a group of 
+drbdmanage nodes has a quorum (more than 50% of all nodes are 
+replicating changes); this avoids split-brain situations. There are 
+manual overrides for situations where nodes have been taken offline for 
+an extended time period
+
+- For many installations, drbdmanage configuration files are unnecessary 
+now: All but some of the most basic configuration options can be set 
+with drbdmanage commands. Those options are stored in the control 
+resource, so the configuration is identical on all nodes of the 
+drbdmanage cluster
+
+========================================
+
+drbd-utils 8.9.4 is required with drbdmanage v0.50
+
+The drbdmanage archives can be found at:
+http://oss.linbit.com/drbdmanage/
+
+...and our GIT repository is available at:
+http://git.drbd.org/gitweb.cgi?p=drbdmanage.git
+
+If you have any questions, suggestions or feedback for us,
+feel free to post to the mailing list or to visit
+our IRC channel at FreeNode #drbd9+drbdmanage.
+
+Best regards,
+Robert
+
