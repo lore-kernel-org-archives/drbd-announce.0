@@ -1,13 +1,13 @@
-Return-Path: <robert.altnoeder@linbit.com>
-Message-ID: <56129AE8.5040800@linbit.com>
-Date: Mon, 05 Oct 2015 17:44:40 +0200
-From: Robert Altnoeder <robert.altnoeder@linbit.com>
-MIME-Version: 1.0
+Return-Path: <philipp.reisner@linbit.com>
+From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
+Date: Thu, 17 Dec 2015 10:09:48 +0100
+Message-ID: <1636919.vJNWQY4AmX@fat-tyre>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbdmanage v0.50
+Subject: [DRBD-announce] drbd-8.4.7 & drbd-utils-8.9.5
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -19,58 +19,57 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Dear DRBD9 & drbdmanage users & testers,
+Hi,
 
-you may have noticed that we published distribution packages of the new 
-version 0.50 of drbdmanage about two weeks ago, and it has also been on 
-our public GIT for a while. The source package (as a gzipped tar 
-archive) followed today, so all the packages are now available for 
-download at http://oss.linbit.com/drbdmanage/
+with this release we fixed some performance regressions in 8.4 that
+trigger only when DRBD is used as block storage target. (I.e. they
+do not triggered when you have a file system on top of it).
 
-This version is a major update where the single control volume of 
-previous versions is replaced by a dual-volume control resource to 
-enable recovery of backup data whenever one of the two control volumes 
-is damaged, e.g. due to a sudden power outage while data is being 
-written to the volume.
-For this reason, control volumes of previous drbdmanage versions cannot 
-be used with drbdmanage 0.50.
+When it comes to new features a lot was done that DRBD works better
+with thinly provisioned storage and SSDs (WRITE_SAME & resync).
+Look for 'rs-discard-granularity' and 'discard-zeroes-if-aligned'
+on the man-pages.
 
-Since the last officially published release, v0.43, lots of changes and 
-new features have been implemented:
+drbd
+8.4.7-1 (api:genl1/proto:86-101)
+-------
+ * introduce WRITE_SAME support
+ * introduce discard-capable (or thinly allocated) device friendly resync
+ * improve latency on certain kernel versions and usage patterns
+ * improve latency of disk flushes with multiple volumes
+ * fix recovery handling of certain multiple error scenarios,
+   including possible deadlocks after certain multiple failure sequences
+ * introduce unfence-peer handler,
+   to close possible races if the replication link is flaky
+ * avoid potential spurious full resync by
+ * improve discard support, reliably zero-out/discard even with discard_zeroes_data=0
+ * update wrapper defines for linux 4.3
+ * fix latency regression introduced with 8.4.5
+   protocol A was sometimes synchronous, C sometimes double-latency
+ * avoid potential deadlock during handshake
+ * avoid potential deadlock in disconnect during resync
+   with fencing resource-and-stonith
+ * allow IO during some bitmap bulk IO operations
+ * fix "endless" transfer log walk in protocol A
 
-- Many commands take multiple arguments now (assign, unassign, 
-remove-resource, etc.)
+http://oss.linbit.com/drbd/8.4/drbd-8.4.7-1.tar.gz
+http://git.drbd.org/drbd-8.4.git/tag/refs/tags/drbd-8.4.7
 
-- DBus signals: Listeners that will be notified by drbdmanage whenever 
-the state of a resource assignment changes can be implemented using this 
-interface
 
-- Control resource quorum: Changes can only be made if a group of 
-drbdmanage nodes has a quorum (more than 50% of all nodes are 
-replicating changes); this avoids split-brain situations. There are 
-manual overrides for situations where nodes have been taken offline for 
-an extended time period
+drbd-utils
+8.9.5
+--------
+ * add support for new disk option 'rs-discard-granularity' (module v8.4.7)
+ * add support for new disk option 'discard-zeroes-if-aligned' (module v8.4.7)
+ * add support for v9 "path" commands
+ * doc improvements/corrections
+ * improvements to drbd ocf resource agent
+   and pacemaker "constraint based fencing" (crm-fence-peer.sh)
+ * drbd-overview improvements
 
-- For many installations, drbdmanage configuration files are unnecessary 
-now: All but some of the most basic configuration options can be set 
-with drbdmanage commands. Those options are stored in the control 
-resource, so the configuration is identical on all nodes of the 
-drbdmanage cluster
+http://oss.linbit.com/drbd/drbd-utils-8.9.5.tar.gz
+http://git.drbd.org/drbd-utils.git/tag/refs/tags/v8.9.5
 
-========================================
 
-drbd-utils 8.9.4 is required with drbdmanage v0.50
-
-The drbdmanage archives can be found at:
-http://oss.linbit.com/drbdmanage/
-
-...and our GIT repository is available at:
-http://git.drbd.org/gitweb.cgi?p=drbdmanage.git
-
-If you have any questions, suggestions or feedback for us,
-feel free to post to the mailing list or to visit
-our IRC channel at FreeNode #drbd9+drbdmanage.
-
-Best regards,
-Robert
-
+cheers,
+ Phil
