@@ -1,13 +1,13 @@
-Return-Path: <philipp.reisner@linbit.com>
-From: Philipp Reisner <philipp.reisner@linbit.com>
+Return-Path: <lars.ellenberg@linbit.com>
+Date: Mon, 11 Jul 2016 18:16:49 +0200
+From: Lars Ellenberg <lars.ellenberg@linbit.com>
 To: drbd-announce@lists.linbit.com
-Date: Tue, 19 Apr 2016 23:55:26 +0200
-Message-ID: <9369365.xEpsxRgIo1@phil-dell-xps.local>
+Message-ID: <20160711161649.GA13335@soda.linbit>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-9.0.2
+Subject: [DRBD-announce]  drbd-8.4.8-0rc1.tar.gz
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -19,37 +19,30 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Hi,
 
-since a number of important bug-fixes accumulated in the master
-branch it became necessary to tag the code base as 9.0.2.
-No new features at this time.
+This is a release candidate. Please help testing,
+and let us know of any problems or regressions, performance or otherwise.
 
-9.0.2-1 (api:genl2/proto:86-111/transport:14)
---------
- * Fix list walks on the transfer log; Lead to crashes in _tl_restart()
-   and (sometimes) other places.
- * Fix a corner case that lead to nodes showing the disk states of
-   other nodes as Outdated after resync
- * Fix waiting for barrier acks; The bug was that demoting to secondary
-   after AHEAD/BEHIND may blocked forever
- * Fix WRITE_SAME support
- * Fix a possible OOPS in got_peer_ack()
- * Fix resync controller; Was always on c-min-rate
- * Fix a possible deadlock on disconnect
- * Use modern kernel's expclicit plugging to reduce number of IOPs on
-   the secondary node
- * Introduce a per resource max-io-depth limit; applies to each volume
-   in the resource
- * Promptly send peer_acks if we can put the last reference on an
-   activity log entry. Helps the to get the AL in use on secondaries
-   down.
+Thanks,
+	Lars
 
-http://www.drbd.org/download/drbd/9.0/drbd-9.0.2-1.tar.gz
-http://git.drbd.org/drbd-9.0.git/tag/drbd-9.0.2
+Git:
+  http://git.linbit.com/drbd-8.4.git/shortlog/refs/tags/drbd-8.4.8-0rc1
+Tarballs:
+  http://www.drbd.org/download/drbd/8.4/drbd-8.4.8-0rc1.tar.gz
 
+Changes since 8.4.7:
 
-PS: Expect the next drbd-utils release in 3 weeks from now.
+ * compat fixes for linux kernels up to 4.7
+ * fix potential deadlock with many parallel request on kernels >= 4.3
+ * fix potential data divergence after write error on secondary
+   with non-synchronous replication
+ * performance improvement for kernel >= 2.6.39
+   use request plugging again to help backends with merging batches
 
-cheers,
- Phil
+Already in 8.4.7-2:
+
+ * compat: don't trigger BUG_ON on flush in kernel < 2.6.24 (e.g. RHEL 5)
+ * al_write_transaction: skip re-scanning of bitmap page pointer array.
+   Improves performance of random writes on "huge" volumes
+   by burning less CPU and avoiding CPU cache pressure.
