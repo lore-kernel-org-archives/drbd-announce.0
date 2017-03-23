@@ -1,13 +1,22 @@
 Return-Path: <philipp.reisner@linbit.com>
+Received: from mail-wr0-f170.google.com (mail-wr0-f170.google.com
+	[209.85.128.170]) (using TLSv1 with cipher AES128-SHA (128/128 bits))
+	(No client certificate requested)
+	by mail09.linbit.com (LINBIT Mail Daemon) with ESMTPS id E399F1057FAD
+	for <drbd-announce@lists.linbit.com>;
+	Thu, 23 Mar 2017 15:26:50 +0100 (CET)
+Received: by mail-wr0-f170.google.com with SMTP id u108so148605567wrb.3
+	for <drbd-announce@lists.linbit.com>;
+	Thu, 23 Mar 2017 07:26:50 -0700 (PDT)
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Date: Fri, 23 Dec 2016 14:55:18 +0100
-Message-ID: <7665562.5gW1P1bkcl@fat-tyre>
+Date: Thu, 23 Mar 2017 15:20:45 +0100
+Message-ID: <1942540.BBj9l9kJ7Q@fat-tyre>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="us-ascii"
 Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-9.0.6 and drbd-utils-8.9.10
+Subject: [DRBD-announce] drbd-9.0.7rc1 & drbd-utils-8.9.11rc1
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -21,53 +30,68 @@ List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hi,
 
-In this cycle we where driven by users using DRBD9 with OpenStack.
-So we got improvements in handling many resources event to the extent
-of a new tool to get an quick overview of many DRBD resources.
+Avoiding data divergence is the motto of this drbd-9 release. One the
+one hand the fencing mechanism as known from the drbd-8.x world finally
+works in drbd-9 as expected. Including the crm-fence-peer mechanism!
 
- drbdmon
+But those who care about fencing know that it is not trivial to implement.
+It is about making sure the cluster does the right thing, if the main
+replication network is interrupted. That involves having a second network
+for pacemaker communication or to control fencing devices. -- Quite
+frequently we see that such a "second network" is just an other VLAN on
+the same physical infrastructure -> Which makes the whole fencing effort
+point less.
 
- drbdmon displays on limited screen space as much information as
- possible about as many resources as possible. It is an interactive
- display, i.e. it updates the screen as changes happens.
+An other approach to avoid data divergence in partitioned clusters is
+to require quorum to modify the data. This approach does not need a
+second network or fencing devices. But it only works if you have at
+least 3 replicas.
 
-The other highlights are performance optimization of activity log
-updates on secondaries and quicker connect times.
+The most outstanding convenience feature implemented in this cycle:
+intentional diskless nodes are no longer red in the output of the
+status command. 
 
-Please note that drbd-9 still does not come with nice pacemaker
-integration (no crm-fence-peer, no ocf resource agent).
-This is an area where drbd-9 is not yet complete, and we will address
-this as soon as possible.
+Please help testing this release candidate. 
 
-
-DRBD 9.0.6-1 (api:genl2/proto:86-112/transport:14)
+drbd
+9.0.7rc1-1 (api:genl2/proto:86-112/transport:14)
 --------
- * fixed error handling in del_path
- * merge fixes from drbd-8.4; a potential NULL deref with kernel_sendmsg()
- * fix multiple issues with concurrent two-phase-commits
- * improve connect time; with older releases it usually took between 20 to
-   40 seconds to establish a connection; now it usually works now in less than
-   2 seconds
- * allow multiple updatese per AL-transaction on a secondary; this can
-   (depending on the IO pattern) dramatically increase the the write
-   throuput and decrease IO amplification
- * reorganize data structures of receiver for efficiency
- * upon an open for read-only access, wait for up the auto-promote-timeout
-   for accessible data
+ * various fixes to the 2-phase-commit online resize
+ * fix fencing and disk state transition and from Consistent; Now it is
+   as complete as it was under drbd-8.4; Necessary for crm-fence-peer
+ * fix moving previous current-uuid into bitmap slot for peer with
+   inconsistent disk state. Old code produced false "split-brain detected"
+ * fix calculation of authoritative nodes. Old code could lead to to
+   false "split-bain detected"
+ * udev workaround: Do not fail down if there is a read-only opener, instead
+   wait up to a second if the read-only-opener goes away.
+ * a primary notes if a "far away" nodes outdates itself, and records the
+   fact in its meta-data.
+ * report back to userspace if a node (or peer) is diskless by intention
+ * restore "Outdated" peer disk state from the meta-data upon attach
+ * Quorum to avoid data divergence, an alternative to fencing when the
+   resource has 3 or more replicas
+ * improve error reporting in case a promote/down/disconnect/detach
+   operation failes. E.g. tells which peer declined a state transition
+ * compiles with Linux 4.10
 
-http://www.drbd.org/download/drbd/9.0/drbd-9.0.6-1.tar.gz
-http://git.drbd.org/drbd-9.0.git/tag/refs/tags/drbd-9.0.6
+http://www.drbd.org/download/drbd/9.0/drbd-9.0.7rc1-1.tar.gz
+http://git.drbd.org/drbd-9.0.git/tag/refs/tags/drbd-9.0.7rc1
 
-8.9.10
+drbd-utils
+8.9.11rc1
 --------
- * new drbdmon tool, which provides a compact overview about resources.
-   In contrast to drbdsetup status it provides live monitoring.
-   This requires a C++11 compiler.
- * drbdadm parser got substantially faster for thousands of resources
- * send SIGKILL to childs if parent (drbdadm) dies.
+ * better integration of drbd-proxy in drbd9 scenarios
+ * OCF resource agent and crm-fence-peer for drbd9
+ * introduce quorum support
+ * expose information if node is intentionally diskless
+ * do not set peer-device-options twice
+ * various JSON output fixes
+ * udev fixes for newer ubuntu releases
+ * set bitmap to 0 on metadata creation
 
-http://www.drbd.org/download/drbd/utils/drbd-utils-8.9.10.tar.gz
-http://git.drbd.org/drbd-utils.git/tag/refs/tags/v8.9.10
+http://www.drbd.org/download/drbd/utils/drbd-utils-8.9.11rc1.tar.gz
+http://git.drbd.org/drbd-utils.git/tag/refs/tags/v8.9.11rc1
 
-cheers,
- Phil
+best,
+ phil
