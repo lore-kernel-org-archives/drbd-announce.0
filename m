@@ -1,22 +1,21 @@
 Return-Path: <philipp.reisner@linbit.com>
-Received: from mail-wr0-f170.google.com (mail-wr0-f170.google.com
-	[209.85.128.170]) (using TLSv1 with cipher AES128-SHA (128/128 bits))
-	(No client certificate requested)
-	by mail09.linbit.com (LINBIT Mail Daemon) with ESMTPS id E399F1057FAD
+Received: from mail-wr0-f182.google.com (mail-wr0-f182.google.com
+	[209.85.128.182])
+	by mail09.linbit.com (LINBIT Mail Daemon) with ESMTP id 51ED9105633D
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 23 Mar 2017 15:26:50 +0100 (CET)
-Received: by mail-wr0-f170.google.com with SMTP id u108so148605567wrb.3
+	Fri, 31 Mar 2017 22:10:07 +0200 (CEST)
+Received: by mail-wr0-f182.google.com with SMTP id l43so115692571wre.1
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 23 Mar 2017 07:26:50 -0700 (PDT)
+	Fri, 31 Mar 2017 13:10:07 -0700 (PDT)
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Date: Thu, 23 Mar 2017 15:20:45 +0100
-Message-ID: <1942540.BBj9l9kJ7Q@fat-tyre>
+Date: Fri, 31 Mar 2017 22:10:04 +0200
+Message-ID: <4974956.obosSvD51R@nuc>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="us-ascii"
 Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-9.0.7rc1 & drbd-utils-8.9.11rc1
+Subject: [DRBD-announce] drbd-9.0.7 & drbd-utils-8.9.11
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -51,10 +50,11 @@ The most outstanding convenience feature implemented in this cycle:
 intentional diskless nodes are no longer red in the output of the
 status command. 
 
-Please help testing this release candidate. 
+This is a recommended update for every drbd-9 user.
+
 
 drbd
-9.0.7rc1-1 (api:genl2/proto:86-112/transport:14)
+9.0.7-1 (api:genl2/proto:86-112/transport:14)
 --------
  * various fixes to the 2-phase-commit online resize
  * fix fencing and disk state transition and from Consistent; Now it is
@@ -75,11 +75,11 @@ drbd
    operation failes. E.g. tells which peer declined a state transition
  * compiles with Linux 4.10
 
-http://www.drbd.org/download/drbd/9.0/drbd-9.0.7rc1-1.tar.gz
-http://git.drbd.org/drbd-9.0.git/tag/refs/tags/drbd-9.0.7rc1
+http://www.drbd.org/download/drbd/9.0/drbd-9.0.7-1.tar.gz
+http://git.drbd.org/drbd-9.0.git/tag/refs/tags/drbd-9.0.7
 
 drbd-utils
-8.9.11rc1
+8.9.11
 --------
  * better integration of drbd-proxy in drbd9 scenarios
  * OCF resource agent and crm-fence-peer for drbd9
@@ -90,8 +90,9 @@ drbd-utils
  * udev fixes for newer ubuntu releases
  * set bitmap to 0 on metadata creation
 
-http://www.drbd.org/download/drbd/utils/drbd-utils-8.9.11rc1.tar.gz
-http://git.drbd.org/drbd-utils.git/tag/refs/tags/v8.9.11rc1
+http://www.drbd.org/download/drbd/utils/drbd-utils-8.9.11.tar.gz
+http://git.drbd.org/drbd-utils.git/tag/refs/tags/v8.9.11
 
 best,
  phil
+
