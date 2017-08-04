@@ -1,20 +1,20 @@
 Return-Path: <philipp.reisner@linbit.com>
-Received: from mail-pg0-f49.google.com (mail-pg0-f49.google.com [74.125.83.49])
-	by mail09.linbit.com (LINBIT Mail Daemon) with ESMTP id 06EC31057FD4
+Received: from mail-wm0-f45.google.com (mail-wm0-f45.google.com [74.125.82.45])
+	by mail09.linbit.com (LINBIT Mail Daemon) with ESMTP id DD2721057FF0
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 19 Jun 2017 19:02:21 +0200 (CEST)
-Received: by mail-pg0-f49.google.com with SMTP id f185so50725852pgc.0
+	Fri,  4 Aug 2017 23:33:28 +0200 (CEST)
+Received: by mail-wm0-f45.google.com with SMTP id t201so29027788wmt.0
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 19 Jun 2017 10:02:21 -0700 (PDT)
+	Fri, 04 Aug 2017 14:33:28 -0700 (PDT)
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Date: Tue, 20 Jun 2017 00:32:31 +0800
-Message-ID: <3145641.8hBctnJSfS@phil-xps>
+Date: Fri, 04 Aug 2017 23:26:30 +0200
+Message-ID: <5852518.3AtK2rx97R@nuc>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="us-ascii"
 Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-9.0.8
+Subject: [DRBD-announce] drbd-9.0.9rc1
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -28,48 +28,41 @@ List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hi,
 
-finally it is there! With two rc's and surprising bug reports coming in late,
-the release process has been a bit more challenging than usual. Maybe
-the fact that I am doing this release while being in Beijing for the first
-LinuxCon in China is also contributing it's share.
+good news for the weekend, the next drbd-9 release will be ready
+in one week.
+Get your test equipment ready next week, and let us know if you 
+find anything suspicious.
 
-Due to the high number of bug-fixes and the severity of some of them,
-I recommend every user of drbd-9 to upgrade to this release.
+  This release will be very important for users that have diskless,
+  primary nodes in their setups.
 
-9.0.8-1 (api:genl2/proto:86-112/transport:14)
+
+drbd
+9.0.9rc1-1 (api:genl2/proto:86-112/transport:14)
 --------
- * fix a race condition between adding connections and receiving data
-   blocks; When you hit it caused an OOPS
- * fix a OOPS on a diskfull node when a request from a diskless
-   node causes an error from the back-end device. (This is a regression that
-   was introduced with the 9.0.7 release)
- * fix a distributed deadlock when doing a discard/write-same burst
- * fix an issue with diskless nodes adopting wrong current UUIDs
- * fix wrongly rejected two-phase-state transactions; this issue was a
-   cause for drbdmanage init failing for 3 nodes
- * fix attach of first disk after resource had no disk at all
- * fix to not clear bitmap content and UUIDs in case we ignored a
-   split-brain situation
- * fix a possible OOPS, caused when the sender thread tries to send
-   something after the sockets where free()'ed
- * fix ignoring split-brain situations to the rare cases it was
-   intended to in the first place
- * fix an issue with current-uuid not getting written for 5 seconds. When a
-   resources was down'd/up'd or the node rebooted, you got split brain
-   afterwards
- * fix a race that caused DRBD to go StandAlone instead of Connecting
-   after loosing a connection
- * Serialize reconciliation resync after the nodes found it if they
-   are UpToDate
- * fix initial resync, triggered by "--force primary"; this is a fix
-   for a regression introduced in 9.0.7
- * new configuration option that allows to report back IO errors instead
-   of freezing IO in case a partition looses quorum
- * Speed-up AL-updates with bio flags REQ_META and REQ_PRIO
- * merged changes from 8.4.10 and with that compatibility with Linux-4.12
+ * fix occasionally forgotten resyncs in installations where
+   diskless primaries are present. The bug tigers when a storage
+   node is re-integrated, and it happens to connect to the diskless
+   primary first; This bug is severe, since it might cause inconsistent
+   data read back on the diskless primary!
+ * fix a possible OOPS when in a debug message regarding bitmap
+   locking
+ * fix discard bigger than 1MiB; The bug causes disconnect with
+   bigger discard requests
+ * fix an issue that causes unexpected split-brain situations upon
+   connect. This issue triggers only when one of the node has a
+   node_id bigger than 3.
+ * fix left over bits in bitmap on SyncSource after resync; the
+   issue was triggered by write requests that come in while the
+   resync starts
+ * fix peers becoming unexpectedly displayed as D_OUTDATED at the
+   end of a resync; While the disk state on the node stays D_UP_TO_DATE
+ * fix a race between auto promote and auto demote of multiple volumes
+   in a single resource; The symptom was that the a process opening
+   the /dev/drbdX for read-write gets an -EROFS errno
 
-https://www.linbit.com/downloads/drbd/9.0/drbd-9.0.8-1.tar.gz
-http://git.drbd.org/drbd-9.0.git/tag/refs/tags/drbd-9.0.8
+http://git.drbd.org/drbd-9.0.git/tag/refs/tags/drbd-9.0.9rc1
+http://www.linbit.com/downloads/drbd/9.0/drbd-9.0.9rc1-1.tar.gz
 
-cheers,
+best regards,
  Phil
