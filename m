@@ -1,21 +1,21 @@
-Return-Path: <lars.ellenberg@linbit.com>
-Received: from mail-wr0-f173.google.com (mail-wr0-f173.google.com
-	[209.85.128.173])
-	by mail09.linbit.com (LINBIT Mail Daemon) with ESMTP id 6B3A91057582
+Return-Path: <philipp.reisner@linbit.com>
+Received: from mail-wr0-f169.google.com (mail-wr0-f169.google.com
+	[209.85.128.169])
+	by mail09.linbit.com (LINBIT Mail Daemon) with ESMTP id 4D98510575B6
 	for <drbd-announce@lists.linbit.com>;
-	Tue,  9 Jan 2018 16:25:16 +0100 (CET)
-Received: by mail-wr0-f173.google.com with SMTP id n9so4625610wrg.2
+	Tue, 23 Jan 2018 13:56:50 +0100 (CET)
+Received: by mail-wr0-f169.google.com with SMTP id 100so452258wrb.7
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 09 Jan 2018 07:25:16 -0800 (PST)
-Date: Tue, 9 Jan 2018 16:17:46 +0100
-From: Lars Ellenberg <lars.ellenberg@linbit.com>
-To: drbd-user@lists.linbit.com, drbd-announce@lists.linbit.com
-Message-ID: <20180109151746.GE24078@soda.linbit>
+	Tue, 23 Jan 2018 04:56:50 -0800 (PST)
+From: Philipp Reisner <philipp.reisner@linbit.com>
+To: drbd-announce@lists.linbit.com
+Date: Tue, 23 Jan 2018 13:50:35 +0100
+Message-ID: <2159919.W1ZdbrFrnb@fat-tyre>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-Subject: [DRBD-announce] [DRBD-user] drbd-9.0.11 & drbd-8.4.11
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+Cc: drbd-user@lists.linbit.com
+Subject: [DRBD-announce] drbd-9.0.12
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -29,40 +29,35 @@ List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hi,
 
-DRBD 9.0.11 (and DRBD 8.4.11 soon, yet to be tagged) are out.
+Lately we had a to do more releases than we like. This time we became aware
+of an issue that can cause that a drbd-resource can not be removed from
+the DRBD kernel driver. We decided that this bug is so annoying that we need
+to release an update immediately.
 
-Changelog against 9.0.10 contains only this one fix:
+It is a race condition so, it does not trigger reliably when you intend
+to reproduce it. Currently this issue does not trigger on REHL/CentOs
+systems at all.
 
-9.0.11-1 (api:genl2/proto:86-112/transport:14)
+In case you experience this issue, sometimes (depending on the value
+of that counter) it is possible to down an affected resource by this
+command:
+
+drbdsetup down RESNAME </dev/drbdX
+
+This sometimes works, because your shell opens the device for read-only
+before executing the command. That might bring the open-count to a value
+of 0. 
+
+9.0.12-1 (api:genl2/proto:86-112/transport:14)
 --------
- * Fix bug in compat code: Without this fix large bios are not split.
-   The user visible behavior is then a hanging DRBD.
+* Fix a race condition in the device_open code path that can cause an
+  internal counter to go negative; It only triggered on Ubuntu/Debian
+  systems since the udev there uses FMODE_NDELAY when opening the
+  devices; The effect was that such a device fails attempts to remove it
 
-We try to keep our sources compatible with a wide range of both upstream
-and vendor kernel versions. One recent compat fix contained a typo in
-some ifdef identifier.
+http://www.linbit.com/downloads/drbd/9.0/drbd-9.0.12-1.tar.gz
+https://github.com/LINBIT/drbd-9.0/releases/tag/drbd-9.0.12
 
-Sometimes DRBD is handed a bio that is too large to handle directly,
-so it is supposed to be split early, before DRBD starts to actually
-process (a smaller initial piece of) it.
 
-The mentioned typo resulted in that bio split to be defined away,
-the split never happened, and we get potentially blocking IO in
-some circumstances on a variety of kernel versions.
-Typical reproducers involve larger discards/write-same/write-zeroes.
-
-Becase we received no other complaints about 9.0.10,
-and this is the only code change,
-we skip the "rc" phase for the 9.0.11 release.
-
-8.4.11 was still in "release candidate" phase,
-we don't need an other version bump there.
-
--- 
-: Lars Ellenberg
-: LINBIT | Keeping the Digital World Running
-: DRBD -- Heartbeat -- Corosync -- Pacemaker
-
-DRBD® and LINBIT® are registered trademarks of LINBIT
-__
-please don't Cc me, but send to list -- I'm subscribed
+best regards,
+ Phil
