@@ -1,21 +1,21 @@
 Return-Path: <philipp.reisner@linbit.com>
-Received: from mail-wr0-f169.google.com (mail-wr0-f169.google.com
-	[209.85.128.169])
-	by mail09.linbit.com (LINBIT Mail Daemon) with ESMTP id 4D98510575B6
+Received: from mail-wr0-f176.google.com (mail-wr0-f176.google.com
+	[209.85.128.176])
+	by mail09.linbit.com (LINBIT Mail Daemon) with ESMTP id 2371D1056F9D
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 23 Jan 2018 13:56:50 +0100 (CET)
-Received: by mail-wr0-f169.google.com with SMTP id 100so452258wrb.7
+	Fri,  6 Apr 2018 15:35:31 +0200 (CEST)
+Received: by mail-wr0-f176.google.com with SMTP id d17so1806237wre.1
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 23 Jan 2018 04:56:50 -0800 (PST)
+	Fri, 06 Apr 2018 06:35:31 -0700 (PDT)
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Date: Tue, 23 Jan 2018 13:50:35 +0100
-Message-ID: <2159919.W1ZdbrFrnb@fat-tyre>
+Date: Fri, 06 Apr 2018 15:28:59 +0200
+Message-ID: <9917931.SO3ec9PEg9@fat-tyre>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
 Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-9.0.12
+Subject: [DRBD-announce] drbd-9.0.13-0rc1
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -29,35 +29,60 @@ List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hi,
 
-Lately we had a to do more releases than we like. This time we became aware
-of an issue that can cause that a drbd-resource can not be removed from
-the DRBD kernel driver. We decided that this bug is so annoying that we need
-to release an update immediately.
+This is the release candidate of an important drbd-9 update.
+As soon as it is final it will be a strongly recommended update for
+all uers. It contains serve fixes for for cases with multiple diskless
+nodes. Without these fixes you can even see wrong data read back from
+DRBD under complicated failure cases.
 
-It is a race condition so, it does not trigger reliably when you intend
-to reproduce it. Currently this issue does not trigger on REHL/CentOs
-systems at all.
+Please help testing this release candidate. If all goes smooth I
+will tag 9.0.13 (final) on April 13.
 
-In case you experience this issue, sometimes (depending on the value
-of that counter) it is possible to down an affected resource by this
-command:
 
-drbdsetup down RESNAME </dev/drbdX
+9.0.13-0rc1 (api:genl2/proto:86-113/transport:14)
+=2D-------
+ * abort a resync if a resync source becomes weakly and the sync target
+   is a neighbor of the primary; the lack of doing so was a possible
+   source of data corruption
+ * fix UUID handling with multiple diskless nodes; If the primary role
+   is moved between them, and no write happens before the the storage
+   nodes are disconnect; before this fix the storage nodes would outdate
+   themselves upon reconnect
+ * When a data-set gets into contact (attach or connect) with an all
+   diskless cluster with a primary and the exposed UUID does not match
+   the arriving data-set, make sure to either set it to "Consistent"
+   or to reject the attach
+ * correctly handle when a node that was marked as intentional diskless
+   should get a disk; allocate bitmap slots when the --bitmap=3Dno flag
+   gets removed; reject peers to attach if they are marked with --bitmap=3D=
+no
+ * fix outdating of weakly connected nodes; It was broken when an already
+   primary node joins the cluster at the other end
+ * made returning from Ahead to SyncSource more reliable; the old code
+   may have missed the event if the write to the local backend was still
+   pending when the barrier-ack comes in
+ * fix a hard to trigger deadlock in the receiver; it triggered sometimes
+   on the Secondary if a resync was going on and writes on the primary
+   happen to the same area while the connection is interrupted; it caused
+   the device to be stuck in "NetworkFailure" state
+ * fix online resize in the presence of two or more diskless nodes
+ * fix online add of volumes to diskless nodes when it already has
+   established connections
+ * Set the SO_KEEPALIVE socket option on data sockets. Can be important
+   if long lived DRBD connections go through a firewall with connection
+   tracking
+ * automatically solve a specific split brain when quorum is enabled
+   and a node does no IO between loosing connections to other nodes
+ * Compat: Drop support for kernels older 2.6.32 and distros older than
+   RHEL6; Added support for kernels up to v4.15.x
 
-This sometimes works, because your shell opens the device for read-only
-before executing the command. That might bring the open-count to a value
-of 0. 
-
-9.0.12-1 (api:genl2/proto:86-112/transport:14)
---------
-* Fix a race condition in the device_open code path that can cause an
-  internal counter to go negative; It only triggered on Ubuntu/Debian
-  systems since the udev there uses FMODE_NDELAY when opening the
-  devices; The effect was that such a device fails attempts to remove it
-
-http://www.linbit.com/downloads/drbd/9.0/drbd-9.0.12-1.tar.gz
-https://github.com/LINBIT/drbd-9.0/releases/tag/drbd-9.0.12
-
+http://www.linbit.com/downloads/drbd/9.0/drbd-9.0.13-0rc1.tar.gz
+https://github.com/LINBIT/drbd-9.0/releases/tag/drbd-9.0.13-0rc1
 
 best regards,
  Phil
+=2D-=20
+LINBIT | Keeping The Digital World Running
+
+DRBD=AE and LINBIT=AE are registered trademarks of LINBIT, Austria.
+
