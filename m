@@ -1,21 +1,21 @@
 Return-Path: <philipp.reisner@linbit.com>
-Received: from mail-wr0-f176.google.com (mail-wr0-f176.google.com
-	[209.85.128.176])
-	by mail09.linbit.com (LINBIT Mail Daemon) with ESMTP id 2371D1056F9D
+Received: from mail-wr0-f169.google.com (mail-wr0-f169.google.com
+	[209.85.128.169])
+	by mail09.linbit.com (LINBIT Mail Daemon) with ESMTP id E4BB91057315
 	for <drbd-announce@lists.linbit.com>;
-	Fri,  6 Apr 2018 15:35:31 +0200 (CEST)
-Received: by mail-wr0-f176.google.com with SMTP id d17so1806237wre.1
+	Tue, 17 Apr 2018 15:24:11 +0200 (CEST)
+Received: by mail-wr0-f169.google.com with SMTP id o15so4501228wro.11
 	for <drbd-announce@lists.linbit.com>;
-	Fri, 06 Apr 2018 06:35:31 -0700 (PDT)
+	Tue, 17 Apr 2018 06:24:11 -0700 (PDT)
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Date: Fri, 06 Apr 2018 15:28:59 +0200
-Message-ID: <9917931.SO3ec9PEg9@fat-tyre>
+Date: Tue, 17 Apr 2018 15:24:08 +0200
+Message-ID: <6923981.GJPYzmf5ND@fat-tyre>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset="iso-8859-1"
 Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-9.0.13-0rc1
+Subject: [DRBD-announce] drbd-9.0.13
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -29,23 +29,22 @@ List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hi,
 
-This is the release candidate of an important drbd-9 update.
-As soon as it is final it will be a strongly recommended update for
-all uers. It contains serve fixes for for cases with multiple diskless
+This is a strongly recommended update for all drbd-9.0.x users.
+It contains serve fixes for for cases with multiple diskless
 nodes. Without these fixes you can even see wrong data read back from
 DRBD under complicated failure cases.
 
-Please help testing this release candidate. If all goes smooth I
-will tag 9.0.13 (final) on April 13.
+We slightly delayed the release to finish compatibility with
+the kernel of the recently released RHEL-7.5.
 
 
-9.0.13-0rc1 (api:genl2/proto:86-113/transport:14)
+9.0.13-1 (api:genl2/proto:86-113/transport:14)
 =2D-------
- * abort a resync if a resync source becomes weakly and the sync target
-   is a neighbor of the primary; the lack of doing so was a possible
-   source of data corruption
+ * abort a resync if a resync source becomes weakly connected and the
+   sync target is a neighbor of the primary; the lack of doing so was
+   a possible source of data corruption
  * fix UUID handling with multiple diskless nodes; If the primary role
-   is moved between them, and no write happens before the the storage
+   is moved between them, and no write happens before the storage
    nodes are disconnect; before this fix the storage nodes would outdate
    themselves upon reconnect
  * When a data-set gets into contact (attach or connect) with an all
@@ -72,15 +71,20 @@ no
    if long lived DRBD connections go through a firewall with connection
    tracking
  * automatically solve a specific split brain when quorum is enabled
-   and a node does no IO between loosing connections to other nodes
+   and a node does no IO between losing connections to other nodes
  * Compat: Drop support for kernels older 2.6.32 and distros older than
    RHEL6; Added support for kernels up to v4.15.x
+ * new wire packet P_ZEROES a cousin of P_DISCARD, following the kernel
+   as it introduced separated BIO ops for writing zeros and discarding
+ * compat workaround for two RHEL 7.5 idiosyncrasies regarding refcount_t
+   and struct nla_policy
 
-http://www.linbit.com/downloads/drbd/9.0/drbd-9.0.13-0rc1.tar.gz
-https://github.com/LINBIT/drbd-9.0/releases/tag/drbd-9.0.13-0rc1
+http://www.linbit.com/downloads/drbd/9.0/drbd-9.0.13-1.tar.gz
+https://github.com/LINBIT/drbd-9.0/releases/tag/drbd-9.0.13
 
 best regards,
  Phil
+
 =2D-=20
 LINBIT | Keeping The Digital World Running
 
