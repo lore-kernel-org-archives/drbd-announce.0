@@ -1,19 +1,20 @@
-Return-Path: <robert.altnoeder@linbit.com>
-Received: from mail-wm0-f52.google.com (mail-wm0-f52.google.com [74.125.82.52])
-	by mail09.linbit.com (LINBIT Mail Daemon) with ESMTP id 88F761056F9D
+Return-Path: <philipp.reisner@linbit.com>
+Received: from mail-wm0-f49.google.com (mail-wm0-f49.google.com [74.125.82.49])
+	by mail09.linbit.com (LINBIT Mail Daemon) with ESMTP id 2434D101E041
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 14 May 2018 23:03:16 +0200 (CEST)
-Received: by mail-wm0-f52.google.com with SMTP id f8-v6so17687073wmc.4
+	Fri, 20 Jul 2018 16:23:15 +0200 (CEST)
+Received: by mail-wm0-f49.google.com with SMTP id v25-v6so9711348wmc.0
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 14 May 2018 14:03:16 -0700 (PDT)
-From: Robert Altnoeder <robert.altnoeder@linbit.com>
-To: drbd-user@lists.linbit.com, drbd-announce@lists.linbit.com
-Message-ID: <4c70948e-5429-da1b-6051-945081a59a92@linbit.com>
-Date: Mon, 14 May 2018 22:55:07 +0200
+	Fri, 20 Jul 2018 07:23:15 -0700 (PDT)
+From: Philipp Reisner <philipp.reisner@linbit.com>
+To: drbd-announce@lists.linbit.com
+Date: Fri, 20 Jul 2018 16:23:13 +0200
+Message-ID: <6497552.HmDX2AHlSk@fat-tyre>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: [DRBD-announce] LINSTOR pre-release
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+Cc: drbd-user@lists.linbit.com
+Subject: [DRBD-announce] winDRBD beta 4
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -25,34 +26,23 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-We have published a pre-release of our new LINSTOR software, which is 
-supposed to become the management layer of the LINBIT SDS system and 
-will replace the drbdmanage component in previous/existing installations.
+Hi,
 
-The current release is not yet feature-complete, but has reached a 
-development stage where it has become useful for testing, for use in 
-proof-of-concept installations and for planning future production 
-systems. Further information about LINSTOR is available on our homepage, 
-and there is also an article on our blog about this new product. Further 
-articles about the technology in LINSTOR are in the making, so stay tuned!
+Yes, this is not a typo. DRBD gets ported to MS Windows. It is not
+finished yet but you can definitely try it out. The .zip file contains
+the usual .exe and a description fir with more information what to
+expect.
 
-This pre-release of LINSTOR server is tagged v0.2.0 in our source 
-repositories.The LINSTOR client release is tagged v0.1.8.
+It is supposed to work with Windows 7 (latest SP), Windows 10 and
+Windows Server 2016. 64 bit only. It is wire protocol compatible
+with its linux cousin.
 
-Further information:
-https://www.linbit.com/en/products-and-services/linstor/
-
-Source repositories:
-https://github.com/LINBIT/linstor-server
-https://github.com/LINBIT/linstor-client
-
-Best regards,
---
-Robert Altnoeder
-
-+43 1 817 82 92 0
-robert.altnoeder@linbit.com
-
+https://github.com/LINBIT/windrbd
+http://www.linbit.com/downloads/drbd-windows/winDRBDbeta4-beta.zip
+=2D-=20
 LINBIT | Keeping The Digital World Running
-DRBD - Corosync - Pacemaker
+
+DRBD=AE and LINBIT=AE are registered trademarks of LINBIT, Austria.
+
+
 
