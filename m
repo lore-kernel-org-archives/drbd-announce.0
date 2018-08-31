@@ -1,20 +1,19 @@
-Return-Path: <philipp.reisner@linbit.com>
-Received: from mail-wm0-f41.google.com (mail-wm0-f41.google.com [74.125.82.41])
-	by mail09.linbit.com (LINBIT Mail Daemon) with ESMTP id A0BD81013806
+Return-Path: <rene.peinthor@linbit.com>
+Received: from mail-wr1-f67.google.com (mail-wr1-f67.google.com
+	[209.85.221.67])
+	by mail09.linbit.com (LINBIT Mail Daemon) with ESMTP id ABC5C101AC56
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 14 Aug 2018 14:36:57 +0200 (CEST)
-Received: by mail-wm0-f41.google.com with SMTP id f21-v6so12117053wmc.5
+	Fri, 31 Aug 2018 16:27:17 +0200 (CEST)
+Received: by mail-wr1-f67.google.com with SMTP id j26-v6so11409772wre.2
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 14 Aug 2018 05:36:57 -0700 (PDT)
-From: Philipp Reisner <philipp.reisner@linbit.com>
-To: drbd-announce@lists.linbit.com
-Date: Tue, 14 Aug 2018 14:36:53 +0200
-Message-ID: <4558613.lYSHrUl6ML@fat-tyre>
+	Fri, 31 Aug 2018 07:27:17 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-9.0.15
+From: Rene Peinthor <rene.peinthor@linbit.com>
+Date: Fri, 31 Aug 2018 16:18:55 +0200
+Message-ID: <CAHmn2DOsWVrAKJQkZeNv3AOjNwLEX_B3Wyr2T+GLg8s3C+PPVw@mail.gmail.com>
+To: drbd-user@lists.linbit.com, drbd-announce@lists.linbit.com
+Content-Type: multipart/alternative; boundary="000000000000cea6f80574bbdfee"
+Subject: [DRBD-announce] Linstor v0.6.0 release
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,83 +25,107 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Hi,
+--000000000000cea6f80574bbdfee
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This is an upgrade ever drbd-9 user should follow. It has two important
-fixes in the areas of=20
+Hi All!
 
-* handling IO errors reported by the backing device
+Linstor v0.6 is out!
 
-  handling of IO errors on the backend was completely broken since=20
-  drbd-9.0 including the recovery options like replacing a failed
-  disk. When the disk was replaced even worse it was possible that
-  DRBD would read from the new disk before the full sync finished.
-  All fixed now, but very embarrassing.
+First thing to note is that the client command for creating storage pools
+was slightly changed, the driver is now the first positional argument e.g.
+`linstor storage-pool create lvm drbdnode sp_name`
 
-* correctly handle UUIDs in case of live-migration
+Adding a backing disk to a diskless node, while it is online, while it
+is under IO, while it is primary, is a cool feature that might come handy
+in various situations. E.g.
 
-  That was the root cause for various strange behavior. E.g. a node
-  considering some other as not up-to-date while the peer considers
-  itself as up-to-date.
+- You want have more read IOPs for a VM
+- You want to reduce network-load when your VM reads form a virtual disk
+- You want to increase redundancy of your data set
 
-The goody of the release is that the submit code path was optimized
-a bit, and that gives up to 30% increase (depending on CPU model and
-performance of the backing device) in IOPs.
+Of course the inverse operation (remove a disk, changing a resource to a
+diskless one) while it is online and primary is available with this
+release as well.
 
-A lot of effort was spend to write more tests for the drbd9 test suite
-( https://github.com/LINBIT/drbd9-tests ). DRBD-8.4 had its own, which
-was more complete at its time, but now it is overdue to have a testing
-coverage at least as good for the drbd-9 code base.
+linstor-server 0.6.0
+--------------------
+ * Feature: Convert diskless DRBD to diskful online (and reverse)
+ * Feature: Add Swordfish driver support
+ * Fix hanging resource-definition delete (if it was empty)
+ * Fix incorrect lvm thin pool total capacity
+ * Fix snapshot names from migrated resource
 
-Apart form wok on the testsuite we will continue to put effort into
-optimizing the IO submit code path. Very fast NVMe devices keep the
-pressure on us to be able to fully utilize them when used as backing
-device for DRBD.
+http://www.linbit.com/downloads/linstor/linstor-server-0.6.0.tar.gz
 
-Note: We will update the PPA on Thursday (Aug 16). Sorry for the delay
-      (vacations and a bank holiday are the reasons)
+linstor-client/python-linstor 0.6.0
+-----------------------------------
+ * Add command for disk to diskless
+ * Client accepts multiple controllers
+ * Storage pool create command changed
+ * Added swordfish driver to storage pools
+ * Node list now shows also ports
+ * Fixes and updates to the drbdmanage migrate script
 
-9.0.15 (api:genl2/proto:86-114/transport:14)
-=2D-------
- * fix tracking of changes (on a secondary) against the lost disk of a
-   primary and also fix re-attaching in case the disk is replaced (has
-   new meta-data)
- * fix live migrate of VMs on DRBD when migrated to/from diskless
-   nodes; before that fix a race condition can lead to one of the nodes
-   seeing the other one as consistent only
- * fix an IO deadlock in DRBD when the activity log on a secondary runs ful=
-l;
-   In the real world, this was very seldom triggered but can be easily
-   reproduced with a workload that touches one block every 4M and writes
-   them all in a burst
- * fix hanging demote after IO error followed by attaching the disk again
-   and the corresponding resync
- * fix DRBD dropping connection after an IO error on the secondary node
- * new module parameter to disable support for older protocol versions,
-   an in case you configured peers that are not expected to connect it
-   might have positive effects because then this node does not need to
-   assume that such peer is ancient
- * improve details when online changing devices from diskless to with disk =
-and
-   vice versa. (Including peers freeing bitmap slots)
- * remove no longer relevant compat tests
- * expose openers via debugfs; that helps to answer the question why does
-   DRBD not demote to secondary, why does it give tell me "Device is held
-   open by someone"
- * optimize IO submit code path; this can improve IOPs up to 30% on a system
-   with fast backend storage; lowers CPU load caused by DRBD on every workl=
-oad
- * compat for v4.18 kernel
+http://www.linbit.com/downloads/linstor/python-linstor-0.6.0.tar.gz
+http://www.linbit.com/downloads/linstor/linstor-client-0.6.0.tar.gz
 
-http://www.linbit.com/downloads/drbd/9.0/drbd-9.0.15-1.tar.gz
-https://github.com/LINBIT/drbd-9.0/releases/tag/drbd-9.0.15
+Linstor PPA:
+https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
-best regards,
- Phil
-=2D-=20
-LINBIT | Keeping The Digital World Running
+Best regards,
+Rene
 
-DRBD=AE and LINBIT=AE are registered trademarks of LINBIT, Austria.
+--
+Ren=C3=A9 Peinthor - Software Developer
+rene.peinthor@linbit.com
 
+LINBIT | Keeping the Digital World Running
+DRBD HA - Disaster Recovery - Software-defined Storage
+t / f / in / y / g+
 
+DRBD=C2=AE and LINBIT=C2=AE are registered trademarks of LINBIT, Austria.
 
+--000000000000cea6f80574bbdfee
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">Hi All!<br><br>Linstor v0.6 is out!<br><br>First thing to =
+note is that the client command for creating storage pools<br>was slightly =
+changed, the driver is now the first positional argument e.g.<br>`linstor s=
+torage-pool create lvm drbdnode sp_name`<br><br>Adding a backing disk to a =
+diskless node, while it is online, while it<br>is under IO, while it is pri=
+mary, is a cool feature that might come handy<br>in various situations. E.g=
+.<br><br>- You want have more read IOPs for a VM<br>- You want to reduce ne=
+twork-load when your VM reads form a virtual disk<br>- You want to increase=
+ redundancy of your data set<br><br>Of course the inverse operation (remove=
+ a disk, changing a resource to a<br>diskless one) while it is online and p=
+rimary is available with this<br>release as well.<br><br><font face=3D"mono=
+space, monospace">linstor-server 0.6.0<br>--------------------<br>=C2=A0* F=
+eature: Convert diskless DRBD to diskful online (and reverse)<br>=C2=A0* Fe=
+ature: Add Swordfish driver support<br>=C2=A0* Fix hanging resource-definit=
+ion delete (if it was empty)<br>=C2=A0* Fix incorrect lvm thin pool total c=
+apacity<br>=C2=A0* Fix snapshot names from migrated resource</font><br><a h=
+ref=3D"http://www.linbit.com/downloads/linstor/linstor-server-0.6.0.tar.gz"=
+><br>http://www.linbit.com/downloads/linstor/linstor-server-0.6.0.tar.gz</a=
+><br><br><font face=3D"monospace, monospace">linstor-client/python-linstor =
+0.6.0<br>-----------------------------------<br>=C2=A0* Add command for dis=
+k to diskless<br>=C2=A0* Client accepts multiple controllers<br>=C2=A0* Sto=
+rage pool create command changed<br>=C2=A0* Added swordfish driver to stora=
+ge pools<br>=C2=A0* Node list now shows also ports<br>=C2=A0* Fixes and upd=
+ates to the drbdmanage migrate script</font><br><br><a href=3D"http://www.l=
+inbit.com/downloads/linstor/python-linstor-0.6.0.tar.gz">http://www.linbit.=
+com/downloads/linstor/python-linstor-0.6.0.tar.gz</a><br><a href=3D"http://=
+www.linbit.com/downloads/linstor/linstor-client-0.6.0.tar.gz">http://www.li=
+nbit.com/downloads/linstor/linstor-client-0.6.0.tar.gz</a><br><br>Linstor P=
+PA:<br><a href=3D"https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd=
+9-stack">https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack</=
+a><br><br>Best regards,<div>Rene<br><br>--<br>Ren=C3=A9 Peinthor - Software=
+ Developer<br><a href=3D"mailto:rene.peinthor@linbit.com">rene.peinthor@lin=
+bit.com</a><br><br>LINBIT | Keeping the Digital World Running<br>DRBD HA - =
+Disaster Recovery - Software-defined Storage<br>t / f / in / y / g+<br><br>=
+DRBD=C2=AE and LINBIT=C2=AE are registered trademarks of LINBIT, Austria.</=
+div></div>
+
+--000000000000cea6f80574bbdfee--
