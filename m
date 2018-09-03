@@ -1,19 +1,18 @@
 Return-Path: <rene.peinthor@linbit.com>
-Received: from mail-wr1-f67.google.com (mail-wr1-f67.google.com
-	[209.85.221.67])
-	by mail09.linbit.com (LINBIT Mail Daemon) with ESMTP id ABC5C101AC56
+Received: from mail-wm0-f68.google.com (mail-wm0-f68.google.com [74.125.82.68])
+	by mail09.linbit.com (LINBIT Mail Daemon) with ESMTP id DB237100543B
 	for <drbd-announce@lists.linbit.com>;
-	Fri, 31 Aug 2018 16:27:17 +0200 (CEST)
-Received: by mail-wr1-f67.google.com with SMTP id j26-v6so11409772wre.2
+	Mon,  3 Sep 2018 11:55:49 +0200 (CEST)
+Received: by mail-wm0-f68.google.com with SMTP id 207-v6so495103wme.5
 	for <drbd-announce@lists.linbit.com>;
-	Fri, 31 Aug 2018 07:27:17 -0700 (PDT)
+	Mon, 03 Sep 2018 02:55:49 -0700 (PDT)
 MIME-Version: 1.0
 From: Rene Peinthor <rene.peinthor@linbit.com>
-Date: Fri, 31 Aug 2018 16:18:55 +0200
-Message-ID: <CAHmn2DOsWVrAKJQkZeNv3AOjNwLEX_B3Wyr2T+GLg8s3C+PPVw@mail.gmail.com>
+Date: Mon, 3 Sep 2018 11:55:37 +0200
+Message-ID: <CAHmn2DPKW83DPGEF6NYTxOdDPuYUntgDScgUNFEO21a5QgCZMQ@mail.gmail.com>
 To: drbd-user@lists.linbit.com, drbd-announce@lists.linbit.com
-Content-Type: multipart/alternative; boundary="000000000000cea6f80574bbdfee"
-Subject: [DRBD-announce] Linstor v0.6.0 release
+Content-Type: multipart/alternative; boundary="000000000000c28ca90574f48b04"
+Subject: [DRBD-announce] Linstor v0.6.1 release
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -25,107 +24,99 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
---000000000000cea6f80574bbdfee
+--000000000000c28ca90574f48b04
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi All!
+Hi!
 
-Linstor v0.6 is out!
+As uncovered from some of you, we had an upgrade bug from previous versions=
+.
+So here is a bug fix release that mainly addresses this issue.
+Packages should soon be updated.
 
-First thing to note is that the client command for creating storage pools
-was slightly changed, the driver is now the first positional argument e.g.
-`linstor storage-pool create lvm drbdnode sp_name`
-
-Adding a backing disk to a diskless node, while it is online, while it
-is under IO, while it is primary, is a cool feature that might come handy
-in various situations. E.g.
-
-- You want have more read IOPs for a VM
-- You want to reduce network-load when your VM reads form a virtual disk
-- You want to increase redundancy of your data set
-
-Of course the inverse operation (remove a disk, changing a resource to a
-diskless one) while it is online and primary is available with this
-release as well.
-
-linstor-server 0.6.0
+linstor-server 0.6.1
 --------------------
- * Feature: Convert diskless DRBD to diskful online (and reverse)
- * Feature: Add Swordfish driver support
- * Fix hanging resource-definition delete (if it was empty)
- * Fix incorrect lvm thin pool total capacity
- * Fix snapshot names from migrated resource
+ * Fixed database migration from version <0.6.0
+ * Fixed NPE on storage pool list if node is not connected
+ * Set database connection timeout, to avoid timed out connections (MariaDB=
+)
 
-http://www.linbit.com/downloads/linstor/linstor-server-0.6.0.tar.gz
-
-linstor-client/python-linstor 0.6.0
------------------------------------
- * Add command for disk to diskless
- * Client accepts multiple controllers
- * Storage pool create command changed
- * Added swordfish driver to storage pools
- * Node list now shows also ports
- * Fixes and updates to the drbdmanage migrate script
-
-http://www.linbit.com/downloads/linstor/python-linstor-0.6.0.tar.gz
-http://www.linbit.com/downloads/linstor/linstor-client-0.6.0.tar.gz
-
-Linstor PPA:
-https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+http://www.linbit.com/downloads/linstor/linstor-server-0.6.1.tar.gz
 
 Best regards,
 Rene
 
---
+--=20
 Ren=C3=A9 Peinthor - Software Developer
 rene.peinthor@linbit.com
 
-LINBIT | Keeping the Digital World Running
+LIN <http://www.linbit.com/en/>BIT <http://www.linbit.com/en/> | Keeping
+the Digital World Running
 DRBD HA - Disaster Recovery - Software-defined Storage
-t / f / in / y / g+
+t <https://twitter.com/linbit> / f
+<https://www.facebook.com/pg/linbitdrbd/posts/> / in
+<https://www.linkedin.com/company/linbit> / y
+<https://www.youtube.com/user/linbit> / g+
+<https://plus.google.com/+Linbit/about>
 
 DRBD=C2=AE and LINBIT=C2=AE are registered trademarks of LINBIT, Austria.
 
---000000000000cea6f80574bbdfee
+--000000000000c28ca90574f48b04
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr">Hi All!<br><br>Linstor v0.6 is out!<br><br>First thing to =
-note is that the client command for creating storage pools<br>was slightly =
-changed, the driver is now the first positional argument e.g.<br>`linstor s=
-torage-pool create lvm drbdnode sp_name`<br><br>Adding a backing disk to a =
-diskless node, while it is online, while it<br>is under IO, while it is pri=
-mary, is a cool feature that might come handy<br>in various situations. E.g=
-.<br><br>- You want have more read IOPs for a VM<br>- You want to reduce ne=
-twork-load when your VM reads form a virtual disk<br>- You want to increase=
- redundancy of your data set<br><br>Of course the inverse operation (remove=
- a disk, changing a resource to a<br>diskless one) while it is online and p=
-rimary is available with this<br>release as well.<br><br><font face=3D"mono=
-space, monospace">linstor-server 0.6.0<br>--------------------<br>=C2=A0* F=
-eature: Convert diskless DRBD to diskful online (and reverse)<br>=C2=A0* Fe=
-ature: Add Swordfish driver support<br>=C2=A0* Fix hanging resource-definit=
-ion delete (if it was empty)<br>=C2=A0* Fix incorrect lvm thin pool total c=
-apacity<br>=C2=A0* Fix snapshot names from migrated resource</font><br><a h=
-ref=3D"http://www.linbit.com/downloads/linstor/linstor-server-0.6.0.tar.gz"=
-><br>http://www.linbit.com/downloads/linstor/linstor-server-0.6.0.tar.gz</a=
-><br><br><font face=3D"monospace, monospace">linstor-client/python-linstor =
-0.6.0<br>-----------------------------------<br>=C2=A0* Add command for dis=
-k to diskless<br>=C2=A0* Client accepts multiple controllers<br>=C2=A0* Sto=
-rage pool create command changed<br>=C2=A0* Added swordfish driver to stora=
-ge pools<br>=C2=A0* Node list now shows also ports<br>=C2=A0* Fixes and upd=
-ates to the drbdmanage migrate script</font><br><br><a href=3D"http://www.l=
-inbit.com/downloads/linstor/python-linstor-0.6.0.tar.gz">http://www.linbit.=
-com/downloads/linstor/python-linstor-0.6.0.tar.gz</a><br><a href=3D"http://=
-www.linbit.com/downloads/linstor/linstor-client-0.6.0.tar.gz">http://www.li=
-nbit.com/downloads/linstor/linstor-client-0.6.0.tar.gz</a><br><br>Linstor P=
-PA:<br><a href=3D"https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd=
-9-stack">https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack</=
-a><br><br>Best regards,<div>Rene<br><br>--<br>Ren=C3=A9 Peinthor - Software=
- Developer<br><a href=3D"mailto:rene.peinthor@linbit.com">rene.peinthor@lin=
-bit.com</a><br><br>LINBIT | Keeping the Digital World Running<br>DRBD HA - =
-Disaster Recovery - Software-defined Storage<br>t / f / in / y / g+<br><br>=
-DRBD=C2=AE and LINBIT=C2=AE are registered trademarks of LINBIT, Austria.</=
-div></div>
+<div dir=3D"ltr"><div dir=3D"ltr">Hi!<div><br></div><div>As uncovered from =
+some of you, we had an upgrade bug from previous versions.</div><div>So her=
+e is a bug fix release that mainly addresses this issue.</div><div>Packages=
+ should soon be updated.</div><div><br></div><div><font face=3D"monospace, =
+monospace">linstor-server 0.6.1</font></div><div><font face=3D"monospace, m=
+onospace">--------------------</font></div><div><div style=3D"font-family:m=
+onospace,monospace">=C2=A0* Fixed database migration from version &lt;0.6.0=
+</div><div style=3D"font-family:monospace,monospace">=C2=A0* Fixed NPE on s=
+torage pool list if node is not connected</div><div style=3D"font-family:mo=
+nospace,monospace">=C2=A0* Set database connection timeout, to avoid timed =
+out connections (MariaDB)</div><div style=3D"font-family:monospace,monospac=
+e"><br></div><div style=3D""><a href=3D"http://www.linbit.com/downloads/lin=
+stor/linstor-server-0.6.1.tar.gz" style=3D""><font face=3D"arial, helvetica=
+, sans-serif">http://www.linbit.com/downloads/linstor/linstor-server-0.6.1.=
+tar.gz</font></a><br></div><div><br></div><div>Best regards,</div><div>Rene=
+</div><div><br></div>-- <br><div dir=3D"ltr" class=3D"gmail_signature"><div=
+ dir=3D"ltr"><div><div dir=3D"ltr"><div><div dir=3D"ltr"><div><div dir=3D"l=
+tr"><div><div dir=3D"ltr"><div><div dir=3D"ltr"><font face=3D"arial, helvet=
+ica, sans-serif" size=3D"2"><span style=3D"color:rgb(0,0,0);letter-spacing:=
+normal">Ren=C3=A9 Peinthor</span><span style=3D"color:rgb(0,0,0);letter-spa=
+cing:normal">=C2=A0-=C2=A0</span><span style=3D"color:rgb(0,0,0);letter-spa=
+cing:normal">Software Developer</span><br style=3D"color:rgb(0,0,0);letter-=
+spacing:normal"><a href=3D"mailto:rene.peinthor@linbit.com" style=3D"color:=
+rgb(0,0,0);letter-spacing:normal" target=3D"_blank"><span>rene.peinthor</sp=
+an>@linbit.com</a><br style=3D"color:rgb(0,0,0);letter-spacing:normal"><br =
+style=3D"color:rgb(0,0,0);letter-spacing:normal"><a href=3D"http://www.linb=
+it.com/en/" style=3D"color:rgb(250,133,34);letter-spacing:normal" target=3D=
+"_blank">LIN</a><a href=3D"http://www.linbit.com/en/" style=3D"color:rgb(0,=
+0,0);letter-spacing:normal" target=3D"_blank">BIT</a><span style=3D"color:r=
+gb(0,0,0);letter-spacing:normal">=C2=A0| Keeping the Digital World Running<=
+/span><br style=3D"color:rgb(0,0,0);letter-spacing:normal"><span style=3D"c=
+olor:rgb(0,0,0);letter-spacing:normal">DRBD HA - Disaster Recovery - Softwa=
+re-defined Storage</span><br style=3D"color:rgb(0,0,0);letter-spacing:norma=
+l"><a href=3D"https://twitter.com/linbit" title=3D"Twitter" style=3D"color:=
+rgb(0,172,237);letter-spacing:normal" target=3D"_blank">t</a><span style=3D=
+"color:rgb(0,0,0);letter-spacing:normal">=C2=A0/=C2=A0</span><a href=3D"htt=
+ps://www.facebook.com/pg/linbitdrbd/posts/" title=3D"Facebook" style=3D"col=
+or:rgb(59,89,152);letter-spacing:normal" target=3D"_blank">f</a><span style=
+=3D"color:rgb(0,0,0);letter-spacing:normal">=C2=A0/=C2=A0</span><a href=3D"=
+https://www.linkedin.com/company/linbit" title=3D"LinkedIn" style=3D"color:=
+rgb(0,123,182);letter-spacing:normal" target=3D"_blank">in</a><span style=
+=3D"color:rgb(0,0,0);letter-spacing:normal">=C2=A0/=C2=A0</span><a href=3D"=
+https://www.youtube.com/user/linbit" title=3D"YouTube" style=3D"color:rgb(2=
+55,0,0);letter-spacing:normal" target=3D"_blank">y</a><span style=3D"color:=
+rgb(0,0,0);letter-spacing:normal">=C2=A0/=C2=A0</span><a href=3D"https://pl=
+us.google.com/+Linbit/about" title=3D"Google+" style=3D"color:rgb(221,75,57=
+);letter-spacing:normal" target=3D"_blank">g+</a><br style=3D"color:rgb(0,0=
+,0);letter-spacing:normal"><br style=3D"color:rgb(0,0,0);letter-spacing:nor=
+mal"><span style=3D"color:rgb(0,0,0);letter-spacing:normal">DRBD=C2=AE and =
+LINBIT=C2=AE are registered trademarks of LINBIT, Austria.</span></font><br=
+></div></div></div></div></div></div></div></div></div></div></div></div></=
+div></div></div>
 
---000000000000cea6f80574bbdfee--
+--000000000000c28ca90574f48b04--
