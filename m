@@ -1,20 +1,21 @@
-Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com
-	[209.85.221.51])
-	by mail09.linbit.com (LINBIT Mail Daemon) with ESMTP id A4401101AC7B
+Return-Path: <philipp.reisner@linbit.com>
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com
+	[209.85.221.52])
+	by mail09.linbit.com (LINBIT Mail Daemon) with ESMTP id ABD06101E041
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 15 Oct 2018 11:00:37 +0200 (CEST)
-Received: by mail-wr1-f51.google.com with SMTP id y16so20336567wrw.3
+	Wed, 17 Oct 2018 10:07:25 +0200 (CEST)
+Received: by mail-wr1-f52.google.com with SMTP id q5-v6so28523664wrw.12
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 15 Oct 2018 02:00:37 -0700 (PDT)
-Date: Mon, 15 Oct 2018 10:54:00 +0200
-From: Roland Kammerer <roland.kammerer@linbit.com>
-To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Message-ID: <20181015085359.negd6r7jk3rdygy7@rck.sh>
+	Wed, 17 Oct 2018 01:07:25 -0700 (PDT)
+From: Philipp Reisner <philipp.reisner@linbit.com>
+To: drbd-announce@lists.linbit.com
+Date: Wed, 17 Oct 2018 09:59:45 +0200
+Message-ID: <12540675.IbdZ0Y9jjO@fat-tyre>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Subject: [DRBD-announce] linstor-proxmox-3.0.1
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+Cc: drbd-user@lists.linbit.com
+Subject: [DRBD-announce] drbd-9.0.16rc1
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,27 +27,47 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Dear Proxmox users,
+Hi,
 
-if you already used version 3.0.0 (it was in the repos), you have to
-upgrade to 3.0.1, we fixed a regression that was introduced with 3.0.0.
+the list is shorter than with the last releases. I think this is good news.
 
-As I did not officially announce 3.0.0, here are the important changes
-since 2.9.z:
-- Multi-Pool support
-- Fix a race between LINSTOR thinks a resource is ready vs. it being
-  actually usable. In rare cases this bit people when for example
-  converting from local storage to DRBD, and Proxmox started with its
-  "dd" too early even though the device node was not usable.
-- Many clean ups and "perlification".
+What really made us to release now, is fixing the regression introduced with
+9.0.15. It was probably not triggered by many parties, because you can only
+trigger it if you have requests in flight in excactly the moment a
+timer comes by to check if the network timeout expired.
 
-Documentation for multi-pool can be found here:
-https://github.com/LINBIT/linbit-documentation/blob/master/UG9/en/proxmox-linstor.adoc#proxmox-plugin-configuration
+The distributed connect loop was never seen in the wild, maybe only=20
+our test suite ever reproduced it.
 
-Get it from github[1], or as release tarball[2], or via our publicly
-available Proxmox repos.
+The fixes to the quorum code ensure that recovery works as expected
+after a primary node lost quorum.
 
-[1] https://github.com/LINBIT/linstor-proxmox/
-[2] https://www.linbit.com/en/drbd-community/drbd-download/
+Please help testing! -- We will release in one week if nobody comes up
+with "interesting" behavior. We will use the time to write more
+test cases for our test suite.
 
-Regards, rck
+9.0.16-0rc1 (api:genl2/proto:86-114/transport:14)
+=2D-------
+ * Fix regression (introduced with 9.0.15) in handling request timeouts;
+   all pending requests always considered as overdue when the timer function
+   was executed; this led to false positives in detecting timeouts
+ * Fix a possible distributed loop when establishing a connection
+ * Fix a corner case in case a resync "overtakes" an other one
+ * Fix clearing of the PRIMARY_LOST_QUORUM flag
+ * Check peers (to ensure quorum is not lost) before generating new current
+   UUID after loosing a node
+ * In case the locally configured address of a connection is not
+   available keep on retrying until it comes back
+
+http://www.linbit.com/downloads/drbd/9.0/drbd-9.0.16-0rc1.tar.gz
+https://github.com/LINBIT/drbd-9.0/releases/tag/drbd-9.0.16-0rc1
+
+best regards,
+ Phil
+=2D-=20
+LINBIT | Keeping The Digital World Running
+
+DRBD=AE and LINBIT=AE are registered trademarks of LINBIT, Austria.
+
+
+
