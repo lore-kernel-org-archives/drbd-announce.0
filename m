@@ -1,21 +1,21 @@
 Return-Path: <philipp.reisner@linbit.com>
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com
-	[209.85.221.52])
-	by mail09.linbit.com (LINBIT Mail Daemon) with ESMTP id ABD06101E041
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com
+	[209.85.128.52])
+	by mail09.linbit.com (LINBIT Mail Daemon) with ESMTP id 4FAB41013836
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 17 Oct 2018 10:07:25 +0200 (CEST)
-Received: by mail-wr1-f52.google.com with SMTP id q5-v6so28523664wrw.12
+	Thu, 25 Oct 2018 11:38:37 +0200 (CEST)
+Received: by mail-wm1-f52.google.com with SMTP id y140-v6so1513450wmd.0
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 17 Oct 2018 01:07:25 -0700 (PDT)
+	Thu, 25 Oct 2018 02:38:37 -0700 (PDT)
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Date: Wed, 17 Oct 2018 09:59:45 +0200
-Message-ID: <12540675.IbdZ0Y9jjO@fat-tyre>
+Date: Thu, 25 Oct 2018 11:31:04 +0200
+Message-ID: <12043119.jtIGZ2XMAb@fat-tyre>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset="iso-8859-1"
 Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-9.0.16rc1
+Subject: [DRBD-announce] drbd-9.0.16
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -29,7 +29,7 @@ List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hi,
 
-the list is shorter than with the last releases. I think this is good news.
+=46inal. No changes relative to rc1.=20
 
 What really made us to release now, is fixing the regression introduced with
 9.0.15. It was probably not triggered by many parties, because you can only
@@ -42,11 +42,7 @@ our test suite ever reproduced it.
 The fixes to the quorum code ensure that recovery works as expected
 after a primary node lost quorum.
 
-Please help testing! -- We will release in one week if nobody comes up
-with "interesting" behavior. We will use the time to write more
-test cases for our test suite.
-
-9.0.16-0rc1 (api:genl2/proto:86-114/transport:14)
+9.0.16-1 (api:genl2/proto:86-114/transport:14)
 =2D-------
  * Fix regression (introduced with 9.0.15) in handling request timeouts;
    all pending requests always considered as overdue when the timer function
@@ -59,11 +55,9 @@ test cases for our test suite.
  * In case the locally configured address of a connection is not
    available keep on retrying until it comes back
 
-http://www.linbit.com/downloads/drbd/9.0/drbd-9.0.16-0rc1.tar.gz
-https://github.com/LINBIT/drbd-9.0/releases/tag/drbd-9.0.16-0rc1
+http://www.linbit.com/downloads/drbd/9.0/drbd-9.0.16-1.tar.gz
+https://github.com/LINBIT/drbd-9.0/releases/tag/drbd-9.0.16-1
 
-best regards,
- Phil
 =2D-=20
 LINBIT | Keeping The Digital World Running
 
