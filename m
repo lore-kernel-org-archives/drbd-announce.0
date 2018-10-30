@@ -1,21 +1,19 @@
-Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com
-	[209.85.221.51])
-	by mail09.linbit.com (LINBIT Mail Daemon) with ESMTP id 810FE1012864
+Return-Path: <rene.peinthor@linbit.com>
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com
+	[209.85.221.49])
+	by mail09.linbit.com (LINBIT Mail Daemon) with ESMTP id B69F21011BEC
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 29 Oct 2018 14:16:09 +0100 (CET)
-Received: by mail-wr1-f51.google.com with SMTP id t10-v6so8624630wrn.10
+	Tue, 30 Oct 2018 13:56:08 +0100 (CET)
+Received: by mail-wr1-f49.google.com with SMTP id 74-v6so4264270wrb.13
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 29 Oct 2018 06:16:09 -0700 (PDT)
-Date: Mon, 29 Oct 2018 14:16:06 +0100
-From: Roland Kammerer <roland.kammerer@linbit.com>
-To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Message-ID: <20181029131605.ezih64pji3s2hbsd@rck.sh>
+	Tue, 30 Oct 2018 05:56:08 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="7kenh6aco3vcxtvf"
-Content-Disposition: inline
-Subject: [DRBD-announce] drbd-utils-9.6.0
+From: Rene Peinthor <rene.peinthor@linbit.com>
+Date: Tue, 30 Oct 2018 13:55:56 +0100
+Message-ID: <CAHmn2DOo7k5F0wPtJHXmDNBe3NmgtSTOo7NLGoYEbMOKP1CnNQ@mail.gmail.com>
+To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
+Content-Type: multipart/alternative; boundary="0000000000008b4c60057971b513"
+Subject: [DRBD-announce] Linster-server v0.7.0, Linstor-client 0.7.0 release
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -27,67 +25,101 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
+--0000000000008b4c60057971b513
+Content-Type: text/plain; charset="UTF-8"
 
---7kenh6aco3vcxtvf
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Hi All!
 
-Hi DRBD users,
+New Linstor release that comes with support for basic DRBD proxy
+configurations,
+improved drbdmanage migration, auto-place uses now the actual thin
+pool size(with oversubscription ratio), and a bunch of bug fixes.
 
-This is drbd-utils release 9.6.0. There is no pressure to update
-immediately, it is just that "git log v9.5.0..HEAD --pretty=oneline |
-wc -l" has 50 commits, so it is time...
+Here more release details:
 
-There are minor bug fixes all over the place, see the Changelog/git
-history for details.
+linstor-server 0.7.0
+--------------------
+ * Basic DRBD Proxy support
+ * Resource can now created in a batch (used for drbdmigrate)
+ * More synchronous operations (auto-place, storage-pool create)
+ * linstor-config: improved sql-script command
+ * Added list API for resource connection
+ * Fix: drbdsetup events2 parsing will be restarted if process dies
+ * Fix: resource create check available size
+ * Fix: Delete snapshots on node lost command
+ * Fix: SSL configurations files are now resolved from config directory
+ * Fix: Some race conditions are avoided
 
-"Breaking" changes one should be aware of:
-- JSON output of drbdsetup status does not contain NaN/Infinity any
-  more for numbers. While obviously a bug-fix, it changes the output, so
-  it is worth mentioning.
-- drbd-overview is gone. We have nicer tools (drbdtop and drbdmon), and
-  it was marked deprecated for several releases. I really wanted to get
-  rid of the Perl dependency. It is still in the git repo for people
-  that want it. For state/bug reports, just use "cat /proc/drbd" and/or
-  "drbdsetup status -vs".
-- The Makefile does not generate "-debian" tarballs anymore. If you
-  really need that, please see 8f402c33940a7fc612ce2fb36f29e4ff8f30c7c4.
+http://www.linbit.com/downloads/linstor/linstor-server-0.7.0.tar.gz
 
-9.6.0
---------
- * usage-count: also count notty users if possible.
- * drbd-overview: remove it, we have drbdtop/drbdmon. saves all the Perl deps.
- * drbdmon: update frequency limiting, debug log for drbdevents, use
-   altbuffer,...
- * drbdsetup show: on 9 allow json output.
-   mainly used in our CI, don't expect a stable field names yet.
- * drbdsetup satus: on 9 fix json output to not include NaN/Infinity
- * allow higher resync rates: first customers hit a limit. this requires an
-   updated kernel module as well (e.g., 9.0.16)
- * init: fix some 8-only leftovers (sh-b-pri), sanitize the retry logic
- * doc: document various 9 features that got forgotten (e.g., quorum-lost)
- * build: various small fixes that popped up while playing with meson
+linstor-client/python-linstor 0.7.0
+-----------------------------------
+ * Added Proxy configuration commands
+ * Synchronous auto-place and storage-pool create commands
+ * Resource connection commands (list, props, drbd options)
+ * Improved table rendering
+ * error list --since allows now hours to be specified
 
+http://www.linbit.com/downloads/linstor/python-linstor-0.7.0.tar.gz
+http://www.linbit.com/downloads/linstor/linstor-client-0.7.0.tar.gz
 
-https://www.linbit.com/downloads/drbd/utils/drbd-utils-9.6.0.tar.gz
-https://github.com/LINBIT/drbd-utils/tree/v9.6.0
+Linstor PPA:
 https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
-Regards, rck
+Best regards,
+Rene
 
---7kenh6aco3vcxtvf
-Content-Type: application/pgp-signature; name="signature.asc"
+--0000000000008b4c60057971b513
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
------BEGIN PGP SIGNATURE-----
+<div dir=3D"ltr"><div dir=3D"ltr"><div dir=3D"ltr"><div dir=3D"ltr">Hi All!=
+<div><br></div><div>New Linstor release that comes with support for basic D=
+RBD proxy configurations,</div><div>improved drbdmanage migration, auto-pla=
+ce uses now the actual thin=C2=A0</div><div>pool size(with oversubscription=
+ ratio), and a bunch of bug fixes.</div><div><br></div><div>Here more relea=
+se details:</div><div><br></div><div><span style=3D"font-family:monospace,m=
+onospace;font-size:x-small">linstor-server 0.7.0</span><br></div><div><div>=
+<font face=3D"monospace, monospace" size=3D"1">--------------------</font><=
+/div><div><font size=3D"1"><font face=3D"monospace, monospace">=C2=A0* Basi=
+c DRBD Proxy support<br></font><span style=3D"font-family:monospace,monospa=
+ce">=C2=A0* Resource can now created in a batch (used for drbdmigrate)</spa=
+n><font face=3D"monospace, monospace"><br></font></font></div><div><font fa=
+ce=3D"monospace, monospace" size=3D"1">=C2=A0* More synchronous operations =
+(auto-place, storage-pool create)</font></div><div><font size=3D"1"><span s=
+tyle=3D"font-family:monospace,monospace">=C2=A0* linstor-config: improved s=
+ql-script command</span><br></font></div><div><font size=3D"1"><span style=
+=3D"font-family:monospace,monospace">=C2=A0* Added list API for resource co=
+nnection</span></font></div><div><font face=3D"monospace, monospace" size=
+=3D"1">=C2=A0* Fix: drbdsetup events2 parsing will be restarted if process =
+dies</font></div><div><font face=3D"monospace, monospace" size=3D"1">=C2=A0=
+* Fix: resource create check available size</font></div><div><font face=3D"=
+monospace, monospace"><font size=3D"1">=C2=A0* Fix: Delete snapshots on nod=
+e lost command</font></font></div></div><div><font face=3D"monospace, monos=
+pace"><font size=3D"1">=C2=A0* Fix: SSL configurations files are now resolv=
+ed from config directory<br>=C2=A0* Fix: Some race conditions are avoided</=
+font></font></div><div><font face=3D"monospace, monospace"><font size=3D"1"=
+><br></font></font></div><div><font face=3D"arial, helvetica, sans-serif"><=
+a href=3D"http://www.linbit.com/downloads/linstor/linstor-server-0.7.0.tar.=
+gz">http://www.linbit.com/downloads/linstor/linstor-server-0.7.0.tar.gz</a>=
+</font><br></div><div><font face=3D"monospace, monospace"><font size=3D"1">=
+<br></font></font></div><div><div><font face=3D"monospace, monospace" size=
+=3D"1">linstor-client/python-linstor 0.7.0<br>-----------------------------=
+------<br>=C2=A0* Added Proxy configuration commands<br>=C2=A0* Synchronous=
+ auto-place and storage-pool create commands<br>=C2=A0* Resource connection=
+ commands (list, props, drbd options)<br>=C2=A0* Improved table rendering</=
+font></div><div><font face=3D"monospace, monospace" size=3D"1">=C2=A0* erro=
+r list --since allows now hours to be specified</font></div></div><div><fon=
+t face=3D"monospace, monospace" size=3D"1"><br></font></div><div><font face=
+=3D"arial, helvetica, sans-serif"><a href=3D"http://www.linbit.com/download=
+s/linstor/python-linstor-0.7.0.tar.gz">http://www.linbit.com/downloads/lins=
+tor/python-linstor-0.7.0.tar.gz</a></font><br></div><div><a href=3D"http://=
+www.linbit.com/downloads/linstor/linstor-client-0.7.0.tar.gz">http://www.li=
+nbit.com/downloads/linstor/linstor-client-0.7.0.tar.gz</a><br></div><div><b=
+r></div><div><div>Linstor PPA:<br><a href=3D"https://launchpad.net/~linbit/=
++archive/ubuntu/linbit-drbd9-stack" target=3D"_blank">https://launchpad.net=
+/~linbit/+archive/ubuntu/linbit-drbd9-stack</a><br></div><div><br></div><di=
+v>Best regards,</div><div>Rene</div></div><div><br></div></div></div></div>=
+</div>
 
-iQEzBAABCAAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAlvXCA0ACgkQRgmezyI6
-myLTVwgAoDnMBuozatWmiLu4NJkv6tI4c0QQN53Oy91Lipz76CMLxYarCDWdXAgJ
-n4CfsOvxJlZkMgSOAx9BbPkfpifyD3bMivWPZqx8yA2WU4K6lpF0Fow1eQ7XIcJG
-fWjAfLiTY5QqfajkjzOHS1GvHpy7z3ZP6MVruZKrxSjb9ghqIPV1s/76VOs0DYZ2
-IrL3hx5RDLf47sXabg1pK2H6GupyUj1koDbPV6x1at/gURvoP6u3LNwLNETYzUEm
-kssWHYTHCrytaXsQnRMPEm1sDYbIkrYP221T5e1VV/yUz6gr94FnPzmLJZFyJn4z
-UkMYFftG75WMEDF7LrUJMtFJIv7XfQ==
-=+17j
------END PGP SIGNATURE-----
-
---7kenh6aco3vcxtvf--
+--0000000000008b4c60057971b513--
