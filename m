@@ -1,19 +1,19 @@
 Return-Path: <rene.peinthor@linbit.com>
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com
-	[209.85.128.48])
-	by mail09.linbit.com (LINBIT Mail Daemon) with ESMTP id 9AA691018D52
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com
+	[209.85.221.47])
+	by mail09.linbit.com (LINBIT Mail Daemon) with ESMTP id DDD68101AC67
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 12 Nov 2018 15:47:43 +0100 (CET)
-Received: by mail-wm1-f48.google.com with SMTP id f10-v6so8760012wme.3
+	Thu, 22 Nov 2018 16:07:26 +0100 (CET)
+Received: by mail-wr1-f47.google.com with SMTP id x10so9575947wrs.8
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 12 Nov 2018 06:47:43 -0800 (PST)
+	Thu, 22 Nov 2018 07:07:26 -0800 (PST)
 MIME-Version: 1.0
 From: Rene Peinthor <rene.peinthor@linbit.com>
-Date: Mon, 12 Nov 2018 15:40:27 +0100
-Message-ID: <CAHmn2DMSeDu9vr8C_fnJ4+FFEvVK2x5fyXNN9uvvAT7yMUDsPw@mail.gmail.com>
-To: drbd-user@lists.linbit.com, drbd-announce@lists.linbit.com
-Content-Type: multipart/alternative; boundary="0000000000003c2e42057a78af9a"
-Subject: [DRBD-announce] Linstor-server v0.7.2, Linstor-client v0.7.1 release
+Date: Thu, 22 Nov 2018 16:07:16 +0100
+Message-ID: <CAHmn2DP=4h=O5ukTP-Y735LxO9msGB0n-w1sg-P_pPOkZUSqxg@mail.gmail.com>
+To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
+Content-Type: multipart/alternative; boundary="000000000000790ba8057b423973"
+Subject: [DRBD-announce] Linstor-server 0.7.3/linstor-client 0.7.2 release
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -25,40 +25,41 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
---0000000000003c2e42057a78af9a
+--000000000000790ba8057b423973
 Content-Type: text/plain; charset="UTF-8"
 
-Hello!
+Hi Everyone!
 
-Here is a rather minor bug fix release, but also flavored with a small new
-feature.
-One thing to note is that we turned off SECURITY ACL in linstor so for new
-installations you don't need to explicitly have to set NO_SECURITY if you
-want to change a controller property.
-We will probably change the default again as soon as we have implemented
-the full security model.
+We finished another linstor release, with this comes a new snapshot
+rollback command and usual fixes.
+The snapshot rollback command is used to do in-place rollbacks to the last
+snapshot taken.
 
-Some highlights of the changes:
+As always the release highlights:
 
-linstor-server 0.7.2
+linstor-server 0.7.3
 --------------------
- * Disabled security ACL per default
- * Volume definition resize is now synchronous
- * Snapshot create/deleted now uses reactor library
- * Added reconnect API
- * Replicas-on-same now allows to specify values
- * Prevent creating volumes on different storage drivers (thin/thick mix)
- * Fixed schema problems with latest flyway library (postgresql)
+ * Added snapshot rollback API
+ * Show SyncTarget percentage in volume state
+ * Allow resource creation if the satellite isn't connected
+ * Fixed storage pool size check in case of a drbdmanage migration
+ * Fixed node reconnect creating error reports
+ * Fixed a missing write lock on storage pool definition map
+ * Multiple fixes to snapshots
+ * Database compatibility fixes to ensure linstor runs on all kind of SQL
+databases
 
-http://www.linbit.com/downloads/linstor/linstor-server-0.7.2.tar.gz
+http://www.linbit.com/downloads/linstor/linstor-server-0.7.3.tar.gz
 
-linstor-client/python-linstor 0.7.1
+linstor-client/python-linstor 0.7.2
 -----------------------------------
- * Added node reconnect command
- * Support reactive snapshot create/delete
+ * Added snapshot rollback command
+ * All object name lookups should be case insensitive now
+ * Added warnings for list-properties command, if their is no object with
+that name
 
-http://www.linbit.com/downloads/linstor/python-linstor-0.7.1.tar.gz
-http://www.linbit.com/downloads/linstor/linstor-client-0.7.1.tar.gz
+http://www.linbit.com/downloads/linstor/python-linstor-0.7.2.tar.gz
+http://www.linbit.com/downloads/linstor/linstor-client-0.7.2.tar.gz
 
 Linstor PPA:
 https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
@@ -66,58 +67,60 @@ https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 Best regards,
 Rene
 
---0000000000003c2e42057a78af9a
+--000000000000790ba8057b423973
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr"><div dir=3D"ltr"><div dir=3D"ltr"><div dir=3D"ltr">Hello!<=
-div><br></div><div>Here is a rather minor bug fix release, but also flavore=
-d with a small new feature.</div><div>One thing to note is that we turned o=
-ff SECURITY ACL in linstor so for new</div><div>installations you don&#39;t=
- need to explicitly have to set NO_SECURITY if you want to change a control=
-ler property.</div><div>We will probably change the default again as soon a=
-s we have implemented the full security model.</div><div><br></div><div>Som=
-e highlights of the changes:</div><div><br></div><div><div><span style=3D"f=
-ont-family:monospace,monospace;font-size:x-small">linstor-server 0.7.2</spa=
-n><br></div><div><div><font face=3D"monospace, monospace" size=3D"1">------=
---------------</font></div><div><font size=3D"1"><font face=3D"monospace, m=
-onospace">=C2=A0* Disabled security ACL per default<br></font><span style=
-=3D"font-family:monospace,monospace">=C2=A0* Volume definition resize is no=
-w synchronous</span></font></div></div></div><div><font size=3D"1"><span st=
-yle=3D"font-family:monospace,monospace">=C2=A0* Snapshot create/deleted now=
- uses reactor library</span></font></div><div><span style=3D"font-family:mo=
-nospace,monospace;font-size:x-small">=C2=A0* Added reconnect API</span></di=
-v><div><font face=3D"monospace, monospace" size=3D"1">=C2=A0* Replicas-on-s=
-ame now allows=C2=A0to specify values</font></div><div><font face=3D"monosp=
-ace, monospace" size=3D"1">=C2=A0* Prevent creating volumes on different st=
-orage drivers (thin/thick mix)</font></div><div><font face=3D"monospace, mo=
-nospace" size=3D"1">=C2=A0* Fixed schema problems with latest flyway librar=
-y (postgresql)</font></div><div><font face=3D"monospace, monospace" size=3D=
-"1"><br></font></div><div><font face=3D"monospace, monospace" size=3D"1"><a=
- href=3D"http://www.linbit.com/downloads/linstor/linstor-server-0.7.2.tar.g=
-z" target=3D"_blank">http://www.linbit.com/downloads/linstor/linstor-server=
--0.7.2.tar.gz</a><br></font></div><div><font face=3D"monospace, monospace" =
-size=3D"1"><br></font></div><div><span style=3D"font-family:monospace,monos=
-pace;font-size:x-small">linstor-client/python-linstor 0.7.1</span><br style=
-=3D"font-family:monospace,monospace;font-size:x-small"><span style=3D"font-=
-family:monospace,monospace;font-size:x-small">-----------------------------=
--</span><span style=3D"font-family:monospace,monospace;font-size:x-small">-=
-----</span><br style=3D"font-family:monospace,monospace;font-size:x-small">=
-<span style=3D"font-family:monospace,monospace;font-size:x-small">=C2=A0* A=
-dded node reconnect command</span><font face=3D"monospace, monospace" size=
-=3D"1"><br></font></div><div><span style=3D"font-family:monospace,monospace=
-;font-size:x-small">=C2=A0* Support reactive snapshot create/delete</span><=
-/div><div><span style=3D"font-family:monospace,monospace;font-size:x-small"=
->=C2=A0</span></div><div><font face=3D"monospace, monospace" size=3D"1"><a =
-href=3D"http://www.linbit.com/downloads/linstor/python-linstor-0.7.1.tar.gz=
-" target=3D"_blank">http://www.linbit.com/downloads/linstor/python-linstor-=
-0.7.1.tar.gz</a></font><br></div><div><a href=3D"http://www.linbit.com/down=
-loads/linstor/linstor-client-0.7.1.tar.gz" target=3D"_blank"><font face=3D"=
-monospace, monospace" size=3D"1">http://www.linbit.com/downloads/linstor/li=
-nstor-client-0.7.1.tar.gz</font></a><br></div><div><br></div><div><div>Lins=
-tor PPA:<br><a href=3D"https://launchpad.net/~linbit/+archive/ubuntu/linbit=
--drbd9-stack" target=3D"_blank">https://launchpad.net/~linbit/+archive/ubun=
-tu/linbit-drbd9-stack</a><br></div><div><br></div><div>Best regards,</div><=
-div>Rene</div></div></div></div></div></div>
+<div dir=3D"auto"><div dir=3D"ltr"><div dir=3D"ltr"><div dir=3D"ltr"><div d=
+ir=3D"ltr">Hi Everyone!<div><br></div><div>We finished another linstor rele=
+ase, with this comes a new snapshot rollback command and usual fixes.</div>=
+<div>The snapshot rollback command is used to do in-place rollbacks to the =
+last snapshot taken.</div><div><br></div><div>As always the release highlig=
+hts:</div><div><br></div><div><div><span style=3D"font-family:monospace,mon=
+ospace;font-size:x-small">linstor-server 0.7.3</span><br></div><div><div><f=
+ont face=3D"monospace, monospace" size=3D"1">--------------------</font></d=
+iv><div><font size=3D"1"><font face=3D"monospace, monospace">=C2=A0* Added =
+snapshot rollback API</font></font></div><div><font size=3D"1"><font face=
+=3D"monospace, monospace">=C2=A0* Show SyncTarget percentage in volume stat=
+e</font></font></div><div><font size=3D"1"><font face=3D"monospace, monospa=
+ce">=C2=A0* Allow resource creation if the satellite isn&#39;t connected</f=
+ont></font></div><div><font size=3D"1"><font face=3D"monospace, monospace">=
+=C2=A0* Fixed storage pool size check in case of a drbdmanage migration</fo=
+nt></font></div><div><font size=3D"1"><font face=3D"monospace, monospace">=
+=C2=A0* Fixed node reconnect creating error reports</font></font></div><div=
+><font size=3D"1"><font face=3D"monospace, monospace">=C2=A0* Fixed a missi=
+ng write lock on storage pool definition map</font></font></div><div><font =
+size=3D"1"><font face=3D"monospace, monospace">=C2=A0* Multiple fixes to sn=
+apshots<br></font><span style=3D"font-family:monospace,monospace">=C2=A0* D=
+atabase compatibility fixes to ensure linstor runs on all kind of SQL datab=
+ases</span></font></div></div></div><div><font size=3D"1"><font face=3D"mon=
+ospace, monospace"><br></font></font></div><div><font size=3D"1"><font face=
+=3D"monospace, monospace"><a href=3D"http://www.linbit.com/downloads/linsto=
+r/linstor-server-0.7.3.tar.gz" target=3D"_blank" rel=3D"noreferrer">http://=
+www.linbit.com/downloads/linstor/linstor-server-0.7.3.tar.gz</a></font><br>=
+</font></div><div><font size=3D"1"><span style=3D"font-family:monospace,mon=
+ospace"><br></span></font></div><div><font size=3D"1"><span style=3D"font-f=
+amily:monospace,monospace">linstor-client/python-linstor 0.7.2</span></font=
+></div><div><font size=3D"1"><span style=3D"font-family:monospace,monospace=
+">-----------------------------------</span></font></div><div><span style=
+=3D"font-family:monospace,monospace;font-size:x-small">=C2=A0* Added snapsh=
+ot rollback command</span><font size=3D"1"><font face=3D"monospace, monospa=
+ce"><br></font></font></div><div><font size=3D"1"><font face=3D"monospace, =
+monospace">=C2=A0* All object name lookups=C2=A0should be case insensitive =
+now</font></font></div><div><font size=3D"1"><span style=3D"font-family:mon=
+ospace,monospace">=C2=A0* Added warnings for list-properties command, if th=
+eir is no object with that name</span></font></div><div><font face=3D"monos=
+pace, monospace" size=3D"1"><br></font></div><div><font face=3D"monospace, =
+monospace" size=3D"1"><a href=3D"http://www.linbit.com/downloads/linstor/py=
+thon-linstor-0.7.2.tar.gz" target=3D"_blank" rel=3D"noreferrer">http://www.=
+linbit.com/downloads/linstor/python-linstor-0.7.2.tar.gz</a><br></font></di=
+v><div><a href=3D"http://www.linbit.com/downloads/linstor/linstor-client-0.=
+7.2.tar.gz" target=3D"_blank" rel=3D"noreferrer"><font face=3D"monospace, m=
+onospace" size=3D"1">http://www.linbit.com/downloads/linstor/linstor-client=
+-0.7.2.tar.gz</font></a><br></div><div><br></div><div>Linstor PPA:<br><a hr=
+ef=3D"https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack" tar=
+get=3D"_blank" rel=3D"noreferrer">https://launchpad.net/~linbit/+archive/ub=
+untu/linbit-drbd9-stack</a><br></div><div><br></div><div>Best regards,</div=
+><div>Rene</div></div></div></div></div></div>
 
---0000000000003c2e42057a78af9a--
+--000000000000790ba8057b423973--
