@@ -1,19 +1,20 @@
-Return-Path: <rene.peinthor@linbit.com>
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com
-	[209.85.221.47])
-	by mail09.linbit.com (LINBIT Mail Daemon) with ESMTP id DDD68101AC67
+Return-Path: <roland.kammerer@linbit.com>
+Received: from mail-wr1-f66.google.com (mail-wr1-f66.google.com
+	[209.85.221.66])
+	by mail09.linbit.com (LINBIT Mail Daemon) with ESMTP id BB49D101AC67
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 22 Nov 2018 16:07:26 +0100 (CET)
-Received: by mail-wr1-f47.google.com with SMTP id x10so9575947wrs.8
+	Tue,  4 Dec 2018 17:33:52 +0100 (CET)
+Received: by mail-wr1-f66.google.com with SMTP id t27so16648716wra.6
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 22 Nov 2018 07:07:26 -0800 (PST)
-MIME-Version: 1.0
-From: Rene Peinthor <rene.peinthor@linbit.com>
-Date: Thu, 22 Nov 2018 16:07:16 +0100
-Message-ID: <CAHmn2DP=4h=O5ukTP-Y735LxO9msGB0n-w1sg-P_pPOkZUSqxg@mail.gmail.com>
+	Tue, 04 Dec 2018 08:33:52 -0800 (PST)
+Date: Tue, 4 Dec 2018 17:28:32 +0100
+From: Roland Kammerer <roland.kammerer@linbit.com>
 To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Content-Type: multipart/alternative; boundary="000000000000790ba8057b423973"
-Subject: [DRBD-announce] Linstor-server 0.7.3/linstor-client 0.7.2 release
+Message-ID: <20181204162832.fffe3mqkld4htb7n@rck.sh>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Subject: [DRBD-announce] drbd-utils-9.7.0
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -25,102 +26,46 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
---000000000000790ba8057b423973
-Content-Type: text/plain; charset="UTF-8"
+Hi DRBD users,
 
-Hi Everyone!
+This release contains several bug fixes and some new features. If you
+don't use these features, there is no urgent need to upgrade now.
 
-We finished another linstor release, with this comes a new snapshot
-rollback command and usual fixes.
-The snapshot rollback command is used to do in-place rollbacks to the last
-snapshot taken.
+Highlights include:
+- drbd-utils now handle "resync-after" properly. This needed fixing in
+  the 8.4 part and the 9 part of drbd-utils.
 
-As always the release highlights:
+- drbd.ocf now has a new parameter named "connect_only_after_promote"
+  which might be helpful in stacked setups. drbd.ocf also learned to to
+  specify a required kernel version. If you are interested, please read
+  the according changes in the git log for more details.
 
-linstor-server 0.7.3
---------------------
- * Added snapshot rollback API
- * Show SyncTarget percentage in volume state
- * Allow resource creation if the satellite isn't connected
- * Fixed storage pool size check in case of a drbdmanage migration
- * Fixed node reconnect creating error reports
- * Fixed a missing write lock on storage pool definition map
- * Multiple fixes to snapshots
- * Database compatibility fixes to ensure linstor runs on all kind of SQL
-databases
+- drbdmon now displays rsync progress (assuming a new enough DRBD9
+  kernel module).
 
-http://www.linbit.com/downloads/linstor/linstor-server-0.7.3.tar.gz
+- Utils learned to specify a required kernel module version in the res
+  files. This is a DRBD9 only feature. This helps with error messages
+  people get when they wrongfully load a DRBD8.4 module and use LINSTOR.
+  It might also be handy in other situations when one wants to make
+  absolutely sure that a specific/specific range of the kernel module is
+  used.
 
-linstor-client/python-linstor 0.7.2
------------------------------------
- * Added snapshot rollback command
- * All object name lookups should be case insensitive now
- * Added warnings for list-properties command, if their is no object with
-that name
+- Last but not least, the bits for WinDRBD (not to be confused with
+  wdrbd) got merged. This allows building drbd-utils on Windows, if you
+  use the Windows version of DRBD, which is based on the DRBD9 code used
+  in Linux. No, it is not 1. of April :-).
 
-http://www.linbit.com/downloads/linstor/python-linstor-0.7.2.tar.gz
-http://www.linbit.com/downloads/linstor/linstor-client-0.7.2.tar.gz
+As usual, I hope this release does not destroy your kitten factory.
 
-Linstor PPA:
-https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+9.7.0
+--------
+ * drbdadm,v9,v84: fix resync-after
+ * drbd.ocf: connect_only_after_promote, require kernel version
+ * drbdmon: display resync progress
+ * parser,v9: require-drbd-module-version
+ * windrbd: add WinDRBD support
 
-Best regards,
-Rene
+https://www.linbit.com/downloads/drbd/utils/drbd-utils-9.7.0.tar.gz
+https://github.com/LINBIT/drbd-utils/tree/v9.7.0
 
---000000000000790ba8057b423973
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"auto"><div dir=3D"ltr"><div dir=3D"ltr"><div dir=3D"ltr"><div d=
-ir=3D"ltr">Hi Everyone!<div><br></div><div>We finished another linstor rele=
-ase, with this comes a new snapshot rollback command and usual fixes.</div>=
-<div>The snapshot rollback command is used to do in-place rollbacks to the =
-last snapshot taken.</div><div><br></div><div>As always the release highlig=
-hts:</div><div><br></div><div><div><span style=3D"font-family:monospace,mon=
-ospace;font-size:x-small">linstor-server 0.7.3</span><br></div><div><div><f=
-ont face=3D"monospace, monospace" size=3D"1">--------------------</font></d=
-iv><div><font size=3D"1"><font face=3D"monospace, monospace">=C2=A0* Added =
-snapshot rollback API</font></font></div><div><font size=3D"1"><font face=
-=3D"monospace, monospace">=C2=A0* Show SyncTarget percentage in volume stat=
-e</font></font></div><div><font size=3D"1"><font face=3D"monospace, monospa=
-ce">=C2=A0* Allow resource creation if the satellite isn&#39;t connected</f=
-ont></font></div><div><font size=3D"1"><font face=3D"monospace, monospace">=
-=C2=A0* Fixed storage pool size check in case of a drbdmanage migration</fo=
-nt></font></div><div><font size=3D"1"><font face=3D"monospace, monospace">=
-=C2=A0* Fixed node reconnect creating error reports</font></font></div><div=
-><font size=3D"1"><font face=3D"monospace, monospace">=C2=A0* Fixed a missi=
-ng write lock on storage pool definition map</font></font></div><div><font =
-size=3D"1"><font face=3D"monospace, monospace">=C2=A0* Multiple fixes to sn=
-apshots<br></font><span style=3D"font-family:monospace,monospace">=C2=A0* D=
-atabase compatibility fixes to ensure linstor runs on all kind of SQL datab=
-ases</span></font></div></div></div><div><font size=3D"1"><font face=3D"mon=
-ospace, monospace"><br></font></font></div><div><font size=3D"1"><font face=
-=3D"monospace, monospace"><a href=3D"http://www.linbit.com/downloads/linsto=
-r/linstor-server-0.7.3.tar.gz" target=3D"_blank" rel=3D"noreferrer">http://=
-www.linbit.com/downloads/linstor/linstor-server-0.7.3.tar.gz</a></font><br>=
-</font></div><div><font size=3D"1"><span style=3D"font-family:monospace,mon=
-ospace"><br></span></font></div><div><font size=3D"1"><span style=3D"font-f=
-amily:monospace,monospace">linstor-client/python-linstor 0.7.2</span></font=
-></div><div><font size=3D"1"><span style=3D"font-family:monospace,monospace=
-">-----------------------------------</span></font></div><div><span style=
-=3D"font-family:monospace,monospace;font-size:x-small">=C2=A0* Added snapsh=
-ot rollback command</span><font size=3D"1"><font face=3D"monospace, monospa=
-ce"><br></font></font></div><div><font size=3D"1"><font face=3D"monospace, =
-monospace">=C2=A0* All object name lookups=C2=A0should be case insensitive =
-now</font></font></div><div><font size=3D"1"><span style=3D"font-family:mon=
-ospace,monospace">=C2=A0* Added warnings for list-properties command, if th=
-eir is no object with that name</span></font></div><div><font face=3D"monos=
-pace, monospace" size=3D"1"><br></font></div><div><font face=3D"monospace, =
-monospace" size=3D"1"><a href=3D"http://www.linbit.com/downloads/linstor/py=
-thon-linstor-0.7.2.tar.gz" target=3D"_blank" rel=3D"noreferrer">http://www.=
-linbit.com/downloads/linstor/python-linstor-0.7.2.tar.gz</a><br></font></di=
-v><div><a href=3D"http://www.linbit.com/downloads/linstor/linstor-client-0.=
-7.2.tar.gz" target=3D"_blank" rel=3D"noreferrer"><font face=3D"monospace, m=
-onospace" size=3D"1">http://www.linbit.com/downloads/linstor/linstor-client=
--0.7.2.tar.gz</font></a><br></div><div><br></div><div>Linstor PPA:<br><a hr=
-ef=3D"https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack" tar=
-get=3D"_blank" rel=3D"noreferrer">https://launchpad.net/~linbit/+archive/ub=
-untu/linbit-drbd9-stack</a><br></div><div><br></div><div>Best regards,</div=
-><div>Rene</div></div></div></div></div></div>
-
---000000000000790ba8057b423973--
+Regards, rck
