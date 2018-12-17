@@ -1,20 +1,19 @@
-Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-wr1-f66.google.com (mail-wr1-f66.google.com
-	[209.85.221.66])
-	by mail09.linbit.com (LINBIT Mail Daemon) with ESMTP id BB49D101AC67
+Return-Path: <rene.peinthor@linbit.com>
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com
+	[209.85.128.54])
+	by mail09.linbit.com (LINBIT Mail Daemon) with ESMTP id 6F326103B4B7
 	for <drbd-announce@lists.linbit.com>;
-	Tue,  4 Dec 2018 17:33:52 +0100 (CET)
-Received: by mail-wr1-f66.google.com with SMTP id t27so16648716wra.6
+	Mon, 17 Dec 2018 18:37:30 +0100 (CET)
+Received: by mail-wm1-f54.google.com with SMTP id d15so63085wmb.3
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 04 Dec 2018 08:33:52 -0800 (PST)
-Date: Tue, 4 Dec 2018 17:28:32 +0100
-From: Roland Kammerer <roland.kammerer@linbit.com>
-To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Message-ID: <20181204162832.fffe3mqkld4htb7n@rck.sh>
+	Mon, 17 Dec 2018 09:37:30 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Subject: [DRBD-announce] drbd-utils-9.7.0
+From: Rene Peinthor <rene.peinthor@linbit.com>
+Date: Mon, 17 Dec 2018 18:37:20 +0100
+Message-ID: <CAHmn2DM=mKmKM+E6HTX74crd5mfF+kWpopMBDOeizKgf=YGYSA@mail.gmail.com>
+To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
+Content-Type: multipart/alternative; boundary="00000000000029e873057d3b3ca6"
+Subject: [DRBD-announce] Linstor-server v0.7.4, linstor-client 0.7.3 release
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,46 +25,109 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Hi DRBD users,
+--00000000000029e873057d3b3ca6
+Content-Type: text/plain; charset="UTF-8"
 
-This release contains several bug fixes and some new features. If you
-don't use these features, there is no urgent need to upgrade now.
+Hi Linstor-community!
 
-Highlights include:
-- drbd-utils now handle "resync-after" properly. This needed fixing in
-  the 8.4 part and the 9 part of drbd-utils.
+New feature in this release is an added option for the toggle disk command
+to move a resource to another node without temporarily reducing it's
+replication count.
+Additionally there have been a bunch of bug fixes in this release.
 
-- drbd.ocf now has a new parameter named "connect_only_after_promote"
-  which might be helpful in stacked setups. drbd.ocf also learned to to
-  specify a required kernel version. If you are interested, please read
-  the according changes in the git log for more details.
+Details:
 
-- drbdmon now displays rsync progress (assuming a new enough DRBD9
-  kernel module).
+linstor-server 0.7.4
+--------------------
+ * Added migrate disk option to toggle disk command
+ * Fixed SQL column sizes inconsistencies
+ * Snapshot command fixes
+ * Internal reactor library handling fixes
+ * Allow correct state reporting on nodes with more than 256 resources
+ * Satellite checks now for correct DRBD version
+ * Allocated thin volume space is now reported
+ * Fixed failure of controller on heavy load
+ * Better resource ready detection
+ * Correctly restore node id on snapshot restore
 
-- Utils learned to specify a required kernel module version in the res
-  files. This is a DRBD9 only feature. This helps with error messages
-  people get when they wrongfully load a DRBD8.4 module and use LINSTOR.
-  It might also be handy in other situations when one wants to make
-  absolutely sure that a specific/specific range of the kernel module is
-  used.
+http://www.linbit.com/downloads/linstor/linstor-server-0.7.4.tar.gz
 
-- Last but not least, the bits for WinDRBD (not to be confused with
-  wdrbd) got merged. This allows building drbd-utils on Windows, if you
-  use the Windows version of DRBD, which is based on the DRBD9 code used
-  in Linux. No, it is not 1. of April :-).
+linstor-client/python-linstor 0.7.3
+-----------------------------------
+ * Added migrate disk option to toggle disk command
+ * Improved high level Resource object API
+ * Added storage pool and node response objects/interface
+ * Added MultiLinstor API object, used for failover to another controller
+ * Optimized table rendering, improved from 3s to 0.7s for 2000 resources
+ * linstor client will now fall-back into interactive mode
 
-As usual, I hope this release does not destroy your kitten factory.
+http://www.linbit.com/downloads/linstor/python-linstor-0.7.3.tar.gz
+http://www.linbit.com/downloads/linstor/linstor-client-0.7.3.tar.gz
 
-9.7.0
---------
- * drbdadm,v9,v84: fix resync-after
- * drbd.ocf: connect_only_after_promote, require kernel version
- * drbdmon: display resync progress
- * parser,v9: require-drbd-module-version
- * windrbd: add WinDRBD support
+Linstor PPA:
+https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
-https://www.linbit.com/downloads/drbd/utils/drbd-utils-9.7.0.tar.gz
-https://github.com/LINBIT/drbd-utils/tree/v9.7.0
+Best regards,
+Rene
 
-Regards, rck
+--00000000000029e873057d3b3ca6
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">Hi Linstor-community!<div><br></div><div><div>New feature =
+in this release is an added option for the toggle disk command</div><div>to=
+ move a resource to another node without temporarily reducing it&#39;s repl=
+ication count.</div><div>Additionally there have been a bunch of bug fixes =
+in this release.</div><div><br></div><div>Details:</div><div><br></div><div=
+><div><span style=3D"font-family:monospace,monospace;font-size:x-small">lin=
+stor-server 0.7.4</span><br></div><div><div><font face=3D"monospace, monosp=
+ace" size=3D"1">--------------------</font></div><div><font size=3D"1"><fon=
+t face=3D"monospace, monospace">=C2=A0* Added migrate disk option to toggle=
+ disk command</font></font></div><div><font size=3D"1"><font face=3D"monosp=
+ace, monospace">=C2=A0* Fixed SQL column sizes inconsistencies</font></font=
+></div><div><font size=3D"1"><font face=3D"monospace, monospace">=C2=A0* Sn=
+apshot command fixes<br>=C2=A0* Internal reactor library handling fixes<br>=
+=C2=A0* Allow correct state reporting on nodes with more than 256 resources=
+</font></font></div></div></div><div><font size=3D"1"><font face=3D"monospa=
+ce, monospace">=C2=A0* Satellite checks now for correct DRBD version</font>=
+</font></div><div><font size=3D"1"><font face=3D"monospace, monospace">=C2=
+=A0* Allocated thin volume space is now reported<br>=C2=A0* Fixed failure o=
+f controller on heavy load<br>=C2=A0* Better resource ready detection</font=
+></font></div><div><font size=3D"1"><font face=3D"monospace, monospace">=C2=
+=A0* Correctly restore node id on snapshot restore</font></font></div><div>=
+<font size=3D"1"><font face=3D"monospace, monospace"><br></font></font></di=
+v><div><font size=3D"1"><font face=3D"monospace, monospace"><a href=3D"http=
+://www.linbit.com/downloads/linstor/linstor-server-0.7.4.tar.gz" target=3D"=
+_blank">http://www.linbit.com/downloads/linstor/linstor-server-0.7.4.tar.gz=
+</a></font><br></font></div><div><font size=3D"1"><span style=3D"font-famil=
+y:monospace,monospace"><br></span></font></div><div><font size=3D"1"><span =
+style=3D"font-family:monospace,monospace">linstor-client/python-linstor 0.7=
+.3</span></font></div><div><font size=3D"1"><span style=3D"font-family:mono=
+space,monospace">-----------------------------------</span></font></div><di=
+v><span style=3D"font-family:monospace,monospace;font-size:x-small">=C2=A0*=
+ Added migrate disk option to toggle disk command</span><font size=3D"1"><f=
+ont face=3D"monospace, monospace"><br></font></font></div><div><font size=
+=3D"1"><font face=3D"monospace, monospace">=C2=A0* Improved high level Reso=
+urce object API</font></font></div><div><font size=3D"1"><span style=3D"fon=
+t-family:monospace,monospace">=C2=A0* Added storage pool and node response =
+objects/interface</span></font></div><div><font size=3D"1"><span style=3D"f=
+ont-family:monospace,monospace">=C2=A0* Added MultiLinstor API object, used=
+ for failover to another controller</span></font></div><div><font size=3D"1=
+"><span style=3D"font-family:monospace,monospace">=C2=A0* Optimized table r=
+endering, improved from 3s to 0.7s for 2000 resources</span></font></div><d=
+iv><font size=3D"1"><span style=3D"font-family:monospace,monospace">=C2=A0*=
+ linstor client will now fall-back into interactive mode</span></font></div=
+><div><font face=3D"monospace, monospace" size=3D"1"><br></font></div><div>=
+<font face=3D"monospace, monospace" size=3D"1"><a href=3D"http://www.linbit=
+.com/downloads/linstor/python-linstor-0.7.3.tar.gz" target=3D"_blank">http:=
+//www.linbit.com/downloads/linstor/python-linstor-0.7.3.tar.gz</a><br></fon=
+t></div><div><font face=3D"monospace, monospace" size=3D"1"><a href=3D"http=
+://www.linbit.com/downloads/linstor/linstor-client-0.7.3.tar.gz" target=3D"=
+_blank">http://www.linbit.com/downloads/linstor/linstor-client-0.7.3.tar.gz=
+</a></font><br></div><div><br></div><div>Linstor PPA:<br><a href=3D"https:/=
+/launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack" rel=3D"noreferre=
+r" target=3D"_blank">https://launchpad.net/~linbit/+archive/ubuntu/linbit-d=
+rbd9-stack</a><br></div><div><br></div><div>Best regards,</div><div>Rene</d=
+iv></div></div>
+
+--00000000000029e873057d3b3ca6--
