@@ -1,20 +1,19 @@
-Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com
-	[209.85.221.47])
-	by mail09.linbit.com (LINBIT Mail Daemon) with ESMTP id 39EB0101AC67
+Return-Path: <rene.peinthor@linbit.com>
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com
+	[209.85.128.48])
+	by mail09.linbit.com (LINBIT Mail Daemon) with ESMTP id 24719103B4C1
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 18 Dec 2018 10:52:28 +0100 (CET)
-Received: by mail-wr1-f47.google.com with SMTP id p4so15195468wrt.7
+	Fri, 21 Dec 2018 13:59:35 +0100 (CET)
+Received: by mail-wm1-f48.google.com with SMTP id f188so5615432wmf.5
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 18 Dec 2018 01:52:28 -0800 (PST)
-Date: Tue, 18 Dec 2018 10:52:26 +0100
-From: Roland Kammerer <roland.kammerer@linbit.com>
-To: drbd-user@lists.linbit.com, drbd-announce@lists.linbit.com
-Message-ID: <20181218095226.bkel3qp5egupnaxa@rck.sh>
+	Fri, 21 Dec 2018 04:59:35 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Subject: [DRBD-announce] drbd-utils-9.7.1
+From: Rene Peinthor <rene.peinthor@linbit.com>
+Date: Fri, 21 Dec 2018 13:59:24 +0100
+Message-ID: <CAHmn2DMh41J-7kue-9QLhhm_zDjVbzs6E149kVFDGsZqPysg4g@mail.gmail.com>
+To: drbd-user@lists.linbit.com, drbd-announce@lists.linbit.com
+Content-Type: multipart/alternative; boundary="000000000000a89cf9057d87d15d"
+Subject: [DRBD-announce] Linstor-server v0.7.5
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,24 +25,53 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Hi DRBD users,
+--000000000000a89cf9057d87d15d
+Content-Type: text/plain; charset="UTF-8"
 
-This release contains a single bug fix for drbdsetup used in DRBD9. Due
-to a regression, the wait-for family of commands did not honor its
-timeout and waited basically for ever. Such a command wout be:
+Hi!
 
-drbdsetup wait-connect-resource --wfc-timeout 5 foo
+This is just a minor bug fix release, we found a nasty file descriptor
+resource leak linked to the "error-report list" command that could lead to
+socket accept errors and the new migrate disk feature didn't work in all
+situations.
 
-LINSTOR was not affected by that, as it does its own state tracking via
-"events2". The only plugin, IIRC, making use of a wait-for command is
-the Proxmox plugin, but this one does not use a timeout on drbdsetup
-level.
+linstor-server 0.7.5
+--------------------
+ * Fixed folder descriptor leak
+ * Fix migrate disk command in certain circumstances
+ * Fix node lost if node had snapshots
 
-9.7.0
---------
- * drbdsetup,v9: partially revert commit that broke wait-for
+http://www.linbit.com/downloads/linstor/linstor-server-0.7.5.tar.gz
 
-https://www.linbit.com/downloads/drbd/utils/drbd-utils-9.7.1.tar.gz
-https://github.com/LINBIT/drbd-utils/tree/9.7.1
+Linstor PPA:
+https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
-Regards, rck
+Best regards,
+Rene
+
+--000000000000a89cf9057d87d15d
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr">Hi!<div><br></div><div>This is just a min=
+or bug fix release, we found a nasty file descriptor resource leak linked t=
+o the &quot;error-report list&quot; command that could lead to socket accep=
+t errors and the new migrate disk feature didn&#39;t work in all situations=
+.</div><div><br></div><div><div><span style=3D"font-family:monospace,monosp=
+ace;font-size:x-small">linstor-server 0.7.5</span><br></div><div><div><font=
+ face=3D"monospace, monospace" size=3D"1">--------------------</font></div>=
+<div><font size=3D"1"><font face=3D"monospace, monospace">=C2=A0* Fixed fol=
+der descriptor leak</font></font></div><div><font size=3D"1"><font face=3D"=
+monospace, monospace">=C2=A0* Fix migrate disk command in certain=C2=A0</fo=
+nt></font><font face=3D"monospace, monospace" size=3D"1">circumstances</fon=
+t></div><div><font size=3D"1"><font face=3D"monospace, monospace">=C2=A0* F=
+ix node lost if node had snapshots</font></font></div></div></div><div><br>=
+</div><div><a href=3D"http://www.linbit.com/downloads/linstor/linstor-serve=
+r-0.7.5.tar.gz"><font size=3D"1">http://www.linbit.com/downloads/linstor/li=
+nstor-server-0.7.5.tar.gz</font></a><br></div><div><br></div><div><div>Lins=
+tor PPA:<br><a href=3D"https://launchpad.net/~linbit/+archive/ubuntu/linbit=
+-drbd9-stack" rel=3D"noreferrer" target=3D"_blank">https://launchpad.net/~l=
+inbit/+archive/ubuntu/linbit-drbd9-stack</a><br></div><div><br></div><div>B=
+est regards,</div><div>Rene</div></div></div></div>
+
+--000000000000a89cf9057d87d15d--
