@@ -1,21 +1,19 @@
-Return-Path: <philipp.reisner@linbit.com>
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com
-	[209.85.128.44])
-	by mail09.linbit.com (LINBIT Mail Daemon) with ESMTP id 804541011BFA
+Return-Path: <rene.peinthor@linbit.com>
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com
+	[209.85.221.47])
+	by mail09.linbit.com (LINBIT Mail Daemon) with ESMTP id 86BB41011BF7
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 26 Mar 2019 22:45:56 +0100 (CET)
-Received: by mail-wm1-f44.google.com with SMTP id a188so14539575wmf.3
+	Thu, 28 Mar 2019 14:22:22 +0100 (CET)
+Received: by mail-wr1-f47.google.com with SMTP id y13so5170658wrd.3
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 26 Mar 2019 14:45:56 -0700 (PDT)
-From: Philipp Reisner <philipp.reisner@linbit.com>
-To: drbd-announce@lists.linbit.com
-Date: Tue, 26 Mar 2019 22:39:08 +0100
-Message-ID: <2542274.Rg7H4NVtbN@nuc>
+	Thu, 28 Mar 2019 06:22:22 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-9.0.17
+From: Rene Peinthor <rene.peinthor@linbit.com>
+Date: Thu, 28 Mar 2019 14:13:53 +0100
+Message-ID: <CAHmn2DM5JdKyyPnY_qZjiie360A47gxGDe-_3DT+Rp7mHp34mg@mail.gmail.com>
+To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
+Content-Type: multipart/alternative; boundary="00000000000018a31c05852754d2"
+Subject: [DRBD-announce] Linstor-server v0.9.3
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -27,49 +25,73 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Hi,
+--00000000000018a31c05852754d2
+Content-Type: text/plain; charset="UTF-8"
 
-here is the drbd-9.0.17 release. It has a number of fixes, evenly
-spread over the different use-case groups.
-The improved resync speed should benefit all users that have 
-backing devices and networks that allow resync-rates above
-800MByte/sec.
+Hi!
 
-BTW, really new is the idea of having a container that loads the
-drbd module into the host kernel. With that all components of a
-LINSTOR-DRBD system can be shipped as containers. 
+Thanks to bug reports from the community and further testing from our
+self's.
+We were able to fix a few annoying bug from the latest 0.9.x series, but
+also a much older bug regarding the set-size command and a missing
+activation of LVM-thin volumes.
 
-9.0.17-1 (api:genl2/proto:86-114/transport:14)
---------
- * Fix UUID handling of a diskless primary that has no peer with
-   usable data may not touch the current UUID
- * Fix resync-after dependencies; cross-resource dependencies
-   and missing resources
- * Fix resync when the sync source suddenly connects to a more recent
-   data set via an other connection and becomes sync target on that
-   other connection; pause first resync; fix wrong display of negative
-   resync progress percentage in this case
- * Fix volume numbers between 32767 and 65534
- * Fix the data integrity implementation; it was broken since drbd-9.0
-   and reported only false positives
- * Fix for a corner-case when a promote action happens concurrently with
-   a reconciliation resync
- * Improve resync code to be able to fully utilize fast storage
-   backend devices and fast networks with resync traffic; as a side
-   effect the settling time of the resync controller got shorter in
-   for most cases
- * Show in the user-visible message who the opener is if if demote/down
-   fails doe to someone holding a drbd device open
- * docker file for a "load drbd module container" and allow to disable
-   user-mode-helpers, which is necessary for this container
- * compat for v5.0 kernel
+linstor-server 0.9.3
+--------------------
+ * REST API bind address can now set from command line or via env variable
+ * Snapshot restore is now synchronous and will wait until DRBD device is
+ready
+ * Fixed: REST API incorrect snapshot-restore-volume-definition path
+ * Fixed: ZFS size reporting
+ * Fixed: ZFS volume parsing for non linstor volumes
+ * Fixed: volume resize tried sometimes to resize the diskless resource
+ * Fixed: LVM-thin volumes are now activated if they get the skip
+activation flag
+ * Fixed: LVM-thin missing DRBD option to avoid full syncs if a resource
+was added later (needs drbd 9.0.17)
 
-https://www.linbit.com/downloads/drbd/9.0/drbd-9.0.17-1.tar.gz
-https://github.com/LINBIT/drbd-9.0/tree/drbd-9.0.17-1
+http://www.linbit.com/downloads/linstor/linstor-server-0.9.3.tar.gz
 
-It will land in the PPA on launchpad tomorrow.
+Linstor PPA:
+https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
-best regards,
- Phil
+Best regards,
+Rene
 
+--00000000000018a31c05852754d2
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+<div dir=3D"ltr">Hi!<div><br></div><div>Thanks to bug reports from the comm=
+unity and further testing from our self&#39;s.</div><div>We were able to fi=
+x a few annoying bug from the latest 0.9.x series, but also a much older bu=
+g regarding the set-size command and a missing activation of LVM-thin volum=
+es.</div><div><br></div><div><div><div><span style=3D"font-family:monospace=
+,monospace;font-size:x-small">linstor-server 0.9.3</span><br></div><div><di=
+v><font face=3D"monospace, monospace" size=3D"1">--------------------</font=
+></div><div><font size=3D"1"><font face=3D"monospace, monospace">=C2=A0* RE=
+ST API bind address can now set from command line or via env variable</font=
+></font></div><div><font size=3D"1"><font face=3D"monospace, monospace">=C2=
+=A0* Snapshot restore is now synchronous and will wait until DRBD device is=
+ ready</font></font></div><div><font face=3D"monospace, monospace" size=3D"=
+1">=C2=A0* Fixed: REST API incorrect snapshot-restore-volume-definition pat=
+h</font></div><div><font size=3D"1"><font face=3D"monospace, monospace">=C2=
+=A0* Fixed: ZFS size reporting</font></font></div><div><font size=3D"1"><fo=
+nt face=3D"monospace, monospace">=C2=A0* Fixed: ZFS volume parsing for non =
+linstor volumes</font></font></div></div></div><div><font size=3D"1"><font =
+face=3D"monospace, monospace">=C2=A0* Fixed: volume resize tried sometimes =
+to resize the diskless resource</font></font></div><div><font size=3D"1"><f=
+ont face=3D"monospace, monospace">=C2=A0* Fixed: LVM-thin volumes are now a=
+ctivated if they get the skip activation flag</font></font></div><div><font=
+ size=3D"1"><font face=3D"monospace, monospace">=C2=A0* Fixed: LVM-thin mis=
+sing DRBD option to avoid full syncs if a resource was added later (needs d=
+rbd 9.0.17)</font></font></div><div><br></div><div><font size=3D"1"><a href=
+=3D"http://www.linbit.com/downloads/linstor/linstor-server-0.9.3.tar.gz">ht=
+tp://www.linbit.com/downloads/linstor/linstor-server-0.9.3.tar.gz</a></font=
+></div></div><div><br></div><div><div>Linstor PPA:<br><a href=3D"https://la=
+unchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack" rel=3D"noreferrer" =
+target=3D"_blank">https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd=
+9-stack</a><br></div><div><br></div><div>Best regards,</div><div>Rene</div>=
+</div></div>
+
+--00000000000018a31c05852754d2--
