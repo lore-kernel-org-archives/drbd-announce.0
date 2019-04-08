@@ -1,19 +1,19 @@
 Return-Path: <rene.peinthor@linbit.com>
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com
-	[209.85.221.43])
-	by mail09.linbit.com (LINBIT Mail Daemon) with ESMTP id 57A631011BF7
+Received: from mail-wm1-f67.google.com (mail-wm1-f67.google.com
+	[209.85.128.67])
+	by mail09.linbit.com (LINBIT Mail Daemon) with ESMTP id EE74C1011BF6
 	for <drbd-announce@lists.linbit.com>;
-	Fri, 29 Mar 2019 12:16:57 +0100 (CET)
-Received: by mail-wr1-f43.google.com with SMTP id k17so2093963wrx.10
+	Mon,  8 Apr 2019 16:50:50 +0200 (CEST)
+Received: by mail-wm1-f67.google.com with SMTP id z24so15151942wmi.5
 	for <drbd-announce@lists.linbit.com>;
-	Fri, 29 Mar 2019 04:16:57 -0700 (PDT)
+	Mon, 08 Apr 2019 07:50:50 -0700 (PDT)
 MIME-Version: 1.0
 From: Rene Peinthor <rene.peinthor@linbit.com>
-Date: Fri, 29 Mar 2019 12:16:45 +0100
-Message-ID: <CAHmn2DMnftgnpAsj2879SPF5TZWotoXZJv5pgn7Ms_g+2oV_oQ@mail.gmail.com>
+Date: Mon, 8 Apr 2019 16:50:39 +0200
+Message-ID: <CAHmn2DNzmoHTKy+si8SJ2VZzkzpQrJTaVaSRTbpt2kU6JpGTbg@mail.gmail.com>
 To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Content-Type: multipart/alternative; boundary="000000000000061b1e058539cf9e"
-Subject: [DRBD-announce] Linstor-server 0.9.4
+Content-Type: multipart/alternative; boundary="00000000000062166c058605f691"
+Subject: [DRBD-announce] Linstor-server v0.9.5, linstor-client 0.9.2 release
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -25,22 +25,39 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
---000000000000061b1e058539cf9e
+--00000000000062166c058605f691
 Content-Type: text/plain; charset="UTF-8"
 
-Hi!
+Greetings!
 
-Unfortunately there was still a bug in the last release with zfs thin pools
-if they are used from the zpool (without a sub dataset), this release
-should fix that issue.
+A new linstor-server release that will fix a few migration bugs from older
+versions, if you have multi volume resources or if you ever used encryption
+volumes.
+Apart from fixes there is now also support to set DRBD handler scripts
+within Linstor.
 
-linstor-server 0.9.4
+linstor-server 0.9.5
 --------------------
- * Fixed: REST API inconsistent error return objects
- * Fixed: ZFS thin root pools not working
- * Fixed: ZFS thick pool not working if they are a dataset
+ * Fixed: Multi-volume migration from old versions
+ * Fixed: Encryption layer didn't correctly decode the passphrase
+ * Fixed: REST-API 404 is now returned if a resource definition was not
+found
+ * Satellite does now check what layers the host does support
+ * DRBD/config handlers will now set from the according property values
+ * REST-API: On create node if only 1 net-interface is given, it defaults
+to satellite connector
 
-http://www.linbit.com/downloads/linstor/linstor-server-0.9.4.tar.gz
+https://www.linbit.com/downloads/linstor/linstor-server-0.9.5.tar.gz
+
+linstor-client/python-linstor 0.9.2
+-----------------------------------
+ * Create node IP address will be resolved if not given
+ * Removed all name checks, they are checked by the controller anyway
+ * Resource definition peer-slots can now be modified
+ * DRBD-handlers can now be specified for controller and resource-definition
+
+https://www.linbit.com/downloads/linstor/python-linstor-0.9.2.tar.gz
+https://www.linbit.com/downloads/linstor/linstor-client-0.9.2.tar.gz
 
 Linstor PPA:
 https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
@@ -48,28 +65,56 @@ https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 Best regards,
 Rene
 
---000000000000061b1e058539cf9e
+--00000000000062166c058605f691
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr"><div dir=3D"ltr">Hi!<div><br></div><div>Unfortunately ther=
-e was still a bug in the last release with zfs thin pools if they are used =
-from the zpool (without a sub dataset), this release should fix that issue.=
-<br></div><div><br></div><div><div><div><span style=3D"font-family:monospac=
-e,monospace;font-size:x-small">linstor-server 0.9.4</span><br></div><div><d=
-iv><font face=3D"monospace, monospace" size=3D"1">--------------------</fon=
-t></div><div><span style=3D"font-family:monospace,monospace;font-size:x-sma=
-ll">=C2=A0* Fixed: REST API inconsistent error return objects</span><br></d=
-iv><div><font size=3D"1"><font face=3D"monospace, monospace">=C2=A0* Fixed:=
- ZFS thin root pools not working</font></font></div><div><font size=3D"1"><=
-font face=3D"monospace, monospace">=C2=A0* Fixed: ZFS thick pool not workin=
-g if they are a dataset</font></font></div><div><br></div></div></div><div>=
-<font size=3D"1"><a href=3D"http://www.linbit.com/downloads/linstor/linstor=
--server-0.9.4.tar.gz" target=3D"_blank">http://www.linbit.com/downloads/lin=
-stor/linstor-server-0.9.4.tar.gz</a></font></div></div><div><br></div><div>=
-<div>Linstor PPA:<br><a href=3D"https://launchpad.net/~linbit/+archive/ubun=
-tu/linbit-drbd9-stack" rel=3D"noreferrer" target=3D"_blank">https://launchp=
-ad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack</a><br></div><div><br></d=
-iv><div>Best regards,</div><div>Rene</div></div></div></div>
+<div dir=3D"ltr">Greetings!<div><br></div><div>A new linstor-server release=
+ that will fix a few migration bugs from older versions, if you have multi =
+volume resources or if you ever used encryption volumes.</div><div>Apart fr=
+om fixes there is now also support to set DRBD handler scripts within Linst=
+or.</div><div><span style=3D"font-family:monospace,monospace;font-size:x-sm=
+all"><br></span></div><div><span style=3D"font-family:monospace,monospace;f=
+ont-size:x-small">linstor-server 0.9.5</span></div><div><div><div><font fac=
+e=3D"monospace, monospace" size=3D"1">--------------------</font></div><div=
+><span style=3D"font-family:monospace,monospace;font-size:x-small">=C2=A0* =
+Fixed: Multi-volume migration from old versions</span><br></div><div><font =
+size=3D"1"><font face=3D"monospace, monospace">=C2=A0* Fixed: Encryption la=
+yer didn&#39;t correctly=C2=A0decode the passphrase</font></font></div><div=
+><font size=3D"1"><font face=3D"monospace, monospace">=C2=A0* Fixed: REST-A=
+PI 404 is now returned if a resource definition was not found</font></font>=
+</div><div><font size=3D"1"><font face=3D"monospace, monospace">=C2=A0* Sat=
+ellite does now check what layers the host does support</font></font></div>=
+<div><font face=3D"monospace, monospace" size=3D"1">=C2=A0* DRBD/config han=
+dlers will now set from the according property values</font></div><div><fon=
+t face=3D"monospace, monospace" size=3D"1">=C2=A0* REST-API: On create node=
+ if only 1 net-interface is given, it defaults to satellite connector</font=
+></div><div><br></div></div><div><font size=3D"1"><a href=3D"https://www.li=
+nbit.com/downloads/linstor/linstor-server-0.9.5.tar.gz">https://www.linbit.=
+com/downloads/linstor/linstor-server-0.9.5.tar.gz</a></font></div></div><di=
+v><br></div><div><div><div><font size=3D"1"><span style=3D"font-family:mono=
+space,monospace">linstor-client/python-linstor 0.9.2</span></font></div><di=
+v><font size=3D"1"><span style=3D"font-family:monospace,monospace">--------=
+---------------------------</span></font></div><div><span style=3D"font-fam=
+ily:monospace,monospace;font-size:x-small">=C2=A0* Create node IP address w=
+ill be resolved if not given</span></div></div><div><span style=3D"font-fam=
+ily:monospace,monospace;font-size:x-small">=C2=A0* Removed all name checks,=
+ they are checked by the controller anyway</span></div><div><span style=3D"=
+font-family:monospace,monospace;font-size:x-small">=C2=A0* Resource definit=
+ion peer-slots can now be modified</span></div><div><span style=3D"font-fam=
+ily:monospace,monospace;font-size:x-small">=C2=A0* DRBD-handlers can now be=
+ specified for controller and resource-definition</span></div><div><font si=
+ze=3D"1"><span style=3D"font-family:monospace,monospace"><br></span></font>=
+</div><div><font size=3D"1"><font face=3D"monospace, monospace"><a href=3D"=
+https://www.linbit.com/downloads/linstor/python-linstor-0.9.2.tar.gz">https=
+://www.linbit.com/downloads/linstor/python-linstor-0.9.2.tar.gz</a></font><=
+br></font></div><div><font size=3D"1"><font face=3D"monospace, monospace"><=
+a href=3D"https://www.linbit.com/downloads/linstor/linstor-client-0.9.2.tar=
+.gz">https://www.linbit.com/downloads/linstor/linstor-client-0.9.2.tar.gz</=
+a></font></font></div></div><div><br></div><div><div>Linstor PPA:<br><a hre=
+f=3D"https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack" rel=
+=3D"noreferrer" target=3D"_blank">https://launchpad.net/~linbit/+archive/ub=
+untu/linbit-drbd9-stack</a><br></div><div><br></div><div>Best regards,</div=
+><div>Rene</div></div></div>
 
---000000000000061b1e058539cf9e--
+--00000000000062166c058605f691--
