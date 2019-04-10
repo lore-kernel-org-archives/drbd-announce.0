@@ -1,19 +1,17 @@
-Return-Path: <rene.peinthor@linbit.com>
-Received: from mail-wm1-f67.google.com (mail-wm1-f67.google.com
-	[209.85.128.67])
-	by mail09.linbit.com (LINBIT Mail Daemon) with ESMTP id EE74C1011BF6
+Return-Path: <johannes@johannesthoma.com>
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.187])
+	by mail09.linbit.com (LINBIT Mail Daemon) with ESMTP id 3BCF01011BFC
 	for <drbd-announce@lists.linbit.com>;
-	Mon,  8 Apr 2019 16:50:50 +0200 (CEST)
-Received: by mail-wm1-f67.google.com with SMTP id z24so15151942wmi.5
-	for <drbd-announce@lists.linbit.com>;
-	Mon, 08 Apr 2019 07:50:50 -0700 (PDT)
+	Wed, 10 Apr 2019 15:37:44 +0200 (CEST)
+To: drbd-announce@lists.linbit.com
+From: Johannes Thoma <johannes@johannesthoma.com>
+Message-ID: <813c1cf5-2215-b151-3409-9e42d715fc9a@johannesthoma.com>
+Date: Wed, 10 Apr 2019 15:32:39 +0200
 MIME-Version: 1.0
-From: Rene Peinthor <rene.peinthor@linbit.com>
-Date: Mon, 8 Apr 2019 16:50:39 +0200
-Message-ID: <CAHmn2DNzmoHTKy+si8SJ2VZzkzpQrJTaVaSRTbpt2kU6JpGTbg@mail.gmail.com>
-To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Content-Type: multipart/alternative; boundary="00000000000062166c058605f691"
-Subject: [DRBD-announce] Linstor-server v0.9.5, linstor-client 0.9.2 release
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: drbd-user@lists.linbit.com
+Subject: [DRBD-announce] WinDRBD 0.9.2 released
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -25,96 +23,46 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
---00000000000062166c058605f691
-Content-Type: text/plain; charset="UTF-8"
+Dear DRBD community,
 
-Greetings!
+We just release a new version of WinDRBD. WinDRBD is the port of
+the DRBD kernel driver and userspace utilities to the Microsoft
+Windows family of operating systems.
 
-A new linstor-server release that will fix a few migration bugs from older
-versions, if you have multi volume resources or if you ever used encryption
-volumes.
-Apart from fixes there is now also support to set DRBD handler scripts
-within Linstor.
+Most core features of DRBD are currently working, including
+connection to other Windows or Linux host, On line data replication,
+Synchronization, Diskless Primary and proper handling of
+disk, node and network failures. For the 0.9.2 release we
+reworked the networking layer so that setups with more
+than 2 (Linux and/or Windows) nodes should work now. In
+addition we upgraded the DRBD version WinDRBD is based on
+to 9.0.17, so that WinDRBD inherits the fixes from that
+DRBD release as well.
 
-linstor-server 0.9.5
---------------------
- * Fixed: Multi-volume migration from old versions
- * Fixed: Encryption layer didn't correctly decode the passphrase
- * Fixed: REST-API 404 is now returned if a resource definition was not
-found
- * Satellite does now check what layers the host does support
- * DRBD/config handlers will now set from the according property values
- * REST-API: On create node if only 1 net-interface is given, it defaults
-to satellite connector
+To obtain an installable version of WinDRBD please go to:
 
-https://www.linbit.com/downloads/linstor/linstor-server-0.9.5.tar.gz
+https://www.linbit.com/en/drbd-community/drbd-download/
 
-linstor-client/python-linstor 0.9.2
------------------------------------
- * Create node IP address will be resolved if not given
- * Removed all name checks, they are checked by the controller anyway
- * Resource definition peer-slots can now be modified
- * DRBD-handlers can now be specified for controller and resource-definition
+scroll down to DRBD 9 Windows Driver and download the latest
+(0.9.2) installer package. Since WinDRBD is still beta,
+we don't recommend currently to run it on production machines.
 
-https://www.linbit.com/downloads/linstor/python-linstor-0.9.2.tar.gz
-https://www.linbit.com/downloads/linstor/linstor-client-0.9.2.tar.gz
+To obtain the sources of WinDRBD, please go to:
 
-Linstor PPA:
-https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+https://github.com/LINBIT/windrbd
 
-Best regards,
-Rene
+In the source repository, there are two documentation files
+that might be nteresting for you:
 
---00000000000062166c058605f691
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+FEATURES: explains what currently works, what does not work yet
+and what we plan to implement next.
 
-<div dir=3D"ltr">Greetings!<div><br></div><div>A new linstor-server release=
- that will fix a few migration bugs from older versions, if you have multi =
-volume resources or if you ever used encryption volumes.</div><div>Apart fr=
-om fixes there is now also support to set DRBD handler scripts within Linst=
-or.</div><div><span style=3D"font-family:monospace,monospace;font-size:x-sm=
-all"><br></span></div><div><span style=3D"font-family:monospace,monospace;f=
-ont-size:x-small">linstor-server 0.9.5</span></div><div><div><div><font fac=
-e=3D"monospace, monospace" size=3D"1">--------------------</font></div><div=
-><span style=3D"font-family:monospace,monospace;font-size:x-small">=C2=A0* =
-Fixed: Multi-volume migration from old versions</span><br></div><div><font =
-size=3D"1"><font face=3D"monospace, monospace">=C2=A0* Fixed: Encryption la=
-yer didn&#39;t correctly=C2=A0decode the passphrase</font></font></div><div=
-><font size=3D"1"><font face=3D"monospace, monospace">=C2=A0* Fixed: REST-A=
-PI 404 is now returned if a resource definition was not found</font></font>=
-</div><div><font size=3D"1"><font face=3D"monospace, monospace">=C2=A0* Sat=
-ellite does now check what layers the host does support</font></font></div>=
-<div><font face=3D"monospace, monospace" size=3D"1">=C2=A0* DRBD/config han=
-dlers will now set from the according property values</font></div><div><fon=
-t face=3D"monospace, monospace" size=3D"1">=C2=A0* REST-API: On create node=
- if only 1 net-interface is given, it defaults to satellite connector</font=
-></div><div><br></div></div><div><font size=3D"1"><a href=3D"https://www.li=
-nbit.com/downloads/linstor/linstor-server-0.9.5.tar.gz">https://www.linbit.=
-com/downloads/linstor/linstor-server-0.9.5.tar.gz</a></font></div></div><di=
-v><br></div><div><div><div><font size=3D"1"><span style=3D"font-family:mono=
-space,monospace">linstor-client/python-linstor 0.9.2</span></font></div><di=
-v><font size=3D"1"><span style=3D"font-family:monospace,monospace">--------=
----------------------------</span></font></div><div><span style=3D"font-fam=
-ily:monospace,monospace;font-size:x-small">=C2=A0* Create node IP address w=
-ill be resolved if not given</span></div></div><div><span style=3D"font-fam=
-ily:monospace,monospace;font-size:x-small">=C2=A0* Removed all name checks,=
- they are checked by the controller anyway</span></div><div><span style=3D"=
-font-family:monospace,monospace;font-size:x-small">=C2=A0* Resource definit=
-ion peer-slots can now be modified</span></div><div><span style=3D"font-fam=
-ily:monospace,monospace;font-size:x-small">=C2=A0* DRBD-handlers can now be=
- specified for controller and resource-definition</span></div><div><font si=
-ze=3D"1"><span style=3D"font-family:monospace,monospace"><br></span></font>=
-</div><div><font size=3D"1"><font face=3D"monospace, monospace"><a href=3D"=
-https://www.linbit.com/downloads/linstor/python-linstor-0.9.2.tar.gz">https=
-://www.linbit.com/downloads/linstor/python-linstor-0.9.2.tar.gz</a></font><=
-br></font></div><div><font size=3D"1"><font face=3D"monospace, monospace"><=
-a href=3D"https://www.linbit.com/downloads/linstor/linstor-client-0.9.2.tar=
-.gz">https://www.linbit.com/downloads/linstor/linstor-client-0.9.2.tar.gz</=
-a></font></font></div></div><div><br></div><div><div>Linstor PPA:<br><a hre=
-f=3D"https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack" rel=
-=3D"noreferrer" target=3D"_blank">https://launchpad.net/~linbit/+archive/ub=
-untu/linbit-drbd9-stack</a><br></div><div><br></div><div>Best regards,</div=
-><div>Rene</div></div></div>
+KNOWN-BUGS: During our endurance tests we discovered some
+issues which are documented in this file.
 
---00000000000062166c058605f691--
+In order to get professional support for WinDRBD please contact
+sales@linbit.com
+
+Thank you for improving WinDRBD by using it.
+
+- Johannes Thoma
