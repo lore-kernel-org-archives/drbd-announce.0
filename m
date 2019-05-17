@@ -1,19 +1,21 @@
-Return-Path: <rene.peinthor@linbit.com>
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com
-	[209.85.128.51])
-	by mail09.linbit.com (LINBIT Mail Daemon) with ESMTP id E48341028A66
+Return-Path: <philipp.reisner@linbit.com>
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com
+	[209.85.128.52])
+	by mail09.linbit.com (LINBIT Mail Daemon) with ESMTP id 666F61011BFF
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 16 May 2019 11:31:36 +0200 (CEST)
-Received: by mail-wm1-f51.google.com with SMTP id j187so2724346wmj.1
+	Fri, 17 May 2019 12:03:25 +0200 (CEST)
+Received: by mail-wm1-f52.google.com with SMTP id t5so4800821wmh.3
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 16 May 2019 02:31:36 -0700 (PDT)
+	Fri, 17 May 2019 03:03:25 -0700 (PDT)
+From: Philipp Reisner <philipp.reisner@linbit.com>
+To: drbd-announce@lists.linbit.com
+Date: Fri, 17 May 2019 11:57:14 +0200
+Message-ID: <1566711.FsHR9Jk4m6@fat-tyre>
 MIME-Version: 1.0
-From: Rene Peinthor <rene.peinthor@linbit.com>
-Date: Thu, 16 May 2019 11:31:25 +0200
-Message-ID: <CAHmn2DM+CG3yvoX3XuuumFNTT03cSL8Z+hN_jN8p=mp9q0uoew@mail.gmail.com>
-To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Content-Type: multipart/alternative; boundary="000000000000adddb50588fdeec9"
-Subject: [DRBD-announce] Linstor-server v0.9.8
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+Cc: drbd-user@lists.linbit.com
+Subject: [DRBD-announce] drbd-9.0.18-0rc1
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -25,79 +27,58 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
---000000000000adddb50588fdeec9
-Content-Type: text/plain; charset="UTF-8"
+Hi,
 
-Hi!
+As usual this upcoming release brings a number of bug fixes,
+that alone will be reason enough to recommend the upgrade to
+every user.
 
-This release features some new small features and a minor push of the
-REST-API version 1.0.3.
+Exciting are the two new features:
 
-Node creation is now synchronous which means after a node is created it will
-wait until it is connected and ready before the node create call will
-return.
-And there is a new property `LvcreateType` to allow creation of LVM FAT
-raid setups, that can be set on a storage pool or resource-definition.
+Quorum tie breaker
+  So far enabling quorum only made sense if you have a three way
+  redundant data set. With the new quorum tie breaker feature
+  it works with 2 way redundnt data, but needs a 3rd, diskless node
+  in the DRBD resource.
 
-Also there is a breaking change if you have encrypted volumes, we made the
-password generation more secure, but this means volumes created with older
-linstor-server versions cannot be unlocked. It is possible to workaround
-this, but you have to get in touch with us for this.
+optimized meta-data access if meta-data is on PMEM
+  PMEM (or NVDIMMs) is an exciting revolutionary change in computing.
+  It is a new storage tier that is connected as memory to the system.
+  One consequence of that is that software not gets the ability to
+  access/change/update data on the storage is smaller units than whole
+  sectors (512 bytes). We can not modify it in units of 64 bytes.
+  That gives us a DRBD developers new possibilities in optimizing
+  updates of our on-storage meta-data data structures.
+  We created a new PMEM optimized layout for the activity log, and
+  access the bitmap directly in place, as PMEM is memory mapped. As
+  a side consequence this reduces DRBD's memory consumption.
+  Depending on the workload you might get a 2x improvement in=20
+  write IOPs and a 4x improvement in throughput.
 
-linstor-server 0.9.8
---------------------
- * Fixed: Finding device path of NVMe volumes
- * Fixed: Local Controller node will now show as ONLINE
- * REST: Added /v1/view/resources and set REST-API version to 1.0.3
- * REST: Data structures are now generated from the rest documentation
- * Allow to pass raid level for LVM
- * Passphrase generation changed, old encrypted volumes will not be able to
-be unlocked
+Download and run this on your testing environment. As usual we reserve
+one week for feedback before we tag this release as final.
 
-https://www.linbit.com/downloads/linstor/linstor-server-0.9.8.tar.gz
+9.0.18-0rc1 (api:genl2/proto:86-114/transport:14)
+=2D-------
+ * Fix an IO deadlock under memory pressure
+ * Fix disconnect timing in case the network connection suddenly
+   drops all packets
+ * Fix some misbehavior that surfaced with Ahead/Behind
+ * Fix potential spinlock deadlock in IRQ
+ * our quorum feature can now use the connectivity to
+   the majority of Diskless nodes as tiebreaker
+ * Access meta-data using DAX if it is on persistent memory
+   (NVDIMM or PMEM); For write intense workloads this is a x2 to x4 speedup!
 
-Linstor PPA:
-https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+https://www.linbit.com/downloads/drbd/9.0/drbd-9.0.18-0rc1.tar.gz
+https://github.com/LINBIT/drbd-9.0/tree/drbd-9.0.18-0rc1
 
-Best regards,
-Rene
+best regards,
+ Phil
+=2D-=20
+LINBIT | Keeping The Digital World Running
 
---000000000000adddb50588fdeec9
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+DRBD=AE and LINBIT=AE are registered trademarks of LINBIT, Austria.
 
-<div dir=3D"ltr"><div dir=3D"ltr">Hi!<div><br></div><div>This release featu=
-res some new small features and a minor push of the REST-API version 1.0.3.=
-</div><div><br></div><div>Node creation is now synchronous which means afte=
-r a node is created it will</div><div>wait until it is connected and ready =
-before the node create call will return.</div><div>And there is a new prope=
-rty `LvcreateType`=C2=A0to allow creation of LVM FAT raid setups, that can =
-be set on a storage pool or resource-definition.</div><div><br></div><div>A=
-lso there is a breaking change if you have encrypted volumes, we made the</=
-div><div>password generation more secure, but this means volumes created wi=
-th older linstor-server versions cannot be unlocked. It is possible to work=
-around this, but you have to get in touch with us for this.</div><div><br><=
-/div><div><div><div><span style=3D"font-family:monospace,monospace;font-siz=
-e:x-small">linstor-server 0.9.8</span></div><div><div><div><font face=3D"mo=
-nospace, monospace" size=3D"1">--------------------</font></div><div><span =
-style=3D"font-family:monospace,monospace;font-size:x-small">=C2=A0* Fixed: =
-Finding device path of NVMe volumes</span></div><div><span style=3D"font-fa=
-mily:monospace,monospace;font-size:x-small">=C2=A0* Fixed: Local Controller=
- node will now show as ONLINE</span></div><div><span style=3D"font-family:m=
-onospace,monospace;font-size:x-small">=C2=A0* REST: Added /v1/view/resource=
-s and set REST-API version to 1.0.3</span><br></div><div><span style=3D"fon=
-t-family:monospace,monospace;font-size:x-small">=C2=A0* REST: Data structur=
-es are now generated from the rest documentation</span></div><div><span sty=
-le=3D"font-family:monospace,monospace;font-size:x-small">=C2=A0* Allow to p=
-ass raid level for LVM</span></div><div><font face=3D"monospace, monospace"=
- size=3D"1">=C2=A0* Passphrase generation changed, old encrypted volumes wi=
-ll not be able to be unlocked</font></div><div><br></div></div><div><font s=
-ize=3D"1"><a href=3D"https://www.linbit.com/downloads/linstor/linstor-serve=
-r-0.9.8.tar.gz">https://www.linbit.com/downloads/linstor/linstor-server-0.9=
-.8.tar.gz</a></font></div></div></div><div><br></div><div>Linstor PPA:<br><=
-a href=3D"https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack"=
- rel=3D"noreferrer" target=3D"_blank">https://launchpad.net/~linbit/+archiv=
-e/ubuntu/linbit-drbd9-stack</a><br></div><div><br></div>Best regards,<div>R=
-ene</div></div></div></div>
 
---000000000000adddb50588fdeec9--
+
