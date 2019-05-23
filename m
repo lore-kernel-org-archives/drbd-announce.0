@@ -1,21 +1,19 @@
-Return-Path: <philipp.reisner@linbit.com>
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com
-	[209.85.128.52])
-	by mail09.linbit.com (LINBIT Mail Daemon) with ESMTP id 666F61011BFF
+Return-Path: <rene.peinthor@linbit.com>
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com
+	[209.85.221.50])
+	by mail09.linbit.com (LINBIT Mail Daemon) with ESMTP id 73F3A1011BFC
 	for <drbd-announce@lists.linbit.com>;
-	Fri, 17 May 2019 12:03:25 +0200 (CEST)
-Received: by mail-wm1-f52.google.com with SMTP id t5so4800821wmh.3
+	Thu, 23 May 2019 14:36:42 +0200 (CEST)
+Received: by mail-wr1-f50.google.com with SMTP id f10so6106575wre.7
 	for <drbd-announce@lists.linbit.com>;
-	Fri, 17 May 2019 03:03:25 -0700 (PDT)
-From: Philipp Reisner <philipp.reisner@linbit.com>
-To: drbd-announce@lists.linbit.com
-Date: Fri, 17 May 2019 11:57:14 +0200
-Message-ID: <1566711.FsHR9Jk4m6@fat-tyre>
+	Thu, 23 May 2019 05:36:42 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-9.0.18-0rc1
+From: Rene Peinthor <rene.peinthor@linbit.com>
+Date: Thu, 23 May 2019 14:36:30 +0200
+Message-ID: <CAHmn2DMLsBNtjru_kh4zBLg9ReGtzaQwV8c_5nrjC_Gbmqa6=w@mail.gmail.com>
+To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
+Content-Type: multipart/alternative; boundary="0000000000008278db05898d55ec"
+Subject: [DRBD-announce] Linstor-server v0.9.9, linstor-client 0.9.4
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -27,58 +25,108 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Hi,
+--0000000000008278db05898d55ec
+Content-Type: text/plain; charset="UTF-8"
 
-As usual this upcoming release brings a number of bug fixes,
-that alone will be reason enough to recommend the upgrade to
-every user.
+Hi!
 
-Exciting are the two new features:
+The main purpose of this release is to switch the client finally to the new
+REST-API, therefore we had to bump the REST-API version again and add some
+missing functionality.
 
-Quorum tie breaker
-  So far enabling quorum only made sense if you have a three way
-  redundant data set. With the new quorum tie breaker feature
-  it works with 2 way redundnt data, but needs a 3rd, diskless node
-  in the DRBD resource.
+The client machine readable v0 output is nearly the same, just some child
+UUID objects are removed from the output, but we still recommend any script
+writer to directly use the REST-API and skip the client for such tasks.
 
-optimized meta-data access if meta-data is on PMEM
-  PMEM (or NVDIMMs) is an exciting revolutionary change in computing.
-  It is a new storage tier that is connected as memory to the system.
-  One consequence of that is that software not gets the ability to
-  access/change/update data on the storage is smaller units than whole
-  sectors (512 bytes). We can not modify it in units of 64 bytes.
-  That gives us a DRBD developers new possibilities in optimizing
-  updates of our on-storage meta-data data structures.
-  We created a new PMEM optimized layout for the activity log, and
-  access the bitmap directly in place, as PMEM is memory mapped. As
-  a side consequence this reduces DRBD's memory consumption.
-  Depending on the workload you might get a 2x improvement in=20
-  write IOPs and a 4x improvement in throughput.
+Our protobuf API is now deprecated and will probably removed in one of the
+following releases.
 
-Download and run this on your testing environment. As usual we reserve
-one week for feedback before we tag this release as final.
+linstor-server 0.9.9
+--------------------
+ * REST-API v1.0.4:
+   - Added /v1/views/storage-pools overview
+   - Added UUID for main objects
+   - Enable gzip compression if requested
+ * Added WaitTimeoutAfterCreate property
+ * Fixed: repeatedly created error logs for version mismatch on satellites
+ * Fixed ZFS volume resize
+ * Fixed out of date usable size reporting
+ * Removed DISKLESS provider dependency on DRBD
 
-9.0.18-0rc1 (api:genl2/proto:86-114/transport:14)
-=2D-------
- * Fix an IO deadlock under memory pressure
- * Fix disconnect timing in case the network connection suddenly
-   drops all packets
- * Fix some misbehavior that surfaced with Ahead/Behind
- * Fix potential spinlock deadlock in IRQ
- * our quorum feature can now use the connectivity to
-   the majority of Diskless nodes as tiebreaker
- * Access meta-data using DAX if it is on persistent memory
-   (NVDIMM or PMEM); For write intense workloads this is a x2 to x4 speedup!
+https://www.linbit.com/downloads/linstor/linstor-server-0.9.9.tar.gz
 
-https://www.linbit.com/downloads/drbd/9.0/drbd-9.0.18-0rc1.tar.gz
-https://github.com/LINBIT/drbd-9.0/tree/drbd-9.0.18-0rc1
+linstor-client/python-linstor 0.9.4
+-----------------------------------
+ * API/Client now uses REST-API
+ * Added curl command output mode
+ * Updated to latest drbd options
+ * DRBDManage migrate generator now uses resource transactions
+ * Package support for RHEL8
 
-best regards,
- Phil
-=2D-=20
-LINBIT | Keeping The Digital World Running
+https://www.linbit.com/downloads/linstor/python-linstor-0.9.4.tar.gz
+https://www.linbit.com/downloads/linstor/linstor-client-0.9.4.tar.gz
 
-DRBD=AE and LINBIT=AE are registered trademarks of LINBIT, Austria.
+Linstor PPA:
+https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
+Best regards,
+Rene
 
+--0000000000008278db05898d55ec
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+<div dir=3D"ltr">Hi!<div><br></div><div>The main purpose of this release is=
+ to switch the client finally to the new</div><div>REST-API, therefore we h=
+ad to bump the REST-API version again and add some missing functionality.</=
+div><div><br></div><div>The client machine readable v0 output is nearly the=
+ same, just some child UUID objects are removed from the output, but we sti=
+ll recommend any script writer to directly use the REST-API and skip the cl=
+ient for such tasks.</div><div><br></div><div>Our protobuf API is now depre=
+cated and will probably removed in one of the following releases.</div><div=
+><br></div><div><div><span style=3D"font-family:monospace,monospace;font-si=
+ze:x-small">linstor-server 0.9.9</span></div><div><div><div><font face=3D"m=
+onospace, monospace" size=3D"1">--------------------</font></div><div><span=
+ style=3D"font-family:monospace,monospace;font-size:x-small">=C2=A0* REST-A=
+PI v1.0.4:</span></div><div><span style=3D"font-family:monospace,monospace;=
+font-size:x-small">=C2=A0 =C2=A0- Added /v1/views/storage-pools overview</s=
+pan></div><div><span style=3D"font-family:monospace,monospace;font-size:x-s=
+mall">=C2=A0 =C2=A0- Added UUID for main objects</span></div><div><span sty=
+le=3D"font-family:monospace,monospace;font-size:x-small">=C2=A0 =C2=A0- Ena=
+ble gzip compression if requested</span></div><div><span style=3D"font-fami=
+ly:monospace,monospace;font-size:x-small">=C2=A0* Added WaitTimeoutAfterCre=
+ate property</span></div><div><font face=3D"monospace, monospace" size=3D"1=
+">=C2=A0* Fixed: repeatedly=C2=A0created error logs for version mismatch on=
+ satellites</font></div><div><font face=3D"monospace, monospace" size=3D"1"=
+>=C2=A0* Fixed ZFS volume resize</font></div><div><font face=3D"monospace, =
+monospace" size=3D"1">=C2=A0* Fixed out of date usable size reporting</font=
+></div><div><font face=3D"monospace, monospace" size=3D"1">=C2=A0* Removed =
+DISKLESS provider dependency on DRBD</font></div><div><br></div></div><div>=
+<font size=3D"1"><a href=3D"https://www.linbit.com/downloads/linstor/linsto=
+r-server-0.9.9.tar.gz">https://www.linbit.com/downloads/linstor/linstor-ser=
+ver-0.9.9.tar.gz</a></font></div></div><div><br></div><div><div><div><font =
+size=3D"1"><span style=3D"font-family:monospace,monospace">linstor-client/p=
+ython-linstor 0.9.4</span></font></div><div><font size=3D"1"><span style=3D=
+"font-family:monospace,monospace">-----------------------------------</span=
+></font></div><div><span style=3D"font-family:monospace,monospace;font-size=
+:x-small">=C2=A0* API/Client now uses REST-API</span></div></div><div><span=
+ style=3D"font-family:monospace,monospace;font-size:x-small">=C2=A0* Added =
+curl command output mode</span></div><div><span style=3D"font-family:monosp=
+ace,monospace;font-size:x-small">=C2=A0* Updated to latest drbd options</sp=
+an></div><div><span style=3D"font-family:monospace,monospace;font-size:x-sm=
+all">=C2=A0* DRBDManage migrate generator now uses resource transactions</s=
+pan></div><div><span style=3D"font-family:monospace,monospace;font-size:x-s=
+mall">=C2=A0* Package support for RHEL8</span></div><div><br></div><div><fo=
+nt size=3D"1"><font face=3D"monospace, monospace"><a href=3D"https://www.li=
+nbit.com/downloads/linstor/python-linstor-0.9.4.tar.gz">https://www.linbit.=
+com/downloads/linstor/python-linstor-0.9.4.tar.gz</a></font><br></font></di=
+v><div><font size=3D"1"><font face=3D"monospace, monospace"><a href=3D"http=
+s://www.linbit.com/downloads/linstor/linstor-client-0.9.4.tar.gz">https://w=
+ww.linbit.com/downloads/linstor/linstor-client-0.9.4.tar.gz</a></font></fon=
+t></div></div></div><div><div><br class=3D"gmail-Apple-interchange-newline"=
+>Linstor PPA:<br><a href=3D"https://launchpad.net/~linbit/+archive/ubuntu/l=
+inbit-drbd9-stack" rel=3D"noreferrer" target=3D"_blank">https://launchpad.n=
+et/~linbit/+archive/ubuntu/linbit-drbd9-stack</a><br></div><div><br></div><=
+div>Best regards,</div><div>Rene</div></div></div>
+
+--0000000000008278db05898d55ec--
