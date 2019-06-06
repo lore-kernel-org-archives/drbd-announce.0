@@ -1,19 +1,20 @@
 Return-Path: <rene.peinthor@linbit.com>
-Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com
-	[209.85.210.42])
-	by mail09.linbit.com (LINBIT Mail Daemon) with ESMTP id 755D81011C03
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com
+	[209.85.128.46])
+	by mail09.linbit.com (LINBIT Mail Daemon) with ESMTP id 2154B1011BFC
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 27 May 2019 16:17:39 +0200 (CEST)
-Received: by mail-ot1-f42.google.com with SMTP id r7so14920148otn.6
+	Thu,  6 Jun 2019 15:46:28 +0200 (CEST)
+Received: by mail-wm1-f46.google.com with SMTP id t5so2375wmh.3
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 27 May 2019 07:17:38 -0700 (PDT)
+	Thu, 06 Jun 2019 06:46:28 -0700 (PDT)
 MIME-Version: 1.0
 From: Rene Peinthor <rene.peinthor@linbit.com>
-Date: Mon, 27 May 2019 16:10:47 +0200
-Message-ID: <CAHmn2DNhUMsH5eqFiCPM6vudy6k380mfbRZLTA=RSARHyQzEWg@mail.gmail.com>
-To: drbd-user@lists.linbit.com, drbd-announce@lists.linbit.com
-Content-Type: multipart/alternative; boundary="000000000000062d2c0589df1eb6"
-Subject: [DRBD-announce] Linstor-server v0.9.10, linstor-client 0.9.5
+Date: Thu, 6 Jun 2019 15:46:17 +0200
+Message-ID: <CAHmn2DM7Wk3AGmRJZ_HL6UfDtkPogtxAnPX1KseY0=-jBHJYsw@mail.gmail.com>
+To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
+Content-Type: multipart/alternative; boundary="000000000000d478a4058aa7f052"
+Subject: [DRBD-announce] python-linstor 0.9.6, linstor-client 0.9.6,
+	linstor-opennebula 0.9.5
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -25,33 +26,45 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
---000000000000062d2c0589df1eb6
+--000000000000d478a4058aa7f052
 Content-Type: text/plain; charset="UTF-8"
 
-Hello!
+Hi!
 
-This is a bug fix release that addresses 2 main issues.
+The 3 mentions libraries got mostly bug fixes with this release,
+further details on the bugs fixed below:
 
-   1. Proxmox plugin is broken because of a bug in the python-linstor API
-   2. Linstor doesn't work on distributions if the lvm-utils do not support
-   the --reportformat option
 
-linstor-server 0.9.10
----------------------
- * Fixed: lvm not working if the --reportformat option is missing
- * Fixed: Possible DRBD split-brain if a resources is readded on a node
- * Fixed: HTTP server tries to start on ipv4 if ipv6 bind failed
-
-https://www.linbit.com/downloads/linstor/linstor-server-0.9.10.tar.gz
-
-linstor-client/python-linstor 0.9.5
+python-linstor 0.9.6
 -----------------------------------
- * Fixed: combined query filters are incorrectly concatenated
- * Fixed: keep-alive (interactive) mode
- * High-Level API: Resource class now works with external names
+ * Fixed: Incorrect ApiCallResponse output for v0 machine readable
+format(object-refs)
+ * Fixed: Resource class check for _linstor_name before using it (non
+existing resources)
+ * Fixed: Resource class only set the storage pool name on the volume if it
+isn't diskless
+ * Resource class gives better errors on snapshot methods
 
-https://www.linbit.com/downloads/linstor/python-linstor-0.9.5.tar.gz
-https://www.linbit.com/downloads/linstor/linstor-client-0.9.5.tar.gz
+https://www.linbit.com/downloads/linstor/python-linstor-0.9.6.tar.gz
+
+linstor-client 0.9.6
+-----------------------------------
+ * Fixed: Correctly check for provider values
+ * Storage pool list better handle storage pool errors with upcoming
+linstor-server version
+
+https://www.linbit.com/downloads/linstor/linstor-client-0.9.6.tar.gz
+
+linstor-opennebula 0.9.5
+-----------------------------------
+ * Fixed: System datastore VM instances without a context image
+ * Fixed: Always delete temporary snapshot on clone actions with snapshot
+clone mode
+ * Fixed: Copy datastore used wrong source image
+ * Added extended TM_MAD_CONF for Opennebula 5.8 in README
+
+https://www.linbit.com/downloads/connectors/linstor-opennebula-0.9.5.tar.gz
+
 
 Linstor PPA:
 https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
@@ -59,46 +72,64 @@ https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 Best regards,
 Rene
 
---000000000000062d2c0589df1eb6
+--000000000000d478a4058aa7f052
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr">Hello!<div><br></div><div>This is a bug fix release that a=
-ddresses 2 main issues.</div><div><ol><li>Proxmox plugin is broken because =
-of a bug in the python-linstor API</li><li>Linstor doesn&#39;t work on dist=
-ributions if the lvm-utils do not support the --reportformat option</li></o=
-l><div><div><div><span style=3D"font-family:monospace,monospace;font-size:x=
--small">linstor-server 0.9.10</span></div><div><div><div><font face=3D"mono=
-space, monospace" size=3D"1">---------------------</font></div><div><span s=
-tyle=3D"font-family:monospace,monospace;font-size:x-small">=C2=A0* Fixed: l=
-vm not working if the --reportformat option is missing</span></div><div><sp=
-an style=3D"font-family:monospace,monospace;font-size:x-small">=C2=A0* Fixe=
-d: Possible DRBD split-brain if a resources is readded on a node</span></di=
-v><div><span style=3D"font-family:monospace,monospace;font-size:x-small">=
-=C2=A0* Fixed: HTTP server tries to start on ipv4 if ipv6 bind failed</span=
-></div><div><br></div></div><div><font size=3D"1"><a href=3D"https://www.li=
-nbit.com/downloads/linstor/linstor-server-0.9.10.tar.gz">https://www.linbit=
-.com/downloads/linstor/linstor-server-0.9.10.tar.gz</a></font></div></div><=
-div><br></div><div><div><div><font size=3D"1"><span style=3D"font-family:mo=
-nospace,monospace">linstor-client/python-linstor 0.9.5</span></font></div><=
-div><font size=3D"1"><span style=3D"font-family:monospace,monospace">------=
------------------------------</span></font></div><div><font face=3D"monospa=
-ce, monospace" size=3D"1">=C2=A0* Fixed: combined query filters are incorre=
-ctly=C2=A0concatenated</font></div></div><div><span style=3D"font-family:mo=
-nospace,monospace;font-size:x-small">=C2=A0* Fixed: keep-alive (interactive=
-) mode</span></div><div><span style=3D"font-family:monospace,monospace;font=
--size:x-small">=C2=A0* High-Level API: Resource class now works with extern=
-al names</span></div><div><br></div><div><font size=3D"1"><font face=3D"mon=
-ospace, monospace"><a href=3D"https://www.linbit.com/downloads/linstor/pyth=
-on-linstor-0.9.5.tar.gz">https://www.linbit.com/downloads/linstor/python-li=
-nstor-0.9.5.tar.gz</a></font><br></font></div><div><font size=3D"1"><font f=
-ace=3D"monospace, monospace"><a href=3D"https://www.linbit.com/downloads/li=
-nstor/linstor-client-0.9.5.tar.gz">https://www.linbit.com/downloads/linstor=
-/linstor-client-0.9.5.tar.gz</a></font></font></div></div></div><div><div><=
-br class=3D"gmail-m_5788740772863730142gmail-Apple-interchange-newline">Lin=
-stor PPA:<br><a href=3D"https://launchpad.net/~linbit/+archive/ubuntu/linbi=
-t-drbd9-stack" rel=3D"noreferrer" target=3D"_blank">https://launchpad.net/~=
-linbit/+archive/ubuntu/linbit-drbd9-stack</a><br></div><div><br></div><div>=
-Best regards,</div><div>Rene</div></div></div></div></div>
+<div dir=3D"ltr">Hi!<div><br></div><div>The 3 mentions libraries got mostly=
+ bug fixes with this release,</div><div>further details on the bugs fixed b=
+elow:</div><div><br></div><div><div><div><font size=3D"1"><span style=3D"fo=
+nt-family:monospace,monospace"><br class=3D"m_6287807472185891488gmail-Appl=
+e-interchange-newline">python-linstor 0.9.6</span></font></div><div><font s=
+ize=3D"1"><span style=3D"font-family:monospace,monospace">-----------------=
+------------------</span></font></div><div><font face=3D"monospace, monospa=
+ce" size=3D"1">=C2=A0* Fixed: Incorrect ApiCallResponse output for v0 machi=
+ne readable format(object-refs)</font></div></div><div><span style=3D"font-=
+family:monospace,monospace;font-size:x-small">=C2=A0* Fixed: Resource class=
+ check for _linstor_name before using it (non existing resources)</span></d=
+iv><div><span style=3D"font-family:monospace,monospace;font-size:x-small">=
+=C2=A0* Fixed: Resource class only set the storage pool name on the volume =
+if it isn&#39;t diskless</span></div><div><span style=3D"font-family:monosp=
+ace,monospace;font-size:x-small">=C2=A0* Resource class gives better errors=
+ on snapshot methods</span></div><div><br></div><div><font size=3D"1"><font=
+ face=3D"monospace, monospace"><a href=3D"https://www.linbit.com/downloads/=
+linstor/python-linstor-0.9.6.tar.gz" target=3D"_blank">https://www.linbit.c=
+om/downloads/linstor/python-linstor-0.9.6.tar.gz</a></font></font></div></d=
+iv><div><font size=3D"1"><br></font></div><div><div><div><font size=3D"1"><=
+span style=3D"font-family:monospace,monospace">linstor-client 0.9.6</span><=
+/font></div><div><font size=3D"1"><span style=3D"font-family:monospace,mono=
+space">-----------------------------------</span></font></div><div><font fa=
+ce=3D"monospace, monospace" size=3D"1">=C2=A0* Fixed: Correctly check for p=
+rovider values</font></div></div><div><span style=3D"font-family:monospace,=
+monospace;font-size:x-small">=C2=A0* Storage pool list better handle storag=
+e pool errors with upcoming linstor-server version</span></div><div><br></d=
+iv><div><font size=3D"1"><font face=3D"monospace, monospace"><a href=3D"htt=
+ps://www.linbit.com/downloads/linstor/linstor-client-0.9.6.tar.gz" target=
+=3D"_blank">https://www.linbit.com/downloads/linstor/linstor-client-0.9.6.t=
+ar.gz</a></font></font></div></div><div><font size=3D"1"><br></font></div><=
+div><div><font size=3D"1"><span style=3D"font-family:monospace,monospace">l=
+instor-opennebula 0.9.5</span></font></div><div><font size=3D"1"><span styl=
+e=3D"font-family:monospace,monospace">-----------------------------------</=
+span></font></div><div><font face=3D"monospace, monospace" size=3D"1">=C2=
+=A0* Fixed: System datastore VM instances without a context image</font></d=
+iv></div><div><font face=3D"monospace, monospace" size=3D"1">=C2=A0* Fixed:=
+ Always delete temporary snapshot on clone actions with snapshot clone mode=
+</font></div><div><font face=3D"monospace, monospace" size=3D"1">=C2=A0* Fi=
+xed: Copy datastore used wrong source image</font></div><div><font face=3D"=
+monospace, monospace" size=3D"1">=C2=A0* Added extended TM_MAD_CONF for Ope=
+nnebula 5.8 in README</font></div><div><font face=3D"monospace, monospace" =
+size=3D"1"><br></font></div><div><a href=3D"https://www.linbit.com/download=
+s/connectors/linstor-opennebula-0.9.5.tar.gz" target=3D"_blank"><font size=
+=3D"1" face=3D"courier new, monospace">https://www.linbit.com/downloads/con=
+nectors/linstor-opennebula-0.9.5.tar.gz</font></a><font face=3D"monospace, =
+monospace" size=3D"1"><br></font></div><div><font face=3D"monospace, monosp=
+ace" size=3D"1"><br></font></div><div><font face=3D"monospace, monospace" s=
+ize=3D"1"><br></font></div><div><div>Linstor PPA:<br><a href=3D"https://lau=
+nchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack" rel=3D"noreferrer" t=
+arget=3D"_blank">https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9=
+-stack</a><br></div><div><br></div><div>Best regards,</div><div>Rene</div><=
+/div><div><font face=3D"monospace, monospace" size=3D"1"><br></font></div><=
+div><font size=3D"1"><br></font></div><div><font size=3D"1"><br></font></di=
+v></div>
 
---000000000000062d2c0589df1eb6--
+--000000000000d478a4058aa7f052--
