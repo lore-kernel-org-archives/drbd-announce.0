@@ -1,19 +1,21 @@
-Return-Path: <rene.peinthor@linbit.com>
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com
-	[209.85.221.51])
-	by mail09.linbit.com (LINBIT Mail Daemon) with ESMTP id B5FD41011BF6
+Return-Path: <roland.kammerer@linbit.com>
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com
+	[209.85.128.46])
+	by mail09.linbit.com (LINBIT Mail Daemon) with ESMTP id 9AF161011BF6
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 11 Jun 2019 14:34:00 +0200 (CEST)
-Received: by mail-wr1-f51.google.com with SMTP id p11so12831804wre.7
+	Thu, 13 Jun 2019 16:21:11 +0200 (CEST)
+Received: by mail-wm1-f46.google.com with SMTP id w9so6747491wmd.1
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 11 Jun 2019 05:34:00 -0700 (PDT)
+	Thu, 13 Jun 2019 07:21:11 -0700 (PDT)
+Date: Thu, 13 Jun 2019 16:21:08 +0200
+From: Roland Kammerer <roland.kammerer@linbit.com>
+To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
+Message-ID: <20190613142108.d57enbmjijydkdbx@rck.sh>
 MIME-Version: 1.0
-From: Rene Peinthor <rene.peinthor@linbit.com>
-Date: Tue, 11 Jun 2019 14:33:49 +0200
-Message-ID: <CAHmn2DM4_D1S0kRZE-J2fNdKFY7_f40E6xxkpEgZdkhTPEdgZQ@mail.gmail.com>
-To: drbd-user@lists.linbit.com, drbd-announce@lists.linbit.com
-Content-Type: multipart/alternative; boundary="000000000000db4abb058b0b8260"
-Subject: [DRBD-announce] Linstor-server 0.9.11
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="a5neivjg7cr3wva3"
+Content-Disposition: inline
+Subject: [DRBD-announce] drbd-utils-9.10.0
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -25,69 +27,54 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
---000000000000db4abb058b0b8260
-Content-Type: text/plain; charset="UTF-8"
 
-Hello!
+--a5neivjg7cr3wva3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-This release adds automatic log archiving for error-reports that are older
-than 2 months, fixes bugs with "broken" storage pools and a bug that
-prevented creating
-resources.
+Hi DRBD users,
 
-linstor-server 0.9.11
----------------------
- * New: Archive logs that are older than 2 months
- * Improved controller and satellite startup by ~800ms
- * Better error reporting on REST-API errors
- * Fixed: Unable to create new resource if there are resource-definitions
-without resources (introduced with 0.9.0)
- * Fixed: Full-sync will not fail on broken storage pools
- * Fixed: Storage pool error will be reported in new `reports` field
-          on storage-pool objects (REST-API 1.0.5)
- * Fixed: Null pointer exception on snapshots with storage-only snapshots
+This release contains minor bug fixes and one new feature. There is no
+urgent need to upgrade.
 
-https://www.linbit.com/downloads/linstor/linstor-server-0.9.11.tar.gz
+The highlight is a new option that can be set to disallow reading from a remote
+peer. This can make sense in certain DR site setups. There will be more
+information on that in the according DRBD 9 kernel release note. This
+drbd-utils release is mainly to get out the code allowing this feature.
 
-Linstor PPA:
+Another fix is that one can now create meta data for huge disks with many
+peers (there was a bug summing up the overall volumes).
+
+This is rounded up with the usual drbdmon improvements and JA doc updates.
+
+9.10.0
+--------
+ * drbdmon: limit desplay lenght, minor fixes
+ * drbdsetup,v9: avoid underflow when resync regresses
+ * drbdmeta,v9: allow huge (~1PB volumes)
+ * drbdsetup,v9: add allow-remote-read flag
+ * docker: switch to UBI images
+ * doc: update JA doc
+
+https://www.linbit.com/downloads/drbd/utils/drbd-utils-9.10.0.tar.gz
+https://github.com/LINBIT/drbd-utils/tree/v9.10.0
 https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
-Best regards,
-Rene
+Regards, rck
 
---000000000000db4abb058b0b8260
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+--a5neivjg7cr3wva3
+Content-Type: application/pgp-signature; name="signature.asc"
 
-<div dir=3D"ltr">Hello!<div><br></div><div>This release adds automatic log =
-archiving for error-reports that are older than 2 months, fixes bugs with &=
-quot;broken&quot; storage pools and a bug that prevented creating</div><div=
->resources.</div><div><br></div><div><div><span style=3D"font-family:monosp=
-ace,monospace;font-size:x-small">linstor-server 0.9.11</span></div><div><di=
-v><div><font face=3D"monospace, monospace" size=3D"1">---------------------=
-</font></div><div><span style=3D"font-family:monospace,monospace;font-size:=
-x-small">=C2=A0* New: Archive logs that are older than 2 months</span></div=
-><div><span style=3D"font-family:monospace,monospace;font-size:x-small">=C2=
-=A0* Improved controller and satellite startup by ~800ms</span></div><div><=
-span style=3D"font-family:monospace,monospace;font-size:x-small">=C2=A0* Be=
-tter error reporting on REST-API errors</span><br></div><div><span style=3D=
-"font-family:monospace,monospace;font-size:x-small">=C2=A0* Fixed: Unable t=
-o create new resource if there are resource-definitions without resources (=
-introduced with 0.9.0)</span></div><div><span style=3D"font-family:monospac=
-e,monospace;font-size:x-small">=C2=A0* Fixed: Full-sync will not fail on br=
-oken storage pools</span></div><div><span style=3D"font-family:monospace,mo=
-nospace;font-size:x-small">=C2=A0* Fixed: Storage pool error will be report=
-ed in new `reports` field</span></div><div><span style=3D"font-family:monos=
-pace,monospace;font-size:x-small">=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 on sto=
-rage-pool objects (REST-API 1.0.5)</span></div><div><span style=3D"font-fam=
-ily:monospace,monospace;font-size:x-small">=C2=A0* Fixed: Null pointer exce=
-ption on snapshots with storage-only snapshots</span></div><div><br></div><=
-/div><div><font size=3D"1"><a href=3D"https://www.linbit.com/downloads/lins=
-tor/linstor-server-0.9.11.tar.gz">https://www.linbit.com/downloads/linstor/=
-linstor-server-0.9.11.tar.gz</a></font></div></div></div><div><br></div><di=
-v><div>Linstor PPA:<br><a href=3D"https://launchpad.net/~linbit/+archive/ub=
-untu/linbit-drbd9-stack" rel=3D"noreferrer" target=3D"_blank">https://launc=
-hpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack</a><br></div><div><br><=
-/div><div>Best regards,</div><div>Rene</div></div></div>
+-----BEGIN PGP SIGNATURE-----
 
---000000000000db4abb058b0b8260--
+iQEzBAABCAAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAl0CW88ACgkQRgmezyI6
+myLHfQf+MzVHAEsGnTFZHQa9nNHntf2kK6yH2ckeRleR0gtkkkHrlGXrXV1BzBfz
+vXG2w0WRj+s2B2RgvOlFnIaR7yyszx0Mzj2/DAxC2/RjLPNKJygr1vYGq1OWIX3t
+x1c3B7SoJKyQYBf/lASayxcbO0ar6Y0xCssDdlhbR5EgeC9F/b4mgF1w/uoYgCvY
+hb2EvIsB5zrXOWg+0uqjtUHv2qQOA/RLmPvHFLFKlLoUYihOeRNoJA9rZYFHgZu3
+agHVPIgQ0rDOKf6roE9xo439SDjEtgM5IbJ1fn3eX01U2iaVeyNPflNm+xMJfaAO
+1zOWdoPqbAhYifgDUqN4v+bT7MkeOA==
+=vb+Q
+-----END PGP SIGNATURE-----
+
+--a5neivjg7cr3wva3--
