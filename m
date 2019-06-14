@@ -1,21 +1,22 @@
-Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com
-	[209.85.128.46])
-	by mail09.linbit.com (LINBIT Mail Daemon) with ESMTP id 9AF161011BF6
+Return-Path: <lars.ellenberg@linbit.com>
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com
+	[209.85.221.41])
+	by mail09.linbit.com (LINBIT Mail Daemon) with ESMTP id EEFAC1028A65
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 13 Jun 2019 16:21:11 +0200 (CEST)
-Received: by mail-wm1-f46.google.com with SMTP id w9so6747491wmd.1
+	Fri, 14 Jun 2019 16:01:20 +0200 (CEST)
+Received: by mail-wr1-f41.google.com with SMTP id x4so2670563wrt.6
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 13 Jun 2019 07:21:11 -0700 (PDT)
-Date: Thu, 13 Jun 2019 16:21:08 +0200
-From: Roland Kammerer <roland.kammerer@linbit.com>
-To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Message-ID: <20190613142108.d57enbmjijydkdbx@rck.sh>
+	Fri, 14 Jun 2019 07:01:20 -0700 (PDT)
+Date: Fri, 14 Jun 2019 15:54:52 +0200
+From: Lars Ellenberg <lars.ellenberg@linbit.com>
+To: drbd-announce@lists.linbit.com
+Message-ID: <20190614135452.GD30528@soda.linbit>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="a5neivjg7cr3wva3"
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-Subject: [DRBD-announce] drbd-utils-9.10.0
+Content-Transfer-Encoding: 8bit
+Cc: drbd-user@lists.linbit.com
+Subject: [DRBD-announce] [DRBD-user] drbd-9.0.19-0rc1
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -27,54 +28,49 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
+Hi,
 
---a5neivjg7cr3wva3
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+already let out the RC a couple days ago,
+but forgot to send the announcement.
 
-Hi DRBD users,
+A few fixes since 9.0.18, revolving around corner cases
+during re-integration of a node that was isolated,
+into an active three (or more) node setup.
 
-This release contains minor bug fixes and one new feature. There is no
-urgent need to upgrade.
+If you have any test setups you can use to stress test this RC,
+for any regressions, and for quirks in the above mentioned scenario,
+please do so and let us know, so we may address any such issues before
+the final DRBD 9.0.19.
 
-The highlight is a new option that can be set to disallow reading from a remote
-peer. This can make sense in certain DR site setups. There will be more
-information on that in the according DRBD 9 kernel release note. This
-drbd-utils release is mainly to get out the code allowing this feature.
 
-Another fix is that one can now create meta data for huge disks with many
-peers (there was a bug summing up the overall volumes).
+Also one new feature: allow-remote-read.
+You need utils 9.10.0 to be able to configure it.
 
-This is rounded up with the usual drbdmon improvements and JA doc updates.
+In certain setups you rather want to fail locally
+instead of trying to mask local IO failures
+by reading via a WAN DR replication link.
+So we now allow to disable remote reads, per connection.
 
-9.10.0
+9.0.19-0rc1 (api:genl2/proto:86-115/transport:14)
 --------
- * drbdmon: limit desplay lenght, minor fixes
- * drbdsetup,v9: avoid underflow when resync regresses
- * drbdmeta,v9: allow huge (~1PB volumes)
- * drbdsetup,v9: add allow-remote-read flag
- * docker: switch to UBI images
- * doc: update JA doc
+ * Fix resync stuck at near completion
+ * Fix NULL dereference with disk-timeout enabled
+ * Fix wrong state change when current UUID changes during UUID exchange
+ * Fix check on CAP_SYS_ADMIN
+ * Fix quorum tie-breaker diskless majority calculation
+ * Fix dax_direct_access() error return check
+ * unblock IO when on-quorum-lost policy is changed (suspend -> io-error)
+ * introduce allow-remote-read (disallow read from DR connections)
+ * some build changes
 
-https://www.linbit.com/downloads/drbd/utils/drbd-utils-9.10.0.tar.gz
-https://github.com/LINBIT/drbd-utils/tree/v9.10.0
-https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+http://www.linbit.com/downloads/drbd/9.0/drbd-9.0.19-0rc1.tar.gz
+https://github.com/LINBIT/drbd-9.0/tree/d1e16bdf2b71
 
-Regards, rck
+-- 
+: Lars Ellenberg
+: LINBIT | Keeping the Digital World Running
+: DRBD -- Heartbeat -- Corosync -- Pacemaker
 
---a5neivjg7cr3wva3
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCAAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAl0CW88ACgkQRgmezyI6
-myLHfQf+MzVHAEsGnTFZHQa9nNHntf2kK6yH2ckeRleR0gtkkkHrlGXrXV1BzBfz
-vXG2w0WRj+s2B2RgvOlFnIaR7yyszx0Mzj2/DAxC2/RjLPNKJygr1vYGq1OWIX3t
-x1c3B7SoJKyQYBf/lASayxcbO0ar6Y0xCssDdlhbR5EgeC9F/b4mgF1w/uoYgCvY
-hb2EvIsB5zrXOWg+0uqjtUHv2qQOA/RLmPvHFLFKlLoUYihOeRNoJA9rZYFHgZu3
-agHVPIgQ0rDOKf6roE9xo439SDjEtgM5IbJ1fn3eX01U2iaVeyNPflNm+xMJfaAO
-1zOWdoPqbAhYifgDUqN4v+bT7MkeOA==
-=vb+Q
------END PGP SIGNATURE-----
-
---a5neivjg7cr3wva3--
+DRBD® and LINBIT® are registered trademarks of LINBIT
+__
+please don't Cc me, but send to list -- I'm subscribed
