@@ -1,21 +1,21 @@
-Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com
-	[209.85.128.43])
-	by mail09.linbit.com (LINBIT Mail Daemon) with ESMTP id C28981011BFF
+Return-Path: <philipp.reisner@linbit.com>
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com
+	[209.85.128.47])
+	by mail09.linbit.com (LINBIT Mail Daemon) with ESMTP id 9110D1011C03
 	for <drbd-announce@lists.linbit.com>;
-	Fri, 28 Jun 2019 11:37:06 +0200 (CEST)
-Received: by mail-wm1-f43.google.com with SMTP id x15so8418326wmj.3
+	Mon,  8 Jul 2019 17:16:02 +0200 (CEST)
+Received: by mail-wm1-f47.google.com with SMTP id w9so252676wmd.1
 	for <drbd-announce@lists.linbit.com>;
-	Fri, 28 Jun 2019 02:37:06 -0700 (PDT)
-Date: Fri, 28 Jun 2019 11:37:04 +0200
-From: Roland Kammerer <roland.kammerer@linbit.com>
-To: drbd-user@lists.linbit.com
-Message-ID: <20190628093704.fk4o6qifdoish4li@rck.sh>
+	Mon, 08 Jul 2019 08:16:02 -0700 (PDT)
+From: Philipp Reisner <philipp.reisner@linbit.com>
+To: drbd-announce@lists.linbit.com
+Date: Mon, 08 Jul 2019 17:09:49 +0200
+Message-ID: <1580997.ZVVbd7a1Am@fat-tyre>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Cc: drbd-announce@lists.linbit.com
-Subject: [DRBD-announce] drbd-9.0.19-0rc2
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+Cc: drbd-user@lists.linbit.com
+Subject: [DRBD-announce] drbd-9.0.19-1
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -29,20 +29,41 @@ List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hi,
 
-since rc1 there have been several fixes. All in all a bit more changes
-than expected. Note that especially the fixed resync bugs existed for a
-longer time and have not been introduced with the 9.0.19 series. Please
-test!
+drbd-9.0.19 final is out!
 
-9.0.19-0rc2 (api:genl2/proto:86-115/transport:14)
---------
- * quorum: no tie-breaker for 0 voters
- * quorum: ignore node when also no-read node
- * Fix detection of unstable resync
- * Fix multiple sync
- * Fix noisy UUID warnings when actually expected
+This release mainly contains fixes all over the board. The only new
+feature is that it allows to mark a remote as "write only". I.e.
+DRBD will never try to ship read requests to it. That is of course
+usefull for DR purposes.
 
-http://www.linbit.com/downloads/drbd/9.0/drbd-9.0.19-0rc2.tar.gz
-https://github.com/LINBIT/drbd-9.0/commit/31273b1cc1861486afddff12183c297fdca9a2c7
+As a side note, the changes in this release where mainly written by
+Joel, Christoph and Roland. We are happy that the DRBD core team is
+growing beyond Lars and Phil.
 
-Regards, rck
+
+9.0.19-1 (api:genl2/proto:86-115/transport:14)
+=2D-------
+ * check on CAP_SYS_ADMIN instead of CAP_NET_ADMIN for certain operations
+ * fix detection of unstable resync
+ * fix possible stuck resync when resync started from an other secondary
+   and later continued from a primary
+ * fix NULL dereference with disk-timeout enabled; was introduced in 9.0.9
+ * retry connect when own current UUID changes during UUID exchange
+ * fix quorum tie-breaker diskless logic for settings other than "majority"
+ * disable quorum tie-breaker for 0 voters
+ * fix dax_direct_access() error return check
+ * fix resync stuck at near completion; bug was intorduces with 9.0.17
+ * unblock IO when on-quorum-lost policy is changed (suspend -> io-error)
+ * introduce allow-remote-read configuration option; set it to "no" for
+   DR links you only want to write, but never read
+ * only complain about UUID changes during initial handshake
+
+https://www.linbit.com/downloads/drbd/9.0/drbd-9.0.19-1.tar.gz
+https://github.com/LINBIT/drbd-9.0/releases/tag/drbd-9.0.19-1
+=2D-=20
+LINBIT | Keeping The Digital World Running
+
+DRBD=AE and LINBIT=AE are registered trademarks of LINBIT, Austria.
+
+
+
