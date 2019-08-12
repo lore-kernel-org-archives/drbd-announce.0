@@ -1,19 +1,19 @@
 Return-Path: <rene.peinthor@linbit.com>
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com
-	[209.85.221.47])
-	by mail09.linbit.com (LINBIT Mail Daemon) with ESMTP id B2362101AC46
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com
+	[209.85.221.46])
+	by mail09.linbit.com (LINBIT Mail Daemon) with ESMTP id 9C88B101AC41
 	for <drbd-announce@lists.linbit.com>;
-	Fri,  9 Aug 2019 10:10:28 +0200 (CEST)
-Received: by mail-wr1-f47.google.com with SMTP id r3so3641021wrt.3
+	Mon, 12 Aug 2019 09:51:37 +0200 (CEST)
+Received: by mail-wr1-f46.google.com with SMTP id r1so4617926wrl.7
 	for <drbd-announce@lists.linbit.com>;
-	Fri, 09 Aug 2019 01:10:28 -0700 (PDT)
+	Mon, 12 Aug 2019 00:51:37 -0700 (PDT)
 MIME-Version: 1.0
 From: Rene Peinthor <rene.peinthor@linbit.com>
-Date: Fri, 9 Aug 2019 10:10:17 +0200
-Message-ID: <CAHmn2DNj_tZv2q9t44Gouy3HUuAN0irsU6DboR-9_d3nLaYBMw@mail.gmail.com>
+Date: Mon, 12 Aug 2019 09:51:25 +0200
+Message-ID: <CAHmn2DO3JMkD3Bvrpr83s6EDYeiu2smE8Qun+3nLXPs7yeHNMA@mail.gmail.com>
 To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Content-Type: multipart/alternative; boundary="000000000000055e53058faab569"
-Subject: [DRBD-announce] Linstor-server 1.0.1 release
+Content-Type: multipart/alternative; boundary="0000000000001d7f50058fe6cba7"
+Subject: [DRBD-announce] linstor-client 1.0.1 release
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -25,20 +25,21 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
---000000000000055e53058faab569
+--0000000000001d7f50058fe6cba7
 Content-Type: text/plain; charset="UTF-8"
 
 Hi!
 
-This release just fixes a bug with postgresql database, as our internal
-tests didn't correctly
-work for those database system.
+There was a small bug in 1.0.0 introduced, that broke the utf8 output
+if the locale wasn't specified (usually in docker containers).
+This small update fixes this issue.
 
-linstor-server 1.0.1
+linstor-client 1.0.1
 --------------------
- * Fix postgresql database migration for resource groups
+ * Fixed table exception with unspecified locales
 
-https://www.linbit.com/downloads/linstor/linstor-server-1.0.1.tar.gz
+https://www.linbit.com/downloads/linstor/linstor-client-1.0.1.tar.gz
+
 
 Linstor PPA:
 https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
@@ -46,24 +47,24 @@ https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 Best regards,
 Rene
 
---000000000000055e53058faab569
+--0000000000001d7f50058fe6cba7
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr">Hi!<div><br></div><div>This release just fixes a bug with =
-postgresql database, as our internal tests didn&#39;t correctly</div><div>w=
-ork for those database system.</div><div><br></div><div><div><span style=3D=
-"font-family:monospace,monospace;font-size:x-small">linstor-server 1.0.1</s=
-pan></div><div><div><div><font face=3D"monospace, monospace" size=3D"1">---=
------------------</font></div><div><span style=3D"font-family:monospace,mon=
-ospace;font-size:x-small">=C2=A0* Fix postgresql database migration for res=
-ource groups</span></div><div><br></div></div><div><font size=3D"1" face=3D=
-"monospace"><a href=3D"https://www.linbit.com/downloads/linstor/linstor-ser=
-ver-1.0.1.tar.gz">https://www.linbit.com/downloads/linstor/linstor-server-1=
-.0.1.tar.gz</a></font></div></div></div><div><br></div><div><div>Linstor PP=
-A:<br><a href=3D"https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9=
--stack" rel=3D"noreferrer" target=3D"_blank">https://launchpad.net/~linbit/=
-+archive/ubuntu/linbit-drbd9-stack</a><br></div><div><br></div><div>Best re=
-gards,</div><div>Rene</div></div></div>
+<div dir=3D"ltr">Hi!<div><br></div><div>There was a small bug in 1.0.0 intr=
+oduced, that broke the utf8 output</div><div>if the locale wasn&#39;t speci=
+fied (usually in docker containers).</div><div>This small update fixes this=
+ issue.</div><div><font face=3D"monospace"><br></font></div><div><font face=
+=3D"monospace" size=3D"1">linstor-client 1.0.1<br>--------------------<br>=
+=C2=A0* Fixed table exception with unspecified locales</font><br></div><div=
+><font face=3D"monospace"><br></font></div><div><div><div><div><font size=
+=3D"1"><font face=3D"monospace, monospace"><a href=3D"https://www.linbit.co=
+m/downloads/linstor/linstor-client-1.0.1.tar.gz">https://www.linbit.com/dow=
+nloads/linstor/linstor-client-1.0.1.tar.gz</a></font></font></div></div></d=
+iv><div><br></div><div><br></div><div><div>Linstor PPA:<br><a href=3D"https=
+://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack" rel=3D"norefer=
+rer" target=3D"_blank">https://launchpad.net/~linbit/+archive/ubuntu/linbit=
+-drbd9-stack</a><br></div><div><br></div><div>Best regards,</div><div>Rene<=
+/div></div></div></div>
 
---000000000000055e53058faab569--
+--0000000000001d7f50058fe6cba7--
