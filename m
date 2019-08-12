@@ -1,19 +1,20 @@
-Return-Path: <rene.peinthor@linbit.com>
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com
-	[209.85.221.46])
-	by mail09.linbit.com (LINBIT Mail Daemon) with ESMTP id 9C88B101AC41
+Return-Path: <roland.kammerer@linbit.com>
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com
+	[209.85.128.45])
+	by mail09.linbit.com (LINBIT Mail Daemon) with ESMTP id 98F9D101AC45
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 12 Aug 2019 09:51:37 +0200 (CEST)
-Received: by mail-wr1-f46.google.com with SMTP id r1so4617926wrl.7
+	Mon, 12 Aug 2019 11:25:02 +0200 (CEST)
+Received: by mail-wm1-f45.google.com with SMTP id 207so11492747wma.1
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 12 Aug 2019 00:51:37 -0700 (PDT)
+	Mon, 12 Aug 2019 02:25:02 -0700 (PDT)
+Date: Mon, 12 Aug 2019 11:25:00 +0200
+From: Roland Kammerer <roland.kammerer@linbit.com>
+To: drbd-user@lists.linbit.com, drbd-announce@lists.linbit.com
+Message-ID: <20190812092500.2icajxt6eg5dciu5@rck.sh>
 MIME-Version: 1.0
-From: Rene Peinthor <rene.peinthor@linbit.com>
-Date: Mon, 12 Aug 2019 09:51:25 +0200
-Message-ID: <CAHmn2DO3JMkD3Bvrpr83s6EDYeiu2smE8Qun+3nLXPs7yeHNMA@mail.gmail.com>
-To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Content-Type: multipart/alternative; boundary="0000000000001d7f50058fe6cba7"
-Subject: [DRBD-announce] linstor-client 1.0.1 release
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Subject: Re: [DRBD-announce] linstor-proxmox 4.0.0
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -25,46 +26,21 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <http://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
---0000000000001d7f50058fe6cba7
-Content-Type: text/plain; charset="UTF-8"
+Dear Proxmox users,
 
-Hi!
+as there have not been any serious complaints since RC2, let's finalize
+this.
 
-There was a small bug in 1.0.0 introduced, that broke the utf8 output
-if the locale wasn't specified (usually in docker containers).
-This small update fixes this issue.
+Changes:
 
-linstor-client 1.0.1
---------------------
- * Fixed table exception with unspecified locales
+* implement APIVER 2
+* switch to REST-API
+* Linstor: saner defaults for not set variables
+* support APIVER 2 and 3 "on the fly"
+* poll in_use before delete
+* kvm: mark DRBD device as RW
 
-https://www.linbit.com/downloads/linstor/linstor-client-1.0.1.tar.gz
-
-
-Linstor PPA:
-https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
-
-Best regards,
-Rene
-
---0000000000001d7f50058fe6cba7
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr">Hi!<div><br></div><div>There was a small bug in 1.0.0 intr=
-oduced, that broke the utf8 output</div><div>if the locale wasn&#39;t speci=
-fied (usually in docker containers).</div><div>This small update fixes this=
- issue.</div><div><font face=3D"monospace"><br></font></div><div><font face=
-=3D"monospace" size=3D"1">linstor-client 1.0.1<br>--------------------<br>=
-=C2=A0* Fixed table exception with unspecified locales</font><br></div><div=
-><font face=3D"monospace"><br></font></div><div><div><div><div><font size=
-=3D"1"><font face=3D"monospace, monospace"><a href=3D"https://www.linbit.co=
-m/downloads/linstor/linstor-client-1.0.1.tar.gz">https://www.linbit.com/dow=
-nloads/linstor/linstor-client-1.0.1.tar.gz</a></font></font></div></div></d=
-iv><div><br></div><div><br></div><div><div>Linstor PPA:<br><a href=3D"https=
-://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack" rel=3D"norefer=
-rer" target=3D"_blank">https://launchpad.net/~linbit/+archive/ubuntu/linbit=
--drbd9-stack</a><br></div><div><br></div><div>Best regards,</div><div>Rene<=
-/div></div></div></div>
-
---0000000000001d7f50058fe6cba7--
+Best, rck
+ 
+[1] https://github.com/linbit/linstor-proxmox
+[2] https://www.linbit.com/downloads/connectors/linstor-proxmox-4.0.0.tar.gz
