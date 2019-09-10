@@ -1,19 +1,19 @@
 Return-Path: <rene.peinthor@linbit.com>
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com
-	[209.85.221.44])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 5D67E4203C2
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com
+	[209.85.221.43])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id D18174203D4
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 10 Sep 2019 17:07:13 +0200 (CEST)
-Received: by mail-wr1-f44.google.com with SMTP id a11so11235124wrx.1
+	Tue, 10 Sep 2019 17:08:15 +0200 (CEST)
+Received: by mail-wr1-f43.google.com with SMTP id a11so11242128wrx.1
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 10 Sep 2019 08:07:13 -0700 (PDT)
+	Tue, 10 Sep 2019 08:08:15 -0700 (PDT)
 MIME-Version: 1.0
 From: Rene Peinthor <rene.peinthor@linbit.com>
-Date: Tue, 10 Sep 2019 17:07:01 +0200
-Message-ID: <CAHmn2DOFmU+3fXUZL+biwa1vFXnOBDEnYcXcfjQPQv5N9bkkyw@mail.gmail.com>
+Date: Tue, 10 Sep 2019 17:07:59 +0200
+Message-ID: <CAHmn2DP80J=azuw341gnnXvZm3TKBwO9v+aCy+LcTGkr1JcSKA@mail.gmail.com>
 To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Content-Type: multipart/alternative; boundary="00000000000055e18b0592344281"
-Subject: [DRBD-announce] python-linstor, linstor-client 1.0.2 release
+Content-Type: multipart/alternative; boundary="000000000000c097310592344599"
+Subject: [DRBD-announce] linstor-server 1.1.1 release
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -25,31 +25,27 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
---00000000000055e18b0592344281
+--000000000000c097310592344599
 Content-Type: text/plain; charset="UTF-8"
 
 Hi!
 
-Here is a bug fix release for the client tools for LINSTOR:
+Mainly a bugfix release, for some minor reported bugs from our customers.
 
-python-linstor 1.0.2
+linstor-server 1.1.1
 --------------------
- * Added strict SSL certificate check
- * Fixed snapshots flag access if None
- * Fixed race condition while deleting resource definitions
- * Fixed high-level API deleting snapshots on node deactivate
+ * Node reconnect now also reconnect failed nodes
+ * Fixed dmstats command calling
+ * Reduced classpath for better process view
+ * Added exception handling for device handler (killing satellite in some
+cases)
+ * Correctly cleanup(remove from database) on retry-task operations
+ * NVME fixed ArrayIndexOutOfBoundsException if there are external NVME
+resources
+ * Added user name to log entries
+ * Fixed incomplete migration for external names
 
-https://www.linbit.com/downloads/linstor/python-linstor-1.0.2.tar.gz
-
-linstor-client 1.0.2
---------------------
- * Added support for strict SSL certificate check
- * Fixed resource connections path list command
- * Storage pool support snapshots info on FILE providers
- * Fixed --version writing output to stderr
-
-https://www.linbit.com/downloads/linstor/linstor-client-1.0.2.tar.gz
-
+https://www.linbit.com/downloads/linstor/linstor-server-1.1.1.tar.gz
 
 Linstor PPA:
 https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
@@ -57,43 +53,37 @@ https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 Best regards,
 Rene
 
---00000000000055e18b0592344281
+--000000000000c097310592344599
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr">Hi!<div><br></div><div>Here is a bug fix release for the c=
-lient tools for LINSTOR:<div><br></div><div><div><div><div><div><font size=
-=3D"1"><span style=3D"font-family:monospace,monospace">python-linstor 1.0.2=
-</span></font></div><div><font size=3D"1"><span style=3D"font-family:monosp=
-ace,monospace">--------------------</span></font></div><div><font face=3D"m=
-onospace, monospace" size=3D"1">=C2=A0* Added strict SSL certificate check<=
-/font></div><div><font face=3D"monospace, monospace" size=3D"1">=C2=A0* Fix=
-ed snapshots flag access if None</font></div><div><font face=3D"monospace, =
-monospace" size=3D"1">=C2=A0* Fixed race condition while deleting resource =
-definitions</font></div></div><div><font face=3D"monospace, monospace" size=
-=3D"1">=C2=A0* Fixed high-level API deleting snapshots on node=C2=A0deactiv=
-ate</font></div><div><br></div><div><font size=3D"1"><font face=3D"monospac=
-e, monospace"><a href=3D"https://www.linbit.com/downloads/linstor/python-li=
-nstor-1.0.2.tar.gz" target=3D"_blank">https://www.linbit.com/downloads/lins=
-tor/python-linstor-1.0.2.tar.gz</a></font></font></div></div><div><font siz=
-e=3D"1"><br></font></div><div><div><div><font size=3D"1"><span style=3D"fon=
-t-family:monospace,monospace">linstor-client 1.0.2</span></font></div><div>=
-<font size=3D"1"><span style=3D"font-family:monospace,monospace">----------=
-----------</span></font></div><div><span style=3D"font-family:monospace,mon=
-ospace;font-size:x-small">=C2=A0* Added support for strict SSL certificate =
-check</span></div><div><span style=3D"font-family:monospace,monospace;font-=
-size:x-small">=C2=A0* Fixed resource connections path list command</span></=
-div><div><font face=3D"monospace, monospace" size=3D"1">=C2=A0* Storage poo=
-l support snapshots info on FILE providers</font></div></div><div><font fac=
-e=3D"monospace, monospace" size=3D"1">=C2=A0* Fixed --version writing outpu=
-t to stderr</font></div><div><br></div><div><font size=3D"1"><font face=3D"=
-monospace, monospace"><a href=3D"https://www.linbit.com/downloads/linstor/l=
-instor-client-1.0.2.tar.gz" target=3D"_blank">https://www.linbit.com/downlo=
-ads/linstor/linstor-client-1.0.2.tar.gz</a></font></font></div></div></div>=
-<div><br></div><div><br></div><div><div>Linstor PPA:<br><a href=3D"https://=
-launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack" rel=3D"noreferrer=
-" target=3D"_blank">https://launchpad.net/~linbit/+archive/ubuntu/linbit-dr=
-bd9-stack</a><br></div><div><br></div><div>Best regards,</div><div>Rene</di=
-v></div></div></div></div>
+<div dir=3D"ltr">Hi!<div><br></div><div>Mainly a bugfix release, for some m=
+inor reported bugs from our customers.</div><div><div><br></div><div><div><=
+span style=3D"font-family:monospace,monospace;font-size:x-small">linstor-se=
+rver 1.1.1</span></div><div><div><div><font face=3D"monospace, monospace" s=
+ize=3D"1">--------------------</font></div><div><span style=3D"font-family:=
+monospace,monospace;font-size:x-small">=C2=A0* Node reconnect now also reco=
+nnect failed nodes</span></div><div><font face=3D"monospace, monospace" siz=
+e=3D"1">=C2=A0* Fixed dmstats command calling</font></div><div><span style=
+=3D"font-family:monospace,monospace;font-size:x-small">=C2=A0* Reduced clas=
+spath for better process view</span><br></div><div><span style=3D"font-fami=
+ly:monospace,monospace;font-size:x-small">=C2=A0* Added exception handling =
+for device handler (killing satellite in some cases)</span></div><div><span=
+ style=3D"font-family:monospace,monospace;font-size:x-small">=C2=A0* Correc=
+tly cleanup(remove from database) on retry-task operations</span></div><div=
+><span style=3D"font-family:monospace,monospace;font-size:x-small">=C2=A0* =
+NVME fixed ArrayIndexOutOfBoundsException if there are external NVME resour=
+ces</span></div><div><span style=3D"font-family:monospace,monospace;font-si=
+ze:x-small">=C2=A0* Added user name to log entries</span></div><div><span s=
+tyle=3D"font-family:monospace,monospace;font-size:x-small">=C2=A0* Fixed in=
+complete migration for external names</span></div><div><br></div></div><div=
+><font size=3D"1" face=3D"monospace"><a href=3D"https://www.linbit.com/down=
+loads/linstor/linstor-server-1.1.1.tar.gz" target=3D"_blank">https://www.li=
+nbit.com/downloads/linstor/linstor-server-1.1.1.tar.gz</a></font></div></di=
+v></div><div><br></div><div><div>Linstor PPA:<br><a href=3D"https://launchp=
+ad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack" rel=3D"noreferrer" targe=
+t=3D"_blank">https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-sta=
+ck</a><br></div><div><br></div><div>Best regards,</div><div>Rene</div></div=
+></div></div>
 
---00000000000055e18b0592344281--
+--000000000000c097310592344599--
