@@ -1,19 +1,20 @@
-Return-Path: <rene.peinthor@linbit.com>
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com
-	[209.85.128.42])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 05E3D4203B9
+Return-Path: <roland.kammerer@linbit.com>
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com
+	[209.85.128.44])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 4521A4203D4
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 16 Sep 2019 11:29:54 +0200 (CEST)
-Received: by mail-wm1-f42.google.com with SMTP id i16so3358768wmd.3
+	Mon, 16 Sep 2019 12:00:07 +0200 (CEST)
+Received: by mail-wm1-f44.google.com with SMTP id b24so1151408wmj.5
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 16 Sep 2019 02:29:54 -0700 (PDT)
+	Mon, 16 Sep 2019 03:00:07 -0700 (PDT)
+Date: Mon, 16 Sep 2019 11:59:05 +0200
+From: Roland Kammerer <roland.kammerer@linbit.com>
+To: drbd-user@lists.linbit.com, drbd-announce@lists.linbit.com
+Message-ID: <20190916095905.GB18779@rck.sh>
 MIME-Version: 1.0
-From: Rene Peinthor <rene.peinthor@linbit.com>
-Date: Mon, 16 Sep 2019 11:21:54 +0200
-Message-ID: <CAHmn2DPLvXsY5B1fsybBC7=Xy6seCxdBirpf7ZM-_8zW0VZcGA@mail.gmail.com>
-To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Content-Type: multipart/alternative; boundary="000000000000295a900592a823cd"
-Subject: [DRBD-announce] linstor-server 1.1.2 release
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Subject: [DRBD-announce] linstor-proxmox-4.1.0rc1
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -25,56 +26,43 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
---000000000000295a900592a823cd
-Content-Type: text/plain; charset="UTF-8"
+Dear Proxmox users,
 
-Hi!
+You probably have heard of LINSTOR resource groups ("templates"). This
+adds resource groups to the Proxmox plugin. Note that this is the preferred way
+to set up storage/set DRBD properties. The old way (setting
+'storagepool'/'redundancy') still works, but if a 'resourcegroup' is set, the
+values from the resource group are used. Eventually the old way will be
+removed.
 
-Another bugfix release, that will fix loading of resource connection data,
-this bug was introduced with 1.1.0 while database loading was restructured
-to support
-ETCD.
+The important commit message with some howto:
 
-linstor-server 1.1.2
---------------------
- * Fixed database loading of node/resource/volume-connection data
- * Allow deleting resource that only has diskless resource in deleting state
- * Better error handling in resource group spawn api
- * Upgraded jackson-databind to latest version
+This adds support for LINSTOR resource groups. This is now the preferred way to
+set up storage for the plugin (and in general in LINSTOR).  Resource groups are
+used whenever the keyword 'resourcegroup' is found in the configuration.
 
-https://www.linbit.com/downloads/linstor/linstor-server-1.1.2.tar.gz
+Resource groups in LINSTOR are like templates. For example let's create a
+resource group that autoplaces every VM disk to two nodes, to the fast ssd
+storage pool:
 
-Linstor PPA:
-https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+linstor rg c -s ssd --place-count 2 onfaststorage
+linstor vg c onfaststorage
 
-Best regards,
-Rene
+Note that you *have to* set a storage pool (-s). And also note that you have to
+create exaclty one LINSTOR volume group (vg).
 
---000000000000295a900592a823cd
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+The configuration in /etc/pve/storage.cfg then looks like this:
+drbd: ssdtwice
+  content images,rootdir
+  controller 10.43.8.119
+  resourcegroup onfaststorage
 
-<div dir=3D"ltr">Hi!<div><br></div><div>Another bugfix release, that will f=
-ix loading of resource connection data,</div><div>this bug was introduced w=
-ith 1.1.0 while database loading was restructured to support</div><div>ETCD=
-.</div><div><br></div><div><div><div><span style=3D"font-family:monospace,m=
-onospace;font-size:x-small">linstor-server 1.1.2</span></div><div><div><div=
-><font face=3D"monospace, monospace" size=3D"1">--------------------</font>=
-</div><div><span style=3D"font-family:monospace,monospace;font-size:x-small=
-">=C2=A0* Fixed database loading of node/resource/volume-connection data</s=
-pan></div><div><span style=3D"font-family:monospace,monospace;font-size:x-s=
-mall">=C2=A0* Allow deleting resource that only has diskless resource in de=
-leting state</span></div><div><span style=3D"font-family:monospace,monospac=
-e;font-size:x-small">=C2=A0* Better error handling in resource group spawn =
-api</span></div><div><span style=3D"font-family:monospace,monospace;font-si=
-ze:x-small">=C2=A0* Upgraded jackson-databind to latest version</span></div=
-><div><br></div></div><div><font size=3D"1" face=3D"monospace"><a href=3D"h=
-ttps://www.linbit.com/downloads/linstor/linstor-server-1.1.2.tar.gz">https:=
-//www.linbit.com/downloads/linstor/linstor-server-1.1.2.tar.gz</a></font></=
-div></div></div><div><br></div><div><div>Linstor PPA:<br><a href=3D"https:/=
-/launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack" rel=3D"noreferre=
-r" target=3D"_blank">https://launchpad.net/~linbit/+archive/ubuntu/linbit-d=
-rbd9-stack</a><br></div><div><br></div><div>Best regards,</div><div>Rene</d=
-iv></div></div></div>
+Every other LINSTOR/DRBD option then can be set on the template and gets
+automatically applied (even for existing resources).
 
---000000000000295a900592a823cd--
+Please test. Use the latest LINSTOR release.
+
+http://packages.linbit.com/rck/linstor-proxmox_4.1.0~rc1-1_all.deb
+https://github.com/linbit/linstor-proxmox
+
+Regards, rck
