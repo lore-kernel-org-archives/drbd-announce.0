@@ -1,20 +1,21 @@
-Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com
-	[209.85.128.44])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 4521A4203D4
+Return-Path: <philipp.reisner@linbit.com>
+Received: from mail-wr1-f68.google.com (mail-wr1-f68.google.com
+	[209.85.221.68])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 015C9420316
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 16 Sep 2019 12:00:07 +0200 (CEST)
-Received: by mail-wm1-f44.google.com with SMTP id b24so1151408wmj.5
+	Fri, 20 Sep 2019 14:58:19 +0200 (CEST)
+Received: by mail-wr1-f68.google.com with SMTP id y19so6697607wrd.3
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 16 Sep 2019 03:00:07 -0700 (PDT)
-Date: Mon, 16 Sep 2019 11:59:05 +0200
-From: Roland Kammerer <roland.kammerer@linbit.com>
-To: drbd-user@lists.linbit.com, drbd-announce@lists.linbit.com
-Message-ID: <20190916095905.GB18779@rck.sh>
+	Fri, 20 Sep 2019 05:58:19 -0700 (PDT)
+From: Philipp Reisner <philipp.reisner@linbit.com>
+To: drbd-announce@lists.linbit.com
+Date: Fri, 20 Sep 2019 14:49:27 +0200
+Message-ID: <1717213.ByRUQYXvLB@fat-tyre>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Subject: [DRBD-announce] linstor-proxmox-4.1.0rc1
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+Cc: drbd-user@lists.linbit.com
+Subject: [DRBD-announce] drbd-9.0.20-0rc1
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,43 +27,71 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Dear Proxmox users,
+Hi,
 
-You probably have heard of LINSTOR resource groups ("templates"). This
-adds resource groups to the Proxmox plugin. Note that this is the preferred way
-to set up storage/set DRBD properties. The old way (setting
-'storagepool'/'redundancy') still works, but if a 'resourcegroup' is set, the
-values from the resource group are used. Eventually the old way will be
-removed.
+a lot has happened since the last release. We rolled in a new way how
+kernel compatibility is handled. It is based on spatch/coccinelle
+now. While it was painful to switch we hope that the compat layer
+is now easier to understand while we move forward.
+Here is a blog-post that describes that in more detail:
+https://www.linbit.com/en/how-to-make-drbd-compatible-to-the-linux-kernel/
 
-The important commit message with some howto:
+In this cycle we have a bit more bug fixes that usual. As the bugs
+are more sophisticated and non obvious, out method transforms into a
+test-driven approach to development. See the new tests in the drbd9
+testsuite.
 
-This adds support for LINSTOR resource groups. This is now the preferred way to
-set up storage for the plugin (and in general in LINSTOR).  Resource groups are
-used whenever the keyword 'resourcegroup' is found in the configuration.
+A number of corner-cases that lead to false split-brains has been
+resolved.
 
-Resource groups in LINSTOR are like templates. For example let's create a
-resource group that autoplaces every VM disk to two nodes, to the fast ssd
-storage pool:
+Please help testing this pre-release.
 
-linstor rg c -s ssd --place-count 2 onfaststorage
-linstor vg c onfaststorage
 
-Note that you *have to* set a storage pool (-s). And also note that you have to
-create exaclty one LINSTOR volume group (vg).
+9.0.20-0rc1 (api:genl2/proto:86-115/transport:14)
+=2D-------
+ * fix a case of false split brain detection if a diskless node promotes
+   multiple times, by aligning the rules for generating a new current-UUID
+   on a diskless nodes with them on a node with disk
+ * check if we still have quorum by exchanging a drbd-ping with peers
+   before creating new current UUID after loosing one peer
+ * fix after weak handling to not interfere with reconciliation resyncs
+ * retry connect when one of the relevant flags changes during UUID exchange
+ * fix reconciliation resync if one of the secondary got an current-UUID up=
+date
+ * fix resync to make progress after it was paused by an other resync opera=
+tion
+ * fix false split-brains when a resync source changes current-UUID during
+   resync operation
+ * fix restore of D_OUTDATED when the resource first only attached and
+   then the peer objects are created (in contrast to the usual, new-peer,
+   attach, connect)
+ * abort creating new current-UUID when writing to meta-data fails in
+   the moment where the new-current-UUID should be written
+ * removed DRBD marking itself as read-only when secondary; this flag
+   was exposed using the BLKROGET ioctl; that should be left to user-land
+   use; recent KVM checks that flag, and does not dare auto-promote when
+   set by DRBD
+ * fix a small memory-leak when creating peer devices
+ * fix a possible information leak of kernel memory that pads net-link pack=
+ets
+ * code cleanups, introduced enums for remaining magic numbers
+ * new kernel-backward-compatibility framework based on spatch/coccinelle,
+   replacing an unmaintainable moloch of C preprocessor hell; Merged the
+   complete kernel-compat submodule
+ * compat with up to Linux-5.3-rc2
 
-The configuration in /etc/pve/storage.cfg then looks like this:
-drbd: ssdtwice
-  content images,rootdir
-  controller 10.43.8.119
-  resourcegroup onfaststorage
 
-Every other LINSTOR/DRBD option then can be set on the template and gets
-automatically applied (even for existing resources).
+https://www.linbit.com/downloads/drbd/9.0/drbd-9.0.20-0rc1.tar.gz
+https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+https://github.com/LINBIT/drbd/commit/1370004953ad8dad28a0ea4cdab3f9e685f5e=
+47e
 
-Please test. Use the latest LINSTOR release.
+best regards,
+ Phil
+=2D-=20
+LINBIT | Keeping The Digital World Running
 
-http://packages.linbit.com/rck/linstor-proxmox_4.1.0~rc1-1_all.deb
-https://github.com/linbit/linstor-proxmox
+DRBD=AE and LINBIT=AE are registered trademarks of LINBIT, Austria.
 
-Regards, rck
+
+
