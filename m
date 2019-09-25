@@ -1,21 +1,21 @@
 Return-Path: <philipp.reisner@linbit.com>
-Received: from mail-wr1-f68.google.com (mail-wr1-f68.google.com
-	[209.85.221.68])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 015C9420316
+Received: from mail-wm1-f67.google.com (mail-wm1-f67.google.com
+	[209.85.128.67])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 437004203C7
 	for <drbd-announce@lists.linbit.com>;
-	Fri, 20 Sep 2019 14:58:19 +0200 (CEST)
-Received: by mail-wr1-f68.google.com with SMTP id y19so6697607wrd.3
+	Wed, 25 Sep 2019 13:33:38 +0200 (CEST)
+Received: by mail-wm1-f67.google.com with SMTP id b24so4443160wmj.5
 	for <drbd-announce@lists.linbit.com>;
-	Fri, 20 Sep 2019 05:58:19 -0700 (PDT)
+	Wed, 25 Sep 2019 04:33:38 -0700 (PDT)
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Date: Fri, 20 Sep 2019 14:49:27 +0200
-Message-ID: <1717213.ByRUQYXvLB@fat-tyre>
+Date: Wed, 25 Sep 2019 13:24:17 +0200
+Message-ID: <9937327.lpNjVRovSk@fat-tyre>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset="iso-8859-1"
 Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-9.0.20-0rc1
+Subject: [DRBD-announce] drbd-9.0.20-0rc2
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -29,25 +29,20 @@ List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hi,
 
-a lot has happened since the last release. We rolled in a new way how
-kernel compatibility is handled. It is based on spatch/coccinelle
-now. While it was painful to switch we hope that the compat layer
-is now easier to understand while we move forward.
-Here is a blog-post that describes that in more detail:
-https://www.linbit.com/en/how-to-make-drbd-compatible-to-the-linux-kernel/
+Rc1 was broken on recent RHELs. The problem was that some compat
+tests were failing for wrong reason, compile-time disabling some features.
+Well, and then the running RHEL kernel was sending IO requests with
+exactly those feature flags down to DRBD. Not good. That resulted in
+DRBD sending stuff on the network the receiving DRBD can not digest.
 
-In this cycle we have a bit more bug fixes that usual. As the bugs
-are more sophisticated and non obvious, out method transforms into a
-test-driven approach to development. See the new tests in the drbd9
-testsuite.
+The other commits touch on building in Proxmox environment,
+where the .tgz does not contain a pre-computed compat patch, but the
+platform has a working coccinelle package.
 
-A number of corner-cases that lead to false split-brains has been
-resolved.
+Please help testing this pre-release. It nothing serious is found
+we will have a final release on October 2nd.
 
-Please help testing this pre-release.
-
-
-9.0.20-0rc1 (api:genl2/proto:86-115/transport:14)
+9.0.20-0rc2 (api:genl2/proto:86-115/transport:14)
 =2D-------
  * fix a case of false split brain detection if a diskless node promotes
    multiple times, by aligning the rules for generating a new current-UUID
@@ -80,14 +75,14 @@ ets
    complete kernel-compat submodule
  * compat with up to Linux-5.3-rc2
 
-
-https://www.linbit.com/downloads/drbd/9.0/drbd-9.0.20-0rc1.tar.gz
+https://www.linbit.com/downloads/drbd/9.0/drbd-9.0.20-0rc2.tar.gz
 https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
-https://github.com/LINBIT/drbd/commit/1370004953ad8dad28a0ea4cdab3f9e685f5e=
-47e
+https://github.com/LINBIT/drbd/commit/692f11c2145a03d1a949758400f19b028e370=
+40a
 
 best regards,
  Phil
+
 =2D-=20
 LINBIT | Keeping The Digital World Running
 
