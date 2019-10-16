@@ -1,22 +1,21 @@
 Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com
-	[209.85.221.45])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 165114203E3
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com
+	[209.85.128.43])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id BAAC14203D2
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 10 Oct 2019 15:58:38 +0200 (CEST)
-Received: by mail-wr1-f45.google.com with SMTP id v8so8042956wrt.2
+	Wed, 16 Oct 2019 13:48:09 +0200 (CEST)
+Received: by mail-wm1-f43.google.com with SMTP id i16so2576728wmd.3
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 10 Oct 2019 06:58:38 -0700 (PDT)
-Date: Thu, 10 Oct 2019 15:57:37 +0200
+	Wed, 16 Oct 2019 04:48:09 -0700 (PDT)
+Date: Wed, 16 Oct 2019 13:48:07 +0200
 From: Roland Kammerer <roland.kammerer@linbit.com>
 To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Message-ID: <20191010135737.GQ2889@rck.sh>
-References: <2821659.NS9FCa6JyO@fat-tyre>
+Message-ID: <20191016114807.GD2194@rck.sh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="tKW2IUtsqtDRztdT"
 Content-Disposition: inline
-In-Reply-To: <2821659.NS9FCa6JyO@fat-tyre>
-Subject: Re: [DRBD-announce] [DRBD-user] drbd-9.0.20-1
+Subject: [DRBD-announce] drbd-utils-9.11.0
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -28,33 +27,63 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-On Thu, Oct 10, 2019 at 01:19:53PM +0200, Philipp Reisner wrote:
-> Hi,
-> 
-> With this release the big news is the new way we deal with compatibility
-> for older linux kernels. It used to be a mechanism based of #IFDEFs that
-> tainted the main drbd code more and more.
-> Now the DRBD code is clean Linux-upstream compatible code. In order that
-> you can compile it against older and distribution kernels the build
-> process automatically applies a compat-patch. These compat-patches are
-> computed using coccinelle/spatch semantic patches. See here for more
-> information:
-> 
-> https://www.linbit.com/en/how-to-make-drbd-compatible-to-the-linux-kernel/
 
-Some additional hints/tl;tr:
+--tKW2IUtsqtDRztdT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-1. It tries to find a patch in the local cache (shipped in the tar
-ball).
+Hi DRBD users,
 
-2. If not in cache, try to generate with spatch. You need to have at
-least version 1.0.8 (latest release, as of about 2 weeks ago). Earlier
-version might generate patches, put they might be invalid! AFAIK no
-distri packaged 1.0.8 so far.
+This release contains some bug fixes and some new features. The features
+were mainly driven by customer requests, so they solve some specific
+corner cases. If you don't use these features (or a pretty recent
+kernel), there is no urgent need to upgrade now.
 
-3. If spatch is not installed, it fetches the patch from a web service.
-For that you need access to the web, and you need `curl`. I forget to
-add it as explicit dependency for the dkms. Most systems should have it
-- PVE is a famous exception - or the build process will complain anyways.
+Highlights include:
+- There were changes in netlink for Linux 5.2. If you use one of these
+  kernels, you should update. This change is shared between utils code
+  for versions 9.0 and 8.4 of the kernel code.
 
-Best, rck
+- rr-conflict got a retry-connect option. This is particularly useful in
+  setups where quorum and pacemaker are used. See the according commit
+  msg.
+
+- drbdsetup got an option to force resync which, on new-current-uuid'
+  set the current data set UpToDate and forces a resync to all peers.
+
+- drbdmon got a 256/16 color mode.
+
+Overall the changes are pretty small, so I'm almost sure it won't kill
+you kittens. The new versions can be found on the usual locations.
+
+9.11.0
+--------
+ * drbdsetup,all: prepare for netlink changes (linux v5.2+)
+ * drbdadm,v9: fix a check for setting up connections multiple times
+ * init: setup file backed loop devices (mapping from LINSTOR)
+ * rr-conflict: add retry-connect option (>=drbd 9.0.20)
+ * drbdmon: 256/16 colors; events2 handler improvements
+ * drbdsetup,v9: new flag: force-resync (>=drbd 9.0.21)
+
+https://www.linbit.com/downloads/drbd/utils/drbd-utils-9.11.0.tar.gz
+https://github.com/LINBIT/drbd-utils/tree/v9.11.0
+https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+
+Regards, rck
+
+--tKW2IUtsqtDRztdT
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAl2nA2AACgkQRgmezyI6
+myLgUwf/XJFzU2DuQbYflYynmT6LWDaVimlsN1+ctsD1mjOXHDM+OieFoLULmzL1
+keOcoji8uMhbP6bOHTHsU82vjjz0BYN5IZxF68cLNTogz40QVYezjPonbitv1kRm
+HXB4N2x0KnXJVUFdLagQcDRoqiJ7yKlrV+OwpnCfabU551LT00OHlqsVai3pQ+oM
+lgRqlqwl7CCD9W0ncYE4PrgWDD6l1EBfqhFKcxDIKDiMLgpgGnNkScCROe21fnai
+qdUy/igDnuAHwJk+nJuRXJF6GfIcdy8EJRJ36nINO06xInIWsRmsJ/+Ia7PcgWKo
+7ROGT6Ldzw1x1pC3DvTq38VkT3B27A==
+=Rnxd
+-----END PGP SIGNATURE-----
+
+--tKW2IUtsqtDRztdT--
