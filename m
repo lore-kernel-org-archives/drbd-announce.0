@@ -1,19 +1,19 @@
 Return-Path: <rene.peinthor@linbit.com>
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com
-	[209.85.128.48])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 111B2420008
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com
+	[209.85.128.44])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 674FD42010B
 	for <drbd-announce@lists.linbit.com>;
-	Fri, 25 Oct 2019 14:08:36 +0200 (CEST)
-Received: by mail-wm1-f48.google.com with SMTP id c22so1777739wmd.1
+	Tue,  5 Nov 2019 09:59:53 +0100 (CET)
+Received: by mail-wm1-f44.google.com with SMTP id q70so19871895wme.1
 	for <drbd-announce@lists.linbit.com>;
-	Fri, 25 Oct 2019 05:08:36 -0700 (PDT)
+	Tue, 05 Nov 2019 00:59:53 -0800 (PST)
 MIME-Version: 1.0
 From: Rene Peinthor <rene.peinthor@linbit.com>
-Date: Fri, 25 Oct 2019 14:08:25 +0200
-Message-ID: <CAHmn2DMW+1Wc7-7D3+k_0nQxe8r3RPmnDu7Hghq6MNqH_mnmPw@mail.gmail.com>
-To: drbd-announce@lists.linbit.com, drbd-user <drbd-user@lists.linbit.com>
-Content-Type: multipart/alternative; boundary="0000000000007294410595bb02c9"
-Subject: [DRBD-announce] python-linstor, linstor-client 1.0.5 release
+Date: Tue, 5 Nov 2019 09:58:42 +0100
+Message-ID: <CAHmn2DM9z=JuLhOObmTYzchM+XuSVqWAgGSiYaPEoLKjAF3TdQ@mail.gmail.com>
+To: drbd-user <drbd-user@lists.linbit.com>, drbd-announce@lists.linbit.com
+Content-Type: multipart/alternative; boundary="000000000000368415059695a4bc"
+Subject: [DRBD-announce] linstor-opennebula 1.0.0 release
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -25,74 +25,56 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
---0000000000007294410595bb02c9
+--000000000000368415059695a4bc
 Content-Type: text/plain; charset="UTF-8"
 
 Hi!
 
-Unfortunately the 1.0.4 release of python-linstor had bad error checking
-for controller responses, which broke the opennebula plugin. This release
-fixes this issue and also adds compatibility
-code for volume definition list from old controller versions.
-Additionally also the client learnt the new zstd compression method for the
-latest drbd-proxy.
+This version of the OpenNebula plugin was enhanced with LINSTOR resource
+groups support,
+also the documentation is now moved into the LINSTOR user's-guide[1] and
+was removed
+from the README.
 
-python-linstor 1.0.5
---------------------
- * Fixed volume_dfn_list on controller with API < 1.0.10
- * Fixed incorrect error checks in the resource high level API
+linstor-opennebula 1.0.0
+-----------------------------------
+ * Add support for resource-groups via `LINSTOR_RESOURCE_GROUP` variable
+ * Moved documentation to LINSTOR user guide
+ * Fixed incorrect mkfs/mkimage scripts
+ * Removed linstor-client dependency
 
-https://www.linbit.com/downloads/linstor/python-linstor-1.0.5.tar.gz
-
-linstor-client 1.0.5
---------------------
- * Added support for zstd proxy compression
- * Fixed missing global argument filters for certificate arguments
-
-https://www.linbit.com/downloads/linstor/linstor-client-1.0.5.tar.gz
-
-
-Linstor PPA:
-https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+https://www.linbit.com/downloads/connectors/linstor-opennebula-1.0.0.tar.gz
 
 Best regards,
 Rene
 
---0000000000007294410595bb02c9
+[1] https://docs.linbit.com/docs/linstor-guide/#ch-opennebula-linstor
+
+--000000000000368415059695a4bc
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr">Hi!<div><br></div><div>Unfortunately the 1.0.4 release of =
-python-linstor had bad error checking for controller responses, which broke=
- the opennebula plugin. This release fixes this issue and also adds compati=
-bility</div><div>code for volume definition=C2=A0list from old controller v=
-ersions.</div><div>Additionally also the client learnt the new zstd compres=
-sion method for the latest drbd-proxy.</div><div><br></div><div><div><div><=
-div><div><font size=3D"1"><span style=3D"font-family:monospace,monospace">p=
-ython-linstor 1.0.5</span></font></div><div><font size=3D"1"><span style=3D=
-"font-family:monospace,monospace">--------------------</span></font></div><=
-div><font face=3D"monospace, monospace" size=3D"1">=C2=A0* Fixed volume_dfn=
-_list on controller with API &lt; 1.0.10</font></div></div><div><font face=
-=3D"monospace, monospace" size=3D"1">=C2=A0* Fixed incorrect error checks i=
-n the resource high level API</font></div><div><br></div><div><font size=3D=
-"1"><font face=3D"monospace, monospace"><a href=3D"https://www.linbit.com/d=
-ownloads/linstor/python-linstor-1.0.5.tar.gz">https://www.linbit.com/downlo=
-ads/linstor/python-linstor-1.0.5.tar.gz</a></font></font></div></div><div><=
-font size=3D"1"><br></font></div><div><div><div><font size=3D"1"><span styl=
-e=3D"font-family:monospace,monospace">linstor-client 1.0.5</span></font></d=
-iv><div><font size=3D"1"><span style=3D"font-family:monospace,monospace">--=
-------------------</span></font></div><div><font face=3D"monospace"><span s=
-tyle=3D"font-size:x-small">=C2=A0*</span><font size=3D"1">=C2=A0Added suppo=
-rt for zstd proxy compression</font></font></div><div><font face=3D"monospa=
-ce, monospace" size=3D"1">=C2=A0* Fixed missing global argument filters for=
- certificate arguments</font></div></div><div><br></div><div><font size=3D"=
-1"><font face=3D"monospace, monospace"><a href=3D"https://www.linbit.com/do=
-wnloads/linstor/linstor-client-1.0.5.tar.gz">https://www.linbit.com/downloa=
-ds/linstor/linstor-client-1.0.5.tar.gz</a></font></font></div></div></div><=
-div><br></div><div><br></div><div><div>Linstor PPA:<br><a href=3D"https://l=
-aunchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack" rel=3D"noreferrer"=
- target=3D"_blank">https://launchpad.net/~linbit/+archive/ubuntu/linbit-drb=
-d9-stack</a><br></div><div><br></div><div>Best regards,</div><div>Rene</div=
-></div></div></div>
+<div dir=3D"ltr">Hi!<div><br></div><div>This version of the OpenNebula plug=
+in was enhanced with LINSTOR resource groups support,</div><div>also the do=
+cumentation is now moved into the LINSTOR user&#39;s-guide[1] and was remov=
+ed</div><div>from the README.</div><div><br></div><div><div><div><font size=
+=3D"1"><span style=3D"font-family:monospace,monospace">linstor-<span>openne=
+bula</span>=C2=A01.0.0</span></font></div><div><font size=3D"1"><span style=
+=3D"font-family:monospace,monospace">-----------------------------------</s=
+pan></font></div><div><font face=3D"monospace, monospace" size=3D"1">=C2=A0=
+* Add support for resource-groups via `LINSTOR_RESOURCE_GROUP` variable</fo=
+nt></div></div><div><font face=3D"monospace, monospace" size=3D"1">=C2=A0* =
+Moved documentation to LINSTOR user guide</font></div><div><font face=3D"mo=
+nospace, monospace" size=3D"1">=C2=A0* Fixed incorrect mkfs/mkimage scripts=
+</font></div><div><font face=3D"monospace, monospace" size=3D"1">=C2=A0* Re=
+moved linstor-client dependency</font></div><div><font face=3D"monospace, m=
+onospace" size=3D"1"><br></font></div><div><font size=3D"1" face=3D"courier=
+ new, monospace"><a href=3D"https://www.linbit.com/downloads/connectors/lin=
+stor-opennebula-1.0.0.tar.gz" target=3D"_blank">https://www.linbit.com/down=
+loads/connectors/linstor-<span>opennebula</span>-1.0.0.tar.gz</a></font><fo=
+nt face=3D"monospace, monospace" size=3D"1"><br></font></div><br></div><div=
+>Best regards,</div><div>Rene</div><div><br></div><div>[1]=C2=A0<a href=3D"=
+https://docs.linbit.com/docs/linstor-guide/#ch-opennebula-linstor">https://=
+docs.linbit.com/docs/linstor-guide/#ch-opennebula-linstor</a></div></div>
 
---0000000000007294410595bb02c9--
+--000000000000368415059695a4bc--
