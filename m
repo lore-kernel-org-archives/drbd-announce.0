@@ -1,19 +1,21 @@
-Return-Path: <rene.peinthor@linbit.com>
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com
-	[209.85.128.44])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 674FD42010B
+Return-Path: <philipp.reisner@linbit.com>
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com
+	[209.85.128.43])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 0EDEE420320
 	for <drbd-announce@lists.linbit.com>;
-	Tue,  5 Nov 2019 09:59:53 +0100 (CET)
-Received: by mail-wm1-f44.google.com with SMTP id q70so19871895wme.1
+	Tue,  5 Nov 2019 13:18:43 +0100 (CET)
+Received: by mail-wm1-f43.google.com with SMTP id f3so8769214wmc.5
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 05 Nov 2019 00:59:53 -0800 (PST)
+	Tue, 05 Nov 2019 04:18:43 -0800 (PST)
+From: Philipp Reisner <philipp.reisner@linbit.com>
+To: drbd-announce@lists.linbit.com
+Date: Tue, 05 Nov 2019 13:18:41 +0100
+Message-ID: <2081913.IQ3ClJ8Ldk@fat-tyre>
 MIME-Version: 1.0
-From: Rene Peinthor <rene.peinthor@linbit.com>
-Date: Tue, 5 Nov 2019 09:58:42 +0100
-Message-ID: <CAHmn2DM9z=JuLhOObmTYzchM+XuSVqWAgGSiYaPEoLKjAF3TdQ@mail.gmail.com>
-To: drbd-user <drbd-user@lists.linbit.com>, drbd-announce@lists.linbit.com
-Content-Type: multipart/alternative; boundary="000000000000368415059695a4bc"
-Subject: [DRBD-announce] linstor-opennebula 1.0.0 release
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+Cc: drbd-user@lists.linbit.com
+Subject: [DRBD-announce] drbd-9.0.21-0rc1
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -25,56 +27,46 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
---000000000000368415059695a4bc
-Content-Type: text/plain; charset="UTF-8"
+Hi,
 
-Hi!
+With the drbd-9.0.20 release we changed the kernel compat layer. We tested
+carefully on the platforms most of our customers and users have:
+RHEL/CentOs 6,7,8 and Ubuntu LTS 16.04 & 18.08. No we realize that
+Debian was our blind spot. 9.0.20 does not work on Debian's 4.9 kernel:
+It causes DRBD's resync to be slower than usual and causes the resync
+to get stuck at always the same point. Probably it also causes a memory
+leak.
 
-This version of the OpenNebula plugin was enhanced with LINSTOR resource
-groups support,
-also the documentation is now moved into the LINSTOR user's-guide[1] and
-was removed
-from the README.
+Please help testing this pre-release.
 
-linstor-opennebula 1.0.0
------------------------------------
- * Add support for resource-groups via `LINSTOR_RESOURCE_GROUP` variable
- * Moved documentation to LINSTOR user guide
- * Fixed incorrect mkfs/mkimage scripts
- * Removed linstor-client dependency
+9.0.21-0rc1 (api:genl2/proto:86-116/transport:14)
+=2D-------
+ * fix compat for write same on linux 4.9 and the Debian users
+ * fix kernel compat for linux 4.8 and 4.9; this mainly affected Debian
+   users; The symptoms where slow resync and resync getting stuck always at
+   the same point
+ * enable resync of lost and re-created backing devices (think lost node) w=
+hen
+   the backing device was thinly provisioned and its current uuid is pre-set
+   to a 'day0 UUID' (by LINSTOR); that works by copying a unused bitmap slot
+   which tracks all changes since day 0
+ * fix attach when bitmap is on PMEM; before it was set to
+   'all blocks out-of-sync' upon attach
+ * return disk-state from Outdated to UpToDate when it looses connection
+   while in WFBitMapT and we have a stable and UpToDate peer
+ * new option --force-resync flag can be passed to new-current-uuid, that
+   can be used to trigger initial resync without touching the role
 
-https://www.linbit.com/downloads/connectors/linstor-opennebula-1.0.0.tar.gz
+https://www.linbit.com/downloads/drbd/9.0/drbd-9.0.21-0rc1.tar.gz
+https://github.com/LINBIT/drbd/commit/29a9e4f2c9606c2c086b4b5d69bf54e024af9=
+1d5
 
-Best regards,
-Rene
+best regards,
+ Phil
+=2D-=20
+LINBIT | Keeping The Digital World Running
 
-[1] https://docs.linbit.com/docs/linstor-guide/#ch-opennebula-linstor
+DRBD=AE and LINBIT=AE are registered trademarks of LINBIT, Austria.
 
---000000000000368415059695a4bc
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr">Hi!<div><br></div><div>This version of the OpenNebula plug=
-in was enhanced with LINSTOR resource groups support,</div><div>also the do=
-cumentation is now moved into the LINSTOR user&#39;s-guide[1] and was remov=
-ed</div><div>from the README.</div><div><br></div><div><div><div><font size=
-=3D"1"><span style=3D"font-family:monospace,monospace">linstor-<span>openne=
-bula</span>=C2=A01.0.0</span></font></div><div><font size=3D"1"><span style=
-=3D"font-family:monospace,monospace">-----------------------------------</s=
-pan></font></div><div><font face=3D"monospace, monospace" size=3D"1">=C2=A0=
-* Add support for resource-groups via `LINSTOR_RESOURCE_GROUP` variable</fo=
-nt></div></div><div><font face=3D"monospace, monospace" size=3D"1">=C2=A0* =
-Moved documentation to LINSTOR user guide</font></div><div><font face=3D"mo=
-nospace, monospace" size=3D"1">=C2=A0* Fixed incorrect mkfs/mkimage scripts=
-</font></div><div><font face=3D"monospace, monospace" size=3D"1">=C2=A0* Re=
-moved linstor-client dependency</font></div><div><font face=3D"monospace, m=
-onospace" size=3D"1"><br></font></div><div><font size=3D"1" face=3D"courier=
- new, monospace"><a href=3D"https://www.linbit.com/downloads/connectors/lin=
-stor-opennebula-1.0.0.tar.gz" target=3D"_blank">https://www.linbit.com/down=
-loads/connectors/linstor-<span>opennebula</span>-1.0.0.tar.gz</a></font><fo=
-nt face=3D"monospace, monospace" size=3D"1"><br></font></div><br></div><div=
->Best regards,</div><div>Rene</div><div><br></div><div>[1]=C2=A0<a href=3D"=
-https://docs.linbit.com/docs/linstor-guide/#ch-opennebula-linstor">https://=
-docs.linbit.com/docs/linstor-guide/#ch-opennebula-linstor</a></div></div>
 
---000000000000368415059695a4bc--
