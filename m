@@ -1,21 +1,13 @@
-Return-Path: <philipp.reisner@linbit.com>
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com
-	[209.85.128.43])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 0EDEE420320
-	for <drbd-announce@lists.linbit.com>;
-	Tue,  5 Nov 2019 13:18:43 +0100 (CET)
-Received: by mail-wm1-f43.google.com with SMTP id f3so8769214wmc.5
-	for <drbd-announce@lists.linbit.com>;
-	Tue, 05 Nov 2019 04:18:43 -0800 (PST)
-From: Philipp Reisner <philipp.reisner@linbit.com>
-To: drbd-announce@lists.linbit.com
-Date: Tue, 05 Nov 2019 13:18:41 +0100
-Message-ID: <2081913.IQ3ClJ8Ldk@fat-tyre>
+Return-Path: <johannes@johannesthoma.com>
+To: "drbd-user@lists.linbit.com" <drbd-user@lists.linbit.com>,
+	drbd-announce@lists.linbit.com
+From: Johannes Thoma <johannes@johannesthoma.com>
+Message-ID: <957433c8-8a6e-aeab-8450-f246dc0ac37c@johannesthoma.com>
+Date: Wed, 6 Nov 2019 16:31:36 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-9.0.21-0rc1
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: [DRBD-announce] WinDRBD 0.10.1 released (with data and disk devices)
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -27,46 +19,73 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Hi,
+Dear DRBD and WinDRBD community,
 
-With the drbd-9.0.20 release we changed the kernel compat layer. We tested
-carefully on the platforms most of our customers and users have:
-RHEL/CentOs 6,7,8 and Ubuntu LTS 16.04 & 18.08. No we realize that
-Debian was our blind spot. 9.0.20 does not work on Debian's 4.9 kernel:
-It causes DRBD's resync to be slower than usual and causes the resync
-to get stuck at always the same point. Probably it also causes a memory
-leak.
+We are happy to announce a new version of WinDRBD: 0.10.1
 
-Please help testing this pre-release.
+This version mainly fixes the use of non-boot devices which
+are not implemented in 0.10.0. If you are using data devices
+(devices created with 0.9.2 or before) you can now upgrade
+to this version.
 
-9.0.21-0rc1 (api:genl2/proto:86-116/transport:14)
-=2D-------
- * fix compat for write same on linux 4.9 and the Debian users
- * fix kernel compat for linux 4.8 and 4.9; this mainly affected Debian
-   users; The symptoms where slow resync and resync getting stuck always at
-   the same point
- * enable resync of lost and re-created backing devices (think lost node) w=
-hen
-   the backing device was thinly provisioned and its current uuid is pre-set
-   to a 'day0 UUID' (by LINSTOR); that works by copying a unused bitmap slot
-   which tracks all changes since day 0
- * fix attach when bitmap is on PMEM; before it was set to
-   'all blocks out-of-sync' upon attach
- * return disk-state from Outdated to UpToDate when it looses connection
-   while in WFBitMapT and we have a stable and UpToDate peer
- * new option --force-resync flag can be passed to new-current-uuid, that
-   can be used to trigger initial resync without touching the role
+In 0.10.1 we distinguish between boot devices, data devices
+and disk devices. Boot devices are disk devices that are
+used for booting Windows from a remote location (implemented
+first in 0.10.0). Data devices are devices with a mount
+point specified, such as in
 
-https://www.linbit.com/downloads/drbd/9.0/drbd-9.0.21-0rc1.tar.gz
-https://github.com/LINBIT/drbd/commit/29a9e4f2c9606c2c086b4b5d69bf54e024af9=
-1d5
+	device "E:" minor 42;
 
-best regards,
- Phil
-=2D-=20
-LINBIT | Keeping The Digital World Running
+in the drbd config. They support NTFS but might not work
+with Microsoft applications that use undocumented ioctl
+calls (such as winsat or MS SQL server). Also FAT, exFAT
+and ReFS atop of a data device do not work well.
 
-DRBD=AE and LINBIT=AE are registered trademarks of LINBIT, Austria.
+Here the disk devices come into play. Those are devices
+without a mount point specified in the drbd config such
+as in
 
+	device minor 87;
 
+When bringing this device up and make them primary a new
+disk appears in partition manager (use control panel to
+go to the partition manager). With partition manager the
+disk device can be paritioned just like any other hard
+disk. Also drive letters can be assigned to the partitions.
+
+Under Linux the partitions inside the disk device can be accessed
+by using the kpartx tool. kpartx scans a block device for partitions
+and creates /dev/dm-<n> device (see the man page).
+
+We would like to hear if using disk devices solves the problem
+that some Microsoft applications (like MS SQL server) do not
+run properly. In theory they should run when using partitions
+on a disk device but we haven't tried that yet.
+
+Another minor improvement is that the iPXE client that ships
+with the installer EXE now knows that it has the windrbd
+feature enabled that is in the dhcp config you can test for
+ipxe.windrbd feature enabled to do the iPXE chain loading
+(instead of testing for iscsi). A new version of the
+windrbd-boot PDF will be released soon and can be downloaded
+from
+
+	https://downloads.linbit.com/
+
+describing the new syntax.
+
+As always a signed driver and packaged utilities can be
+downloaded from the Linbit homepage at:
+
+	https://www.linbit.com/en/drbd-community/drbd-download
+
+If you just want to test WinDRBD (and not develop for it)
+using Linbit's signed EXE is the recommended way to
+obtain it (rather than build it from the sources).
+
+As always, any feedback is highly appreciated,
+
+Best wishes,
+
+- Johannes
 
