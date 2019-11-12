@@ -1,19 +1,21 @@
-Return-Path: <rene.peinthor@linbit.com>
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com
-	[209.85.128.41])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 0175E4203DB
+Return-Path: <philipp.reisner@linbit.com>
+Received: from mail-wr1-f66.google.com (mail-wr1-f66.google.com
+	[209.85.221.66])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 462A34202F7
 	for <drbd-announce@lists.linbit.com>;
-	Thu,  7 Nov 2019 15:36:01 +0100 (CET)
-Received: by mail-wm1-f41.google.com with SMTP id z19so2680489wmk.3
+	Tue, 12 Nov 2019 15:11:44 +0100 (CET)
+Received: by mail-wr1-f66.google.com with SMTP id w9so11889013wrr.0
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 07 Nov 2019 06:36:01 -0800 (PST)
+	Tue, 12 Nov 2019 06:11:44 -0800 (PST)
+From: Philipp Reisner <philipp.reisner@linbit.com>
+To: drbd-announce@lists.linbit.com
+Date: Tue, 12 Nov 2019 15:01:40 +0100
+Message-ID: <2450200.uzZMujXCxL@fat-tyre>
 MIME-Version: 1.0
-From: Rene Peinthor <rene.peinthor@linbit.com>
-Date: Thu, 7 Nov 2019 15:34:50 +0100
-Message-ID: <CAHmn2DN-9r18X7JBBkJ7=eeurZKpATexeGzbYfXEgMwQvHRQEQ@mail.gmail.com>
-To: drbd-announce@lists.linbit.com, drbd-user <drbd-user@lists.linbit.com>
-Content-Type: multipart/alternative; boundary="0000000000000692f40596c292b5"
-Subject: [DRBD-announce] python-linstor, linstor-client 1.0.6 release
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+Cc: drbd-user@lists.linbit.com
+Subject: [DRBD-announce] drbd-9.0.21-1
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -25,80 +27,45 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
---0000000000000692f40596c292b5
-Content-Type: text/plain; charset="UTF-8"
+Hi,
 
-Hi!
+With the drbd-9.0.20 release we changed the kernel compat layer. We tested
+carefully on the platforms most of our customers and users have:
+RHEL/CentOs 6,7,8 and Ubuntu LTS 16.04 & 18.08. No we realize that
+Debian was our blind spot. 9.0.20 does not work on Debian's 4.9 kernel:
+It causes DRBD's resync to be slower than usual and causes the resync
+to get stuck at always the same point. Probably it also causes a memory
+leak.
 
-On par with the Linstor-server 1.2.1 release, this client release makes use
-of the new info about node capabilities in regards of storage and resource
-layers,
-with the new `linstor node info` command.
+9.0.21-1 (api:genl2/proto:86-116/transport:14)
+=2D-------
+ * fix compat for write same on linux 4.9 and the Debian users
+ * fix kernel compat for linux 4.8 and 4.9; this mainly affected Debian
+   users; The symptoms where slow resync and resync getting stuck always at
+   the same point
+ * enable resync of lost and re-created backing devices (think lost node) w=
+hen
+   the backing device was thinly provisioned and its current uuid is pre-set
+   to a 'day0 UUID' (by LINSTOR); that works by copying a unused bitmap slot
+   which tracks all changes since day 0
+ * fix attach when bitmap is on PMEM; before it was set to
+   'all blocks out-of-sync' upon attach
+ * avoid doing reconciliation resync multiple times by updating the
+   resync target's dagtag after if completed successfully
+ * return disk-state from Outdated to UpToDate when it loses connection
+   while in WFBitMapT and we have a stable and UpToDate peer
+ * new option --force-resync flag can be passed to new-current-uuid, that
+   can be used to trigger initial resync without touching the role
 
-Also the `query-max-volume-size` command was copied over the `controller`
-command group
-and the whole `storage-pool-definition` command group will be removed from
-the client in the next version, until you bring up good reasons why we
-shouldn't.
+https://www.linbit.com/downloads/drbd/9.0/drbd-9.0.21-1.tar.gz
+https://github.com/LINBIT/drbd/commit/449d6bf22b01af7d14a297a4ed3e281aa84c9=
+4a5
 
-python-linstor 1.0.6
---------------------
- * Fixed modify passphrase API call (used wrong method)
- * Add node info properties
+=2DPhil
+=2D-=20
+LINBIT | Keeping The Digital World Running
 
-https://www.linbit.com/downloads/linstor/python-linstor-1.0.6.tar.gz
+DRBD=AE and LINBIT=AE are registered trademarks of LINBIT, Austria.
 
-linstor-client 1.0.6
---------------------
- * Copy query-max-volume-size to controller command group
- * Mark storage-pool-definition command group deprecated
- * Added `node info` command
 
-https://www.linbit.com/downloads/linstor/linstor-client-1.0.6.tar.gz
 
-Linstor PPA:
-https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
-
-Best regards,
-Rene
-
---0000000000000692f40596c292b5
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr">Hi!<div><br></div><div>On par with the Linstor-server 1.2.=
-1 release, this client release makes use=C2=A0</div><div>of the new info ab=
-out node capabilities in regards of storage and resource layers,</div><div>=
-with the new `linstor node info` command.</div><div><br></div><div>Also the=
- `query-max-volume-size` command was copied over the `controller` command g=
-roup</div><div>and the whole `storage-pool-definition` command group will b=
-e removed from the client in the next version, until you bring up good reas=
-ons why we shouldn&#39;t.</div><div><br></div><div><div><div><div><div><fon=
-t size=3D"1"><span style=3D"font-family:monospace,monospace">python-linstor=
- 1.0.6</span></font></div><div><font size=3D"1"><span style=3D"font-family:=
-monospace,monospace">--------------------</span></font></div><div><font fac=
-e=3D"monospace, monospace" size=3D"1">=C2=A0* Fixed modify passphrase API c=
-all (used wrong method)</font></div></div><div><font face=3D"monospace, mon=
-ospace" size=3D"1">=C2=A0* Add node info properties</font></div><div><br></=
-div><div><font size=3D"1"><font face=3D"monospace, monospace"><a href=3D"ht=
-tps://www.linbit.com/downloads/linstor/python-linstor-1.0.6.tar.gz">https:/=
-/www.linbit.com/downloads/linstor/python-linstor-1.0.6.tar.gz</a></font></f=
-ont></div></div><div><font size=3D"1"><br></font></div><div><div><div><font=
- size=3D"1"><span style=3D"font-family:monospace,monospace">linstor-client =
-1.0.6</span></font></div><div><font size=3D"1"><span style=3D"font-family:m=
-onospace,monospace">--------------------</span></font></div><div><font face=
-=3D"monospace"><span style=3D"font-size:x-small">=C2=A0*</span><font size=
-=3D"1">=C2=A0Copy query-max-volume-size to controller command group</font><=
-/font></div><div><font face=3D"monospace"><font size=3D"1">=C2=A0* Mark sto=
-rage-pool-definition command group deprecated</font></font></div><div><font=
- face=3D"monospace, monospace" size=3D"1">=C2=A0* Added `node info` command=
-</font></div></div><div><br></div><div><font size=3D"1"><font face=3D"monos=
-pace, monospace"><a href=3D"https://www.linbit.com/downloads/linstor/linsto=
-r-client-1.0.6.tar.gz">https://www.linbit.com/downloads/linstor/linstor-cli=
-ent-1.0.6.tar.gz</a></font></font></div></div></div><div><br></div><div>Lin=
-stor PPA:<br></div><div><div><a href=3D"https://launchpad.net/~linbit/+arch=
-ive/ubuntu/linbit-drbd9-stack" rel=3D"noreferrer" target=3D"_blank">https:/=
-/launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack</a><br></div><div=
-><br></div><div>Best regards,</div><div>Rene</div></div></div></div>
-
---0000000000000692f40596c292b5--
