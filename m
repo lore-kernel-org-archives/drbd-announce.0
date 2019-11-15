@@ -1,21 +1,13 @@
-Return-Path: <philipp.reisner@linbit.com>
-Received: from mail-wr1-f66.google.com (mail-wr1-f66.google.com
-	[209.85.221.66])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 462A34202F7
-	for <drbd-announce@lists.linbit.com>;
-	Tue, 12 Nov 2019 15:11:44 +0100 (CET)
-Received: by mail-wr1-f66.google.com with SMTP id w9so11889013wrr.0
-	for <drbd-announce@lists.linbit.com>;
-	Tue, 12 Nov 2019 06:11:44 -0800 (PST)
-From: Philipp Reisner <philipp.reisner@linbit.com>
-To: drbd-announce@lists.linbit.com
-Date: Tue, 12 Nov 2019 15:01:40 +0100
-Message-ID: <2450200.uzZMujXCxL@fat-tyre>
+Return-Path: <johannes@johannesthoma.com>
+To: "drbd-user@lists.linbit.com" <drbd-user@lists.linbit.com>,
+	drbd-announce@lists.linbit.com
+From: Johannes Thoma <johannes@johannesthoma.com>
+Message-ID: <267d461b-9dfe-9c8f-1cfc-b76171ebd6ad@johannesthoma.com>
+Date: Fri, 15 Nov 2019 13:42:00 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-9.0.21-1
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: [DRBD-announce] WinDRBD 0.10.2 released
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -27,45 +19,58 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Hi,
+Dear DRBD and WinDRBD community,
 
-With the drbd-9.0.20 release we changed the kernel compat layer. We tested
-carefully on the platforms most of our customers and users have:
-RHEL/CentOs 6,7,8 and Ubuntu LTS 16.04 & 18.08. No we realize that
-Debian was our blind spot. 9.0.20 does not work on Debian's 4.9 kernel:
-It causes DRBD's resync to be slower than usual and causes the resync
-to get stuck at always the same point. Probably it also causes a memory
-leak.
+There is a new release of WinDRBD: 0.10.2. It is mainly
+targeted to those experimenting with the boot feature as
+it contains a new ipxe binary which passes the DHCP address
+to the Windows system. Windows will configure the boot NIC
+at boot time based on the info it gets via iPXE (which
+in turn gets it from DHCP) so it is not necessary any
+more to configure a static address to the boot NIC.
 
-9.0.21-1 (api:genl2/proto:86-116/transport:14)
-=2D-------
- * fix compat for write same on linux 4.9 and the Debian users
- * fix kernel compat for linux 4.8 and 4.9; this mainly affected Debian
-   users; The symptoms where slow resync and resync getting stuck always at
-   the same point
- * enable resync of lost and re-created backing devices (think lost node) w=
-hen
-   the backing device was thinly provisioned and its current uuid is pre-set
-   to a 'day0 UUID' (by LINSTOR); that works by copying a unused bitmap slot
-   which tracks all changes since day 0
- * fix attach when bitmap is on PMEM; before it was set to
-   'all blocks out-of-sync' upon attach
- * avoid doing reconciliation resync multiple times by updating the
-   resync target's dagtag after if completed successfully
- * return disk-state from Outdated to UpToDate when it loses connection
-   while in WFBitMapT and we have a stable and UpToDate peer
- * new option --force-resync flag can be passed to new-current-uuid, that
-   can be used to trigger initial resync without touching the role
+Furthermore, all drivers that are boot critical when
+network booting are now loaded at boot time. Therefore
+the patching of the registry for the drivers is also
+not necessary any more.
 
-https://www.linbit.com/downloads/drbd/9.0/drbd-9.0.21-1.tar.gz
-https://github.com/LINBIT/drbd/commit/449d6bf22b01af7d14a297a4ed3e281aa84c9=
-4a5
+iPXE patches are now maintained in a separate branch
+in a separate repo hosted on github for the time being
+(until we get the patches submitted and accepted upstream).
 
-=2DPhil
-=2D-=20
-LINBIT | Keeping The Digital World Running
+The github URL is:
 
-DRBD=AE and LINBIT=AE are registered trademarks of LINBIT, Austria.
+https://github.com/johannesthoma/ipxe-windrbd.git
 
+and the branch containing the windrbd patches is called
+windrbd.
 
+We also fixed an WinDRBD bug for longer resource names
+(the thread could not be created if resource name contains
+more than 20 or so characters).
+
+A new version of the windrbd-boot PDF is released
+and can be downloaded from
+
+	https://downloads.linbit.com/
+
+If you have a working remote boot installation please
+update you WinDRBD enabled iPXE binary (or build a
+new one). The binary can be found in the WinDRBD
+program folder.
+
+As always a signed driver and packaged utilities can be
+downloaded from the Linbit homepage at:
+
+https://www.linbit.com/en/drbd-community/drbd-download
+
+If you just want to test WinDRBD (and not develop for it)
+using Linbit's signed EXE is the recommended way to
+obtain it (rather than build it from the sources).
+
+As always, any feedback is highly appreciated,
+
+Best wishes,
+
+- Johannes
 
