@@ -1,13 +1,20 @@
-Return-Path: <johannes@johannesthoma.com>
-To: "drbd-user@lists.linbit.com" <drbd-user@lists.linbit.com>,
-	drbd-announce@lists.linbit.com
-From: Johannes Thoma <johannes@johannesthoma.com>
-Message-ID: <267d461b-9dfe-9c8f-1cfc-b76171ebd6ad@johannesthoma.com>
-Date: Fri, 15 Nov 2019 13:42:00 +0100
+Return-Path: <roland.kammerer@linbit.com>
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com
+	[209.85.128.53])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 459AD4203D1
+	for <drbd-announce@lists.linbit.com>;
+	Mon, 18 Nov 2019 09:35:17 +0100 (CET)
+Received: by mail-wm1-f53.google.com with SMTP id u18so16393735wmc.3
+	for <drbd-announce@lists.linbit.com>;
+	Mon, 18 Nov 2019 00:35:17 -0800 (PST)
+Date: Mon, 18 Nov 2019 09:34:15 +0100
+From: Roland Kammerer <roland.kammerer@linbit.com>
+To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
+Message-ID: <20191118083415.GH1306@rck.sh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: [DRBD-announce] WinDRBD 0.10.2 released
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Subject: [DRBD-announce] linstor-proxmox-4.1.1
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -19,58 +26,20 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Dear DRBD and WinDRBD community,
+Dear PVE-users,
 
-There is a new release of WinDRBD: 0.10.2. It is mainly
-targeted to those experimenting with the boot feature as
-it contains a new ipxe binary which passes the DHCP address
-to the Windows system. Windows will configure the boot NIC
-at boot time based on the info it gets via iPXE (which
-in turn gets it from DHCP) so it is not necessary any
-more to configure a static address to the boot NIC.
+Today we release v4.1.1, which fixes a bug in storage capacity reporting
+(cli & web UI). This bug should only trigger for users with multiple
+storage pools configured on DRBD.
 
-Furthermore, all drivers that are boot critical when
-network booting are now loaded at boot time. Therefore
-the patching of the registry for the drivers is also
-not necessary any more.
+Thanks to Andreas for providing a detailed bug report and testing the
+fix.
 
-iPXE patches are now maintained in a separate branch
-in a separate repo hosted on github for the time being
-(until we get the patches submitted and accepted upstream).
+Packages for PVE should be in our public repos soon:
+https://docs.linbit.com/docs/linstor-guide/#ch-proxmox-linstor
 
-The github URL is:
+Tarball & source:
+https://www.linbit.com/downloads/connectors/linstor-proxmox-4.1.1.tar.gz
+https://github.com/LINBIT/linstor-proxmox/
 
-https://github.com/johannesthoma/ipxe-windrbd.git
-
-and the branch containing the windrbd patches is called
-windrbd.
-
-We also fixed an WinDRBD bug for longer resource names
-(the thread could not be created if resource name contains
-more than 20 or so characters).
-
-A new version of the windrbd-boot PDF is released
-and can be downloaded from
-
-	https://downloads.linbit.com/
-
-If you have a working remote boot installation please
-update you WinDRBD enabled iPXE binary (or build a
-new one). The binary can be found in the WinDRBD
-program folder.
-
-As always a signed driver and packaged utilities can be
-downloaded from the Linbit homepage at:
-
-https://www.linbit.com/en/drbd-community/drbd-download
-
-If you just want to test WinDRBD (and not develop for it)
-using Linbit's signed EXE is the recommended way to
-obtain it (rather than build it from the sources).
-
-As always, any feedback is highly appreciated,
-
-Best wishes,
-
-- Johannes
-
+Regards, rck
