@@ -1,20 +1,13 @@
-Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com
-	[209.85.128.53])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 459AD4203D1
-	for <drbd-announce@lists.linbit.com>;
-	Mon, 18 Nov 2019 09:35:17 +0100 (CET)
-Received: by mail-wm1-f53.google.com with SMTP id u18so16393735wmc.3
-	for <drbd-announce@lists.linbit.com>;
-	Mon, 18 Nov 2019 00:35:17 -0800 (PST)
-Date: Mon, 18 Nov 2019 09:34:15 +0100
-From: Roland Kammerer <roland.kammerer@linbit.com>
-To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Message-ID: <20191118083415.GH1306@rck.sh>
+Return-Path: <johannes@johannesthoma.com>
+To: "drbd-user@lists.linbit.com" <drbd-user@lists.linbit.com>,
+	drbd-announce@lists.linbit.com
+From: Johannes Thoma <johannes@johannesthoma.com>
+Message-ID: <3f00fdd6-59d7-ea74-980a-8404805a4de4@johannesthoma.com>
+Date: Mon, 18 Nov 2019 17:10:19 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Subject: [DRBD-announce] linstor-proxmox-4.1.1
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: [DRBD-announce] WinDRBD 0.10.3: fixed logging
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,20 +19,43 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Dear PVE-users,
+Dear DRBD and WinDRBD community,
 
-Today we release v4.1.1, which fixes a bug in storage capacity reporting
-(cli & web UI). This bug should only trigger for users with multiple
-storage pools configured on DRBD.
+There is a quick fix release for WinDRBD: 0.10.3.
+It fixes logging. Starting from 0.10.0 the syslog_ip
+was hardcoded to an IP address which probably does
+not exist on your setup. With WinDRBD 0.10.3 logging
+to localhost should work again as expected.
 
-Thanks to Andreas for providing a detailed bug report and testing the
-fix.
+To start the log server, do
 
-Packages for PVE should be in our public repos soon:
-https://docs.linbit.com/docs/linstor-guide/#ch-proxmox-linstor
+	sc start windrbdlog
 
-Tarball & source:
-https://www.linbit.com/downloads/connectors/linstor-proxmox-4.1.1.tar.gz
-https://github.com/LINBIT/linstor-proxmox/
+as Administrator.  The kernel log messages then should
+appear in the file
 
-Regards, rck
+	C:\windrbd\windrbd-kernel.log
+
+Also note that disk devices (those without an explicit
+mount point) will only work if you installed the
+Virtual Bus device as explained in the windrbd-boot
+techguide (chapter 5.9 - Install the WinDRBD bus device).
+This techguide can be downloaded from
+
+	https://downloads.linbit.com/
+
+As always a signed driver and packaged utilities can be
+downloaded from the Linbit homepage at:
+
+https://www.linbit.com/en/drbd-community/drbd-download
+
+If you just want to test WinDRBD (and not develop for it)
+using Linbit's signed EXE is the recommended way to
+obtain it (rather than build it from the sources).
+
+As always, any feedback is highly appreciated,
+
+Best wishes,
+
+- Johannes
+
