@@ -1,19 +1,19 @@
 Return-Path: <rene.peinthor@linbit.com>
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com
-	[209.85.128.46])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 81346420381
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com
+	[209.85.128.48])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 9D2954203D6
 	for <drbd-announce@lists.linbit.com>;
-	Tue,  3 Dec 2019 19:19:35 +0100 (CET)
-Received: by mail-wm1-f46.google.com with SMTP id s14so4661443wmh.4
+	Thu,  5 Dec 2019 14:32:10 +0100 (CET)
+Received: by mail-wm1-f48.google.com with SMTP id p9so3826878wmg.0
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 03 Dec 2019 10:19:35 -0800 (PST)
+	Thu, 05 Dec 2019 05:32:10 -0800 (PST)
 MIME-Version: 1.0
 From: Rene Peinthor <rene.peinthor@linbit.com>
-Date: Tue, 3 Dec 2019 19:18:19 +0100
-Message-ID: <CAHmn2DNB4_ZJM+FXjq-=-55RQNu_jhyaqPWeddQ18tqDN1z5pQ@mail.gmail.com>
-To: drbd-user <drbd-user@lists.linbit.com>, drbd-announce@lists.linbit.com
-Content-Type: multipart/alternative; boundary="0000000000006faf360598d0b94e"
-Subject: [DRBD-announce] python-linstor, linstor-client 1.0.8 release
+Date: Thu, 5 Dec 2019 14:30:56 +0100
+Message-ID: <CAHmn2DNwAwBUxEz3agjR--H3OLa5raTLRsj35K+Uw9FzCqNdBA@mail.gmail.com>
+To: drbd-announce@lists.linbit.com, drbd-user <drbd-user@lists.linbit.com>
+Content-Type: multipart/alternative; boundary="0000000000001c45d80598f4f127"
+Subject: [DRBD-announce] linstor-server 1.3.1 release
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -25,66 +25,74 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
---0000000000006faf360598d0b94e
+--0000000000001c45d80598f4f127
 Content-Type: text/plain; charset="UTF-8"
 
 Hi!
 
-This client release adds SPDK support and 2 smaller bug fixes in the client.
+After our Tuesday release we noticed that our modify(PUT) REST-API calls now
+responded with 201 instead of the advertised 200
+and this in turn broke the proxmox plugin.
 
+This and a few other fixes made this release necessary.
 
-python-linstor 1.0.8
+Also a new feature made it in to this release an REST-API to create LVM or
+ZFS
+pool on empty physical drives, more info on that in the REST-API
+documentation.
+The REST-API stays at version 1.0.11 as the functionality was already in
+the last version, but was held back for possible changes.
+
+linstor-server 1.3.1
 --------------------
- * Add support for SPDK
+ * Fixed incorrect PUT return codes
+ * Fixed deletion of storage pools
+ * Fixed missing deletion of net-interfaces if node was deleted
+ * Added DB migration for orphaned drbd layer data
+ * Added missing ETCD data migrations
+ * SPKD: fixed creation of nvme namespaces
 
-https://www.linbit.com/downloads/linstor/python-linstor-1.0.8.tar.gz
-
-linstor-client 1.0.8
---------------------
- * Add support for SPDK
- * Improve help formatting for property keys
- * Fix interactive mode if client uses a configuration file
-
-https://www.linbit.com/downloads/linstor/linstor-client-1.0.8.tar.gz
-
+https://www.linbit.com/downloads/linstor/linstor-server-1.3.1.tar.gz
 
 Linstor PPA:
 https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
-Best regards,
+Cheers,
 Rene
 
---0000000000006faf360598d0b94e
+--0000000000001c45d80598f4f127
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr">Hi!<div><br></div><div><div>This client release adds SPDK =
-support and 2 smaller bug fixes in the client.</div><div><br></div><div><br=
-></div><div><div><div><div><div><font size=3D"1"><span style=3D"font-family=
-:monospace,monospace">python-linstor 1.0.8</span></font></div><div><font si=
-ze=3D"1"><span style=3D"font-family:monospace,monospace">------------------=
---</span></font></div><div><font face=3D"monospace, monospace" size=3D"1">=
-=C2=A0* Add support for SPDK</font></div></div><div><br></div><div><font si=
-ze=3D"1"><font face=3D"monospace, monospace"><a href=3D"https://www.linbit.=
-com/downloads/linstor/python-linstor-1.0.8.tar.gz" target=3D"_blank">https:=
-//www.linbit.com/downloads/linstor/python-linstor-1.0.8.tar.gz</a></font></=
-font></div></div><div><font size=3D"1"><br></font></div><div><div><div><fon=
-t size=3D"1"><span style=3D"font-family:monospace,monospace">linstor-client=
- 1.0.8</span></font></div><div><font size=3D"1"><span style=3D"font-family:=
-monospace,monospace">--------------------</span></font></div><div><font fac=
-e=3D"monospace"><span style=3D"font-size:x-small">=C2=A0*</span><font size=
-=3D"1">=C2=A0Add support for SPDK</font></font></div></div><div><font face=
-=3D"monospace"><font size=3D"1">=C2=A0* Improve help formatting for propert=
-y keys</font></font></div><div><font face=3D"monospace"><font size=3D"1">=
-=C2=A0* Fix interactive mode if client uses a configuration file</font></fo=
-nt></div><div><br></div><div><font size=3D"1"><font face=3D"monospace, mono=
-space"><a href=3D"https://www.linbit.com/downloads/linstor/linstor-client-1=
-.0.8.tar.gz" target=3D"_blank">https://www.linbit.com/downloads/linstor/lin=
-stor-client-1.0.8.tar.gz</a></font></font></div></div></div><div><br></div>=
-<div><br></div><div><div>Linstor PPA:<br><a href=3D"https://launchpad.net/~=
-linbit/+archive/ubuntu/linbit-drbd9-stack" rel=3D"noreferrer" target=3D"_bl=
-ank">https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack</a><b=
-r></div><div><br></div><div>Best regards,</div><div>Rene</div></div></div><=
-/div></div>
+<div dir=3D"ltr">Hi!<div><br></div><div>After our Tuesday release we notice=
+d that our modify(PUT) REST-API calls now</div><div>responded with 201 inst=
+ead of the advertised 200</div><div>and this in turn broke the proxmox plug=
+in.</div><div><br></div><div>This and a few other fixes made this release n=
+ecessary.</div><div><br></div><div>Also a new feature made it in to this re=
+lease an REST-API to create LVM or ZFS</div><div>pool on empty physical dri=
+ves, more info on that in the REST-API documentation.</div><div>The REST-AP=
+I stays at version 1.0.11 as the functionality was already in the last vers=
+ion, but was held back for possible changes.</div><div><br></div><div><span=
+ style=3D"font-family:monospace,monospace;font-size:x-small">linstor-server=
+ 1.3.1</span></div><div><div><div><font face=3D"monospace, monospace" size=
+=3D"1">--------------------</font></div><div><span style=3D"font-family:mon=
+ospace,monospace;font-size:x-small">=C2=A0* Fixed incorrect PUT return code=
+s</span></div><div><span style=3D"font-family:monospace;font-size:x-small">=
+=C2=A0* Fixed deletion of storage pools</span><br></div></div><div><span st=
+yle=3D"font-size:x-small"><font face=3D"monospace">=C2=A0* Fixed missing de=
+letion of net-interfaces if node was deleted</font></span></div><div><span =
+style=3D"font-size:x-small"><font face=3D"monospace">=C2=A0* Added DB migra=
+tion for orphaned drbd layer data</font></span></div><div><span style=3D"fo=
+nt-size:x-small"><font face=3D"monospace">=C2=A0* Added missing ETCD data m=
+igrations</font></span></div><div><span style=3D"font-size:x-small"><font f=
+ace=3D"monospace">=C2=A0* SPKD: fixed creation of nvme namespaces</font></s=
+pan></div><div><font face=3D"monospace" size=3D"1"><br></font></div><div><f=
+ont size=3D"1" face=3D"monospace"><a href=3D"https://www.linbit.com/downloa=
+ds/linstor/linstor-server-1.3.1.tar.gz" target=3D"_blank">https://www.linbi=
+t.com/downloads/linstor/linstor-server-1.3.1.tar.gz</a></font></div></div><=
+div><br></div><div><div>Linstor PPA:<br><a href=3D"https://launchpad.net/~l=
+inbit/+archive/ubuntu/linbit-drbd9-stack" rel=3D"noreferrer" target=3D"_bla=
+nk">https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack</a></d=
+iv></div><div><br></div><div>Cheers,</div><div>Rene</div></div>
 
---0000000000006faf360598d0b94e--
+--0000000000001c45d80598f4f127--
