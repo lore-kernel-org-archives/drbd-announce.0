@@ -1,19 +1,19 @@
 Return-Path: <rene.peinthor@linbit.com>
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com
-	[209.85.221.50])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id B9E364202D3
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com
+	[209.85.128.50])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id A44934203D7
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 28 Jan 2020 09:11:57 +0100 (CET)
-Received: by mail-wr1-f50.google.com with SMTP id c9so14876099wrw.8
+	Tue, 28 Jan 2020 09:12:56 +0100 (CET)
+Received: by mail-wm1-f50.google.com with SMTP id t23so1443905wmi.1
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 28 Jan 2020 00:11:57 -0800 (PST)
+	Tue, 28 Jan 2020 00:12:56 -0800 (PST)
 MIME-Version: 1.0
 From: Rene Peinthor <rene.peinthor@linbit.com>
-Date: Tue, 28 Jan 2020 09:11:46 +0100
-Message-ID: <CAHmn2DPwPMurPwBU1qgXVGBesZJ+_E5Epsrw7qassh25hH8GGw@mail.gmail.com>
+Date: Tue, 28 Jan 2020 09:11:44 +0100
+Message-ID: <CAHmn2DMm9O4wtx1PpO45tTZkoMt71F=-CV95uirAtbD7Ram4Pw@mail.gmail.com>
 To: drbd-announce@lists.linbit.com, drbd-user <drbd-user@lists.linbit.com>
-Content-Type: multipart/alternative; boundary="00000000000007dbb5059d2ec7ca"
-Subject: [DRBD-announce] linstor-server 1.4.2
+Content-Type: multipart/alternative; boundary="000000000000f77f8d059d2ec6da"
+Subject: [DRBD-announce] python-linstor, linstor-client 1.0.11 release
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -25,57 +25,73 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
---00000000000007dbb5059d2ec7ca
+--000000000000f77f8d059d2ec6da
 Content-Type: text/plain; charset="UTF-8"
 
 Hi!
 
-We continued to fix a few bugs in linstor and added support for the gross
-size flag
-on volume groups.
+We fixed another bug with py2 decoding and some additions to the list output
+for volume definitions and resources.
 
-linstor-server 1.4.2
---------------------
- * Fixed resize while the resource is resyncing
- * Fixed DISKLESS spitting to DRBD_DISKLESS and NVME_INITIATOR
- * DfltDisklessStorPool will no longer be filtered while listening
- * Added new syntax to remove flags, prepend "-" before a flag name
- * Volume groups now support gross size
+python-linstor 1.0.11
+---------------------
+ * Fixed decode with py2.7 on different locale
+ * Support gross-size in volume groups
+ * Added query_max_volume_size to resource group high-level API
 
-https://www.linbit.com/downloads/linstor/linstor-server-1.4.2.tar.gz
+https://www.linbit.com/downloads/linstor/python-linstor-1.0.11.tar.gz
+
+linstor-client 1.0.11
+---------------------
+ * Write interactive mode errors to stderr
+ * Show gross size flag in list output
+ * Support gross size flag in volume groups
+ * Do not show "Unused" if state is unknown
+
+https://www.linbit.com/downloads/linstor/linstor-client-1.0.11.tar.gz
 
 Linstor PPA:
 https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
-Cheers,
+Best regards,
 Rene
 
---00000000000007dbb5059d2ec7ca
+--000000000000f77f8d059d2ec6da
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr">Hi!<div><br></div><div>We continued to fix a few bugs in l=
-instor and added support for the gross size flag</div><div>on volume groups=
-.</div><div><br></div><div><span style=3D"font-family:monospace,monospace;f=
-ont-size:x-small">linstor-server 1.4.2</span></div><div><div><div><font fac=
-e=3D"monospace, monospace" size=3D"1">--------------------</font></div><div=
-><span style=3D"font-family:monospace,monospace;font-size:x-small">=C2=A0* =
-Fixed resize while the resource is resyncing</span></div></div><div><span s=
-tyle=3D"font-family:monospace,monospace;font-size:x-small">=C2=A0* Fixed DI=
-SKLESS spitting to DRBD_DISKLESS and NVME_INITIATOR</span></div><div><span =
-style=3D"font-family:monospace,monospace;font-size:x-small">=C2=A0* DfltDis=
-klessStorPool will no longer be filtered while listening</span></div><div><=
-span style=3D"font-family:monospace,monospace;font-size:x-small">=C2=A0* Ad=
-ded new syntax to remove flags, prepend &quot;-&quot; before a flag name</s=
-pan></div><div><span style=3D"font-family:monospace,monospace;font-size:x-s=
-mall">=C2=A0* Volume groups now support gross size</span></div><div><font f=
-ace=3D"monospace" size=3D"1"><br></font></div><div><font size=3D"1" face=3D=
-"monospace"><a href=3D"https://www.linbit.com/downloads/linstor/linstor-ser=
-ver-1.4.2.tar.gz">https://www.linbit.com/downloads/linstor/linstor-server-1=
-.4.2.tar.gz</a></font></div></div><div><br></div><div><div>Linstor PPA:<br>=
-<a href=3D"https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack=
-" rel=3D"noreferrer" target=3D"_blank">https://launchpad.net/~linbit/+archi=
-ve/ubuntu/linbit-drbd9-stack</a></div></div><div><br></div><div>Cheers,</di=
-v><div>Rene</div></div>
+<div dir=3D"ltr">Hi!<div><br></div><div>We fixed another bug with py2 decod=
+ing and some additions to the list output</div><div>for volume definitions =
+and resources.</div><div><br></div><div><div><div><div><div><font size=3D"1=
+"><span style=3D"font-family:monospace,monospace">python-linstor 1.0.11</sp=
+an></font></div><div><font size=3D"1"><span style=3D"font-family:monospace,=
+monospace">---------------------</span></font></div><div><font face=3D"mono=
+space, monospace" size=3D"1">=C2=A0* Fixed decode with py2.7 on different l=
+ocale</font></div></div><div><font face=3D"monospace, monospace" size=3D"1"=
+>=C2=A0* Support gross-size in volume groups</font></div><div><font face=3D=
+"monospace, monospace" size=3D"1">=C2=A0* Added query_max_volume_size to re=
+source group high-level API</font></div><div><br></div><div><font size=3D"1=
+"><font face=3D"monospace, monospace"><a href=3D"https://www.linbit.com/dow=
+nloads/linstor/python-linstor-1.0.11.tar.gz">https://www.linbit.com/downloa=
+ds/linstor/python-linstor-1.0.11.tar.gz</a></font></font></div></div><div><=
+font size=3D"1"><br></font></div><div><div><div><font size=3D"1"><span styl=
+e=3D"font-family:monospace,monospace">linstor-client 1.0.11</span></font></=
+div><div><font size=3D"1"><span style=3D"font-family:monospace,monospace">-=
+--------------------</span></font></div><div><font face=3D"monospace"><span=
+ style=3D"font-size:x-small">=C2=A0*</span><font size=3D"1">=C2=A0Write int=
+eractive mode errors to stderr</font></font></div></div><div><font face=3D"=
+monospace"><font size=3D"1">=C2=A0* Show gross size flag in list output</fo=
+nt></font></div><div><font face=3D"monospace"><font size=3D"1">=C2=A0* Supp=
+ort gross size flag in volume groups</font></font></div><div><font face=3D"=
+monospace"><font size=3D"1">=C2=A0* Do not show &quot;Unused&quot; if state=
+ is unknown</font></font></div><div><br></div><div><font size=3D"1"><font f=
+ace=3D"monospace, monospace"><a href=3D"https://www.linbit.com/downloads/li=
+nstor/linstor-client-1.0.11.tar.gz">https://www.linbit.com/downloads/linsto=
+r/linstor-client-1.0.11.tar.gz</a></font></font></div></div></div><div><br>=
+</div><div>Linstor PPA:<br></div><div><div><a href=3D"https://launchpad.net=
+/~linbit/+archive/ubuntu/linbit-drbd9-stack" rel=3D"noreferrer" target=3D"_=
+blank">https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack</a>=
+<br></div><div><br></div><div>Best regards,</div><div>Rene</div></div></div=
+></div>
 
---00000000000007dbb5059d2ec7ca--
+--000000000000f77f8d059d2ec6da--
