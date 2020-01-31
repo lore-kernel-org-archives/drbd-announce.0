@@ -1,21 +1,13 @@
-Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com
-	[209.85.221.44])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 9FFE942011A
-	for <drbd-announce@lists.linbit.com>;
-	Tue, 28 Jan 2020 11:36:28 +0100 (CET)
-Received: by mail-wr1-f44.google.com with SMTP id a6so786443wrx.12
-	for <drbd-announce@lists.linbit.com>;
-	Tue, 28 Jan 2020 02:36:28 -0800 (PST)
-Date: Tue, 28 Jan 2020 11:29:36 +0100
-From: Roland Kammerer <roland.kammerer@linbit.com>
-To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Message-ID: <20200128102936.GD322@rck.sh>
+Return-Path: <johannes@johannesthoma.com>
+To: "drbd-user@lists.linbit.com" <drbd-user@lists.linbit.com>,
+	drbd-announce@lists.linbit.com
+From: Johannes Thoma <johannes@johannesthoma.com>
+Message-ID: <3849751f-2de7-d67a-42dd-06eca0ba32e7@johannesthoma.com>
+Date: Fri, 31 Jan 2020 15:11:21 +0100
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="HcAYCG3uE/tztfnV"
-Content-Disposition: inline
-Subject: [DRBD-announce] drbd-utils-9.12.0rc1
+Content-Type: multipart/alternative;
+	boundary="------------C946302D4A298E32E1774A43"
+Subject: [DRBD-announce] WinDRBD 0.10.4 released
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -27,50 +19,119 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
+This is a multi-part message in MIME format.
+--------------C946302D4A298E32E1774A43
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
---HcAYCG3uE/tztfnV
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Dear DRBD and WinDRBD community,
 
-Dear DRBD users,
+We just released a new minor release of the WinDRBD software
+package. For those who don't know, WinDRBD is a port of
+DRBD to the Microsoft Windows family of operating systems.
 
-this is the first release candidate for the upcoming 9.12.0 release.
+We mainly focussed on getting WinDRBD more stable for
+this release, we have two (non-boot via WinDRBD) VMs running
+on constant I/O for more than one week now. Also on machines
+booted via WinDRBD it is now more stable and can, in most
+cases, survive a network failure. However we still got report
+about crashes when using the boot feature (which we will
+fix in an upcoming release) so please do not use booting
+via WinDRBD in production enviroments yet.
 
-As usual, this include low level tools for DRBD 8.4 and 9.0 of the DRBD
-kernel module.
+As a minor addition, the CGI script now tries forever to access
+the block device (causing iPXE to wait on booting until  the
+device is ready) which fixes the annoying behaviour of not
+booting on Windows restart (because there was still the old
+Primary connection in which case DRBD devices cannot be
+opened at all, also not read-only).
 
-There is no urgent need to update, but the OCF resource agent learned
-some nice tricks.
+Again, please contribute to WinDRBD development by testing
+it, most of the issues we fixed came from the community
+(many thanks to Yannis and Oliver at this point),
 
-Please test and report bugs. As usual, if we don't get negative
-feedback, we release the final version in about 1 week from now.
+As always, you can download the newest version from
 
-Best, rck
+https://www.linbit.com/en/drbd-community/drbd-download/
 
-9.12.0rc1
---------
- * drbd.ocf: new wrc_timeout param, fail on attach failure,
-   remove_master_score_if_peer_primary param,
-   fail_promote_early_if_peer_primary param, improved helper logging
- * drbdadm,v9: fix dumping meta-disk in corner case
- * crm-fence-peer.9.sh: fix Pacemaker 2 compat
+as an EXE installer signed by Linbit-HA. To learn how to set up
+WinDRBD with data devices or how to set it up with a WinDRBD
+boot device (diskless client booting via WinDRBD from the network),
+please consult the tech-guides at
 
-https://www.linbit.com/downloads/drbd/utils/drbd-utils-9.12.0rc1.tar.gz
-https://github.com/LINBIT/drbd-utils/commit/2fe72920d827173ba8175fc8102272f99805a470
+https://downloads.linbit.com/
 
---HcAYCG3uE/tztfnV
-Content-Type: application/pgp-signature; name="signature.asc"
+(you need to register to download the guides).
 
------BEGIN PGP SIGNATURE-----
+We will maintain a WHATSNEW.md file from now on that
+briefly describes what is new in the version. You can directly
+view it online at github:
 
-iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAl4wDQ0ACgkQRgmezyI6
-myJa2AgAkv6+QFiC35la3h3LP1MEn9msUr10A7Ib5oJoHux0grkr4KVVV8bItCSe
-MTBnHKCjLdUjJ0P/c805b5GM6dclqhpwccDazXbvRvrUEI0k0mdCTw3p/2UQaDG4
-mA/4qcNH6aUf1rbynV48WUXS5mWf1LxNSfAIWAmvCvM7WYXQz5ktTg+xlKMpleNH
-CKxwFt/DJVuuuw1+KlqAs9+DHFJ1sKDiKbma7ptfc/DSRbfnSoWnFRZeNw02H7lV
-lbgRxziACYxlCeSUgvmpYd/aPyoTEWQUTpHSPVCeA575lp1cQdjwCNIIIzevmLh8
-n9nb1LMoORvg7RcA4ziukoHsAj9PkA==
-=vNZz
------END PGP SIGNATURE-----
+https://github.com/LINBIT/windrbd/blob/master/WHATSNEW.md
 
---HcAYCG3uE/tztfnV--
+Best regards and happy hacking !!
+
+- Johannes
+
+--------------C946302D4A298E32E1774A43
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: 8bit
+
+<html>
+  <head>
+
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    Dear DRBD and WinDRBD community,<br>
+    <br>
+    We just released a new minor release of the WinDRBD software<br>
+    package. For those who don't know, WinDRBD is a port of <br>
+    DRBD to the Microsoft Windows family of operating systems.<br>
+    <br>
+    We mainly focussed on getting WinDRBD more stable for<br>
+    this release, we have two (non-boot via WinDRBD) VMs running<br>
+    on constant I/O for more than one week now. Also on machines<br>
+    booted via WinDRBD it is now more stable and can, in most<br>
+    cases, survive a network failure. However we still got report<br>
+    about crashes when using the boot feature (which we will<br>
+    fix in an upcoming release) so please do not use booting<br>
+    via WinDRBD in production enviroments yet.<br>
+    <br>
+    As a minor addition, the CGI script now tries forever to access<br>
+    the block device (causing iPXE to wait on booting until  the<br>
+    device is ready) which fixes the annoying behaviour of not<br>
+    booting on Windows restart (because there was still the old<br>
+    Primary connection in which case DRBD devices cannot be<br>
+    opened at all, also not read-only).<br>
+    <br>
+    Again, please contribute to WinDRBD development by testing<br>
+    it, most of the issues we fixed came from the community<br>
+    (many thanks to Yannis and Oliver at this point),<br>
+    <br>
+    As always, you can download the newest version from<br>
+    <br>
+    <a class="moz-txt-link-freetext" href="https://www.linbit.com/en/drbd-community/drbd-download/">https://www.linbit.com/en/drbd-community/drbd-download/</a><br>
+    <br>
+    as an EXE installer signed by Linbit-HA. To learn how to set up<br>
+    WinDRBD with data devices or how to set it up with a WinDRBD<br>
+    boot device (diskless client booting via WinDRBD from the network),<br>
+    please consult the tech-guides at <br>
+    <br>
+    <a class="moz-txt-link-freetext" href="https://downloads.linbit.com/">https://downloads.linbit.com/</a><br>
+    <br>
+    (you need to register to download the guides).<br>
+    <br>
+    We will maintain a WHATSNEW.md file from now on that<br>
+    briefly describes what is new in the version. You can directly<br>
+    view it online at github:<br>
+    <br>
+    <a class="moz-txt-link-freetext" href="https://github.com/LINBIT/windrbd/blob/master/WHATSNEW.md">https://github.com/LINBIT/windrbd/blob/master/WHATSNEW.md</a><br>
+    <br>
+    Best regards and happy hacking !!<br>
+    <br>
+    - Johannes<br>
+  </body>
+</html>
+
+--------------C946302D4A298E32E1774A43--
