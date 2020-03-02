@@ -1,20 +1,20 @@
-Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com
-	[209.85.221.49])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 971DA420380
+Return-Path: <philipp.reisner@linbit.com>
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com
+	[209.85.160.173])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id F2F5F420177
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 18 Feb 2020 13:16:49 +0100 (CET)
-Received: by mail-wr1-f49.google.com with SMTP id w12so23660838wrt.2
+	Mon,  2 Mar 2020 17:31:09 +0100 (CET)
+Received: by mail-qt1-f173.google.com with SMTP id e20so382175qto.5
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 18 Feb 2020 04:16:49 -0800 (PST)
-Date: Tue, 18 Feb 2020 13:15:47 +0100
-From: Roland Kammerer <roland.kammerer@linbit.com>
-To: drbd-user@lists.linbit.com, drbd-announce@lists.linbit.com
-Message-ID: <20200218121547.GO9241@rck.sh>
+	Mon, 02 Mar 2020 08:31:09 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Subject: [DRBD-announce] drbd-utils-9.12.0
+From: Philipp Reisner <philipp.reisner@linbit.com>
+Date: Mon, 2 Mar 2020 16:32:31 +0100
+Message-ID: <CADGDV=XztsMrOuPTbpU1QtW7MEzBGEb3Wtwh4X08e00fRD_e3g@mail.gmail.com>
+To: drbd-announce@lists.linbit.com
+Content-Type: text/plain; charset="UTF-8"
+Cc: drbd-user@lists.linbit.com
+Subject: [DRBD-announce] drbd-9.0.22-0rc1
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,29 +26,33 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Dear DRBD users,
+Hi,
 
-today we release version 9.12.0 of drbd-utils.
+It is just a number of smaller bug-fixes. No single one that I want to point
+out.
 
-As usual, this includes low level tools for DRBD 8.4 and 9.0 of the DRBD
-kernel module.
+Please help testing this release candidate.
 
-There is no urgent need to update, but the OCF resource agent learned
-some nice tricks. Since rc1 and thanks to Anton Tykhyy we also fixed
-some malformed json outputs in some corner cases.
-
-Best, rck
-
-9.12.0
+9.0.22-0rc1 (api:genl2/proto:86-116/transport:14)
 --------
- * drbd.ocf: new wrc_timeout param, fail on attach failure,
-   remove_master_score_if_peer_primary param,
-   fail_promote_early_if_peer_primary param, improved helper logging
-   no error if wait-connect fails
- * drbdadm,v9: fix dumping meta-disk in corner case
- * crm-fence-peer.9.sh: fix Pacemaker 2 compat
- * drbdsetup,v9: fixes for various json output corner cases
+ * introduce locking to avoid connection retries when UUIDs or
+   relevant flags change during the exchange of this data
+ * improve serialization of events after losing a primary
+ * fix a constraint in sanitize state that can cause a promote to be
+   declined by some other node
+ * fix a case of a false positive detection of a split-brain condition
+ * allow a resync target to switch to the resync source with less
+   bits out of sync
+ * fix bitmap UUID after resync to use current UUID from self rather
+   than sync source
+ * fix pushing bitmap UUID into history when changed
+ * fix regression introduced with 9.0.20, that can cause a missed
+   resync after a reconciliation resync
+ * fix regression introduced with 9.0.20, that can cause a missed
+   resync after a promote on a diskless node
 
-https://www.linbit.com/downloads/drbd/utils/drbd-utils-9.12.0.tar.gz
-https://github.com/LINBIT/drbd-utils/commit/91629a4cce49ca0d4f917fe0bffa25cfe8db3052
-https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+https://www.linbit.com/downloads/drbd/9.0/drbd-9.0.22-0rc1.tar.gz
+https://github.com/LINBIT/drbd/commit/a48aa832f8ab7ccddd735eafdd77b152ce48135f
+
+best regards,
+ phil
