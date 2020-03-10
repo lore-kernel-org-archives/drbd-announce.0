@@ -1,13 +1,20 @@
-Return-Path: <johannes@johannesthoma.com>
-To: "drbd-user@lists.linbit.com" <drbd-user@lists.linbit.com>,
-	drbd-announce@lists.linbit.com
-From: Johannes Thoma <johannes@johannesthoma.com>
-Message-ID: <72d16c49-b138-b246-8132-24646822c4dc@johannesthoma.com>
-Date: Wed, 4 Mar 2020 16:57:25 +0100
+Return-Path: <philipp.reisner@linbit.com>
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com
+	[209.85.160.174])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 31B2042033E
+	for <drbd-announce@lists.linbit.com>;
+	Tue, 10 Mar 2020 16:42:26 +0100 (CET)
+Received: by mail-qt1-f174.google.com with SMTP id l13so4878052qtv.10
+	for <drbd-announce@lists.linbit.com>;
+	Tue, 10 Mar 2020 08:42:26 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: [DRBD-announce] WinDRBD 0.10.5 released
+From: Philipp Reisner <philipp.reisner@linbit.com>
+Date: Tue, 10 Mar 2020 16:35:28 +0100
+Message-ID: <CADGDV=Wro37Wfpf+3UXebNY-TTBznZ=vSDZ4SOcbPopf83zt7g@mail.gmail.com>
+To: drbd-announce@lists.linbit.com
+Content-Type: text/plain; charset="UTF-8"
+Cc: drbd-user@lists.linbit.com
+Subject: [DRBD-announce] drbd-9.0.22
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -19,71 +26,36 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Dear DRBD and WinDRBD users,
+Hi,
 
-We've just released WinDRBD 0.10.5. The main difference is
-that the DRBD URI used to configure the WinDRBD boot device
-is now key/value based making it easier to read and more
-importantly easy to extend. It will learn new keywords as
-WinDRBD evolves but the principle of the syntax will remain
-the same.
+this release has only bug-fixes. Most of the fixed issues are hard
+to reproduce. Some are easy to reproduce, you just need the idea
+to try exactly that.
+Of course, also the test-suite was extended during this cycle.
 
-There is also a new version of iPXE-WinDRBD which allows for
-DRBD URIs longer than 255 bytes. Also now it is recommended
-to use an iPXE script instead of DHCP options to pass the
-windrbd-root parameter to the clients, since DHCP options
-are limited in length by design (the length field is only
-one byte, limiting all DHCP options to 255 bytes).
+9.0.22-1 (api:genl2/proto:86-116/transport:14)
+--------
+ * introduce locking to avoid connection retries when UUIDs or
+   relevant flags change during the exchange of this data
+ * improve serialization of events after losing a primary
+ * fix a constraint in sanitize state that can cause a promote to be
+   declined by some other node
+ * fix a case of a false positive detection of a split-brain condition
+ * allow a resync target to switch to the resync source with less
+   bits out of sync
+ * fix bitmap UUID after resync to use current UUID from self rather
+   than sync source
+ * fix pushing bitmap UUID into history when changed
+ * fix regression introduced with 9.0.20, that can cause a missed
+   resync after a reconciliation resync
+ * fix regression introduced with 9.0.20, that can cause a missed
+   resync after a promote on a diskless node
+ * fix UUID handling in case a node promotes during (a short)
+   reconciliation resync
+ * fix removing of a diskless node when quorum is enabled
 
-Here is a read-world example for a WinDRBD URI (write in one
-line) of my ipxe boot script:
+https://www.linbit.com/downloads/drbd/9.0/drbd-9.0.22-1.tar.gz
+https://github.com/LINBIT/drbd/commit/fe2b59836bdf1c7c81ccbaad8ef8016d9c3ba582
 
-set windrbd-root drbd:resource=windows10-boot;protocol=C;
-this-node-id=2;node2.address=0.0.0.0:7695;node2.volume1.minor=42;
-node2.hostname=windows;node1.hostname=johannes-VirtualBox;
-node1.address=192.168.56.102:7695;timeout=60;ping-timeout=30;
-ping-int=10;connect-int=20;
-
-In theory one can configure n (n<32) nodes now but this
-does not work well for n>2 yet, which is one of the things
-we will fix in one of the upcoming releases. Also setting
-the DRBD timeout values is now possible, for more details
-please consult the DRBD user's guide.
-
-The new way of passing parameters to clients and the new
-WinDRBD URI syntax are described in an updated windrbd-boot
-tech guide available for download at:
-
-	https://downloads.linbit.com/
-
-(labelled Setup WinDRBD Diskless Boot).
-
-WinDRBD 0.10.5 can be downloaded as a binary installer
-(self-extracting EXE file) at:
-
-	https://www.linbit.com/en/drbd-community/drbd-download/
-
-(scroll down to DRBD 9 Windows Driver). Note that both
-iPXE and drbd.cgi have changed so if you already have a
-running installation, please update those two files as well
-(on your Linux server).
-
-As always WinDRBD sources can be found at:
-
-	https://github.com/LINBIT/windrbd
-
-You can build it from the sources (without official driver
-signature, unless you have your own key), see the file INSTALL
-for instructions. Note that normally this is not necessary since
-there are pre-built binaries available at the Linbit website.
-
-Also interresting is the file WHATSNEW.md which summarizes
-changes in the various releases:
-
-	https://github.com/LINBIT/windrbd/blob/master/WHATSNEW.md
-
-As always, feedback is highly apreciated,
-
-Best wishes,
-
-- Johannes
+best regards,
+ Phil
