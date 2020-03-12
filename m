@@ -1,20 +1,19 @@
-Return-Path: <philipp.reisner@linbit.com>
-Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com
-	[209.85.160.174])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 31B2042033E
+Return-Path: <rene.peinthor@linbit.com>
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com
+	[209.85.128.49])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id CD07F4203D0
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 10 Mar 2020 16:42:26 +0100 (CET)
-Received: by mail-qt1-f174.google.com with SMTP id l13so4878052qtv.10
+	Thu, 12 Mar 2020 08:56:54 +0100 (CET)
+Received: by mail-wm1-f49.google.com with SMTP id 11so4961900wmo.2
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 10 Mar 2020 08:42:26 -0700 (PDT)
+	Thu, 12 Mar 2020 00:56:54 -0700 (PDT)
 MIME-Version: 1.0
-From: Philipp Reisner <philipp.reisner@linbit.com>
-Date: Tue, 10 Mar 2020 16:35:28 +0100
-Message-ID: <CADGDV=Wro37Wfpf+3UXebNY-TTBznZ=vSDZ4SOcbPopf83zt7g@mail.gmail.com>
-To: drbd-announce@lists.linbit.com
-Content-Type: text/plain; charset="UTF-8"
-Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-9.0.22
+From: Rene Peinthor <rene.peinthor@linbit.com>
+Date: Thu, 12 Mar 2020 08:55:43 +0100
+Message-ID: <CAHmn2DNY_qWKphPPZDr2z8G3LCvz1PQSv_=WWPJmB-ic5_i5vg@mail.gmail.com>
+To: drbd-announce@lists.linbit.com, drbd-user <drbd-user@lists.linbit.com>
+Content-Type: multipart/alternative; boundary="000000000000a68ea605a0a3ae1f"
+Subject: [DRBD-announce] linstor-server 1.5.0 release
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,36 +25,53 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Hi,
+--000000000000a68ea605a0a3ae1f
+Content-Type: text/plain; charset="UTF-8"
 
-this release has only bug-fixes. Most of the fixed issues are hard
-to reproduce. Some are easy to reproduce, you just need the idea
-to try exactly that.
-Of course, also the test-suite was extended during this cycle.
+Hi All!
 
-9.0.22-1 (api:genl2/proto:86-116/transport:14)
---------
- * introduce locking to avoid connection retries when UUIDs or
-   relevant flags change during the exchange of this data
- * improve serialization of events after losing a primary
- * fix a constraint in sanitize state that can cause a promote to be
-   declined by some other node
- * fix a case of a false positive detection of a split-brain condition
- * allow a resync target to switch to the resync source with less
-   bits out of sync
- * fix bitmap UUID after resync to use current UUID from self rather
-   than sync source
- * fix pushing bitmap UUID into history when changed
- * fix regression introduced with 9.0.20, that can cause a missed
-   resync after a reconciliation resync
- * fix regression introduced with 9.0.20, that can cause a missed
-   resync after a promote on a diskless node
- * fix UUID handling in case a node promotes during (a short)
-   reconciliation resync
- * fix removing of a diskless node when quorum is enabled
+We have a new feature release for linstor, it brings support for Western
+Digital OpenFlex
+systems and linstor now reports the current DRBD connection states in the
+REST-API.
 
-https://www.linbit.com/downloads/drbd/9.0/drbd-9.0.22-1.tar.gz
-https://github.com/LINBIT/drbd/commit/fe2b59836bdf1c7c81ccbaad8ef8016d9c3ba582
+linstor-server 1.5.0
+--------------------
+ * Add support for OpenFlex(WD) storage solutions
+ * DRBD connection states are now reported in the resource layer data
+ * REST-API version 1.0.15
 
-best regards,
- Phil
+https://www.linbit.com/downloads/linstor/linstor-server-1.5.0.tar.gz
+
+Linstor PPA:
+https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+
+Cheers,
+Rene
+
+--000000000000a68ea605a0a3ae1f
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">Hi All!<div><br></div><div>We have a new feature release f=
+or linstor, it brings support for Western Digital OpenFlex</div><div>system=
+s and linstor now reports the current DRBD connection states in the REST-AP=
+I.</div><div><div><br></div><div><span style=3D"font-family:monospace,monos=
+pace;font-size:x-small">linstor-server 1.5.0</span></div><div><div><div><fo=
+nt face=3D"monospace, monospace" size=3D"1">--------------------</font></di=
+v><div><span style=3D"font-family:monospace,monospace;font-size:x-small">=
+=C2=A0* Add support for OpenFlex(WD) storage solutions</span></div></div><d=
+iv><span style=3D"font-family:monospace,monospace;font-size:x-small">=C2=A0=
+* DRBD connection states are now reported in the resource layer data</span>=
+</div><div><span style=3D"font-family:monospace,monospace;font-size:x-small=
+">=C2=A0* REST-API version 1.0.15</span></div><div><font face=3D"monospace"=
+ size=3D"1"><br></font></div><div><font size=3D"1" face=3D"monospace"><a hr=
+ef=3D"https://www.linbit.com/downloads/linstor/linstor-server-1.5.0.tar.gz"=
+ target=3D"_blank">https://www.linbit.com/downloads/linstor/linstor-server-=
+1.5.0.tar.gz</a></font></div></div><div><br></div><div><div>Linstor PPA:<br=
+><a href=3D"https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stac=
+k" rel=3D"noreferrer" target=3D"_blank">https://launchpad.net/~linbit/+arch=
+ive/ubuntu/linbit-drbd9-stack</a></div></div><div><br></div><div>Cheers,</d=
+iv><div>Rene</div></div></div>
+
+--000000000000a68ea605a0a3ae1f--
