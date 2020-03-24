@@ -1,19 +1,20 @@
-Return-Path: <rene.peinthor@linbit.com>
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com
-	[209.85.221.42])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 372D7420385
+Return-Path: <roland.kammerer@linbit.com>
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com
+	[209.85.128.47])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 36FF6420385
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 24 Mar 2020 13:39:58 +0100 (CET)
-Received: by mail-wr1-f42.google.com with SMTP id a25so21257679wrd.0
+	Tue, 24 Mar 2020 14:40:57 +0100 (CET)
+Received: by mail-wm1-f47.google.com with SMTP id d198so3240787wmd.0
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 24 Mar 2020 05:39:58 -0700 (PDT)
+	Tue, 24 Mar 2020 06:40:57 -0700 (PDT)
+Date: Tue, 24 Mar 2020 14:32:48 +0100
+From: Roland Kammerer <roland.kammerer@linbit.com>
+To: drbd-user@lists.linbit.com, drbd-announce@lists.linbit.com
+Message-ID: <20200324133248.GT9241@rck.sh>
 MIME-Version: 1.0
-From: Rene Peinthor <rene.peinthor@linbit.com>
-Date: Tue, 24 Mar 2020 13:39:46 +0100
-Message-ID: <CAHmn2DMGC0vuneQHnz_=N3HqqRjoDSvoFC7ohA9YfYpqe7UYnw@mail.gmail.com>
-To: drbd-announce@lists.linbit.com, drbd-user <drbd-user@lists.linbit.com>
-Content-Type: multipart/alternative; boundary="0000000000009b2ad805a1990cb3"
-Subject: [DRBD-announce] linstor-server 1.5.2 release
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Subject: [DRBD-announce] linstor-proxmox-5.0.0
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -25,49 +26,51 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
---0000000000009b2ad805a1990cb3
-Content-Type: text/plain; charset="UTF-8"
+Dear PVE users,
 
-Hi All!
+This is a feature release that will bring 1 very useful feature, but
+also breaks (very legacy) compatibility with older plugins.
 
-There was a bug with LVM-filters and the physical-storage API, and this
-hot-fix release
-should fix those issues. Most of you shouldn't be affected by this bug, or
-could easily
-work around it (manually creating PV/VG...). So no special need to upgrade.
+- The feature:
+What this does is to try to create the DRBD resource diskfully if it is
+possible on the node where the VM will be started.
 
-linstor-server 1.5.2
---------------------
- * Fix LVM-filters for physical-storage
+A common setup might consist of 3 nodes, where all have a given storage pool,
+with a replica count of 2. By just auto-placing the resource, it might happened
+that the storage is placed on nodes A and C, but the VM is actually executed on
+B. This is fine, the plugin creates a diskless DRBD resource on B, and all data
+is read and written via the network. Still, it is obviously preferable to have
+local storage.
 
-https://www.linbit.com/downloads/linstor/linstor-server-1.5.2.tar.gz
+What happens is that the plugin tries to create a diskful resource on the node
+that will run the VM (with the same storage pool as defined in the RG (resource
+group)).
 
-Linstor PPA:
-https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+If this fails: Ignore it, run an auto-place (as we always did). It might find
+another placement.
+If this succeeds: Cool, still run auto-place, we might need to create other
+replicas on other nodes to fulfill the overall replica count.
 
-Cheers,
-Rene
+As this is a new behavior (i.e., storage is no longer equally distributed, but
+the local node is preferred), this behavior has to be enabled as follows:
 
---0000000000009b2ad805a1990cb3
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+drbd: drbdboth
+   content images,rootdir
+   controller 192.168.122.94
+   resourcegroup onboth
+   preferlocal yes
 
-<div dir=3D"ltr">Hi All!<div><br></div><div>There was a bug with LVM-filter=
-s and the physical-storage=C2=A0API, and this hot-fix release</div><div>sho=
-uld fix those issues. Most of you shouldn&#39;t be affected by this bug, or=
- could easily</div><div>work around it (manually creating PV/VG...). So no =
-special need to upgrade.</div><div><div><br></div><div><span style=3D"font-=
-family:monospace,monospace;font-size:x-small">linstor-server 1.5.2</span></=
-div><div><div><div><font face=3D"monospace, monospace" size=3D"1">---------=
------------</font></div><div><font face=3D"monospace" size=3D"1">=C2=A0*=C2=
-=A0Fix LVM-filters for physical-storage</font></div></div><div><font face=
-=3D"monospace" size=3D"1"><br></font></div><div><font size=3D"1" face=3D"mo=
-nospace"><a href=3D"https://www.linbit.com/downloads/linstor/linstor-server=
--1.5.2.tar.gz">https://www.linbit.com/downloads/linstor/linstor-server-1.5.=
-2.tar.gz</a></font></div></div><div><br></div><div><div>Linstor PPA:<br><a =
-href=3D"https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack" r=
-el=3D"noreferrer" target=3D"_blank">https://launchpad.net/~linbit/+archive/=
-ubuntu/linbit-drbd9-stack</a></div></div><div><br></div><div>Cheers,</div><=
-div>Rene</div></div></div>
+You will need the latest stable LINSTOR for that to work!
 
---0000000000009b2ad805a1990cb3--
+- What we remove:
+This new feature is very much coupled to LINSTOR RGs. As this is the preferred
+method to configure DRBD/LINSTOR storage for some time, this commit also
+removes the old legacy options (setting "redundancy" and "storagepool" via
+/etc/pve/storage.cfg). These (and all other LINSTOR/DRBD) options have to be
+set on RG level. Updating from 4.x is described here:
+https://www.linbit.com/drbd-user-guide/users-guide-linstor/#s-proxmox-ls-upgrades
+
+https://www.linbit.com/downloads/connectors/linstor-proxmox-5.0.0.tar.gz
+https://github.com/LINBIT/linstor-proxmox/commit/8d6660aadb9f94503d4d733b58b84c53908856f0
+
+Regards, rck
