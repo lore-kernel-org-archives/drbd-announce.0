@@ -1,20 +1,20 @@
 Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com
-	[209.85.128.47])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 36FF6420385
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com
+	[209.85.221.52])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id E8E094202F3
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 24 Mar 2020 14:40:57 +0100 (CET)
-Received: by mail-wm1-f47.google.com with SMTP id d198so3240787wmd.0
+	Thu, 26 Mar 2020 15:29:27 +0100 (CET)
+Received: by mail-wr1-f52.google.com with SMTP id a25so8108243wrd.0
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 24 Mar 2020 06:40:57 -0700 (PDT)
-Date: Tue, 24 Mar 2020 14:32:48 +0100
+	Thu, 26 Mar 2020 07:29:27 -0700 (PDT)
+Date: Thu, 26 Mar 2020 15:28:25 +0100
 From: Roland Kammerer <roland.kammerer@linbit.com>
 To: drbd-user@lists.linbit.com, drbd-announce@lists.linbit.com
-Message-ID: <20200324133248.GT9241@rck.sh>
+Message-ID: <20200326142825.GA9241@rck.sh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Subject: [DRBD-announce] linstor-proxmox-5.0.0
+Subject: [DRBD-announce] linstor-proxmox-5.0.1
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -28,49 +28,17 @@ List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Dear PVE users,
 
-This is a feature release that will bring 1 very useful feature, but
-also breaks (very legacy) compatibility with older plugins.
+This is a bugfix release that re-adds the "nodes" option. It is
+important to know that this is not (and never was) an option the plugin
+itself used to for example place its DRBD storage to these "nodes". It
+is a filter for where the GUI/pvesm shows the storage. There are valid
+cases where this makes sense like a 5 node PVE cluster with a
+LINSTOR/DRBD cluster of only 3 nodes.
 
-- The feature:
-What this does is to try to create the DRBD resource diskfully if it is
-possible on the node where the VM will be started.
+As these release notes are pretty short, let me use some bytes for an
+important message: Perl sucks!
 
-A common setup might consist of 3 nodes, where all have a given storage pool,
-with a replica count of 2. By just auto-placing the resource, it might happened
-that the storage is placed on nodes A and C, but the VM is actually executed on
-B. This is fine, the plugin creates a diskless DRBD resource on B, and all data
-is read and written via the network. Still, it is obviously preferable to have
-local storage.
+Best, rck
 
-What happens is that the plugin tries to create a diskful resource on the node
-that will run the VM (with the same storage pool as defined in the RG (resource
-group)).
-
-If this fails: Ignore it, run an auto-place (as we always did). It might find
-another placement.
-If this succeeds: Cool, still run auto-place, we might need to create other
-replicas on other nodes to fulfill the overall replica count.
-
-As this is a new behavior (i.e., storage is no longer equally distributed, but
-the local node is preferred), this behavior has to be enabled as follows:
-
-drbd: drbdboth
-   content images,rootdir
-   controller 192.168.122.94
-   resourcegroup onboth
-   preferlocal yes
-
-You will need the latest stable LINSTOR for that to work!
-
-- What we remove:
-This new feature is very much coupled to LINSTOR RGs. As this is the preferred
-method to configure DRBD/LINSTOR storage for some time, this commit also
-removes the old legacy options (setting "redundancy" and "storagepool" via
-/etc/pve/storage.cfg). These (and all other LINSTOR/DRBD) options have to be
-set on RG level. Updating from 4.x is described here:
-https://www.linbit.com/drbd-user-guide/users-guide-linstor/#s-proxmox-ls-upgrades
-
-https://www.linbit.com/downloads/connectors/linstor-proxmox-5.0.0.tar.gz
-https://github.com/LINBIT/linstor-proxmox/commit/8d6660aadb9f94503d4d733b58b84c53908856f0
-
-Regards, rck
+https://github.com/LINBIT/linstor-proxmox/commit/995f38c646f418375fa3d20a43e8cd6b2125cbc8
+https://www.linbit.com/downloads/connectors/linstor-proxmox-5.0.1.tar.gz
