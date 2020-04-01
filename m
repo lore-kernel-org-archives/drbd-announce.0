@@ -1,20 +1,13 @@
-Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com
-	[209.85.221.52])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id E8E094202F3
-	for <drbd-announce@lists.linbit.com>;
-	Thu, 26 Mar 2020 15:29:27 +0100 (CET)
-Received: by mail-wr1-f52.google.com with SMTP id a25so8108243wrd.0
-	for <drbd-announce@lists.linbit.com>;
-	Thu, 26 Mar 2020 07:29:27 -0700 (PDT)
-Date: Thu, 26 Mar 2020 15:28:25 +0100
-From: Roland Kammerer <roland.kammerer@linbit.com>
-To: drbd-user@lists.linbit.com, drbd-announce@lists.linbit.com
-Message-ID: <20200326142825.GA9241@rck.sh>
+Return-Path: <johannes@johannesthoma.com>
+To: "drbd-user@lists.linbit.com" <drbd-user@lists.linbit.com>,
+	drbd-announce@lists.linbit.com
+From: Johannes Thoma <johannes@johannesthoma.com>
+Message-ID: <ceec15c5-4c96-dc27-8762-6b1afaf22ec0@johannesthoma.com>
+Date: Wed, 1 Apr 2020 15:17:33 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Subject: [DRBD-announce] linstor-proxmox-5.0.1
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: [DRBD-announce] WinDRBD 0.10.6 released
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,19 +19,36 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Dear PVE users,
+Dear DRBD and WinDRBD users,
 
-This is a bugfix release that re-adds the "nodes" option. It is
-important to know that this is not (and never was) an option the plugin
-itself used to for example place its DRBD storage to these "nodes". It
-is a filter for where the GUI/pvesm shows the storage. There are valid
-cases where this makes sense like a 5 node PVE cluster with a
-LINSTOR/DRBD cluster of only 3 nodes.
+Exactly 10 years ago, Linbit announced a version of their DRBD
+replication software for Microsoft Windows (see
+https://fghaas.wordpress.com/2010/04/01/its-coming-drbd-for-windows/)
 
-As these release notes are pretty short, let me use some bytes for an
-important message: Perl sucks!
+What was an April fool's joke then is today released in version
+0.10.6 which is becoming more and more stable, aproaching
+a 1.0 version later this year.
 
-Best, rck
+WinDRBD 0.10.6 is now based on the most recent DRBD sources which
+is 9.0.22. Please see the release eMails from DRBD to learn about
+new features (since 9.0.17).
 
-https://github.com/LINBIT/linstor-proxmox/commit/995f38c646f418375fa3d20a43e8cd6b2125cbc8
-https://www.linbit.com/downloads/connectors/linstor-proxmox-5.0.1.tar.gz
+A minor additional feature is that you can specify the IP of the
+syslog server (for logging) in the boot URL (if you are booting
+via WinDRBD).
+
+As always you can download an installable image from:
+
+https://www.linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/
+
+(please scroll down to DRBD 9 Windows Driver)
+
+And also as always your feedback is highly appreciated.
+
+Happy April 1st and stay in good health ;)
+
+- Johannes
+
+PS: for the German speaking users: There is an article on WinDRBD
+in the most recent iX computer magazine (4/20) which is worth reading.
+(see https://www.heise.de/select/ix/2020/4/2000915384722995359)
