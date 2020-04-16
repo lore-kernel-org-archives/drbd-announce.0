@@ -1,19 +1,21 @@
-Return-Path: <gabor.hernadi@linbit.com>
-Received: from mail-vk1-f176.google.com (mail-vk1-f176.google.com
-	[209.85.221.176])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 8568E420336
+Return-Path: <roland.kammerer@linbit.com>
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com
+	[209.85.128.45])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 11A4E420005
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 14 Apr 2020 15:36:10 +0200 (CEST)
-Received: by mail-vk1-f176.google.com with SMTP id v129so3145999vkf.10
+	Thu, 16 Apr 2020 15:30:49 +0200 (CEST)
+Received: by mail-wm1-f45.google.com with SMTP id h2so4577116wmb.4
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 14 Apr 2020 06:36:10 -0700 (PDT)
+	Thu, 16 Apr 2020 06:30:49 -0700 (PDT)
+Date: Thu, 16 Apr 2020 15:30:47 +0200
+From: Roland Kammerer <roland.kammerer@linbit.com>
+To: drbd-user@lists.linbit.com, drbd-announce@lists.linbit.com
+Message-ID: <20200416133047.GO27053@rck.sh>
 MIME-Version: 1.0
-From: =?UTF-8?B?R8OhYm9yIEhlcm7DoWRp?= <gabor.hernadi@linbit.com>
-Date: Tue, 14 Apr 2020 15:35:58 +0200
-Message-ID: <CAL16tNYab2Ccq9723KXx1eaC1fxPZMwJf8zUjCao6Fysm-QPCg@mail.gmail.com>
-To: drbd-announce@lists.linbit.com, drbd-user <drbd-user@lists.linbit.com>
-Content-Type: multipart/alternative; boundary="000000000000476f4b05a340485a"
-Subject: [DRBD-announce] linstor-server 1.6.1 release
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="PNTmBPCT7hxwcZjr"
+Content-Disposition: inline
+Subject: [DRBD-announce] linstor-csi-0.8.0
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -25,43 +27,73 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
---000000000000476f4b05a340485a
-Content-Type: text/plain; charset="UTF-8"
 
-Hi All,
+--PNTmBPCT7hxwcZjr
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-This release only contains a small bugfix as described below.
+Dear LINSTOR on k8s users,
 
-linstor-server 1.6.1
---------------------
- * Fix possible deadlock on startup when DB is unavailable
+Today we released version 0.8.0 of the LINSTOR CSI driver. The most
+noteworthy feature/change is support for LINSTOR resource groups (RG).
+All the parameters that can be set on a k8s storage class (SC) that make
+sense in the context of a LINSTOR RG are stored in the per SC defined
+RG.
 
-https://www.linbit.com/downloads/linstor/linstor-server-1.6.1.tar.gz
+This cleans up the code nicely, as properties set on a resource group are
+inherited to all resources of the resource group, and it allows to set
+DRBD options in the SC. This is documented with an example here[1].
 
-Linstor PPA (soon):
+Users really should move to SCs that have a "resourceGroup" parameter
+set. In the documentation it is already mentioned as mandatory. I tried
+hard to not break existing deployments, so *for* *now* SCs without a
+"resourceGroup" are fine at the cost of an auto-generated resource group
+per PVC (which if it gets deleted also deletes the auto-generated RG).
+The SC is the supposed and only way to define properties of a RG. The
+driver might delete/overwrite manually set ones.
 
-https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+Upstream code can be found here[2].
+
+If you need container images that are RHEL/OpenShift certified, get in
+contact with sales@linbit.com, we run a container registry with such
+images for our customers.
+
+Regards, rck
+
+Changelog:
+- Changed
+  - moved upstream to piraeus
+  - License changed to Apache2 (from GPLv2)
+
+- Deprecated
+  - SCs without a resourceGroup parameter. For now we create a random
+    LINSTOR RG for every PVC of a SC that does not specify
+    resourceGroup.  You should get rid of these SCs soon.
+
+- Added
+  - TLS mutual auth support for LINSTOR API endpoint
+  - support for LINSTOR resource groups. Every storage class maps now
+    to a LINSTOR resource group.  DRBD options can now be specified in
+    the SC as "parameter".  See the example in class.yaml. Keys as
+    specified in the LINSTOR REST API.
+
+[1] https://www.linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-basic-configuration-and-deployment
+[2] https://github.com/piraeusdatastore/linstor-csi/
 
 
-Best regards,
-Gabor
+--PNTmBPCT7hxwcZjr
+Content-Type: application/pgp-signature; name="signature.asc"
 
---000000000000476f4b05a340485a
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+-----BEGIN PGP SIGNATURE-----
 
-<div dir=3D"ltr"><div>Hi All,</div><div><br></div><div>This release only co=
-ntains a small bugfix as described below.<br></div><div><br></div><div><pre=
->linstor-server 1.6.1
---------------------
- * Fix possible deadlock on startup when DB is unavailable<br><br></pre></d=
-iv><div><a href=3D"https://www.linbit.com/downloads/linstor/linstor-server-=
-1.6.1.tar.gz" target=3D"_blank">https://www.linbit.com/downloads/linstor/li=
-nstor-server-1.6.1.tar.gz</a></div><div><br></div><div>Linstor PPA (soon): =
-<br><pre><a href=3D"https://launchpad.net/~linbit/+archive/ubuntu/linbit-dr=
-bd9-stack" target=3D"_blank">https://launchpad.net/~linbit/+archive/ubuntu/=
-linbit-drbd9-stack</a></pre></div><div><br><div dir=3D"ltr"><div dir=3D"ltr=
-"><div><div dir=3D"ltr"><div>Best regards,<br></div>Gabor</div></div></div>=
-</div></div></div>
+iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAl6YXfwACgkQRgmezyI6
+myItlAf/Wyg/U0MWB7ybiuU+3c4QDvX6Nbe/OrrWnQBJ193Crfx7CM0pjPSBqsXA
+9HHgjllw7AEXEpSosnIndUeBvnUin9k+jsSI9Xt6I+0UB0ZDliMMGsVeiy7+Jim2
+ZeNdrIEHzSW7k5T2xXqeEVBQWkAZwReLCQSDy7rLhWbGMgooZ+X0VgQyvoL5ZQTB
++mozRHoEHRjA53g/o1Bo7QZ3XHnNDNfhyyZGZRVMFTVaPBkO1MGWTnUlxm3C3r5C
+ilSchM+GWPJsz2uQgf2cOrlFoWQJGutRsTH7yk375s1AofXwP+8vLY8C+fmlwzwf
+nQjJhn3zG9wJJf5SxPr7qW82MYaI5g==
+=niZz
+-----END PGP SIGNATURE-----
 
---000000000000476f4b05a340485a--
+--PNTmBPCT7hxwcZjr--
