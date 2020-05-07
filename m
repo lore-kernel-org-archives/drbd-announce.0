@@ -1,13 +1,19 @@
-Return-Path: <johannes@johannesthoma.com>
-To: "drbd-user@lists.linbit.com" <drbd-user@lists.linbit.com>,
-	drbd-announce@lists.linbit.com
-From: Johannes Thoma <johannes@johannesthoma.com>
-Message-ID: <65812d28-7a96-d39d-0be4-c11a30876127@johannesthoma.com>
-Date: Thu, 7 May 2020 09:12:45 +0200
+Return-Path: <rene.peinthor@linbit.com>
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com
+	[209.85.221.52])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 46F104203D6
+	for <drbd-announce@lists.linbit.com>;
+	Thu,  7 May 2020 11:56:26 +0200 (CEST)
+Received: by mail-wr1-f52.google.com with SMTP id v12so4266356wrp.12
+	for <drbd-announce@lists.linbit.com>;
+	Thu, 07 May 2020 02:56:26 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/alternative;
-	boundary="------------0151464B91E4FC946E1E7C17"
-Subject: [DRBD-announce] WinDRBD 0.10.7 released
+From: Rene Peinthor <rene.peinthor@linbit.com>
+Date: Thu, 7 May 2020 11:56:15 +0200
+Message-ID: <CAHmn2DM++d20kcAGGnCJ_bDK3nUqBu7OCTGgG-YmVMATgJ4OtQ@mail.gmail.com>
+To: drbd-announce@lists.linbit.com, drbd-user <drbd-user@lists.linbit.com>
+Content-Type: multipart/alternative; boundary="000000000000da44e605a50be45d"
+Subject: [DRBD-announce] linstor-server 1.7.0 release
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -19,93 +25,63 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-This is a multi-part message in MIME format.
---------------0151464B91E4FC946E1E7C17
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
+--000000000000da44e605a50be45d
+Content-Type: text/plain; charset="UTF-8"
 
-Dear DRBD and WinDRBD community,
+Hi!
 
-We proudly present WinDRBD 0.10.7: it has a set of new features that improve usability and feature completeness (compared to the Linux version of DRBD). Among the new features are:
+This release bring a few nice things:
+ * A new auto-place implementation that is a way more customizable than
+before
+   updated docs soon here:
+https://www.linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-autoplace-linstor
+ * Snapshots got there dedicated list view, for faster queries
+ * Most list API's got a new filter option for properties
 
-Online verify (with crc32c checksum algorithm): Check if both backing devices contain the same data. This will be printed in the kernel log, so you will have to have logging configured.
+The rest is some bug fixes of reported bugs since version 1.6.2.
 
-drbdadm status and drbdsetup events2 as non-Administrator: Finally I got an idea how to implement drbdadm status as non-Administrator. Put shortly the WinDRBD threads (in the Linux emulation layer, struct task_struct) finally learned permissions (admin/no admin). We then added a new device object, just like the root object but permissions world accessible and set the permission to no admin when this object is opened (the drbd-utils try to open admin device object first, then when error is ACCESS_DENIED it tries to open the user object). Finally we check if the command is allowed for non-Admin users (there is a flag in the netlink packet descriptor) and allow netlink packets used for drbdadm status and drbdsetup events2.
+linstor-server 1.7.0
+--------------------
+ * Added new auto-placer code
+ * Added /v1/view/snapshots to REST-API
+ * Extended list APIs with filters
+ * DM-Crypt layer shreds now 16M on delete
+ * Fix loading resource-group properties
+ * REST-API 1.1.0
 
-The installer has learned to install the bus device needed for disk devices so a manual installation is not needed any more. This feature can cause problems on some systems so there is a checkbox to turn it off. If you have troubles with installing the bus device from the installer please report that.
+https://www.linbit.com/downloads/linstor/linstor-server-1.7.0.tar.gz
 
-Also the syslog IP address can finally be changed by a windrbd command (windrbd set-syslog-ip) at any time so one does not need a reboot any more when the syslog IP should be changed.
+Linstor PPA:
+https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
-Please refer to the file WHATSNEW.md (https://github.com/LINBIT/windrbd/blob/master/WHATSNEW.md) for more features we've implemented in WinDRBD 0.10.7
+Cheers,
+Rene
 
-As always an installable image with a signed driver can be downloaded from (attention the URL has changed):
+--000000000000da44e605a50be45d
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-https://www.linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/
+<div dir=3D"ltr">Hi!<div><br></div><div>This release bring a few nice thing=
+s:</div><div>=C2=A0* A new auto-place implementation that is a way more cus=
+tomizable than before<br>=C2=A0 =C2=A0updated docs soon here:=C2=A0<a href=
+=3D"https://www.linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-autoplac=
+e-linstor">https://www.linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-a=
+utoplace-linstor</a></div><div>=C2=A0* Snapshots got there dedicated list v=
+iew, for faster queries</div><div>=C2=A0* Most list API&#39;s got a new fil=
+ter option for properties</div><div><br></div><div>The rest is some bug fix=
+es of reported bugs since version 1.6.2.</div><div><div><font face=3D"monos=
+pace"><br></font></div><div><font face=3D"monospace">linstor-server 1.7.0<b=
+r>--------------------<br>=C2=A0* Added new auto-placer code<br>=C2=A0* Add=
+ed /v1/view/snapshots to REST-API<br>=C2=A0* Extended list APIs with filter=
+s<br>=C2=A0* DM-Crypt layer shreds now 16M on delete<br>=C2=A0* Fix loading=
+ resource-group properties<br>=C2=A0* REST-API 1.1.0</font><br></div><div><=
+div><font face=3D"monospace" size=3D"1"><br></font></div><div><font size=3D=
+"1" face=3D"monospace"><a href=3D"https://www.linbit.com/downloads/linstor/=
+linstor-server-1.7.0.tar.gz">https://www.linbit.com/downloads/linstor/linst=
+or-server-1.7.0.tar.gz</a></font></div></div><div><br></div><div><div>Linst=
+or PPA:<br><a href=3D"https://launchpad.net/~linbit/+archive/ubuntu/linbit-=
+drbd9-stack" rel=3D"noreferrer" target=3D"_blank">https://launchpad.net/~li=
+nbit/+archive/ubuntu/linbit-drbd9-stack</a></div></div><div><br></div><div>=
+Cheers,</div><div>Rene</div></div></div>
 
-Thank you for helping WinDRBD development by using it,
-
-Best regards,
-
-- Johannes
-
---------------0151464B91E4FC946E1E7C17
-Content-Type: text/html; charset=utf-8
-Content-Transfer-Encoding: 7bit
-
-<html>
-  <head>
-
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    Dear DRBD and WinDRBD community,<br>
-    <br>
-    We proudly present WinDRBD 0.10.7: it has a set of new features that
-    improve usability and feature completeness (compared to the Linux
-    version of DRBD). Among the new features are:<br>
-    <br>
-    Online verify (with crc32c checksum algorithm): Check if both
-    backing devices contain the same data. This will be printed in the
-    kernel log, so you will have to have logging configured.<br>
-    <br>
-    drbdadm status and drbdsetup events2 as non-Administrator: Finally I
-    got an idea how to implement drbdadm status as non-Administrator.
-    Put shortly the WinDRBD threads (in the Linux emulation layer,
-    struct task_struct) finally learned permissions (admin/no admin). We
-    then added a new device object, just like the root object but
-    permissions world accessible and set the permission to no admin when
-    this object is opened (the drbd-utils try to open admin device
-    object first, then when error is ACCESS_DENIED it tries to open the
-    user object). Finally we check if the command is allowed for
-    non-Admin users (there is a flag in the netlink packet descriptor)
-    and allow netlink packets used for drbdadm status and drbdsetup
-    events2. <br>
-    <br>
-    The installer has learned to install the bus device needed for disk
-    devices so a manual installation is not needed any more. This
-    feature can cause problems on some systems so there is a checkbox to
-    turn it off. If you have troubles with installing the bus device
-    from the installer please report that.<br>
-    <br>
-    Also the syslog IP address can finally be changed by a windrbd
-    command (windrbd set-syslog-ip) at any time so one does not need a
-    reboot any more when the syslog IP should be changed.<br>
-    <br>
-    Please refer to the file WHATSNEW.md
-    (<a class="moz-txt-link-freetext" href="https://github.com/LINBIT/windrbd/blob/master/WHATSNEW.md">https://github.com/LINBIT/windrbd/blob/master/WHATSNEW.md</a>) for more
-    features we've implemented in WinDRBD 0.10.7<br>
-    <br>
-    As always an installable image with a signed driver can be
-    downloaded from (attention the URL has changed):<br>
-    <br>
-<a class="moz-txt-link-freetext" href="https://www.linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/">https://www.linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/</a><br>
-    <br>
-    Thank you for helping WinDRBD development by using it,<br>
-    <br>
-    Best regards,<br>
-    <br>
-    - Johannes<br>
-  </body>
-</html>
-
---------------0151464B91E4FC946E1E7C17--
+--000000000000da44e605a50be45d--
