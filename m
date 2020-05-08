@@ -1,19 +1,21 @@
-Return-Path: <rene.peinthor@linbit.com>
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com
-	[209.85.221.52])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 821D44203E8
+Return-Path: <roland.kammerer@linbit.com>
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com
+	[209.85.221.51])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 5EA77420334
 	for <drbd-announce@lists.linbit.com>;
-	Thu,  7 May 2020 11:56:29 +0200 (CEST)
-Received: by mail-wr1-f52.google.com with SMTP id h9so5611446wrt.0
+	Fri,  8 May 2020 12:42:47 +0200 (CEST)
+Received: by mail-wr1-f51.google.com with SMTP id k1so1304656wrx.4
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 07 May 2020 02:56:29 -0700 (PDT)
+	Fri, 08 May 2020 03:42:47 -0700 (PDT)
+Date: Fri, 8 May 2020 12:42:45 +0200
+From: Roland Kammerer <roland.kammerer@linbit.com>
+To: drbd-user@lists.linbit.com, drbd-announce@lists.linbit.com
+Message-ID: <20200508104245.GF1572@rck.sh>
 MIME-Version: 1.0
-From: Rene Peinthor <rene.peinthor@linbit.com>
-Date: Thu, 7 May 2020 11:56:18 +0200
-Message-ID: <CAHmn2DM+Xmrcj=P5B-bnXvLfpV3u+S7Q4iRnJ+TTpjL+8+a7Hw@mail.gmail.com>
-To: drbd-announce@lists.linbit.com, drbd-user <drbd-user@lists.linbit.com>
-Content-Type: multipart/alternative; boundary="000000000000040b7905a50be584"
-Subject: [DRBD-announce] python-linstor, linstor-client 1.1.0 release
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="C7zPtVaVf+AK4Oqc"
+Content-Disposition: inline
+Subject: [DRBD-announce] drbd-utils-9.13.0
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -25,65 +27,49 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
---000000000000040b7905a50be584
-Content-Type: text/plain; charset="UTF-8"
 
-Hi!
+--C7zPtVaVf+AK4Oqc
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-A lot of new things in the client with this release, making usage of all new
-REST-API features. Details as always below:
+Dear DRBD users,
 
-python-linstor v1.1.0
----------------------
-  * Add /v1/view/snapshot support
-  * Add props filter support for lists
+Today we release version 9.13.0 of our low-level userspace utilities.
+This mainly accumulates crm-fence-peer/drbd.ocf/Pacemaker 1/2 compat
+fixes that were already in 9.12.x, but as the Windows part also got some
+new features, this felt like a good point in time to push out what we
+have. If you did not run into any Pacemaker/clustering related problems,
+then there is no urgent need to upgrade. Especially not on a Friday :).
 
-https://www.linbit.com/downloads/linstor/python-linstor-1.1.0.tar.gz
+Best, rck
 
-linstor-client 1.1.0
----------------------
- * Use REST-API 1.1.0 snapshot view for snapshot list
- * Add re-enter passphrase for initial passphrase creation
- * Fix incorrect units in drbd-options help
- * Node list add `--show-aux-props` to show aux properties
- * Add `--props` option to many list commands, to filter by properties
- * Added `--faulty` to resource list, to show only faulty resources
+9.13.0
+--------
+ * crm-fence-peer{,.9}.sh: detect Pacemaker 2 promotable clones
+ * submodules: switch to https, which makes it easier to clone
+   if you are behind some weird company firewalls.
+ * drbd.service: start pacemaker before drbd-proxy
+ * windrbd: various new commands including create-resource-from-url,
+   set-syslog-ip, scan-partitions-for-minor, install-bus-device,
+   remove-bus-device
 
-https://www.linbit.com/downloads/linstor/linstor-client-1.1.0.tar.gz
+https://www.linbit.com/downloads/drbd/utils/drbd-utils-9.13.0.tar.gz
+https://github.com/LINBIT/drbd-utils/tree/v9.13.0
+https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack/
 
-Linstor PPA:
-https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+--C7zPtVaVf+AK4Oqc
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Best regards,
-Rene
+-----BEGIN PGP SIGNATURE-----
 
---000000000000040b7905a50be584
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAl61N50ACgkQRgmezyI6
+myKLtQf+L1ar7JXZJxtTBjPN1wgsXkTf8zik5lYh9MT38vVOg4umca1koliey8vY
+f10GIK97F+U7rLFX6VXGYb7CvYaZ/PPI5nFLtYloK72WDQc9VZk4wNMNDt1aR2VC
+HGcp3WSlo4dJQoTOx7VlN2g0E4uhLtMQ64RAEPZnrYTkXY4+vzyjF6Csw/6QZS3s
+bkUp4ywL+hfsmqMZNWMA6U7WI9UnRSmCfDkbPlQUAfoDCcMwReAwyvKLYjDEeAgG
+v0OnKYJirB0U7iU3TMuQRIxIfvs0ZLj5gcx6qkwowIkvtGOGEfo8KJ8qfkdMJSjU
+Yf9dNsSHEQQ8KPSZi5iXS6cW7yWiBA==
+=asnl
+-----END PGP SIGNATURE-----
 
-<div dir=3D"ltr">Hi!<div><br></div><div>A lot of new things in the client w=
-ith this release, making usage of all new</div><div>REST-API features. Deta=
-ils as always below:</div><div><div><br></div><div><font face=3D"monospace"=
->python-linstor v1.1.0<br>---------------------<br>=C2=A0 * Add /v1/view/sn=
-apshot support<br>=C2=A0 * Add props filter support for lists</font><br></d=
-iv><div><div><div><div><br></div><div><font size=3D"1"><font face=3D"monosp=
-ace, monospace"><a href=3D"https://www.linbit.com/downloads/linstor/python-=
-linstor-1.1.0.tar.gz">https://www.linbit.com/downloads/linstor/python-linst=
-or-1.1.0.tar.gz</a></font></font></div></div><div><font size=3D"1"><br></fo=
-nt></div><div><div><font face=3D"monospace">linstor-client 1.1.0<br>-------=
---------------<br>=C2=A0* Use REST-API 1.1.0 snapshot view for snapshot lis=
-t<br>=C2=A0* Add re-enter passphrase for initial passphrase creation<br>=C2=
-=A0* Fix incorrect units in drbd-options help<br>=C2=A0* Node list add `--s=
-how-aux-props` to show aux properties<br>=C2=A0* Add `--props` option to ma=
-ny list commands, to filter by properties<br>=C2=A0* Added `--faulty` to re=
-source list, to show only faulty resources</font><br></div><div><br></div><=
-div><font size=3D"1"><font face=3D"monospace, monospace"><a href=3D"https:/=
-/www.linbit.com/downloads/linstor/linstor-client-1.1.0.tar.gz">https://www.=
-linbit.com/downloads/linstor/linstor-client-1.1.0.tar.gz</a></font></font><=
-/div></div></div><div><br></div><div>Linstor PPA:<br></div><div><div><a hre=
-f=3D"https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack" rel=
-=3D"noreferrer" target=3D"_blank">https://launchpad.net/~linbit/+archive/ub=
-untu/linbit-drbd9-stack</a><br></div><div><br></div><div>Best regards,</div=
-><div>Rene</div></div></div></div></div>
-
---000000000000040b7905a50be584--
+--C7zPtVaVf+AK4Oqc--
