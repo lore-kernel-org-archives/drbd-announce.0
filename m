@@ -1,21 +1,19 @@
-Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com
-	[209.85.128.50])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 649B14203DE
+Return-Path: <rene.peinthor@linbit.com>
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com
+	[209.85.221.44])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id B62824202B5
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 12 May 2020 15:10:27 +0200 (CEST)
-Received: by mail-wm1-f50.google.com with SMTP id e26so21673220wmk.5
+	Thu, 14 May 2020 16:54:55 +0200 (CEST)
+Received: by mail-wr1-f44.google.com with SMTP id l11so4582527wru.0
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 12 May 2020 06:10:27 -0700 (PDT)
-Date: Tue, 12 May 2020 15:09:24 +0200
-From: Roland Kammerer <roland.kammerer@linbit.com>
-To: drbd-user@lists.linbit.com, drbd-announce@lists.linbit.com
-Message-ID: <20200512130924.GF1483@rck.sh>
+	Thu, 14 May 2020 07:54:55 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="Nq2Wo0NMKNjxTN9z"
-Content-Disposition: inline
-Subject: [DRBD-announce] drbd-utils-9.13.1
+From: Rene Peinthor <rene.peinthor@linbit.com>
+Date: Thu, 14 May 2020 16:54:43 +0200
+Message-ID: <CAHmn2DO6-O0SeyuV4otnK+3+D_xfYdqgFcN=-D6sCcN6giU7Pg@mail.gmail.com>
+To: drbd-announce@lists.linbit.com, drbd-user <drbd-user@lists.linbit.com>
+Content-Type: multipart/alternative; boundary="0000000000002b56be05a59ce127"
+Subject: [DRBD-announce] linstor-server 1.7.1 release
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -27,44 +25,55 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
+--0000000000002b56be05a59ce127
+Content-Type: text/plain; charset="UTF-8"
 
---Nq2Wo0NMKNjxTN9z
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Hi!
 
-Dear DRBD users,
+Bug-fix release for a first round of reported bugs we could fix this week.
+A feature that was actually ready with 1.7.0, but had a little bug so we
+didn't
+announce it yet, will be available now in this release:
+Linstor can now be configured to automatically enable drbd proxy.
+For more details see chapter 2.11.1 in the Linstor User's Guide.
 
-If you already updated to 9.13.0, and if you use crm-fence-peer*.sh, you
-should upgrade, there was a bug in a regex. Thanks to Andreas Mock for
-reporting it. While at it also fix a bug in the man pages.
+linstor-server 1.7.1
+--------------------
+ * Make volume-definition create synchronous
+ * Fixed illegal characters for autoplacer weights
+ * Fixed bug on startup when fetching thin storage pools
+ * Fixed auto enabling DRBD-proxy
 
-Updated packages are already in our customer repos for amd64, ppc64le,
-and arm64. I will updated the PPA when time allows.
+https://www.linbit.com/downloads/linstor/linstor-server-1.7.1.tar.gz
 
-Best, rck
+Linstor PPA:
+https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
-9.13.1
---------
- * crm-fence-peer{,.9}.sh: fix regex
- * doc: fix c-min-rate
+Cheers,
+Rene
 
-https://www.linbit.com/downloads/drbd/utils/drbd-utils-9.13.1.tar.gz
-https://github.com/LINBIT/drbd-utils/tree/v9.13.1
-https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack/+packages
+--0000000000002b56be05a59ce127
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
---Nq2Wo0NMKNjxTN9z
-Content-Type: application/pgp-signature; name="signature.asc"
+<div dir=3D"ltr">Hi!<div><br></div><div>Bug-fix release for a first round o=
+f reported bugs we could fix this week.</div><div>A feature that was actual=
+ly ready with 1.7.0, but had a little=C2=A0bug so we didn&#39;t</div><div>a=
+nnounce=C2=A0it yet, will be available=C2=A0now in this release:</div><div>=
+Linstor can now be configured to automatically enable drbd proxy.<br>For mo=
+re details see chapter 2.11.1 in the Linstor User&#39;s Guide.<br></div><di=
+v><div><font face=3D"monospace"><br></font></div><div><font face=3D"monospa=
+ce">linstor-server 1.7.1<br>--------------------<br>=C2=A0* Make volume-def=
+inition create synchronous<br>=C2=A0* Fixed illegal characters for autoplac=
+er weights<br>=C2=A0* Fixed bug on startup when fetching thin storage pools=
+<br>=C2=A0* Fixed auto enabling DRBD-proxy</font><br></div><div><div><font =
+face=3D"monospace" size=3D"1"><br></font></div><div><font size=3D"1" face=
+=3D"monospace"><a href=3D"https://www.linbit.com/downloads/linstor/linstor-=
+server-1.7.1.tar.gz">https://www.linbit.com/downloads/linstor/linstor-serve=
+r-1.7.1.tar.gz</a></font></div></div><div><br></div><div><div>Linstor PPA:<=
+br><a href=3D"https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-st=
+ack" rel=3D"noreferrer" target=3D"_blank">https://launchpad.net/~linbit/+ar=
+chive/ubuntu/linbit-drbd9-stack</a></div></div><div><br></div><div>Cheers,<=
+/div><div>Rene</div></div></div>
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAl66n/4ACgkQRgmezyI6
-myLLzwgAnicZzMv5G3ISsYkPVjBT5EQ6tT95EK1kkUDBVlJrw0OHcEan25ilw52l
-uqJISqRvpYqewcq/FhyrYaSpkhSPjVIGgIZHEU9BFevWYJgJykUfK9UomunW5Gb6
-N31jpbK8x84tGRXIVA8U0KR8QSfuoGMJ4iT6pn7xO+PrdBm/+uBupadjXXktyR9u
-9YwBMwMr8L47k+naPo2XNCaN80VfI/0bttrGOjZGTI8YXRQwaD8o5FSvjGuh76D6
-Vh3OJG4EzvWhtKOCSd13cSp86LA4nQXeAlS/e0qL2iaE1iPBlebY/WiKpjBIPw6A
-xHQIqXcD/Tgr8UlfWTEp4Q3aQ/VtTw==
-=pySY
------END PGP SIGNATURE-----
-
---Nq2Wo0NMKNjxTN9z--
+--0000000000002b56be05a59ce127--
