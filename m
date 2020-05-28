@@ -1,20 +1,19 @@
-Return-Path: <philipp.reisner@linbit.com>
-Received: from mail-io1-f46.google.com (mail-io1-f46.google.com
-	[209.85.166.46])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 9A3864203DE
+Return-Path: <rene.peinthor@linbit.com>
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com
+	[209.85.128.43])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 939F742011A
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 26 May 2020 17:45:46 +0200 (CEST)
-Received: by mail-io1-f46.google.com with SMTP id y18so2050894iow.3
+	Thu, 28 May 2020 16:36:19 +0200 (CEST)
+Received: by mail-wm1-f43.google.com with SMTP id l26so3395796wme.3
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 26 May 2020 08:45:46 -0700 (PDT)
+	Thu, 28 May 2020 07:36:19 -0700 (PDT)
 MIME-Version: 1.0
-From: Philipp Reisner <philipp.reisner@linbit.com>
-Date: Tue, 26 May 2020 17:45:34 +0200
-Message-ID: <CADGDV=WCzCE8W1rqQ9EnCBk0Bbzhc1Onss5mZ6teBdgjVXD3qw@mail.gmail.com>
-To: drbd-announce@lists.linbit.com
-Content-Type: text/plain; charset="UTF-8"
-Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-9.0.23-0rc2
+From: Rene Peinthor <rene.peinthor@linbit.com>
+Date: Thu, 28 May 2020 16:36:07 +0200
+Message-ID: <CAHmn2DNyK5qvOGKqe3nqqQCfxjKK2vZfqguCsqLV3KuCWoWgNQ@mail.gmail.com>
+To: drbd-announce@lists.linbit.com, drbd-user <drbd-user@lists.linbit.com>
+Content-Type: multipart/alternative; boundary="00000000000062b44b05a6b6408c"
+Subject: [DRBD-announce] python-linstor, linstor-client 1.1.2 release
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,36 +25,57 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
+--00000000000062b44b05a6b6408c
+Content-Type: text/plain; charset="UTF-8"
+
 Hi,
 
-Everything takes longer these days. Home-office, kids jumping around,
-excuses, excuses...
-I intend to make the final release very soon...
+python-linstor had a small bug with python2.7 and storage pool select
+filters, this version fixes this.
+No changes to linstor-client except that it refers to the new
+python-linstor library.
 
-Here is the updated change-log:
-9.0.23-0rc2 (api:genl2/proto:86-116/transport:14)
---------
- * fix a deadlock (regression introduced in 9.0.22) that can be
-   triggered if a minor is added into a resource with an established
-   connection
- * generate new UUID immediately if a primary loses a disk due to an IO
-   error
- * fix read requests on diskless nodes that hit a read error on a
-   diskful node; the retry on another diskful node works, but a bug
-   could lead to a log-storm on the diskless node
- * fix removal of diskless nodes from clusters with quorum enabled
-   (initiated from the diskless itself)
- * fix wrongly declined state changes if connections are established
-   concurrently
- * fix continuation of initial resync; before that the initial resync
-   always started from the beginning if it was interrupted
- * use rwsem _non_owner() operations to avoid false positives of
-   lock-dep when running on a debug kernel
- * fix a sometimes missed resync if only a diskless node was primary
-   since the day0 UUID
- * update compat up to Linux 5.6
+python-linstor v1.1.2
+---------------------
+ * Fix storage pool list argument with python 2.7
 
-https://www.linbit.com/downloads/drbd/9.0/drbd-9.0.23-0rc2.tar.gz
+https://www.linbit.com/downloads/linstor/python-linstor-1.1.2.tar.gz
 
-best regards,
- Phil
+linstor-client v1.1.2
+---------------------
+ * refer latest python-linstor 1.1.2, for py2.7 fix
+
+https://www.linbit.com/downloads/linstor/linstor-client-1.1.2.tar.gz
+
+Linstor PPA:
+https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+
+Best regards,
+Rene
+
+--00000000000062b44b05a6b6408c
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">Hi,<br><div><br></div><div>python-linstor had a small bug =
+with python2.7 and storage pool select filters, this version fixes this.</d=
+iv><div>No changes to linstor-client except that it refers to the new pytho=
+n-linstor library.</div><div><br></div><div><div><font face=3D"monospace">p=
+ython-linstor v1.1.2<br>---------------------<br>=C2=A0* Fix storage pool l=
+ist argument with python 2.7</font><br></div><div><div><div><div><br></div>=
+<div><font size=3D"1"><font face=3D"monospace, monospace"><a href=3D"https:=
+//www.linbit.com/downloads/linstor/python-linstor-1.1.2.tar.gz">https://www=
+.linbit.com/downloads/linstor/python-linstor-1.1.2.tar.gz</a></font></font>=
+</div></div><div><font size=3D"1"><br></font></div><div><div><font face=3D"=
+monospace">linstor-client v1.1.2<br>---------------------<br>=C2=A0* refer =
+latest python-linstor 1.1.2, for py2.7 fix</font><br></div><div><br></div><=
+div><font size=3D"1"><font face=3D"monospace, monospace"><a href=3D"https:/=
+/www.linbit.com/downloads/linstor/linstor-client-1.1.2.tar.gz">https://www.=
+linbit.com/downloads/linstor/linstor-client-1.1.2.tar.gz</a></font></font><=
+/div></div></div><div><br></div><div>Linstor PPA:<br></div><div><div><a hre=
+f=3D"https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack" rel=
+=3D"noreferrer" target=3D"_blank">https://launchpad.net/~linbit/+archive/ub=
+untu/linbit-drbd9-stack</a><br></div><div><br></div><div>Best regards,</div=
+><div>Rene</div></div></div></div></div>
+
+--00000000000062b44b05a6b6408c--
