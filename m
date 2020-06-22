@@ -1,21 +1,20 @@
-Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com
-	[209.85.128.49])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 956C6420105
+Return-Path: <philipp.reisner@linbit.com>
+Received: from mail-io1-f50.google.com (mail-io1-f50.google.com
+	[209.85.166.50])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 9BAD542021C
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 22 Jun 2020 11:53:49 +0200 (CEST)
-Received: by mail-wm1-f49.google.com with SMTP id y20so15071510wmi.2
+	Mon, 22 Jun 2020 15:48:12 +0200 (CEST)
+Received: by mail-io1-f50.google.com with SMTP id q8so19522227iow.7
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 22 Jun 2020 02:53:49 -0700 (PDT)
-Date: Mon, 22 Jun 2020 11:53:47 +0200
-From: Roland Kammerer <roland.kammerer@linbit.com>
-To: drbd-user@lists.linbit.com, drbd-announce@lists.linbit.com
-Message-ID: <20200622095347.GJ1698@rck.sh>
+	Mon, 22 Jun 2020 06:48:12 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="rQ2U398070+RC21q"
-Content-Disposition: inline
-Subject: [DRBD-announce] linstor-proxmox-5.1.0
+From: Philipp Reisner <philipp.reisner@linbit.com>
+Date: Mon, 22 Jun 2020 15:48:00 +0200
+Message-ID: <CADGDV=XpX3=VWh-9DpdXpmT1W9rCeiutXOtOO2xGxvnF=BqAtw@mail.gmail.com>
+To: drbd-announce@lists.linbit.com
+Content-Type: multipart/alternative; boundary="0000000000005bba7f05a8ac7e01"
+Cc: drbd-user@lists.linbit.com
+Subject: [DRBD-announce] drbd-9.0.24-rc1
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -27,51 +26,116 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
+--0000000000005bba7f05a8ac7e01
+Content-Type: text/plain; charset="UTF-8"
 
---rQ2U398070+RC21q
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Hi,
 
-Dear PVE-users,
+only two weeks after the 9.0.23 release I am already starting the
+next release cycle. The main reason is a change that was sitting
+in a branch that I wanted to postpone after the 9.0.23
+release. It is about making the detection of split-brain
+situations more reliable.
 
-This is a feature driven release that adds some improvements in the area
-of snapshots.
+So far with all DRBD-9 releases, if you have two nodes primary
+and they try to reconnect the abort establishing the connection
+at the moment they find out that both are primary, and retry in
+10 seconds.  DRBD-8.4 was a bit more elegant in such a
+situation. It detected the split-brain first and the two go into
+StandAlone and stop trying endlessly. That allows users to hook
+special handling into the split-brain handler(s).  This release
+restores this capability of drbd-8.4. With that comes a new
+protocol version.
 
-- you can now create snapshots (that was possible since a long time),
-  but now it is possible to also roll them back. This is limited to the
-  last snapshot. This is a limitation LINSTOR has because of how ZFS
-  works/how ZFS snapshots are handled. This might change in the future.
-  Till then one has to make the destination snapshot the last one (i.e.,
-  delete the ones in between).
+The other fix is relevant for LINSTOR users where workload might
+run on diskless-primary nodes. The particular corner-case bug
+triggered when:
 
-- it is now possible to click the "backup" button of e.g., a running LXC
-  container and create the backup via a snapshot. That said, while
-  implementing this we found out that the PVE's built in backup does not
-  handle disks that are not a multiple of 64K properly, which is very
-  likely for DRBD devices/disks. This is not a regression, I'd assume
-  this bug in PVE existed for a long time. For more information see the
-  upstream bug report[1].
+- in a cluster of two storage nodes and one diskless node
+- one storage node is primary gets hard rebooted
+- the workload is moved to the diskless node while
+  the storage node is down (primary role moves)
+- the new primary does not issue any writes
+- the rebooted storage node connects to the other storage node
+  first, before it connects to the diskless node
+then it stays "Inconsistent" after the resync.
 
-https://www.linbit.com/downloads/connectors/linstor-proxmox-5.1.0.tar.gz
-https://github.com/LINBIT/linstor-proxmox/commit/5310292670b6b47fb3f063a2e16dbf0a639f75fe
+A workaround applicable to all drbd9 versions before 9.0.24 is to
+do a drbdadm disconnect / connect between the two storage nodes.
 
-Regards, rck
+This is a release candidate, please help testing it.
 
-[1] https://bugzilla.proxmox.com/show_bug.cgi?id=2811
+Changelog:
 
---rQ2U398070+RC21q
-Content-Type: application/pgp-signature; name="signature.asc"
+9.0.24-0rc1 (api:genl2/proto:86-117/transport:14)
+--------
+ * fix deadlock when connecting drbd-9 to drbd-8.4 and the drbd-9
+   side becomes sync-source
+ * fix an issue with 3 (or more) node configurations; with a diskless node
+   and two storage nodes; if one of the storage nodes was hard rebooted
+   and came back and the diskless got primary and did not issue write
+   requests and the returning storage node established a connection with
+   the surviving storage node first, DRBD failed to upgrade the disk
+   state to UpToDate after the resync
+ * detect split-brain situations also when both nodes are primary;
+   this is how it was in drbd-8.4; up to now drbd-9 did not realize
+   the split-brain since it complains about the not allowed dual
+   primary first; for this change a new protocol version was necessary
+ * verified it compiles with Linux 5.7
 
------BEGIN PGP SIGNATURE-----
+https://www.linbit.com/downloads/drbd/9.0/drbd-9.0.24-0rc1.tar.gz
+https://github.com/LINBIT/drbd/commit/41bee98b3095a06948b9aa48258e9c877e0eadac
 
-iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAl7wf6cACgkQRgmezyI6
-myKa+Af/b1wq70Hc6xuRXzmAl11MWSE6edNAwuHtL1Htj+85VLBke4AqkqPDUFV2
-hvdwYWcUQO/tw9PlJ9+5PpsrpY55QWByY1RSNVNAPPACW3dmOsm0Mpai/vnKclqc
-M4CdGrylJbZ/CehYlo4ypo5hF4zqQFqO4lx/BqJlRIvUFfhAGhoNjeTV3eUOU2xM
-4R3npVj3G3GVqToYfOXse6Jtr58rtccWIxYg1bqNEvM6gVE/8qjnKl+E6HjY0V2j
-UXc8vcz1yo6gvCOnnRCTMn3xqdtiv8Zl9ZuaG6RzeDN6gL261lvLXiV8SJe6UifJ
-zZzDwKjGNGRANtXOnTbPKxWJMnP92Q==
-=Qh6Q
------END PGP SIGNATURE-----
+Best regards,
+ Phil
 
---rQ2U398070+RC21q--
+--0000000000005bba7f05a8ac7e01
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div>Hi,<br><br>only two weeks after the 9.0.23 release I =
+am already=C2=A0starting the<br>next release cycle. The main reason is a ch=
+ange that was sitting<br>in a branch that I wanted to postpone after the 9.=
+0.23<br>release. It is about making the detection of split-brain<br>situati=
+ons more reliable.<br><br>So far with all DRBD-9 releases, if you have two =
+nodes primary<br>and they try to reconnect the abort establishing the conne=
+ction<br>at the moment they find out that both are primary, and retry in<br=
+>10 seconds.=C2=A0 DRBD-8.4 was a bit more elegant in such a<br>situation. =
+It detected the split-brain first and the two go into<br>StandAlone and sto=
+p trying endlessly. That allows users to hook<br>special handling into the =
+split-brain handler(s).=C2=A0 This release<br>restores this capability of d=
+rbd-8.4. With that comes a new<br>protocol version.<br><br>The other fix is=
+ relevant for LINSTOR users where workload might<br>run on diskless-primary=
+ nodes. The particular corner-case bug<br>triggered when:<br><br>- in a clu=
+ster of two storage nodes and one diskless node<br>- one storage node is pr=
+imary gets hard rebooted<br>- the workload is moved to the diskless node wh=
+ile<br>=C2=A0 the storage node=C2=A0is down (primary role moves)<br>- the n=
+ew primary does not issue any writes=C2=A0<br>- the rebooted storage node c=
+onnects to the other storage node<br>=C2=A0 first, before it connects to th=
+e diskless node<br>then it stays &quot;Inconsistent&quot; after the resync.=
+<br><br>A workaround applicable to all drbd9 versions before 9.0.24 is to<b=
+r>do a drbdadm disconnect / connect between the two storage nodes.</div><di=
+v><br></div><div>This is a release candidate, please help testing it.</div>=
+<div><br></div><div>Changelog:</div><div><br></div><div>9.0.24-0rc1 (api:ge=
+nl2/proto:86-117/transport:14)<br>--------<br>=C2=A0* fix deadlock when con=
+necting drbd-9 to drbd-8.4 and the drbd-9<br>=C2=A0 =C2=A0side becomes sync=
+-source<br>=C2=A0* fix an issue with 3 (or more) node configurations; with =
+a diskless node<br>=C2=A0 =C2=A0and two storage nodes; if one of the storag=
+e nodes was hard rebooted<br>=C2=A0 =C2=A0and came back and the diskless go=
+t primary and did not issue write<br>=C2=A0 =C2=A0requests and the returnin=
+g storage node established a connection with<br>=C2=A0 =C2=A0the surviving =
+storage node first, DRBD failed to upgrade the disk<br>=C2=A0 =C2=A0state t=
+o UpToDate after the resync<br>=C2=A0* detect split-brain situations also w=
+hen both nodes are primary;<br>=C2=A0 =C2=A0this is how it was in drbd-8.4;=
+ up to now drbd-9 did not realize<br>=C2=A0 =C2=A0the split-brain since it =
+complains about the not allowed dual<br>=C2=A0 =C2=A0primary first; for thi=
+s change a new protocol version was necessary<br>=C2=A0* verified it compil=
+es with Linux 5.7<br></div><div><br></div><div><a href=3D"https://www.linbi=
+t.com/downloads/drbd/9.0/drbd-9.0.24-0rc1.tar.gz">https://www.linbit.com/do=
+wnloads/drbd/9.0/drbd-9.0.24-0rc1.tar.gz</a><br></div><div><a href=3D"https=
+://github.com/LINBIT/drbd/commit/41bee98b3095a06948b9aa48258e9c877e0eadac">=
+https://github.com/LINBIT/drbd/commit/41bee98b3095a06948b9aa48258e9c877e0ea=
+dac</a><br></div><div><br></div><div>Best regards,</div><div>=C2=A0Phil</di=
+v><div><br></div><div><br></div></div>
+
+--0000000000005bba7f05a8ac7e01--
