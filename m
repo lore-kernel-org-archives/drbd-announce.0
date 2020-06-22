@@ -1,20 +1,21 @@
-Return-Path: <philipp.reisner@linbit.com>
-Received: from mail-il1-f172.google.com (mail-il1-f172.google.com
-	[209.85.166.172])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 4877C4203E3
+Return-Path: <roland.kammerer@linbit.com>
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com
+	[209.85.128.49])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 956C6420105
 	for <drbd-announce@lists.linbit.com>;
-	Mon,  8 Jun 2020 17:21:46 +0200 (CEST)
-Received: by mail-il1-f172.google.com with SMTP id z2so17121321ilq.0
+	Mon, 22 Jun 2020 11:53:49 +0200 (CEST)
+Received: by mail-wm1-f49.google.com with SMTP id y20so15071510wmi.2
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 08 Jun 2020 08:21:45 -0700 (PDT)
+	Mon, 22 Jun 2020 02:53:49 -0700 (PDT)
+Date: Mon, 22 Jun 2020 11:53:47 +0200
+From: Roland Kammerer <roland.kammerer@linbit.com>
+To: drbd-user@lists.linbit.com, drbd-announce@lists.linbit.com
+Message-ID: <20200622095347.GJ1698@rck.sh>
 MIME-Version: 1.0
-From: Philipp Reisner <philipp.reisner@linbit.com>
-Date: Mon, 8 Jun 2020 17:21:33 +0200
-Message-ID: <CADGDV=WHmEEHA_vbDPUepBTGot+Jn-froEGz0JTtwAZ6mwAu-g@mail.gmail.com>
-To: drbd-announce@lists.linbit.com
-Content-Type: multipart/alternative; boundary="0000000000002cfd8f05a7942b1f"
-Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-9.0.23-1
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="rQ2U398070+RC21q"
+Content-Disposition: inline
+Subject: [DRBD-announce] linstor-proxmox-5.1.0
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,89 +27,51 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
---0000000000002cfd8f05a7942b1f
-Content-Type: text/plain; charset="UTF-8"
 
-Hi,
+--rQ2U398070+RC21q
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-it is out, finally! Upgrade from all 9.0.x versions to 9.0.23-1
-recommended. A number of new tests were created while working on this
-release.
+Dear PVE-users,
 
-9.0.23-1 (api:genl2/proto:86-116/transport:14)
---------
- * fix a deadlock (regression introduced in 9.0.22) that can happen when
-   new current UUID is generated while a connection gets established
- * Do not create a new data generation if the node has
-   'allow-remote-read = no' set, is primary, and the local disk fails
-   (because it has no access to good data anyome)
- * fix a deadlock (regression introduced in 9.0.22) that can be
-   triggered if a minor is added into a resource with an established
-   connection
- * generate new UUID immediately if a primary loses a disk due to an IO
-   error
- * fix read requests on diskless nodes that hit a read error on a
-   diskful node; the retry on another diskful node works, but a bug
-   could lead to a log-storm on the diskless node
- * fix removal of diskless nodes from clusters with quorum enabled
-   (initiated from the diskless itself)
- * fix wrongly declined state changes if connections are established
-   concurrently
- * fix continuation of initial resync; before that the initial resync
-   always started from the beginning if it was interrupted
- * use rwsem _non_owner() operations to avoid false positives of
-   lock-dep when running on a debug kernel
- * fix a sometimes missed resync if only a diskless node was primary
-   since the day0 UUID
- * fix a corner case where a SyncSource node does not recognise
-   that a SyncTarget node declared the resync as finished
- * update compat up to Linux 5.6
+This is a feature driven release that adds some improvements in the area
+of snapshots.
 
-https://www.linbit.com/downloads/drbd/9.0/drbd-9.0.23-1.tar.gz
-https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
-https://github.com/LINBIT/drbd/commit/d16bfab7a4033024fed2d99d3b179aa6bb6eb300
+- you can now create snapshots (that was possible since a long time),
+  but now it is possible to also roll them back. This is limited to the
+  last snapshot. This is a limitation LINSTOR has because of how ZFS
+  works/how ZFS snapshots are handled. This might change in the future.
+  Till then one has to make the destination snapshot the last one (i.e.,
+  delete the ones in between).
 
-best regards,
- Phil
+- it is now possible to click the "backup" button of e.g., a running LXC
+  container and create the backup via a snapshot. That said, while
+  implementing this we found out that the PVE's built in backup does not
+  handle disks that are not a multiple of 64K properly, which is very
+  likely for DRBD devices/disks. This is not a regression, I'd assume
+  this bug in PVE existed for a long time. For more information see the
+  upstream bug report[1].
 
---0000000000002cfd8f05a7942b1f
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+https://www.linbit.com/downloads/connectors/linstor-proxmox-5.1.0.tar.gz
+https://github.com/LINBIT/linstor-proxmox/commit/5310292670b6b47fb3f063a2e16dbf0a639f75fe
 
-<div dir=3D"ltr"><div>Hi,<br></div><div><br></div><div>it is out, finally! =
-Upgrade from all 9.0.x versions to 9.0.23-1 recommended. A number of new te=
-sts were created while working on this release.=C2=A0</div><div><br></div>9=
-.0.23-1 (api:genl2/proto:86-116/transport:14)<br>--------<br>=C2=A0* fix a =
-deadlock (regression introduced in 9.0.22) that can happen when<br>=C2=A0 =
-=C2=A0new current UUID is generated while a connection gets established<br>=
-=C2=A0* Do not create a new data generation if the node has<br>=C2=A0 =C2=
-=A0&#39;allow-remote-read =3D no&#39; set, is primary, and the local disk f=
-ails<br>=C2=A0 =C2=A0(because it has no access to good data anyome)<br>=C2=
-=A0* fix a deadlock (regression introduced in 9.0.22) that can be<br>=C2=A0=
- =C2=A0triggered if a minor is added into a resource with an established<br=
->=C2=A0 =C2=A0connection<br>=C2=A0* generate new UUID immediately if a prim=
-ary loses a disk due to an IO<br>=C2=A0 =C2=A0error<br>=C2=A0* fix read req=
-uests on diskless nodes that hit a read error on a<br>=C2=A0 =C2=A0diskful =
-node; the retry on another diskful node works, but a bug<br>=C2=A0 =C2=A0co=
-uld lead to a log-storm on the diskless node<br>=C2=A0* fix removal of disk=
-less nodes from clusters with quorum enabled<br>=C2=A0 =C2=A0(initiated fro=
-m the diskless itself)<br>=C2=A0* fix wrongly declined state changes if con=
-nections are established<br>=C2=A0 =C2=A0concurrently<br>=C2=A0* fix contin=
-uation of initial resync; before that the initial resync<br>=C2=A0 =C2=A0al=
-ways started from the beginning if it was interrupted<br>=C2=A0* use rwsem =
-_non_owner() operations to avoid false positives of<br>=C2=A0 =C2=A0lock-de=
-p when running on a debug kernel<br>=C2=A0* fix a sometimes missed resync i=
-f only a diskless node was primary<br>=C2=A0 =C2=A0since the day0 UUID<br>=
-=C2=A0* fix a corner case where a SyncSource node does not recognise<br>=C2=
-=A0 =C2=A0that a SyncTarget node declared the resync as finished<br>=C2=A0*=
- update compat up to Linux 5.6<br><div><br></div><div><a href=3D"https://ww=
-w.linbit.com/downloads/drbd/9.0/drbd-9.0.23-1.tar.gz">https://www.linbit.co=
-m/downloads/drbd/9.0/drbd-9.0.23-1.tar.gz</a><br></div><div><a href=3D"http=
-s://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack">https://launc=
-hpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack</a><br></div><div><a hr=
-ef=3D"https://github.com/LINBIT/drbd/commit/d16bfab7a4033024fed2d99d3b179aa=
-6bb6eb300">https://github.com/LINBIT/drbd/commit/d16bfab7a4033024fed2d99d3b=
-179aa6bb6eb300</a><br></div><div><br></div><div>best regards,</div><div>=C2=
-=A0Phil</div></div>
+Regards, rck
 
---0000000000002cfd8f05a7942b1f--
+[1] https://bugzilla.proxmox.com/show_bug.cgi?id=2811
+
+--rQ2U398070+RC21q
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAl7wf6cACgkQRgmezyI6
+myKa+Af/b1wq70Hc6xuRXzmAl11MWSE6edNAwuHtL1Htj+85VLBke4AqkqPDUFV2
+hvdwYWcUQO/tw9PlJ9+5PpsrpY55QWByY1RSNVNAPPACW3dmOsm0Mpai/vnKclqc
+M4CdGrylJbZ/CehYlo4ypo5hF4zqQFqO4lx/BqJlRIvUFfhAGhoNjeTV3eUOU2xM
+4R3npVj3G3GVqToYfOXse6Jtr58rtccWIxYg1bqNEvM6gVE/8qjnKl+E6HjY0V2j
+UXc8vcz1yo6gvCOnnRCTMn3xqdtiv8Zl9ZuaG6RzeDN6gL261lvLXiV8SJe6UifJ
+zZzDwKjGNGRANtXOnTbPKxWJMnP92Q==
+=Qh6Q
+-----END PGP SIGNATURE-----
+
+--rQ2U398070+RC21q--
