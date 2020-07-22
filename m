@@ -1,19 +1,19 @@
 Return-Path: <rene.peinthor@linbit.com>
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com
-	[209.85.128.50])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 0E0324203ED
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com
+	[209.85.128.41])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 7F8DF42053C
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 13 Jul 2020 10:35:34 +0200 (CEST)
-Received: by mail-wm1-f50.google.com with SMTP id 17so12300430wmo.1
+	Wed, 22 Jul 2020 16:07:08 +0200 (CEST)
+Received: by mail-wm1-f41.google.com with SMTP id g10so4459814wmc.1
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 13 Jul 2020 01:35:34 -0700 (PDT)
+	Wed, 22 Jul 2020 07:07:08 -0700 (PDT)
 MIME-Version: 1.0
 From: Rene Peinthor <rene.peinthor@linbit.com>
-Date: Mon, 13 Jul 2020 10:35:23 +0200
-Message-ID: <CAHmn2DNz188o542M7P--fBpwkhEEZnxb4XQLtj_aPyXGztaJLQ@mail.gmail.com>
+Date: Wed, 22 Jul 2020 16:05:56 +0200
+Message-ID: <CAHmn2DMGrsMN1Vz8sm+3j++xth_x_dQVjEf2u=sLXhcavExQ_w@mail.gmail.com>
 To: drbd-announce@lists.linbit.com, drbd-user <drbd-user@lists.linbit.com>
-Content-Type: multipart/alternative; boundary="000000000000ffe26605aa4e92df"
-Subject: [DRBD-announce] linstor-server 1.7.2 release
+Content-Type: multipart/alternative; boundary="000000000000bae3fe05ab083d39"
+Subject: [DRBD-announce] linstor-server 1.7.3 release
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -25,30 +25,22 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
---000000000000ffe26605aa4e92df
+--000000000000bae3fe05ab083d39
 Content-Type: text/plain; charset="UTF-8"
 
 Hi All!
 
-Before a big new feature release 1.8.0 will come, we decided to do another
-bug fix 1.7.2 release
-with cherry-picked fixes from master branch, anyway the 1.8.0 release
-SHOULD be ready in 1 or 2 weeks.
+We are still busy fixing the last bits for 1.8.0 release and will just do
+another 1.7.3 bugfix release before.
 
-linstor-server 1.7.2
+linstor-server 1.7.3
 --------------------
- * Fixed dm-cache, losetup module dependencies
- * Prevent storage pool deletion if it has snapshots
- * Fix NPE on controller changes
- * Improve SSLTcpConnector exception handling
- * resume-io even if a snapshots fails, to prevent blocked resources
- * LVM also activates it LV's now
- * try to fix another TCP-connector dead-lock
- * add missing etcd storage-pool auto-select migration
- * allow mixing of external meta-data and data volume driver kinds
- * skip initial sync on VDO storage
+ * Added storagepool property to change lvcreate
+behavior: 'StorDriver/LvcreateOptions'
+ * Fixed losetup version parsing without PATCH level
+ * Fixed node reconnect deadlock
 
-https://www.linbit.com/downloads/linstor/linstor-server-1.7.2.tar.gz
+https://www.linbit.com/downloads/linstor/linstor-server-1.7.3.tar.gz
 
 Linstor PPA:
 https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
@@ -56,29 +48,23 @@ https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 Cheers,
 Rene
 
---000000000000ffe26605aa4e92df
+--000000000000bae3fe05ab083d39
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr">Hi All!<div><br></div><div>Before a big new feature releas=
-e 1.8.0 will come, we decided to do another bug fix 1.7.2 release</div><div=
->with cherry-picked fixes from master branch, anyway the 1.8.0 release SHOU=
-LD be ready in 1 or 2 weeks.</div><div><br></div><div><font face=3D"monospa=
-ce">linstor-server 1.7.2<br>--------------------<br>=C2=A0* Fixed dm-cache,=
- losetup module dependencies<br>=C2=A0* Prevent storage pool deletion if it=
- has snapshots<br>=C2=A0* Fix NPE on controller changes<br>=C2=A0* Improve =
-SSLTcpConnector exception handling<br>=C2=A0* resume-io even if a snapshots=
- fails, to prevent blocked resources<br>=C2=A0* LVM also activates it LV&#3=
-9;s now<br>=C2=A0* try to fix another TCP-connector dead-lock<br>=C2=A0* ad=
-d missing etcd storage-pool auto-select migration<br>=C2=A0* allow mixing o=
-f external meta-data and data volume driver kinds<br>=C2=A0* skip initial s=
-ync on VDO storage<br></font></div><div><font face=3D"monospace"><br></font=
-></div><div><a href=3D"https://www.linbit.com/downloads/linstor/linstor-ser=
-ver-1.7.2.tar.gz"><font face=3D"monospace">https://www.linbit.com/downloads=
-/linstor/linstor-server-1.7.2.tar.gz</font></a><br></div><div><br></div><di=
-v><div><div>Linstor PPA:<br><a href=3D"https://launchpad.net/~linbit/+archi=
-ve/ubuntu/linbit-drbd9-stack" rel=3D"noreferrer" target=3D"_blank">https://=
-launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack</a></div></div><di=
-v><br></div><div>Cheers,</div><div>Rene</div></div></div>
+<div dir=3D"ltr">Hi All!<div><br></div><div>We are still busy fixing the la=
+st bits for 1.8.0 release and will just do another 1.7.3 bugfix release bef=
+ore.</div><div><br></div><div><font face=3D"monospace">linstor-server 1.7.3=
+<br>--------------------<br>=C2=A0* Added storagepool property to change lv=
+create behavior:=C2=A0&#39;StorDriver/LvcreateOptions&#39;<br>=C2=A0* Fixed=
+ losetup version parsing without PATCH level<br>=C2=A0* Fixed node reconnec=
+t deadlock<br></font></div><div><font face=3D"monospace"><br></font></div><=
+div><font face=3D"monospace"><a href=3D"https://www.linbit.com/downloads/li=
+nstor/linstor-server-1.7.3.tar.gz">https://www.linbit.com/downloads/linstor=
+/linstor-server-1.7.3.tar.gz</a></font><br></div><div><br></div><div><div><=
+div>Linstor PPA:<br><a href=3D"https://launchpad.net/~linbit/+archive/ubunt=
+u/linbit-drbd9-stack" rel=3D"noreferrer" target=3D"_blank">https://launchpa=
+d.net/~linbit/+archive/ubuntu/linbit-drbd9-stack</a></div></div><div><br></=
+div><div>Cheers,</div><div>Rene</div></div></div>
 
---000000000000ffe26605aa4e92df--
+--000000000000bae3fe05ab083d39--
