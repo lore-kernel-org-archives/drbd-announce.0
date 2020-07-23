@@ -1,19 +1,13 @@
-Return-Path: <rene.peinthor@linbit.com>
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com
-	[209.85.128.41])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 7F8DF42053C
-	for <drbd-announce@lists.linbit.com>;
-	Wed, 22 Jul 2020 16:07:08 +0200 (CEST)
-Received: by mail-wm1-f41.google.com with SMTP id g10so4459814wmc.1
-	for <drbd-announce@lists.linbit.com>;
-	Wed, 22 Jul 2020 07:07:08 -0700 (PDT)
+Return-Path: <johannes@johannesthoma.com>
+To: "drbd-user@lists.linbit.com" <drbd-user@lists.linbit.com>,
+	drbd-announce@lists.linbit.com
+From: Johannes Thoma <johannes@johannesthoma.com>
+Message-ID: <a76ed92d-4036-0ff1-491d-5753d371797e@johannesthoma.com>
+Date: Thu, 23 Jul 2020 14:24:21 +0200
 MIME-Version: 1.0
-From: Rene Peinthor <rene.peinthor@linbit.com>
-Date: Wed, 22 Jul 2020 16:05:56 +0200
-Message-ID: <CAHmn2DMGrsMN1Vz8sm+3j++xth_x_dQVjEf2u=sLXhcavExQ_w@mail.gmail.com>
-To: drbd-announce@lists.linbit.com, drbd-user <drbd-user@lists.linbit.com>
-Content-Type: multipart/alternative; boundary="000000000000bae3fe05ab083d39"
-Subject: [DRBD-announce] linstor-server 1.7.3 release
+Content-Type: multipart/alternative;
+	boundary="------------DF7009E6EB344B95EFA9A818"
+Subject: [DRBD-announce] WinDRBD 1.0.0-rc1 released
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -25,46 +19,56 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
---000000000000bae3fe05ab083d39
-Content-Type: text/plain; charset="UTF-8"
+This is a multi-part message in MIME format.
+--------------DF7009E6EB344B95EFA9A818
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi All!
+Dear DRBD and WinDRBD users,
 
-We are still busy fixing the last bits for 1.8.0 release and will just do
-another 1.7.3 bugfix release before.
+This is the first release canidate of the upcoming 1.0.0 release of the WinDRBD driver and userland utilities. Please download a signed driver (signed by Linbit) from the Linbit software download page:
 
-linstor-server 1.7.3
---------------------
- * Added storagepool property to change lvcreate
-behavior: 'StorDriver/LvcreateOptions'
- * Fixed losetup version parsing without PATCH level
- * Fixed node reconnect deadlock
+https://www.linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/
 
-https://www.linbit.com/downloads/linstor/linstor-server-1.7.3.tar.gz
+This version is feature complete except the boot-via-WinDRBD feature, which is still experimental. It will be part of the 1.1.0 development branch.
 
-Linstor PPA:
-https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+Please help with testing so the 1.0.0 release becomes as stable as possible.
 
-Cheers,
-Rene
+Thanks for your contribution,
 
---000000000000bae3fe05ab083d39
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+- Johannes
 
-<div dir=3D"ltr">Hi All!<div><br></div><div>We are still busy fixing the la=
-st bits for 1.8.0 release and will just do another 1.7.3 bugfix release bef=
-ore.</div><div><br></div><div><font face=3D"monospace">linstor-server 1.7.3=
-<br>--------------------<br>=C2=A0* Added storagepool property to change lv=
-create behavior:=C2=A0&#39;StorDriver/LvcreateOptions&#39;<br>=C2=A0* Fixed=
- losetup version parsing without PATCH level<br>=C2=A0* Fixed node reconnec=
-t deadlock<br></font></div><div><font face=3D"monospace"><br></font></div><=
-div><font face=3D"monospace"><a href=3D"https://www.linbit.com/downloads/li=
-nstor/linstor-server-1.7.3.tar.gz">https://www.linbit.com/downloads/linstor=
-/linstor-server-1.7.3.tar.gz</a></font><br></div><div><br></div><div><div><=
-div>Linstor PPA:<br><a href=3D"https://launchpad.net/~linbit/+archive/ubunt=
-u/linbit-drbd9-stack" rel=3D"noreferrer" target=3D"_blank">https://launchpa=
-d.net/~linbit/+archive/ubuntu/linbit-drbd9-stack</a></div></div><div><br></=
-div><div>Cheers,</div><div>Rene</div></div></div>
 
---000000000000bae3fe05ab083d39--
+--------------DF7009E6EB344B95EFA9A818
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: 7bit
+
+<html>
+  <head>
+
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    Dear DRBD and WinDRBD users,<br>
+    <br>
+    This is the first release canidate of the upcoming 1.0.0 release of
+    the WinDRBD driver and userland utilities. Please download a signed
+    driver (signed by Linbit) from the Linbit software download page:<br>
+    <br>
+<a class="moz-txt-link-freetext" href="https://www.linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/">https://www.linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/</a><br>
+    <br>
+    This version is feature complete except the boot-via-WinDRBD
+    feature, which is still experimental. It will be part of the 1.1.0
+    development branch.<br>
+    <br>
+    Please help with testing so the 1.0.0 release becomes as stable as
+    possible.<br>
+    <br>
+    Thanks for your contribution,<br>
+    <br>
+    - Johannes<br>
+    <br>
+  </body>
+</html>
+
+--------------DF7009E6EB344B95EFA9A818--
