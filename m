@@ -1,19 +1,19 @@
-Return-Path: <gabor.hernadi@linbit.com>
-Received: from mail-vk1-f172.google.com (mail-vk1-f172.google.com
-	[209.85.221.172])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 405414203D2
+Return-Path: <rene.peinthor@linbit.com>
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com
+	[209.85.221.45])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id EFF91420225
 	for <drbd-announce@lists.linbit.com>;
-	Fri, 31 Jul 2020 10:12:56 +0200 (CEST)
-Received: by mail-vk1-f172.google.com with SMTP id b6so5259523vkb.6
+	Mon,  3 Aug 2020 14:29:47 +0200 (CEST)
+Received: by mail-wr1-f45.google.com with SMTP id f7so34062798wrw.1
 	for <drbd-announce@lists.linbit.com>;
-	Fri, 31 Jul 2020 01:12:56 -0700 (PDT)
+	Mon, 03 Aug 2020 05:29:47 -0700 (PDT)
 MIME-Version: 1.0
-From: =?UTF-8?B?R8OhYm9yIEhlcm7DoWRp?= <gabor.hernadi@linbit.com>
-Date: Fri, 31 Jul 2020 10:11:45 +0200
-Message-ID: <CAL16tNa=ZKuY6YOOk0QpXiGvQtHDjmMPimU5xxjhdsoReTqBVg@mail.gmail.com>
+From: Rene Peinthor <rene.peinthor@linbit.com>
+Date: Mon, 3 Aug 2020 14:28:36 +0200
+Message-ID: <CAHmn2DPQK7m1pbw+i5t44HqBTva0QaESyYOqYdKcmfdnHqTOfg@mail.gmail.com>
 To: drbd-announce@lists.linbit.com, drbd-user <drbd-user@lists.linbit.com>
-Content-Type: multipart/alternative; boundary="000000000000a25f7605abb85729"
-Subject: [DRBD-announce] linstor-server 1.8.0-rc1
+Content-Type: multipart/alternative; boundary="000000000000b9e24305abf847a8"
+Subject: [DRBD-announce] python-linstor, linstor-client 1.2.0 release
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -25,100 +25,78 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
---000000000000a25f7605abb85729
+--000000000000b9e24305abf847a8
 Content-Type: text/plain; charset="UTF-8"
 
-Hi!
+Hi,
 
-This release-candidate contains the following new features:
+This python-library and linstor-client release, adds support for all new
+features of the 1.8.0-rc1 and upcoming 1.8.0 final release (API 1.2.0)
 
-* SOS-report: using "linstor sos-report create" and afterwards the
-"download" subcommand, Linstor can now generate a tar.gz containing
-machine- and Linstor-specific information, log files, error reports
-and such.
-* Snapshot-shipping[1]: Linstor can now ship newly created snapshots
-from one Linstor resource to another using 'zfs send' / 'zfs receive'
-for ZFS or 'thin_send' / 'thin_recv' for LVM. Both tools support
-incremental shipment. Additionally Linstor can be configured with
-auto-snapshot-shipping as well as auto-snapshots (without shipping)
+python-linstor v1.2.0
+---------------------
+ * Add sos-report support
+ * New error-report fields
+ * Fix resource definition props filtering
+ * Update linstor-api doc
+ * Single stordriver property support
+ * Add snapshot-shipping support
+ * Add resource active/deactive support
+ * Add create time for resources/snapshots
 
-NOTE: LVM-based snapshot-shipping requires the 'thin_send_recv' tool
-to be installed which is available from the PPA as well as from
-https://packages.linbit.com/public/
+https://www.linbit.com/downloads/linstor/python-linstor-1.2.0.tar.gz
 
-linstor-server 1.8.0-rc1
-------------------------
-* Logging to rest-access.log is now disabled by default
-* only update satellites if properties really changed
-* allow to set, controller/satellite settings via REST API
-* Skip initial DRBD-sync on VDOs
-* No ErrorReports for typos and other "user-mistakes"
-* LvmProvider also activates LVs (similar as LvmThinProvider does)
-* Add Prometheus `/metrics` url with reporting
-* Add Sentry integration to capture error info
-* Add modifying resource definition resource group linking
-* Error-reports are now additionally stored in a local h2 sql db, with more
-info
-* Shrinking of volumes (ATTENTION: make sure to first shrink anything
-above Linstor, i.e. the filesystem, or you risk LOSING DATA)
-* Fixed parsing version numbers of 'losetup' and 'lvm'
-* Simplify storage pool create property to a single one
-* Added 'StorDriver/LvcreateOptions' property
-* Do not bind controller protobuf Plain/SSL-Connector
-* SysFsHandler now throttles only data-devices instead of meta-devices
-* REST-API v1.2.0
+linstor-client v1.2.0
+---------------------
+ * Add sos-report support
+ * New error-report fields
+ * Fix resource definition props filtering
+ * Update linstor-api doc
+ * Single stordriver property support
+ * Add snapshot-shipping support
+ * Add resource active/deactive support
+ * Add create time for resources/snapshots
+ * Show all possible properties with values in help
 
-https://www.linbit.com/downloads/linstor/linstor-server-1.8.0.rc1.tar.gz
+https://www.linbit.com/downloads/linstor/linstor-client-1.2.0.tar.gz
 
 Linstor PPA:
-
 https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
 Best regards,
-Gabor
+Rene
 
-[1]
-https://www.linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-shipping_snapshots-linstor
-
---000000000000a25f7605abb85729
+--000000000000b9e24305abf847a8
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr">Hi!<br><br>This release-candidate contains the following n=
-ew features:<br><br>* SOS-report: using &quot;linstor sos-report create&quo=
-t; and afterwards the<br>&quot;download&quot; subcommand, Linstor can now g=
-enerate a tar.gz containing<br>machine- and Linstor-specific information, l=
-og files, error reports<br>and such.<br>* Snapshot-shipping[1]: Linstor can=
- now ship newly created snapshots<br>from one Linstor resource to another u=
-sing &#39;zfs send&#39; / &#39;zfs receive&#39;<br>for ZFS or &#39;thin_sen=
-d&#39; / &#39;thin_recv&#39; for LVM. Both tools support<br>incremental shi=
-pment. Additionally Linstor can be configured with<br>auto-snapshot-shippin=
-g as well as auto-snapshots (without shipping)<br><br>NOTE: LVM-based snaps=
-hot-shipping requires the &#39;thin_send_recv&#39; tool<br>to be installed =
-which is available from the PPA as well as from <br><a href=3D"https://pack=
-ages.linbit.com/public/">https://packages.linbit.com/public/</a><br><br>lin=
-stor-server 1.8.0-rc1<br>------------------------<br>* Logging to rest-acce=
-ss.log is now disabled by default<br>* only update satellites if properties=
- really changed<br>* allow to set, controller/satellite settings via REST A=
-PI<br>* Skip initial DRBD-sync on VDOs<br>* No ErrorReports for typos and o=
-ther &quot;user-mistakes&quot;<br>* LvmProvider also activates LVs (similar=
- as LvmThinProvider does)<br>* Add Prometheus `/metrics` url with reporting=
-<br>* Add Sentry integration to capture error info<br>* Add modifying resou=
-rce definition resource group linking<br>* Error-reports are now additional=
-ly stored in a local h2 sql db, with more info<br>* Shrinking of volumes (A=
-TTENTION: make sure to first shrink anything<br>above Linstor, i.e. the fil=
-esystem, or you risk LOSING DATA)<br>* Fixed parsing version numbers of &#3=
-9;losetup&#39; and &#39;lvm&#39;<br>* Simplify storage pool create property=
- to a single one<br>* Added &#39;StorDriver/LvcreateOptions&#39; property<b=
-r>* Do not bind controller protobuf Plain/SSL-Connector<br>* SysFsHandler n=
-ow throttles only data-devices instead of meta-devices<br>* REST-API v1.2.0=
-<br><br><a href=3D"https://www.linbit.com/downloads/linstor/linstor-server-=
-1.8.0.rc1.tar.gz">https://www.linbit.com/downloads/linstor/linstor-server-1=
-.8.0.rc1.tar.gz</a><br><br>Linstor PPA:<br><br><a href=3D"https://launchpad=
-.net/~linbit/+archive/ubuntu/linbit-drbd9-stack">https://launchpad.net/~lin=
-bit/+archive/ubuntu/linbit-drbd9-stack</a><br><br>Best regards,<br>Gabor<br=
-><br>[1] <a href=3D"https://www.linbit.com/drbd-user-guide/linstor-guide-1_=
-0-en/#s-shipping_snapshots-linstor">https://www.linbit.com/drbd-user-guide/=
-linstor-guide-1_0-en/#s-shipping_snapshots-linstor</a><br><br><br></div>
+<div dir=3D"ltr">Hi,<br><div><br></div><div>This python-library and linstor=
+-client release, adds support for all new features of the 1.8.0-rc1 and upc=
+oming 1.8.0 final release (API 1.2.0)</div><div><br></div><div><div><font f=
+ace=3D"monospace">python-linstor v1.2.0<br>---------------------<br>=C2=A0*=
+ Add sos-report support<br>=C2=A0* New error-report fields<br>=C2=A0* Fix r=
+esource definition props filtering<br>=C2=A0* Update linstor-api doc<br>=C2=
+=A0* Single stordriver property support<br>=C2=A0* Add snapshot-shipping su=
+pport<br>=C2=A0* Add resource active/deactive support<br>=C2=A0* Add create=
+ time for resources/snapshots</font><br></div><div><div><div><div><br></div=
+><div><font size=3D"1"><font face=3D"monospace, monospace"><a href=3D"https=
+://www.linbit.com/downloads/linstor/python-linstor-1.2.0.tar.gz">https://ww=
+w.linbit.com/downloads/linstor/python-linstor-1.2.0.tar.gz</a></font></font=
+></div></div><div><font size=3D"1"><br></font></div><div><div><font face=3D=
+"monospace">linstor-client v1.2.0<br>---------------------<br>=C2=A0* Add s=
+os-report support<br>=C2=A0* New error-report fields<br>=C2=A0* Fix resourc=
+e definition props filtering<br>=C2=A0* Update linstor-api doc<br>=C2=A0* S=
+ingle stordriver property support<br>=C2=A0* Add snapshot-shipping support<=
+br>=C2=A0* Add resource active/deactive support<br>=C2=A0* Add create time =
+for resources/snapshots<br>=C2=A0* Show all possible properties with values=
+ in help</font><br></div><div><br></div><div><font size=3D"1"><font face=3D=
+"monospace, monospace"><a href=3D"https://www.linbit.com/downloads/linstor/=
+linstor-client-1.2.0.tar.gz">https://www.linbit.com/downloads/linstor/linst=
+or-client-1.2.0.tar.gz</a></font></font></div></div></div><div><br></div><d=
+iv>Linstor PPA:<br></div><div><div><a href=3D"https://launchpad.net/~linbit=
+/+archive/ubuntu/linbit-drbd9-stack" rel=3D"noreferrer" target=3D"_blank">h=
+ttps://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack</a><br></di=
+v><div><br></div><div>Best regards,</div><div>Rene</div></div></div></div><=
+/div>
 
---000000000000a25f7605abb85729--
+--000000000000b9e24305abf847a8--
