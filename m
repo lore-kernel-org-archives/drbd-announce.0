@@ -1,19 +1,25 @@
-Return-Path: <rene.peinthor@linbit.com>
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com
-	[209.85.221.45])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id EFF91420225
+Return-Path: <moritz.wanzenboeck@linbit.com>
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com
+	[209.85.218.53])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 672874202B0
 	for <drbd-announce@lists.linbit.com>;
-	Mon,  3 Aug 2020 14:29:47 +0200 (CEST)
-Received: by mail-wr1-f45.google.com with SMTP id f7so34062798wrw.1
+	Thu,  6 Aug 2020 16:48:51 +0200 (CEST)
+Received: by mail-ej1-f53.google.com with SMTP id d6so36786041ejr.5
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 03 Aug 2020 05:29:47 -0700 (PDT)
+	Thu, 06 Aug 2020 07:48:51 -0700 (PDT)
+Received: from [10.43.71.1] (62-99-137-214.static.upcbusiness.at.
+	[62.99.137.214])
+	by smtp.gmail.com with ESMTPSA id du2sm3976358ejc.2.2020.08.06.07.48.48
+	for <drbd-announce@lists.linbit.com>
+	(version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+	Thu, 06 Aug 2020 07:48:50 -0700 (PDT)
+Date: Thu, 06 Aug 2020 16:48:43 +0200
+From: Moritz =?iso-8859-1?q?Wanzenb=F6ck?= <moritz.wanzenboeck@linbit.com>
+To: drbd-announce@lists.linbit.com
+Message-Id: <75DNEQ.L55K82L9LKNS1@linbit.com>
 MIME-Version: 1.0
-From: Rene Peinthor <rene.peinthor@linbit.com>
-Date: Mon, 3 Aug 2020 14:28:36 +0200
-Message-ID: <CAHmn2DPQK7m1pbw+i5t44HqBTva0QaESyYOqYdKcmfdnHqTOfg@mail.gmail.com>
-To: drbd-announce@lists.linbit.com, drbd-user <drbd-user@lists.linbit.com>
-Content-Type: multipart/alternative; boundary="000000000000b9e24305abf847a8"
-Subject: [DRBD-announce] python-linstor, linstor-client 1.2.0 release
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Subject: [DRBD-announce] linstor-operator v1.0.0 release
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -25,78 +31,60 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
---000000000000b9e24305abf847a8
-Content-Type: text/plain; charset="UTF-8"
+Dear LINSTOR on Kubernetes users,
 
-Hi,
+Today we released version v1.0.0 of linstor-operator!
 
-This python-library and linstor-client release, adds support for all new
-features of the 1.8.0-rc1 and upcoming 1.8.0 final release (API 1.2.0)
+Release v1.0.0 is our first stable version of linstor-operator, our 
+all-in-one package for getting started with LINSTOR on Kubernetes. Like 
+in the announcement for v0.5.0: if you are new to linstor-operator and 
+want to learn more, I would recommend checking out the user guide[1].
 
-python-linstor v1.2.0
----------------------
- * Add sos-report support
- * New error-report fields
- * Fix resource definition props filtering
- * Update linstor-api doc
- * Single stordriver property support
- * Add snapshot-shipping support
- * Add resource active/deactive support
- * Add create time for resources/snapshots
+Since last release, we removed a few obstacles for adopting 
+linstor-operator. Namely we now support setting resource requests and 
+limits on all pods, as well as custom affinity and tolerations settings.
 
-https://www.linbit.com/downloads/linstor/python-linstor-1.2.0.tar.gz
+We also needed to make some final breaking changes before settling on 
+our first stable release. The big changes are:
 
-linstor-client v1.2.0
----------------------
- * Add sos-report support
- * New error-report fields
- * Fix resource definition props filtering
- * Update linstor-api doc
- * Single stordriver property support
- * Add snapshot-shipping support
- * Add resource active/deactive support
- * Add create time for resources/snapshots
- * Show all possible properties with values in help
+Breaking Changes
+----------------
+* Renamed 'LinstorNodeSet' to 'LinstorSatelliteSet'. This brings the 
+operator in line with other LINSTOR resources.
+* Renamed 'LinstorControllerSet' to 'LinstorController'. The old name 
+implied the existence of multiple (separate) controllers.
+* Renamed helm option 'operator.controllerSet' to 'operator.controller'
+* Renamed helm option 'operator.nodeSet' to 'operator.satelliteSet'
+* Renamed helm option 'kernelModImage' to 'kernelModuleInjectionImage'
+* Renamed helm option 'drbdKernelModuleInjectionMode' to 
+'kernelModuleInjectionMode'
 
-https://www.linbit.com/downloads/linstor/linstor-client-1.2.0.tar.gz
+New Features
+------------
+* You can now set resource limits and requests for all containers.
+* Starting multiple replicas for reduced failover deplay in most 
+components.
+* Set pod affinity and tolerations to customize where controller and 
+satellites will run.
 
-Linstor PPA:
-https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+For details on upgrading from a previous version, check out the upgrade 
+guide[2].
+To get a full list of all available options, you can check out the 
+settings reference[3].
+
+The latest releases of linstor-operator are available here[4].
+Upstream code can be found here[5].
 
 Best regards,
-Rene
+Moritz
 
---000000000000b9e24305abf847a8
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+[1]: 
+https://www.linbit.com/drbd-user-guide/linstor-guide-1_0-en/#ch-kubernetes
+[2]: 
+https://github.com/piraeusdatastore/piraeus-operator/blob/v1.0.0/UPGRADE.md#upgrade-to-v10
+[3]: 
+https://github.com/piraeusdatastore/piraeus-operator/blob/v1.0.0/doc/helm-values.adoc
+[4]: https://charts.linstor.io/
+[5]: https://github.com/piraeusdatastore/piraeus-operator
 
-<div dir=3D"ltr">Hi,<br><div><br></div><div>This python-library and linstor=
--client release, adds support for all new features of the 1.8.0-rc1 and upc=
-oming 1.8.0 final release (API 1.2.0)</div><div><br></div><div><div><font f=
-ace=3D"monospace">python-linstor v1.2.0<br>---------------------<br>=C2=A0*=
- Add sos-report support<br>=C2=A0* New error-report fields<br>=C2=A0* Fix r=
-esource definition props filtering<br>=C2=A0* Update linstor-api doc<br>=C2=
-=A0* Single stordriver property support<br>=C2=A0* Add snapshot-shipping su=
-pport<br>=C2=A0* Add resource active/deactive support<br>=C2=A0* Add create=
- time for resources/snapshots</font><br></div><div><div><div><div><br></div=
-><div><font size=3D"1"><font face=3D"monospace, monospace"><a href=3D"https=
-://www.linbit.com/downloads/linstor/python-linstor-1.2.0.tar.gz">https://ww=
-w.linbit.com/downloads/linstor/python-linstor-1.2.0.tar.gz</a></font></font=
-></div></div><div><font size=3D"1"><br></font></div><div><div><font face=3D=
-"monospace">linstor-client v1.2.0<br>---------------------<br>=C2=A0* Add s=
-os-report support<br>=C2=A0* New error-report fields<br>=C2=A0* Fix resourc=
-e definition props filtering<br>=C2=A0* Update linstor-api doc<br>=C2=A0* S=
-ingle stordriver property support<br>=C2=A0* Add snapshot-shipping support<=
-br>=C2=A0* Add resource active/deactive support<br>=C2=A0* Add create time =
-for resources/snapshots<br>=C2=A0* Show all possible properties with values=
- in help</font><br></div><div><br></div><div><font size=3D"1"><font face=3D=
-"monospace, monospace"><a href=3D"https://www.linbit.com/downloads/linstor/=
-linstor-client-1.2.0.tar.gz">https://www.linbit.com/downloads/linstor/linst=
-or-client-1.2.0.tar.gz</a></font></font></div></div></div><div><br></div><d=
-iv>Linstor PPA:<br></div><div><div><a href=3D"https://launchpad.net/~linbit=
-/+archive/ubuntu/linbit-drbd9-stack" rel=3D"noreferrer" target=3D"_blank">h=
-ttps://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack</a><br></di=
-v><div><br></div><div>Best regards,</div><div>Rene</div></div></div></div><=
-/div>
 
---000000000000b9e24305abf847a8--
