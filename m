@@ -1,19 +1,20 @@
-Return-Path: <rene.peinthor@linbit.com>
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com
-	[209.85.221.54])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 7759442040F
+Return-Path: <roland.kammerer@linbit.com>
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com
+	[209.85.221.44])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 365A9420D47
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 17 Aug 2020 16:18:29 +0200 (CEST)
-Received: by mail-wr1-f54.google.com with SMTP id 88so15206518wrh.3
+	Thu, 10 Sep 2020 11:18:19 +0200 (CEST)
+Received: by mail-wr1-f44.google.com with SMTP id x14so5833675wrl.12
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 17 Aug 2020 07:18:29 -0700 (PDT)
+	Thu, 10 Sep 2020 02:18:19 -0700 (PDT)
+Date: Thu, 10 Sep 2020 11:18:18 +0200
+From: Roland Kammerer <roland.kammerer@linbit.com>
+To: drbd-user@lists.linbit.com, drbd-announce@lists.linbit.com
+Message-ID: <20200910091818.GU2145@rck.sh>
 MIME-Version: 1.0
-From: Rene Peinthor <rene.peinthor@linbit.com>
-Date: Mon, 17 Aug 2020 16:17:17 +0200
-Message-ID: <CAHmn2DMeHx5RTra2MVk=PKuPUyxUY02kuXfyjhTO+ODQKXG7Vg@mail.gmail.com>
-To: drbd-announce@lists.linbit.com, drbd-user <drbd-user@lists.linbit.com>
-Content-Type: multipart/alternative; boundary="00000000000033194705ad136e94"
-Subject: [DRBD-announce] linstor-server 1.8.0 release
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Subject: [DRBD-announce] drbd-utils-9.14.0
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -25,106 +26,39 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
---00000000000033194705ad136e94
-Content-Type: text/plain; charset="UTF-8"
+Hi DRBD users,
 
-Hi All!
+This release contains several bug fixes and some new features. 
 
-Finally linstor-server 1.8.0 is here.
+Fixes are mainly related to the HA area where Pacemaker compatibility
+was improved and bugs got fixed. So if you face any issues, for example
+with crm-fence-peer.9.sh, you might want to upgrade.
 
-Changes from rc1 are a few reported bug fixes and also a snapshot-shipping
-list is now available in the API.
-I'm copy-pasting the release highlights from the rc1:
+The most noteworthy feature are 'may_promote' and 'promotion_score' in
+the events2 stream. Both are documented in the version 9 man page of
+'drbdsetup'. In short 'may_promote' is a hint if promotion to Primary
+may succeed. 'promotion_score' is an integer based on a heuristic to
+find the best node to promote. This will help to enable further features
+in higher level components.
 
-* SOS-report: using "linstor sos-report create" and afterwards the
-"download" subcommand, Linstor can now generate a tar.gz containing
-machine- and Linstor-specific information, log files, error reports
-and such.
-* Snapshot-shipping[1]: Linstor can now ship newly created snapshots
-from one Linstor resource to another using 'zfs send' / 'zfs receive'
-for ZFS or 'thin_send' / 'thin_recv' for LVM. Both tools support
-incremental shipment. Additionally Linstor can be configured with
-auto-snapshot-shipping as well as auto-snapshots (without shipping)
+Tests got improved as well. All in all this release is a bit bigger than
+the last ones.
 
-NOTE: LVM-based snapshot-shipping requires the 'thin_send_recv' tool
-to be installed which is available from the PPA as well as from
-https://packages.linbit.com/public/
+Regard, rck
 
-linstor-server 1.8.0
---------------------
- * rest-access.log is disabled now per default
- * snapshot shipping with status view
- * only update satellites if properties really changed
- * allow to set, controller/satellite settings via REST API
- * add `/v1/sos-report` REST-API, to create and/or download an SOS report
- * add Prometheus `/metrics` url with reporting
- * add Sentry integration to capture error info (Beorn Facchini)
- * add modifying resource definition resource group linking
- * error-reports are now additionally stored in a local h2 sql db, with
-more info
- * user errors that would produce a error-report are greatly reduced
- * simplify storage pool create property to a single one
- * do not bind controller protobuf Plain/SSL-Connector
- * do not throttle external meta data volumes, if volumes are throttled
- * added zfs create options
- * REST-API v1.3.0
+PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+TAR: https://www.linbit.com/downloads/drbd/utils/drbd-utils-9.14.0.tar.gz
+GIT: https://github.com/LINBIT/drbd-utils/releases/tag/v9.14.0
 
-https://www.linbit.com/downloads/linstor/linstor-server-1.8.0.tar.gz
-
-Linstor PPA:
-https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
-
-[1]
-https://www.linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-shipping_snapshots-linstor
-
-Cheers,
-Rene
-
---00000000000033194705ad136e94
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr">Hi All!<div><br></div><div>Finally linstor-server 1.8.0 is=
- here.</div><div><br></div><div>Changes from rc1 are a few reported bug fix=
-es and also a snapshot-shipping</div><div>list is now available in the API.=
-</div><div>I&#39;m copy-pasting the release highlights from the rc1:</div><=
-div><br></div><div>* SOS-report: using &quot;linstor sos-report create&quot=
-; and afterwards the<br>&quot;download&quot; subcommand, Linstor can now ge=
-nerate a tar.gz containing<br>machine- and Linstor-specific information, lo=
-g files, error reports<br>and such.<br>* Snapshot-shipping[1]: Linstor can =
-now ship newly created snapshots<br>from one Linstor resource to another us=
-ing &#39;zfs send&#39; / &#39;zfs receive&#39;<br>for ZFS or &#39;thin_send=
-&#39; / &#39;thin_recv&#39; for LVM. Both tools support<br>incremental ship=
-ment. Additionally Linstor can be configured with<br>auto-snapshot-shipping=
- as well as auto-snapshots (without shipping)<br><br>NOTE: LVM-based snapsh=
-ot-shipping requires the &#39;thin_send_recv&#39; tool<br>to be installed w=
-hich is available from the PPA as well as from<br><a href=3D"https://packag=
-es.linbit.com/public/" target=3D"_blank">https://packages.linbit.com/public=
-/</a><br></div><div><br></div><div><font face=3D"monospace">linstor-server =
-1.8.0<br>--------------------<br>=C2=A0* rest-access.log is disabled now pe=
-r default<br>=C2=A0* snapshot shipping with status view<br>=C2=A0* only upd=
-ate satellites if properties really changed<br>=C2=A0* allow to set, contro=
-ller/satellite settings via REST API<br>=C2=A0* add `/v1/sos-report` REST-A=
-PI, to create and/or download an SOS report<br>=C2=A0* add Prometheus `/met=
-rics` url with reporting<br>=C2=A0* add Sentry integration to capture error=
- info (Beorn Facchini)<br>=C2=A0* add modifying resource definition resourc=
-e group linking<br>=C2=A0* error-reports are now additionally stored in a l=
-ocal h2 sql db, with more info<br>=C2=A0* user errors that would produce a =
-error-report are greatly reduced<br>=C2=A0* simplify storage pool create pr=
-operty to a single one<br>=C2=A0* do not bind controller protobuf Plain/SSL=
--Connector<br>=C2=A0* do not throttle external meta data volumes, if volume=
-s are throttled</font></div><div><font face=3D"monospace">=C2=A0* added zfs=
- create options<br>=C2=A0* REST-API v1.3.0<br></font></div><div><font face=
-=3D"monospace"><br></font></div><div><font face=3D"monospace"><a href=3D"ht=
-tps://www.linbit.com/downloads/linstor/linstor-server-1.8.0.tar.gz">https:/=
-/www.linbit.com/downloads/linstor/linstor-server-1.8.0.tar.gz</a></font><br=
-></div><div><br></div><div><div><div>Linstor PPA:<br><a href=3D"https://lau=
-nchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack" rel=3D"noreferrer" t=
-arget=3D"_blank">https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9=
--stack</a></div></div><div><br></div><div>[1]=C2=A0<a href=3D"https://www.l=
-inbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-shipping_snapshots-linsto=
-r" target=3D"_blank">https://www.linbit.com/drbd-user-guide/linstor-guide-1=
-_0-en/#s-shipping_snapshots-linstor</a><br></div><div><br></div><div>Cheers=
-,</div><div>Rene</div></div></div>
-
---00000000000033194705ad136e94--
+9.14.0
+--------
+ * pacemaker: various fixes/improvements for PM >=1.1.15
+   including the 2 series; crm-fence-peer.9.sh
+ * systemd dependency for drbd-proxy
+ * containers: multi-arch support, especially for s390x
+ * multipathd: blacklist drbd
+ * drbdsetup: code refactoring and improvements,
+   as well as tests for events2!
+   add "may_promote", "promotion_score". See man page.
+ * build: compile fixes for gcc-10; CI pipeline
+ * handlers: add "disconnected"
