@@ -1,13 +1,20 @@
-Return-Path: <johannes@johannesthoma.com>
-To: "drbd-user@lists.linbit.com" <drbd-user@lists.linbit.com>,
-	drbd-announce@lists.linbit.com
-From: Johannes Thoma <johannes@johannesthoma.com>
-Message-ID: <23e6c1ee-f26c-a574-7082-2dbace65f0f4@johannesthoma.com>
-Date: Tue, 15 Sep 2020 16:19:21 +0200
+Return-Path: <roland.kammerer@linbit.com>
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com
+	[209.85.221.42])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 7E58142040F
+	for <drbd-announce@lists.linbit.com>;
+	Mon, 21 Sep 2020 11:49:46 +0200 (CEST)
+Received: by mail-wr1-f42.google.com with SMTP id e16so12035620wrm.2
+	for <drbd-announce@lists.linbit.com>;
+	Mon, 21 Sep 2020 02:49:46 -0700 (PDT)
+Date: Mon, 21 Sep 2020 11:48:44 +0200
+From: Roland Kammerer <roland.kammerer@linbit.com>
+To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
+Message-ID: <20200921094844.GG2145@rck.sh>
 MIME-Version: 1.0
-Content-Type: multipart/alternative;
-	boundary="------------692094AFB912DA6F31B058A6"
-Subject: [DRBD-announce] WinDRBD 1.0.0-rc5 released
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Subject: [DRBD-announce] drbd-utils-9.14.1
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -19,92 +26,21 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-This is a multi-part message in MIME format.
---------------692094AFB912DA6F31B058A6
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Hi DRBD users,
 
-Dear DRBD and WinDRBD users,
+this bugfix release fixes a minor bug were the events2 stream did not
+contain updates for "resync done" if called without '--statistics'. I
+guess there are not too many users that even use the events2 stream, but
+this information is also used by LINSTOR, so some users might have seen
+no progress while the resync was actually executed/finished. The
+regression was introduced with 9.14.0.
 
-WinDRBD 1.0.0-rc5 has been released.
+Regard, rck
 
-You can download the installer (signed with SHA256 from now on) from:
+PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+TAR: https://www.linbit.com/downloads/drbd/utils/drbd-utils-9.14.1.tar.gz
+GIT: https://github.com/LINBIT/drbd-utils/releases/tag/v9.14.1
 
-https://www.linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#windrbd
-
-A lot has happened since the last 1.0.0-rc1 release, mainly patches to
-improve system stability.
-
-By serializing calls to drbd_make_request we were able to fix a blue screen
-which could be triggered with fio -depth >10, see
-
-     https://github.com/LINBIT/windrbd/issues/2
-
-for details (this is also where -rc2 to -rc4 can be found).
-
-In addition the workqueue code has been reengineered which should
-fix a system hang we observed when doing endurance tests (I/O for
-3-4 weeks).
-
-Right now I am working on fixing a bug that causes drbdadm down to
-hang when syncing several times while I/O is going on (this will then
-be -rc6).
-
-Please help with testing WinDRBD so we can find and fix remaining bugs
-before we tag 1.0.0,
-
-Thanks a lot,
-
-- Johannes
-
---------------692094AFB912DA6F31B058A6
-Content-Type: text/html; charset=utf-8
-Content-Transfer-Encoding: 8bit
-
-<html>
-  <head>
-
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    Dear DRBD and WinDRBD users,<br>
-    <br>
-    WinDRBD 1.0.0-rc5 has been released.<br>
-     <br>
-    You can download the installer (signed with SHA256 from now on)
-    from:<br>
-    <br>
-<a class="moz-txt-link-freetext" href="https://www.linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#windrbd">https://www.linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#windrbd</a><br>
-    <br>
-    A lot has happened since the last 1.0.0-rc1 release, mainly patches
-    to<br>
-    improve system stability.<br>
-    <br>
-    By serializing calls to drbd_make_request we were able to fix a blue
-    screen<br>
-    which could be triggered with fio -depth &gt;10, see <br>
-    <br>
-        <a class="moz-txt-link-freetext" href="https://github.com/LINBIT/windrbd/issues/2">https://github.com/LINBIT/windrbd/issues/2</a><br>
-    <br>
-    for details (this is also where -rc2 to -rc4 can be found).<br>
-    <br>
-    In addition the workqueue code has been reengineered which should<br>
-    fix a system hang we observed when doing endurance tests (I/O for<br>
-    3-4 weeks).<br>
-    <br>
-    Right now I am working on fixing a bug that causes drbdadm down to<br>
-    hang when syncing several times while I/O is going on (this will
-    then<br>
-    be -rc6). <br>
-    <br>
-    Please help with testing WinDRBD so we can find and fix remaining
-    bugs<br>
-    before we tag 1.0.0,<br>
-    <br>
-    Thanks a lot,<br>
-    <br>
-    - Johannes<br>
-  </body>
-</html>
-
---------------692094AFB912DA6F31B058A6--
+9.14.0
+--------
+ * events2: fix regression to always print resync done
