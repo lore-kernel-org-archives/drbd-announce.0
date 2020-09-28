@@ -1,19 +1,20 @@
-Return-Path: <rene.peinthor@linbit.com>
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com
-	[209.85.128.45])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id DB4DD420D01
+Return-Path: <roland.kammerer@linbit.com>
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com
+	[209.85.221.48])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 2100F420851
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 23 Sep 2020 14:32:58 +0200 (CEST)
-Received: by mail-wm1-f45.google.com with SMTP id x23so6966993wmi.3
+	Mon, 28 Sep 2020 10:59:09 +0200 (CEST)
+Received: by mail-wr1-f48.google.com with SMTP id x14so289336wrl.12
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 23 Sep 2020 05:32:58 -0700 (PDT)
+	Mon, 28 Sep 2020 01:59:09 -0700 (PDT)
+Date: Mon, 28 Sep 2020 10:58:08 +0200
+From: Roland Kammerer <roland.kammerer@linbit.com>
+To: drbd-user@lists.linbit.com, drbd-announce@lists.linbit.com
+Message-ID: <20200928085808.GA1371@rck.sh>
 MIME-Version: 1.0
-From: Rene Peinthor <rene.peinthor@linbit.com>
-Date: Wed, 23 Sep 2020 14:31:47 +0200
-Message-ID: <CAHmn2DM+MM8aJMUhm=gOCpm793y31QNBV3DZ3YM3kfP2mmHWrw@mail.gmail.com>
-To: drbd-user <drbd-user@lists.linbit.com>, drbd-announce@lists.linbit.com
-Content-Type: multipart/alternative; boundary="00000000000006e64205affa4581"
-Subject: [DRBD-announce] python-linstor, linstor-client 1.4.0 release
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Subject: [DRBD-announce] drbd-utils-9.15.0
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -25,62 +26,32 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
---00000000000006e64205affa4581
-Content-Type: text/plain; charset="UTF-8"
+Hi DRBD users,
 
-Hi,
+this release fixes two minor bugs in the events2 stream (one already
+fixed with 9.14.1). Again, most likely one never is in a situation where
+this matters.
 
-And here is the client release for REST-API 1.4.0 features.
-Additionally client options can now also be set from environment variables
-and some parameters are case insensitive now.
+The reason for this feature release is the addition of the "drbd-attr"
+pacemaker resource agent. To quote a part of Lars' commit message:
 
-python-linstor v1.4.0
----------------------
- * Added methods for error-report deletion
- * Node create case insensitive for types
+> Intended usage is a setup with LINSTOR and Pacemaker, where we don't
+> want to know which nodes have access to which DRBD resources, and also
+> don't want to handle configuration / promotion of DRBD in Pacemaker,
+> but use auto-promote.
 
-https://www.linbit.com/downloads/linstor/python-linstor-1.4.0.tar.gz
+For more information please see commit 43a766031727fab819c, and
+obviously the script itself. There will be further documentation soon.
 
-linstor-client v1.4.0
----------------------
- * Allow setting options via environment variables, prefix is `LS_CLIENT_`
- * Added error-report delete command
- * Commandline choices(enums) are now mostly case insensitive
+Regard, rck
 
-https://www.linbit.com/downloads/linstor/linstor-client-1.4.0.tar.gz
+9.15.0
+--------
+ * New drbd-attr Pacemaker RA
+ * events2: handle mixed initial state and multicast events
+ * events2: fix regression to always print resync done
 
-Linstor PPA:
-https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+TAR: https://www.linbit.com/downloads/drbd/utils/drbd-utils-9.15.0.tar.gz
+GIT: https://github.com/LINBIT/drbd-utils/releases/tag/v9.15.0
 
-Best regards,
-Rene
-
---00000000000006e64205affa4581
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr">Hi,<br><div><br></div><div>And here is the client release =
-for REST-API 1.4.0 features.</div><div>Additionally client options can now =
-also be set from environment variables</div><div>and some parameters are ca=
-se insensitive now.</div><div><br></div><div><div><font face=3D"monospace">=
-python-linstor v1.4.0<br>---------------------<br>=C2=A0* Added methods for=
- error-report deletion<br>=C2=A0* Node create case insensitive for types</f=
-ont><br></div><div><div><div><div><br></div><div><font size=3D"1"><font fac=
-e=3D"monospace, monospace"><a href=3D"https://www.linbit.com/downloads/lins=
-tor/python-linstor-1.4.0.tar.gz" target=3D"_blank">https://www.linbit.com/d=
-ownloads/linstor/python-linstor-1.4.0.tar.gz</a></font></font></div></div><=
-div><font size=3D"1"><br></font></div><div><div><font face=3D"monospace">li=
-nstor-client v1.4.0<br>---------------------<br>=C2=A0* Allow setting optio=
-ns via environment variables, prefix is `LS_CLIENT_`<br>=C2=A0* Added error=
--report delete command<br>=C2=A0* Commandline choices(enums) are now mostly=
- case insensitive</font><br></div><div><br></div><div><font size=3D"1"><fon=
-t face=3D"monospace, monospace"><a href=3D"https://www.linbit.com/downloads=
-/linstor/linstor-client-1.4.0.tar.gz" target=3D"_blank">https://www.linbit.=
-com/downloads/linstor/linstor-client-1.4.0.tar.gz</a></font></font></div></=
-div></div><div><br></div><div>Linstor PPA:<br></div><div><div><a href=3D"ht=
-tps://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack" rel=3D"nore=
-ferrer" target=3D"_blank">https://launchpad.net/~linbit/+archive/ubuntu/lin=
-bit-drbd9-stack</a><br></div><div><br></div><div>Best regards,</div><div>Re=
-ne</div></div></div></div></div>
-
---00000000000006e64205affa4581--
