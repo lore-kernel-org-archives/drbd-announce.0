@@ -1,20 +1,13 @@
-Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com
-	[209.85.221.48])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 2100F420851
-	for <drbd-announce@lists.linbit.com>;
-	Mon, 28 Sep 2020 10:59:09 +0200 (CEST)
-Received: by mail-wr1-f48.google.com with SMTP id x14so289336wrl.12
-	for <drbd-announce@lists.linbit.com>;
-	Mon, 28 Sep 2020 01:59:09 -0700 (PDT)
-Date: Mon, 28 Sep 2020 10:58:08 +0200
-From: Roland Kammerer <roland.kammerer@linbit.com>
-To: drbd-user@lists.linbit.com, drbd-announce@lists.linbit.com
-Message-ID: <20200928085808.GA1371@rck.sh>
+Return-Path: <johannes@johannesthoma.com>
+From: Johannes Thoma <johannes@johannesthoma.com>
+To: "drbd-user@lists.linbit.com" <drbd-user@lists.linbit.com>,
+	drbd-announce@lists.linbit.com
+Message-ID: <302325ee-ce48-0da2-9913-8fad335d80ad@johannesthoma.com>
+Date: Fri, 9 Oct 2020 15:14:35 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Subject: [DRBD-announce] drbd-utils-9.15.0
+Content-Type: multipart/alternative;
+	boundary="------------FEED69FE9853B460394A691E"
+Subject: [DRBD-announce] WinDRBD 1.0.0-rc6 released
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,32 +19,52 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Hi DRBD users,
+This is a multi-part message in MIME format.
+--------------FEED69FE9853B460394A691E
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-this release fixes two minor bugs in the events2 stream (one already
-fixed with 9.14.1). Again, most likely one never is in a situation where
-this matters.
+Dear WinDRBD and DRBD users,
 
-The reason for this feature release is the addition of the "drbd-attr"
-pacemaker resource agent. To quote a part of Lars' commit message:
+In release 1.0.0-rc6 several issues in the workqueue implementation were fixed which causes most (but not all) reasons for BSOD's when disconnecting while syncing to be fixed. Also the ko count mechanism, a feature that makes connections more stable was fixed.
 
-> Intended usage is a setup with LINSTOR and Pacemaker, where we don't
-> want to know which nodes have access to which DRBD resources, and also
-> don't want to handle configuration / promotion of DRBD in Pacemaker,
-> but use auto-promote.
+As always an installable EXE can be downloaded from:
 
-For more information please see commit 43a766031727fab819c, and
-obviously the script itself. There will be further documentation soon.
+https://www.linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#windrbd
 
-Regard, rck
+Please contribute to WinDRBD development by using it,
 
-9.15.0
---------
- * New drbd-attr Pacemaker RA
- * events2: handle mixed initial state and multicast events
- * events2: fix regression to always print resync done
+Thanks and best wishes,
 
-PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
-TAR: https://www.linbit.com/downloads/drbd/utils/drbd-utils-9.15.0.tar.gz
-GIT: https://github.com/LINBIT/drbd-utils/releases/tag/v9.15.0
+- Johannes
 
+--------------FEED69FE9853B460394A691E
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: 7bit
+
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    Dear WinDRBD and DRBD users,<br>
+    <br>
+    In release 1.0.0-rc6 several issues in the workqueue implementation
+    were fixed which causes most (but not all) reasons for BSOD's when
+    disconnecting while syncing to be fixed. Also the ko count
+    mechanism, a feature that makes connections more stable was fixed.<br>
+    <br>
+    As always an installable EXE can be downloaded from:<br>
+    <br>
+    <a class="moz-txt-link-freetext"
+href="https://www.linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#windrbd">https://www.linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#windrbd</a><br>
+    <br>
+    Please contribute to WinDRBD development by using it, <br>
+    <br>
+    Thanks and best wishes,<br>
+    <br>
+    - Johannes<br>
+  </body>
+</html>
+
+--------------FEED69FE9853B460394A691E--
