@@ -1,19 +1,19 @@
 Return-Path: <rene.peinthor@linbit.com>
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com
-	[209.85.128.45])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 2A1654207A2
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com
+	[209.85.128.49])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 2CB2F4207AD
 	for <drbd-announce@lists.linbit.com>;
-	Mon,  9 Nov 2020 12:16:44 +0100 (CET)
-Received: by mail-wm1-f45.google.com with SMTP id h62so7553200wme.3
+	Mon,  9 Nov 2020 12:16:45 +0100 (CET)
+Received: by mail-wm1-f49.google.com with SMTP id s13so7562932wmh.4
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 09 Nov 2020 03:16:44 -0800 (PST)
+	Mon, 09 Nov 2020 03:16:45 -0800 (PST)
 MIME-Version: 1.0
 From: Rene Peinthor <rene.peinthor@linbit.com>
-Date: Mon, 9 Nov 2020 12:16:33 +0100
-Message-ID: <CAHmn2DNFFSRwSG0XUe95h+cWX3tmJjyUoaH8NoJk94ucUqhrbA@mail.gmail.com>
-To: drbd-user <drbd-user@lists.linbit.com>, drbd-announce@lists.linbit.com
-Content-Type: multipart/alternative; boundary="0000000000008545cd05b3aab2e6"
-Subject: [DRBD-announce] linstor-server 1.10.0 release
+Date: Mon, 9 Nov 2020 12:16:34 +0100
+Message-ID: <CAHmn2DNb0sn4jXpVaivx-MTF1xy98BkFAZ0eavgfmopF5tgeUg@mail.gmail.com>
+To: drbd-announce@lists.linbit.com, drbd-user <drbd-user@lists.linbit.com>
+Content-Type: multipart/alternative; boundary="000000000000946c6705b3aab27f"
+Subject: [DRBD-announce] python-linstor, linstor-client 1.4.1 release
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -25,82 +25,55 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
---0000000000008545cd05b3aab2e6
+--000000000000946c6705b3aab27f
 Content-Type: text/plain; charset="UTF-8"
 
-Hi!
+Hi,
 
-This release brings 2 new added features, auto-evict and configurable ETCD
-prefixes:
+Small client release, with minor fixes.
 
-Auto-Evict:
-If a satellite has no connection to the controller for more than an hour,
-the controller will mark that node as EVICTED and remove all its
-DRBD-resources. Should this cause the total number of replicas for those
-resources to fall below a user-set minimum, it will then try to place new
-replicas on other satellites to keep enough replicas available.
+python-linstor v1.4.1
+---------------------
+ * added SizeCalc.unit_to_str method
 
-ETCD-prefixes:
-You can now configure the used ETCD prefix within the linstor.toml file, of
-course this needs to be done before the first start of the controller.
-As a little drawback(cleanup) of this change, it isn't possible anymore to
-directly upgrade ETCD backed Linstor-Controller installation from a version
-prior < 1.4.3. If you have such a situation
-upgrade to 1.9.0 first and then to 1.10.0.
+https://www.linbit.com/downloads/linstor/python-linstor-1.4.1.tar.gz
 
-linstor-server 1.10.0
+linstor-client 1.4.1
 --------------------
- * Added auto-evict feature
- * ETCD prefix is now configurable (migration only works now starting from
-version 1.4.3)
- * Block IO can now be throttled also by iops
- * Fixed REST-API single snapshot filtering
- * Fixed drbd-events2 parsing race condition
- * Fixed toggle-disk doesn't work if an unrelated node is offline
- * Fixed race-condition in auto-tiebreaker
- * Fixed usage of wait for snapshot-shipping
- * REST-API version 1.5.0
+* migrate: remove unused AllowLargerVolumeSize property
+* fix incorrect use of argparse.ArgumentTypeError
+* drbd-options: add units to error message
 
-https://www.linbit.com/downloads/linstor/linstor-server-1.10.0.tar.gz
+https://www.linbit.com/downloads/linstor/linstor-client-1.4.1.tar.gz
 
 Linstor PPA:
 https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
-Cheers,
+Best regards,
 Rene
 
---0000000000008545cd05b3aab2e6
+--000000000000946c6705b3aab27f
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr">Hi!<div><br></div><div>This release brings 2 new added fea=
-tures, auto-evict and configurable ETCD prefixes:</div><div><br></div><div>=
-Auto-Evict:</div><div>If a satellite has no connection to the controller fo=
-r more than an hour, the controller will mark that node as EVICTED and remo=
-ve all its DRBD-resources. Should this cause the total number of replicas f=
-or those resources to fall below a user-set minimum, it will then try to pl=
-ace new replicas on other satellites to keep enough replicas available.<br>=
-</div><div><br></div><div>ETCD-prefixes:</div><div>You can now configure th=
-e used ETCD prefix within the linstor.toml file, of course this needs to be=
- done before the first start of the controller.</div><div>As a little drawb=
-ack(cleanup) of this change, it isn&#39;t possible anymore to directly upgr=
-ade ETCD backed Linstor-Controller installation from a version prior &lt; 1=
-.4.3. If you have such a situation</div><div>upgrade to 1.9.0 first and the=
-n to 1.10.0.</div><div><br></div><div><div><font face=3D"monospace">linstor=
--server 1.10.0<br>--------------------<br>=C2=A0* Added auto-evict feature<=
-br>=C2=A0* ETCD prefix is now configurable (migration only works now starti=
-ng from version 1.4.3)<br>=C2=A0* Block IO can now be throttled also by iop=
-s<br>=C2=A0* Fixed REST-API single snapshot filtering<br>=C2=A0* Fixed drbd=
--events2 parsing race condition<br>=C2=A0* Fixed toggle-disk doesn&#39;t wo=
-rk if an unrelated node is offline<br>=C2=A0* Fixed race-condition in auto-=
-tiebreaker<br>=C2=A0* Fixed usage of wait for snapshot-shipping<br>=C2=A0* =
-REST-API version 1.5.0</font><br></div><div><br></div><div><div><font face=
-=3D"monospace"><a href=3D"https://www.linbit.com/downloads/linstor/linstor-=
-server-1.10.0.tar.gz">https://www.linbit.com/downloads/linstor/linstor-serv=
-er-1.10.0.tar.gz</a></font><br></div><div><br></div><div><div><div>Linstor =
-PPA:<br><a href=3D"https://launchpad.net/~linbit/+archive/ubuntu/linbit-drb=
-d9-stack" rel=3D"noreferrer" target=3D"_blank">https://launchpad.net/~linbi=
-t/+archive/ubuntu/linbit-drbd9-stack</a></div></div><div><br></div><div>Che=
-ers,<br></div><div>Rene</div></div></div></div></div>
+<div dir=3D"ltr">Hi,<br><div><br></div><div>Small client release, with mino=
+r fixes.</div><div><br></div><div><div><font face=3D"monospace">python-lins=
+tor v1.4.1<br>---------------------<br>=C2=A0*=C2=A0added SizeCalc.unit_to_=
+str method</font><br></div><div><div><div><div><br></div><div><font size=3D=
+"1"><font face=3D"monospace, monospace"><a href=3D"https://www.linbit.com/d=
+ownloads/linstor/python-linstor-1.4.1.tar.gz">https://www.linbit.com/downlo=
+ads/linstor/python-linstor-1.4.1.tar.gz</a></font></font></div></div><div><=
+font size=3D"1"><br></font></div><div><div><font face=3D"monospace">linstor=
+-client 1.4.1<br>--------------------<br>* migrate: remove unused AllowLarg=
+erVolumeSize property<br>* fix incorrect use of argparse.ArgumentTypeError<=
+br>* drbd-options: add units to error message</font><br></div><div><br></di=
+v><div><font size=3D"1"><font face=3D"monospace, monospace"><a href=3D"http=
+s://www.linbit.com/downloads/linstor/linstor-client-1.4.1.tar.gz">https://w=
+ww.linbit.com/downloads/linstor/linstor-client-1.4.1.tar.gz</a></font></fon=
+t></div></div></div><div><br></div><div>Linstor PPA:<br></div><div><div><a =
+href=3D"https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack" r=
+el=3D"noreferrer" target=3D"_blank">https://launchpad.net/~linbit/+archive/=
+ubuntu/linbit-drbd9-stack</a><br></div><div><br></div><div>Best regards,</d=
+iv><div>Rene</div></div></div></div></div>
 
---0000000000008545cd05b3aab2e6--
+--000000000000946c6705b3aab27f--
