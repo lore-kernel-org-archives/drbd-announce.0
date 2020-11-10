@@ -1,13 +1,20 @@
-Return-Path: <johannes@johannesthoma.com>
-To: "drbd-user@lists.linbit.com" <drbd-user@lists.linbit.com>,
-	drbd-announce@lists.linbit.com
-From: Johannes Thoma <johannes@johannesthoma.com>
-Message-ID: <985b4081-44ec-0c88-b989-b0d9f568fdd6@johannesthoma.com>
-Date: Mon, 9 Nov 2020 15:32:08 +0100
+Return-Path: <philipp.reisner@linbit.com>
+Received: from mail-io1-f54.google.com (mail-io1-f54.google.com
+	[209.85.166.54])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 36FE84205FE
+	for <drbd-announce@lists.linbit.com>;
+	Tue, 10 Nov 2020 21:50:15 +0100 (CET)
+Received: by mail-io1-f54.google.com with SMTP id m9so15733294iox.10
+	for <drbd-announce@lists.linbit.com>;
+	Tue, 10 Nov 2020 12:50:15 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: multipart/alternative;
-	boundary="------------3A628FA723598011A9A2181B"
-Subject: [DRBD-announce] WinDRBD 1.0.0-rc8 released
+From: Philipp Reisner <philipp.reisner@linbit.com>
+Date: Tue, 10 Nov 2020 21:50:04 +0100
+Message-ID: <CADGDV=XMiXNjs1aao56jhup8MWK+cDF5KojcKzt-r1jHZid7oA@mail.gmail.com>
+To: drbd-announce@lists.linbit.com
+Content-Type: text/plain; charset="UTF-8"
+Cc: drbd-user@lists.linbit.com
+Subject: [DRBD-announce] drbd-9.0.26-rc1
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -19,58 +26,41 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-This is a multi-part message in MIME format.
---------------3A628FA723598011A9A2181B
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Hi,
 
-Dear WinDRBD and DRBD users,
+with this release, DRBD becomes compatible with Linux 5.8 and 5.9. Thanks to
+the coccinelle based compatibility framework it stays compatible all the
+way back to the kernel 2.6.32.
+In upstream quite a few things changed for block device drivers, following
+all that and staying compatible with the old ones is a noticeable achievement
+by Christoph! Thanks!
+BTW, we got external contributions. One in the area of Linux 5.8 compatibility
+and a bugfix.
 
-We've just released WinDRBD 1.0.0-rc8 with a few bug fixes in the Emulation layer. Especially these fixed system hangs at various places (such as hang in invalidate-remote loop), please see the closed issues on github for details. Also device sizes > 2 TB are now working (better) this was due a bug in the backing device driver of WinDRBD.
+This is a release candidate, please help testing it. With this huge change
+in the compatibility framework, I ask the community to point out issues with
+building DRBD on exotic distributions/kernels you might have.
 
-As always the WinDRBD install packages can be downloaded from:
+Changelog:
+9.0.26-0rc1 (api:genl2/proto:86-118/transport:14)
+--------
+ * fix a case of a disk unexpectedly becoming Outdated by moving the
+   exchange of the initial packets into the body of the two-phase-commit
+   that happens at a connect
+ * fix adding of new volumes to resources with a primary node
+ * reliably detect split brain situation on both nodes
+ * fix an unexpected occurrence of NetworkFailure state in a tight
+   drbdsetup disconnect; drbdsetup connect sequence
+ * fix online verify to return to Established from VerifyS if the VerifyT node
+   was temporarily Inconsistent during the run
+ * fix a corner case where a node ends up Outdated after crash and rejoin
+   of a primary node
+ * implement 'blockdev --setro' in DRBD
+ * following upstream changes to DRBD up to Linux 5.9 and ensure
+   compatibility with Linux 5.8 and 5.9
 
-https://www.linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#windrbd
+https://www.linbit.com/downloads/drbd/9.0/drbd-9.0.26-0rc1.tar.gz
+https://github.com/LINBIT/drbd/commit/79b368b143283a898ce65594361f49fcb460b3be
 
-Please report bugs in the github issue tracker:
-
-https://github.com/LINBIT/windrbd/issues
-
-Thanks for using WinDRBD,
-
-- Johannes
-
---------------3A628FA723598011A9A2181B
-Content-Type: text/html; charset=utf-8
-Content-Transfer-Encoding: 7bit
-
-<html>
-  <head>
-
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    Dear WinDRBD and DRBD users,<br>
-    <br>
-    We've just released WinDRBD 1.0.0-rc8 with a few bug fixes in the
-    Emulation layer. Especially these fixed system hangs at various
-    places (such as hang in invalidate-remote loop), please see the
-    closed issues on github for details. Also device sizes &gt; 2 TB are
-    now working (better) this was due a bug in the backing device driver
-    of WinDRBD.<br>
-    <br>
-    As always the WinDRBD install packages can be downloaded from:<br>
-    <br>
-<a class="moz-txt-link-freetext" href="https://www.linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#windrbd">https://www.linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#windrbd</a><br>
-    <br>
-    Please report bugs in the github issue tracker:<br>
-    <br>
-    <a class="moz-txt-link-freetext" href="https://github.com/LINBIT/windrbd/issues">https://github.com/LINBIT/windrbd/issues</a><br>
-    <br>
-    Thanks for using WinDRBD,<br>
-    <br>
-    - Johannes<br>
-  </body>
-</html>
-
---------------3A628FA723598011A9A2181B--
+best regards,
+ Phil
