@@ -1,25 +1,20 @@
-Return-Path: <moritz.wanzenboeck@linbit.com>
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com
-	[209.85.221.44])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 80B3D4207F3
+Return-Path: <philipp.reisner@linbit.com>
+Received: from mail-io1-f53.google.com (mail-io1-f53.google.com
+	[209.85.166.53])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id EC02342061D
 	for <drbd-announce@lists.linbit.com>;
-	Fri,  4 Dec 2020 10:53:02 +0100 (CET)
-Received: by mail-wr1-f44.google.com with SMTP id g14so4660841wrm.13
+	Mon,  7 Dec 2020 17:39:06 +0100 (CET)
+Received: by mail-io1-f53.google.com with SMTP id i9so14006145ioo.2
 	for <drbd-announce@lists.linbit.com>;
-	Fri, 04 Dec 2020 01:53:02 -0800 (PST)
-Received: from [192.168.1.25] (91-115-48-136.adsl.highway.telekom.at.
-	[91.115.48.136])
-	by smtp.gmail.com with ESMTPSA id 34sm2851695wrh.78.2020.12.04.01.53.00
-	for <drbd-announce@lists.linbit.com>
-	(version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-	Fri, 04 Dec 2020 01:53:00 -0800 (PST)
-Date: Fri, 04 Dec 2020 10:52:54 +0100
-From: Moritz =?iso-8859-1?q?Wanzenb=F6ck?= <moritz.wanzenboeck@linbit.com>
-To: drbd-announce@lists.linbit.com
-Message-Id: <6G7TKQ.MXKBGVH3RPKJ3@linbit.com>
+	Mon, 07 Dec 2020 08:39:06 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Subject: [DRBD-announce] linstor-csi 0.10.2 released
+From: Philipp Reisner <philipp.reisner@linbit.com>
+Date: Mon, 7 Dec 2020 17:38:54 +0100
+Message-ID: <CADGDV=WNgrhm110Ehe6x33pHs0VjB7Ms+u57k5_t6B-Y=js+4w@mail.gmail.com>
+To: drbd-announce@lists.linbit.com
+Content-Type: text/plain; charset="UTF-8"
+Cc: drbd-user@lists.linbit.com
+Subject: [DRBD-announce] drbd-9.0.26-rc3
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -31,38 +26,64 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Dear LINSTOR on Kubernetes Users,
+Hi,
 
-We just released version 0.10.2 of LINSTOR CSI.
+It is time for a rc3, rc2 is already nearly 3 weeks old!
 
-This release contains fixes for the following issues:
+We were very busy ironing out details with the state engine for strate
+transitions when nodes establish a connection. Well, two partitions
+join. It looks really good now. A new test tortures it in a way we
+never tested it before. I am convinced that we have put an end to an
+entire class of bugs.
 
-- Under specific conditions it was possible for
-  a PV to be created in Kubernetes without the matching
-  LINSTOR resources being available. Any Pods using these
-  PVs would forever be stuck, as LINSTOR CSI would fail
-  to attach the volume. Any PV created in this way has
-  to be deleted and re-created.
+While doing this two patches reached us that aim to cure possible
+sources for inconsistencies in mirroring the data. One of those got
+merged, the other one is still under investigation. We will take the
+time that is necessary to fully understand that and have a proper fix
+in place.
 
-- Another possible outcome of the above bug was a complete
-  crash of LINSTOR CSI on a node. On restart of the pod,
-  it would immediatly crash again.
+This is a release candidate, please help testing it.
 
-The update is available from our registry:
+Changelog:
+9.0.26-0rc3 (api:genl2/proto:86-118/transport:14)
+--------
+ * fix for writes not getting mirrored over a connection while the primary
+   transitions through the WFBitMapS state
+ * completed missing logic of the new two-phase-commit based connect process;
+   avoid connecting partitions with a primary in each; ensure consistent
+   decisions if the connect attempt will be retried
 
-drbd.io/linstor-csi:v0.10.2
+9.0.26-0rc2 (api:genl2/proto:86-118/transport:14)
+--------
+ * fix a crash if during resync a discard operation fails on the
+   resync-target node
+ * fix online verify to not clamp disk states to UpToDate
+ * fix promoting resync-target nodes; the problem was that it could modify
+   the bitmap of an ongoing resync; which leads to alarming log messages
+ * pause a resync if the sync-source node becomes inconsistent; an example
+   is a cascading resync where the upstream resync aborts and leaves the
+   sync-source node for the downstream resync with an inconsistent disk;
+   note, the node at the end of the chain could still have an outdated disk
+   (better than inconsistent)
+ * allow force primary on a sync-target node by breaking the resync
+ * minor fixes to the compat tests
 
-Updates can be applied by:
+9.0.26-0rc1 (api:genl2/proto:86-118/transport:14)
+--------
+ * fix a case of a disk unexpectedly becoming Outdated by moving the
+   exchange of the initial packets into the body of the two-phase-commit
+   that happens at a connect
+ * fix adding of new volumes to resources with a primary node
+ * reliably detect split brain situation on both nodes
+ * fix an unexpected occurrence of NetworkFailure state in a tight
+   drbdsetup disconnect; drbdsetup connect sequence
+ * fix online verify to return to Established from VerifyS if the VerifyT node
+   was temporarily Inconsistent during the run
+ * fix a corner case where a node ends up Outdated after the crash and rejoin
+   of a primary node
+ * implement 'blockdev --setro' in DRBD
+ * following upstream changes to DRBD up to Linux 5.9 and ensure
+   compatibility with Linux 5.8 and 5.9
 
-- Using the LINSTOR helm chart:
-  Run helm upgrade, setting:
-  csi.pluginImage=drbd.io/linstor-csi:v0.10.2
-
-- Other linstor-operator deployments:
-  Edit the LinstorCSIDriver resource and set:
-  linstorPluginImage: drbd.io/linstor-csi:v0.10.2
-
-Best regards,
-Moritz
-
-
+https://www.linbit.com/downloads/drbd/9.0/drbd-9.0.26-0rc3.tar.gz
+https://github.com/LINBIT/drbd/commit/9114a0383f72b87610cd9ee282676cf94213da5b
