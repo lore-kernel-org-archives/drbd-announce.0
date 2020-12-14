@@ -1,20 +1,13 @@
-Return-Path: <philipp.reisner@linbit.com>
-Received: from mail-io1-f53.google.com (mail-io1-f53.google.com
-	[209.85.166.53])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id EC02342061D
-	for <drbd-announce@lists.linbit.com>;
-	Mon,  7 Dec 2020 17:39:06 +0100 (CET)
-Received: by mail-io1-f53.google.com with SMTP id i9so14006145ioo.2
-	for <drbd-announce@lists.linbit.com>;
-	Mon, 07 Dec 2020 08:39:06 -0800 (PST)
+Return-Path: <johannes@johannesthoma.com>
+To: "drbd-user@lists.linbit.com" <drbd-user@lists.linbit.com>,
+	drbd-announce@lists.linbit.com
+From: Johannes Thoma <johannes@johannesthoma.com>
+Message-ID: <ddde2a6e-bac3-b206-0384-f17136890dfc@johannesthoma.com>
+Date: Mon, 14 Dec 2020 14:35:09 +0100
 MIME-Version: 1.0
-From: Philipp Reisner <philipp.reisner@linbit.com>
-Date: Mon, 7 Dec 2020 17:38:54 +0100
-Message-ID: <CADGDV=WNgrhm110Ehe6x33pHs0VjB7Ms+u57k5_t6B-Y=js+4w@mail.gmail.com>
-To: drbd-announce@lists.linbit.com
-Content-Type: text/plain; charset="UTF-8"
-Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-9.0.26-rc3
+Content-Type: multipart/alternative;
+	boundary="------------621D03699E8E425DCDD57C44"
+Subject: [DRBD-announce] WinDRBD 1.0.0-rc9 released
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,64 +19,102 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Hi,
+This is a multi-part message in MIME format.
+--------------621D03699E8E425DCDD57C44
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-It is time for a rc3, rc2 is already nearly 3 weeks old!
+Dear DRBD and WinDRBD users,
 
-We were very busy ironing out details with the state engine for strate
-transitions when nodes establish a connection. Well, two partitions
-join. It looks really good now. A new test tortures it in a way we
-never tested it before. I am convinced that we have put an end to an
-entire class of bugs.
+We've just released a new release canidate version of WinDRBD: as always
+the installer of WinDRBD 1.0.0-rc9 can be downloaded from:
 
-While doing this two patches reached us that aim to cure possible
-sources for inconsistencies in mirroring the data. One of those got
-merged, the other one is still under investigation. We will take the
-time that is necessary to fully understand that and have a proper fix
-in place.
+https://www.linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#windrbd
 
-This is a release candidate, please help testing it.
+Below is the abstract from the WHATSNEW.md file: mainly stability fixes in corner cases but
+also performance tuning (when SyncTarget syncing is about 5 times faster now).
 
-Changelog:
-9.0.26-0rc3 (api:genl2/proto:86-118/transport:14)
---------
- * fix for writes not getting mirrored over a connection while the primary
-   transitions through the WFBitMapS state
- * completed missing logic of the new two-phase-commit based connect process;
-   avoid connecting partitions with a primary in each; ensure consistent
-   decisions if the connect attempt will be retried
+Thank you for improving WinDRBD by reporting bugs (2 contributors on the net have
+discovered and reported bugs for this release),
 
-9.0.26-0rc2 (api:genl2/proto:86-118/transport:14)
---------
- * fix a crash if during resync a discard operation fails on the
-   resync-target node
- * fix online verify to not clamp disk states to UpToDate
- * fix promoting resync-target nodes; the problem was that it could modify
-   the bitmap of an ongoing resync; which leads to alarming log messages
- * pause a resync if the sync-source node becomes inconsistent; an example
-   is a cascading resync where the upstream resync aborts and leaves the
-   sync-source node for the downstream resync with an inconsistent disk;
-   note, the node at the end of the chain could still have an outdated disk
-   (better than inconsistent)
- * allow force primary on a sync-target node by breaking the resync
- * minor fixes to the compat tests
+Best wishes,
 
-9.0.26-0rc1 (api:genl2/proto:86-118/transport:14)
---------
- * fix a case of a disk unexpectedly becoming Outdated by moving the
-   exchange of the initial packets into the body of the two-phase-commit
-   that happens at a connect
- * fix adding of new volumes to resources with a primary node
- * reliably detect split brain situation on both nodes
- * fix an unexpected occurrence of NetworkFailure state in a tight
-   drbdsetup disconnect; drbdsetup connect sequence
- * fix online verify to return to Established from VerifyS if the VerifyT node
-   was temporarily Inconsistent during the run
- * fix a corner case where a node ends up Outdated after the crash and rejoin
-   of a primary node
- * implement 'blockdev --setro' in DRBD
- * following upstream changes to DRBD up to Linux 5.9 and ensure
-   compatibility with Linux 5.8 and 5.9
+- Johannes
 
-https://www.linbit.com/downloads/drbd/9.0/drbd-9.0.26-0rc3.tar.gz
-https://github.com/LINBIT/drbd/commit/9114a0383f72b87610cd9ee282676cf94213da5b
+What's new in version 1.0.0-rc9
+-------------------------------
+
+Use device ejection API on drbdadm secondary (or down). This should
+solve a BSOD on drbdadm secondary a client had.
+
+Force open counts to 0 on drbdadm secondary (or down). This should
+solve a handle leak (peer cannot be promoted to Primary) a client
+had.
+
+Updated drbd-utils shipped to 9.15.0 (was 9.12.0). Amongst other
+things this makes the disconnected user mode helper work.
+
+Use big pages for receiving sync packets (when sync target). This speeds
+up sync by a factor 5 when WinDRBD is SyncTarget.
+
+Fixed disconnect while sync bug: On disconnect wait until all
+bios are completed.
+
+
+
+--------------621D03699E8E425DCDD57C44
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: 7bit
+
+<html>
+  <head>
+
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    Dear DRBD and WinDRBD users,<br>
+    <br>
+    We've just released a new release canidate version of WinDRBD: as
+    always<br>
+    the installer of WinDRBD 1.0.0-rc9 can be downloaded from:<br>
+    <br>
+<a class="moz-txt-link-freetext" href="https://www.linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#windrbd">https://www.linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#windrbd</a><br>
+    <br>
+    Below is the abstract from the WHATSNEW.md file: mainly stability
+    fixes in corner cases but<br>
+    also performance tuning (when SyncTarget syncing is about 5 times
+    faster now).<br>
+    <br>
+    Thank you for improving WinDRBD by reporting bugs (2 contributors on
+    the net have<br>
+    discovered and reported bugs for this release), <br>
+    <br>
+    Best wishes,<br>
+    <br>
+    - Johannes<br>
+    <br>
+    What's new in version 1.0.0-rc9<br>
+    -------------------------------<br>
+    <br>
+    Use device ejection API on drbdadm secondary (or down). This should<br>
+    solve a BSOD on drbdadm secondary a client had.<br>
+    <br>
+    Force open counts to 0 on drbdadm secondary (or down). This should<br>
+    solve a handle leak (peer cannot be promoted to Primary) a client<br>
+    had.<br>
+    <br>
+    Updated drbd-utils shipped to 9.15.0 (was 9.12.0). Amongst other<br>
+    things this makes the disconnected user mode helper work.<br>
+    <br>
+    Use big pages for receiving sync packets (when sync target). This
+    speeds<br>
+    up sync by a factor 5 when WinDRBD is SyncTarget.<br>
+    <br>
+    Fixed disconnect while sync bug: On disconnect wait until all<br>
+    bios are completed.<br>
+    <br>
+    <br>
+  </body>
+</html>
+
+--------------621D03699E8E425DCDD57C44--
