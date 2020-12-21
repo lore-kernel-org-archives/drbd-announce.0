@@ -1,20 +1,19 @@
-Return-Path: <philipp.reisner@linbit.com>
-Received: from mail-io1-f50.google.com (mail-io1-f50.google.com
-	[209.85.166.50])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id BCCBA42053E
+Return-Path: <rene.peinthor@linbit.com>
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com
+	[209.85.221.42])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id EBD82420640
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 15 Dec 2020 15:12:12 +0100 (CET)
-Received: by mail-io1-f50.google.com with SMTP id y5so20586045iow.5
+	Mon, 21 Dec 2020 14:22:23 +0100 (CET)
+Received: by mail-wr1-f42.google.com with SMTP id y17so11030304wrr.10
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 15 Dec 2020 06:12:12 -0800 (PST)
+	Mon, 21 Dec 2020 05:22:23 -0800 (PST)
 MIME-Version: 1.0
-From: Philipp Reisner <philipp.reisner@linbit.com>
-Date: Tue, 15 Dec 2020 15:12:00 +0100
-Message-ID: <CADGDV=X3FnBToeAJ2BiFkiVBOqB3cs_RvpeUpk4+3Q4pUBCy6Q@mail.gmail.com>
-To: drbd-announce@lists.linbit.com
-Content-Type: text/plain; charset="UTF-8"
-Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-9.0.26-rc4
+From: Rene Peinthor <rene.peinthor@linbit.com>
+Date: Mon, 21 Dec 2020 14:22:12 +0100
+Message-ID: <CAHmn2DPnaGR-rU8LqPuktCxv_zgZcRUgB4OAq-c8MxasshoqfA@mail.gmail.com>
+To: drbd-user <drbd-user@lists.linbit.com>, drbd-announce@lists.linbit.com
+Content-Type: multipart/alternative; boundary="000000000000338feb05b6f95996"
+Subject: [DRBD-announce] linstor-server 1.11.0
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,29 +25,64 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Hi,
+--000000000000338feb05b6f95996
+Content-Type: text/plain; charset="UTF-8"
 
-What a week. So many changes came in. I will write some more text for the final
-9.0.26. We hope to have it ready in a week from now.
+Hi!
 
-This is a release candidate, please help testing it.
+Even though this release pushes the minor version number, it mostly
+consists of bug fixes.
+New features worth mentioning are props info API and autoplace addition for
+tiebreaker and a +1 notion for the auto-placer.
 
-9.0.26-0rc4 (api:genl2/proto:86-118/transport:14)
---------
- * fix a source of possible data corruption; related to a resync and
-   a primary node that is connected to the sync-source node only
- * restore protocol compatibility with 9.0.25 and earlier
- * fix for sporadic "Clearing bitmap UUID for node" log entries;
-   a potential source of problems later on leading to false split-brain
-   or unrelated data messages.
- * retry connect properly in case of bitmap-uuid changes during the handshake
- * complete size 0 reads immediately; some workloads (KVM and
-   iscsi targets) in combination with a ZFS zvol as the backend can lead to
-   a kernel OOPS in ZFS; this is a workaround in DRBD for that
- * improve error reporting for failures during attach
- * reduce lock contention on the secondary for many resources; can improve
-   performance significantly
- * Compatibility with Linux 5.10
+linstor-server 1.11.0
+---------------------
+ * Added REST-API paths for retrieving property info: `properties/info`,
+`properties/info/all`
+ * Added autoplace for tiebreaker and a new client notation `--auto-place
++1`
+ * Check if node resource inUse or last diskful before deleting on node
+delete
+ * Do not return error if a resource already exists (now returns an INFO)
+ * Fixed missing property resolving objects while building the DRBD config
+ * Fixed bug with file based storage pools
+ * Fixed node lost db integrity issues
+ * Fixed several issues with the auto-evict feature
+ * REST-API version 1.6.0
 
-https://www.linbit.com/downloads/drbd/9.0/drbd-9.0.26-0rc4.tar.gz
-https://github.com/LINBIT/drbd/commit/b6537aa8b890890a1e22aee26f65bc1c3e097b97
+https://www.linbit.com/downloads/linstor/linstor-server-1.11.0.tar.gz
+
+Linstor PPA:
+https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+
+Cheers,
+Rene
+
+--000000000000338feb05b6f95996
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">Hi!<div><br></div><div>Even though this release pushes the=
+ minor version number, it mostly consists of bug fixes.</div><div>New featu=
+res worth mentioning are props info API and autoplace addition for tiebreak=
+er and a=C2=A0+1 notion for the auto-placer.</div><div><br></div><div><div>=
+<font face=3D"monospace">linstor-server 1.11.0<br>---------------------<br>=
+=C2=A0* Added REST-API paths for retrieving property info: `properties/info=
+`, `properties/info/all`<br>=C2=A0* Added autoplace for tiebreaker and a ne=
+w client notation `--auto-place +1`<br>=C2=A0* Check if node resource inUse=
+ or last diskful before deleting on node delete<br>=C2=A0* Do not return er=
+ror if a resource already exists (now returns an INFO)<br>=C2=A0* Fixed mis=
+sing property resolving objects while building the DRBD config<br>=C2=A0* F=
+ixed bug with file based storage pools<br>=C2=A0* Fixed node lost db integr=
+ity issues<br>=C2=A0* Fixed several issues with the auto-evict feature<br>=
+=C2=A0* REST-API version 1.6.0</font><br></div><div><br></div><div><div><fo=
+nt face=3D"monospace"><a href=3D"https://www.linbit.com/downloads/linstor/l=
+instor-server-1.11.0.tar.gz" target=3D"_blank">https://www.linbit.com/downl=
+oads/linstor/linstor-server-1.11.0.tar.gz</a></font><br></div><div><br></di=
+v><div><div><div>Linstor PPA:<br><a href=3D"https://launchpad.net/~linbit/+=
+archive/ubuntu/linbit-drbd9-stack" rel=3D"noreferrer" target=3D"_blank">htt=
+ps://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack</a></div></di=
+v><div><br></div><div>Cheers,<br></div><div>Rene</div></div></div></div></d=
+iv>
+
+--000000000000338feb05b6f95996--
