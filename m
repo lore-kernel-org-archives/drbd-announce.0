@@ -1,19 +1,19 @@
 Return-Path: <rene.peinthor@linbit.com>
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com
-	[209.85.221.42])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id EBD82420640
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com
+	[209.85.221.44])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 8E16142064D
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 21 Dec 2020 14:22:23 +0100 (CET)
-Received: by mail-wr1-f42.google.com with SMTP id y17so11030304wrr.10
+	Mon, 21 Dec 2020 14:22:24 +0100 (CET)
+Received: by mail-wr1-f44.google.com with SMTP id r3so11069356wrt.2
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 21 Dec 2020 05:22:23 -0800 (PST)
+	Mon, 21 Dec 2020 05:22:24 -0800 (PST)
 MIME-Version: 1.0
 From: Rene Peinthor <rene.peinthor@linbit.com>
-Date: Mon, 21 Dec 2020 14:22:12 +0100
-Message-ID: <CAHmn2DPnaGR-rU8LqPuktCxv_zgZcRUgB4OAq-c8MxasshoqfA@mail.gmail.com>
-To: drbd-user <drbd-user@lists.linbit.com>, drbd-announce@lists.linbit.com
-Content-Type: multipart/alternative; boundary="000000000000338feb05b6f95996"
-Subject: [DRBD-announce] linstor-server 1.11.0
+Date: Mon, 21 Dec 2020 14:22:13 +0100
+Message-ID: <CAHmn2DPPAqEXCvNoA_tQ7jLz-ZqWHRtV4oz0k0xuRxG0zcM4jw@mail.gmail.com>
+To: drbd-announce@lists.linbit.com, drbd-user <drbd-user@lists.linbit.com>
+Content-Type: multipart/alternative; boundary="00000000000041ad5705b6f95913"
+Subject: [DRBD-announce] python-linstor, linstor-client 1.6.0 release
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -25,64 +25,62 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
---000000000000338feb05b6f95996
+--00000000000041ad5705b6f95913
 Content-Type: text/plain; charset="UTF-8"
 
-Hi!
+Hi,
 
-Even though this release pushes the minor version number, it mostly
-consists of bug fixes.
-New features worth mentioning are props info API and autoplace addition for
-tiebreaker and a +1 notion for the auto-placer.
+This release brings the client and python-linstor to linstor-server
+REST-API 1.6.0 compatibility.
 
-linstor-server 1.11.0
+python-linstor 1.6.0
+--------------------
+ * Added node_restore() method
+ * Added addition_place_count params for auto_place
+ * Node response object now has flags()
+
+https://www.linbit.com/downloads/linstor/python-linstor-1.6.0.tar.gz
+
+linstor-client v1.6.0
 ---------------------
- * Added REST-API paths for retrieving property info: `properties/info`,
-`properties/info/all`
- * Added autoplace for tiebreaker and a new client notation `--auto-place
-+1`
- * Check if node resource inUse or last diskful before deleting on node
-delete
- * Do not return error if a resource already exists (now returns an INFO)
- * Fixed missing property resolving objects while building the DRBD config
- * Fixed bug with file based storage pools
- * Fixed node lost db integrity issues
- * Fixed several issues with the auto-evict feature
- * REST-API version 1.6.0
+ * node list now shows DELETING and EVICTED nodes
+ * Added diskless placement and additional placement count for auto-place
+ * Added node restore command for evicted nodes
+ * depend on python-linstor v1.6.0
 
-https://www.linbit.com/downloads/linstor/linstor-server-1.11.0.tar.gz
+https://www.linbit.com/downloads/linstor/linstor-client-1.6.0.tar.gz
 
 Linstor PPA:
 https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
-Cheers,
+Best regards,
 Rene
 
---000000000000338feb05b6f95996
+--00000000000041ad5705b6f95913
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr">Hi!<div><br></div><div>Even though this release pushes the=
- minor version number, it mostly consists of bug fixes.</div><div>New featu=
-res worth mentioning are props info API and autoplace addition for tiebreak=
-er and a=C2=A0+1 notion for the auto-placer.</div><div><br></div><div><div>=
-<font face=3D"monospace">linstor-server 1.11.0<br>---------------------<br>=
-=C2=A0* Added REST-API paths for retrieving property info: `properties/info=
-`, `properties/info/all`<br>=C2=A0* Added autoplace for tiebreaker and a ne=
-w client notation `--auto-place +1`<br>=C2=A0* Check if node resource inUse=
- or last diskful before deleting on node delete<br>=C2=A0* Do not return er=
-ror if a resource already exists (now returns an INFO)<br>=C2=A0* Fixed mis=
-sing property resolving objects while building the DRBD config<br>=C2=A0* F=
-ixed bug with file based storage pools<br>=C2=A0* Fixed node lost db integr=
-ity issues<br>=C2=A0* Fixed several issues with the auto-evict feature<br>=
-=C2=A0* REST-API version 1.6.0</font><br></div><div><br></div><div><div><fo=
-nt face=3D"monospace"><a href=3D"https://www.linbit.com/downloads/linstor/l=
-instor-server-1.11.0.tar.gz" target=3D"_blank">https://www.linbit.com/downl=
-oads/linstor/linstor-server-1.11.0.tar.gz</a></font><br></div><div><br></di=
-v><div><div><div>Linstor PPA:<br><a href=3D"https://launchpad.net/~linbit/+=
-archive/ubuntu/linbit-drbd9-stack" rel=3D"noreferrer" target=3D"_blank">htt=
-ps://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack</a></div></di=
-v><div><br></div><div>Cheers,<br></div><div>Rene</div></div></div></div></d=
-iv>
+<div dir=3D"ltr">Hi,<br><div><br></div><div>This release brings the client =
+and python-linstor to linstor-server REST-API 1.6.0 compatibility.</div><di=
+v><br></div><div><div><font face=3D"monospace">python-linstor 1.6.0<br>----=
+----------------<br>=C2=A0* Added node_restore() method<br>=C2=A0* Added ad=
+dition_place_count params for auto_place<br>=C2=A0* Node response object no=
+w has flags()</font><br></div><div><div><div><div><br></div><div><font size=
+=3D"1"><font face=3D"monospace, monospace"><a href=3D"https://www.linbit.co=
+m/downloads/linstor/python-linstor-1.6.0.tar.gz">https://www.linbit.com/dow=
+nloads/linstor/python-linstor-1.6.0.tar.gz</a></font></font></div></div><di=
+v><font size=3D"1"><br></font></div><div><div><font face=3D"monospace">lins=
+tor-client v1.6.0<br>---------------------<br>=C2=A0* node list now shows D=
+ELETING and EVICTED nodes<br>=C2=A0* Added diskless placement and additiona=
+l placement count for auto-place<br>=C2=A0* Added node restore command for =
+evicted nodes<br>=C2=A0* depend on python-linstor v1.6.0</font><br></div><d=
+iv><br></div><div><font size=3D"1"><font face=3D"monospace, monospace"><a h=
+ref=3D"https://www.linbit.com/downloads/linstor/linstor-client-1.6.0.tar.gz=
+">https://www.linbit.com/downloads/linstor/linstor-client-1.6.0.tar.gz</a><=
+/font></font></div></div></div><div><br></div><div>Linstor PPA:<br></div><d=
+iv><div><a href=3D"https://launchpad.net/~linbit/+archive/ubuntu/linbit-drb=
+d9-stack" rel=3D"noreferrer" target=3D"_blank">https://launchpad.net/~linbi=
+t/+archive/ubuntu/linbit-drbd9-stack</a><br></div><div><br></div><div>Best =
+regards,</div><div>Rene</div></div></div></div></div>
 
---000000000000338feb05b6f95996--
+--00000000000041ad5705b6f95913--
