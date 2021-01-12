@@ -1,23 +1,25 @@
-Return-Path: <lars.ellenberg@linbit.com>
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com
-	[209.85.218.42])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 9A54B420634
+Return-Path: <moritz.wanzenboeck@linbit.com>
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com
+	[209.85.221.51])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 28F2942060F
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 23 Dec 2020 13:54:56 +0100 (CET)
-Received: by mail-ej1-f42.google.com with SMTP id 6so22684384ejz.5
+	Tue, 12 Jan 2021 12:37:11 +0100 (CET)
+Received: by mail-wr1-f51.google.com with SMTP id y17so2116443wrr.10
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 23 Dec 2020 04:54:56 -0800 (PST)
-Date: Wed, 23 Dec 2020 13:54:53 +0100
-From: Lars Ellenberg <lars.ellenberg@linbit.com>
-To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Message-ID: <20201223125453.GE18735@soda.linbit>
-References: <CADGDV=UU2Y6-sh4qwKM-8PNgDrMQYh0bxF_D5cBFGfv=XuXFtg@mail.gmail.com>
+	Tue, 12 Jan 2021 03:37:11 -0800 (PST)
+Received: from [192.168.43.79] (089144197198.atnat0006.highway.a1.net.
+	[89.144.197.198])
+	by smtp.gmail.com with ESMTPSA id t1sm4537453wro.27.2021.01.12.03.37.10
+	for <drbd-announce@lists.linbit.com>
+	(version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+	Tue, 12 Jan 2021 03:37:10 -0800 (PST)
+Date: Tue, 12 Jan 2021 12:37:03 +0100
+From: Moritz =?iso-8859-1?q?Wanzenb=F6ck?= <moritz.wanzenboeck@linbit.com>
+To: drbd-announce@lists.linbit.com
+Message-Id: <R9KTMQ.VW3EGBYRZWZJ3@linbit.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CADGDV=UU2Y6-sh4qwKM-8PNgDrMQYh0bxF_D5cBFGfv=XuXFtg@mail.gmail.com>
-Subject: [DRBD-announce] drbd-9.0.27 [Re: drbd-9.0.26]
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Subject: [DRBD-announce] linstor-k8s-ha-controller 0.1.2 released
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -29,78 +31,31 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-On Tue, Dec 22, 2020 at 11:43:01AM +0100, Philipp Reisner wrote:
-> Dear DRBD users,
-> 
-> This is a big release.
-> The release candidate phase lasted more than a month.
+Dear LINSTOR on Kubernetes users,
 
-And still did not catch a regression:
-9.0.26 broke live-migration (dual-primary)
-when both primary nodes are "diskful".
+We just released a new version of our High Availability Controller for 
+Kubernetes.
 
-Live mimgration with one being a "diskless client" still worked.
+This releases fixes a bug that caused frequent crashes and restarts of 
+the HA Controller Pod. Depending on the exact cluster configuration, 
+watches on Kubernetes Resources can time out after 10-30 minutes. This 
+release recovers from such time outs without requiring a complete 
+restart.
 
-We made sure our tests will now always cover
-this "hyperconverged" live migration case.
+The updated image is available on drbd.io: 
+drbd.io/linstor-k8s-ha-controller:v0.1.2
 
-9.0.27-1 (api:genl2/proto:86-118/transport:14)
---------
- * Fix regression: allow live migration between two diskful peers again
+If you are using our Helm chart, you can update to this release by 
+running:
+ > helm upgrade <release-name> linstor/linstor --reuse-values --set 
+haController.image=drbd.io/linstor-k8s-ha-controller:v0.1.2
 
-https://www.linbit.com/downloads/drbd/9.0/drbd-9.0.27-1.tar.gz
-https://github.com/LINBIT/drbd/commit/bea41a056bb2abe4d5dfd2f69863282dfa1b2257
+Best regards,
+Moritz
 
-> 9.0.26-1 (api:genl2/proto:86-118/transport:14)
-> --------
->  * fix a source of possible data corruption; related to a resync and
->    a primary node that is connected to the sync-source node only
->  * fix for writes not getting mirrored over a connection while the primary
->    transitions through the WFBitMapS state
->  * complete size 0 reads immediately; some workloads (KVM and
->    iscsi targets) in combination with a ZFS zvol as the backend can lead to
->    a kernel OOPS in ZFS; this is a workaround in DRBD for that
->  * fix a crash if during resync a discard operation fails on the
->    resync-target node
->  * fix a case of a disk unexpectedly becoming Outdated by moving the
->    exchange of the initial packets into the body of the two-phase-commit
->    that happens at a connect
->  * fix for sporadic "Clearing bitmap UUID for node" log entries;
->    a potential source of problems later on leading to false split-brain
->    or unrelated data messages.
->  * retry connect properly in case of bitmap-uuid changes during the handshake
->  * completed missing logic of the new two-phase-commit based connect process;
->    avoid connecting partitions with a primary in each; ensure consistent
->    decisions if the connect attempt will be retried
->  * fix an unexpected occurrence of NetworkFailure state in a tight
->    drbdsetup disconnect; drbdsetup connect sequence
->  * fix online verify to return to Established from VerifyS if the VerifyT node
->    was temporarily Inconsistent during the run
->  * fix a corner case where a node ends up Outdated after the crash and rejoin
->    of a primary node
->  * pause a resync if the sync-source node becomes inconsistent; an example
->    is a cascading resync where the upstream resync aborts and leaves the
->    sync-source node for the downstream resync with an inconsistent disk;
->    note, the node at the end of the chain could still have an outdated disk
->    (better than inconsistent)
->  * reduce lock contention on the secondary for many resources; can improve
->    performance significantly
->  * fix online verify to not clamp disk states to UpToDate
->  * fix promoting resync-target nodes; the problem was that it could modify
->    the bitmap of an ongoing resync; which leads to alarming log messages
->  * allow force primary on a sync-target node by breaking the resync
->  * fix adding of new volumes to resources with a primary node
->  * reliably detect split brain situation on both nodes
->  * improve error reporting for failures during attach
->  * implement 'blockdev --setro' in DRBD
->  * following upstream changes to DRBD up to Linux 5.10 and ensure
->    compatibility with Linux 5.8, 5.9, and 5.10
+Complete changelog:
+* Restart Kubernetes resource watches in case of timeouts.
+* Adds a --leader-election-resource-name command line flag to override 
+the lease name used by default.
 
--- 
-: Lars Ellenberg
-: LINBIT | Keeping the Digital World Running
-: DRBD -- Heartbeat -- Corosync -- Pacemaker
 
-DRBD® and LINBIT® are registered trademarks of LINBIT
-__
-please don't Cc me, but send to list -- I'm subscribed
