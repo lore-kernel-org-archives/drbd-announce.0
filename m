@@ -1,19 +1,19 @@
 Return-Path: <rene.peinthor@linbit.com>
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com
-	[209.85.128.47])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 4D71C4203B5
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com
+	[209.85.221.48])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 47E3E4203B5
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 13 Jan 2021 14:43:34 +0100 (CET)
-Received: by mail-wm1-f47.google.com with SMTP id y23so1660714wmi.1
+	Wed, 13 Jan 2021 14:44:19 +0100 (CET)
+Received: by mail-wr1-f48.google.com with SMTP id r7so2174711wrc.5
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 13 Jan 2021 05:43:34 -0800 (PST)
+	Wed, 13 Jan 2021 05:44:19 -0800 (PST)
 MIME-Version: 1.0
 From: Rene Peinthor <rene.peinthor@linbit.com>
-Date: Wed, 13 Jan 2021 14:43:24 +0100
-Message-ID: <CAHmn2DPB_Bxatpt_VmEeP9XN93RL7xWm36FAnGD8JmSDNCsWXQ@mail.gmail.com>
+Date: Wed, 13 Jan 2021 14:43:08 +0100
+Message-ID: <CAHmn2DOKFYxBvzzkx7rW8yfVNLpUEFd+M86FKzEF+CoNsPMAKg@mail.gmail.com>
 To: drbd-user <drbd-user@lists.linbit.com>, drbd-announce@lists.linbit.com
-Content-Type: multipart/alternative; boundary="0000000000005613c505b8c853f6"
-Subject: [DRBD-announce] linstor-server 1.11.1 release
+Content-Type: multipart/alternative; boundary="00000000000071abd205b8c85241"
+Subject: [DRBD-announce] linstor-client 1.6.1 release
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -25,58 +25,46 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
---0000000000005613c505b8c853f6
+--00000000000071abd205b8c85241
 Content-Type: text/plain; charset="UTF-8"
 
-Hi!
+Hi,
 
-This is just a bug fix release, only thing that might be worth a notice is
-that
-resource toggle-disk will now try to resolve the correct storage pool from
-its
-neighbour resources.
+Also a small client release with a reconnect fix in interactive mode and
+changes to the toggle-disk command.
 
-linstor-server 1.11.1
----------------------
- * Improved error messages for incorrect property values
- * Fix incorrect triggers for auto-tiebreaker (adding node/delete node)
- * Fix auto-tiebreaker looking for wrong storage pools
- * Fix loading of resource if external metadata property is used
- * Fixed incorrect loading of property keys in ETCD-database
- * Toggle-disk now tries to resolve the storage pool from already deployed
-resources
- * Fixed missing rollback if a resource-group spawn failed
+linstor-client 1.6.1
+--------------------
+ * Fix reconnect on timeout error in interactive mode
+ * Fix incorrect resource toggle-disk short option -dflt -> --dflt
+ * Toggle disk storage pool options are now optional
 
-https://www.linbit.com/downloads/linstor/linstor-server-1.11.1.tar.gz
+https://www.linbit.com/downloads/linstor/linstor-client-1.6.1.tar.gz
 
 Linstor PPA:
 https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
-Cheers,
+Best regards,
 Rene
 
---0000000000005613c505b8c853f6
+--00000000000071abd205b8c85241
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr">Hi!<div><br></div><div>This is just a bug fix release, onl=
-y thing that might be worth a notice is that</div><div>resource toggle-disk=
- will now try to resolve the correct storage pool from its</div><div>neighb=
-our resources.</div><div><br></div><div><div><font face=3D"monospace">linst=
-or-server 1.11.1<br>---------------------<br>=C2=A0* Improved error message=
-s for incorrect property values<br>=C2=A0* Fix incorrect triggers for auto-=
-tiebreaker (adding node/delete node)<br>=C2=A0* Fix auto-tiebreaker looking=
- for wrong storage pools<br>=C2=A0* Fix loading of resource if external met=
-adata property is used<br>=C2=A0* Fixed incorrect loading of property keys =
-in ETCD-database<br>=C2=A0* Toggle-disk now tries to resolve the storage po=
-ol from already deployed resources<br>=C2=A0* Fixed missing rollback if a r=
-esource-group spawn failed</font><br></div><div><br></div><div><div><font f=
-ace=3D"monospace"><a href=3D"https://www.linbit.com/downloads/linstor/linst=
-or-server-1.11.1.tar.gz" target=3D"_blank">https://www.linbit.com/downloads=
-/linstor/linstor-server-1.11.1.tar.gz</a></font><br></div><div><br></div><d=
-iv><div><div>Linstor PPA:<br><a href=3D"https://launchpad.net/~linbit/+arch=
-ive/ubuntu/linbit-drbd9-stack" rel=3D"noreferrer" target=3D"_blank">https:/=
-/launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack</a></div></div><d=
-iv><br></div><div>Cheers,<br></div><div>Rene</div></div></div></div></div>
+<div dir=3D"ltr">Hi,<br><div><br></div><div>Also a small client release wit=
+h a reconnect fix in interactive mode and</div><div>changes to the toggle-d=
+isk command.</div><div><br></div><div><div><font face=3D"monospace">linstor=
+-client 1.6.1<br>--------------------<br>=C2=A0* Fix reconnect on timeout e=
+rror in interactive mode<br>=C2=A0* Fix incorrect resource toggle-disk shor=
+t option -dflt -&gt; --dflt<br>=C2=A0* Toggle disk storage pool options are=
+ now optional</font><br></div><div><div><div><div><br></div><div><font size=
+=3D"1"><font face=3D"monospace, monospace"><a href=3D"https://www.linbit.co=
+m/downloads/linstor/linstor-client-1.6.1.tar.gz" target=3D"_blank">https://=
+www.linbit.com/downloads/linstor/linstor-client-1.6.1.tar.gz</a></font></fo=
+nt></div></div></div><div><br></div><div>Linstor PPA:<br></div><div><div><a=
+ href=3D"https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack" =
+rel=3D"noreferrer" target=3D"_blank">https://launchpad.net/~linbit/+archive=
+/ubuntu/linbit-drbd9-stack</a><br></div><div><br></div><div>Best regards,</=
+div><div>Rene</div></div></div></div></div>
 
---0000000000005613c505b8c853f6--
+--00000000000071abd205b8c85241--
