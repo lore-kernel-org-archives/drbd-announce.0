@@ -1,25 +1,19 @@
-Return-Path: <moritz.wanzenboeck@linbit.com>
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com
-	[209.85.221.51])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 28F2942060F
+Return-Path: <rene.peinthor@linbit.com>
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com
+	[209.85.128.47])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 4D71C4203B5
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 12 Jan 2021 12:37:11 +0100 (CET)
-Received: by mail-wr1-f51.google.com with SMTP id y17so2116443wrr.10
+	Wed, 13 Jan 2021 14:43:34 +0100 (CET)
+Received: by mail-wm1-f47.google.com with SMTP id y23so1660714wmi.1
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 12 Jan 2021 03:37:11 -0800 (PST)
-Received: from [192.168.43.79] (089144197198.atnat0006.highway.a1.net.
-	[89.144.197.198])
-	by smtp.gmail.com with ESMTPSA id t1sm4537453wro.27.2021.01.12.03.37.10
-	for <drbd-announce@lists.linbit.com>
-	(version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-	Tue, 12 Jan 2021 03:37:10 -0800 (PST)
-Date: Tue, 12 Jan 2021 12:37:03 +0100
-From: Moritz =?iso-8859-1?q?Wanzenb=F6ck?= <moritz.wanzenboeck@linbit.com>
-To: drbd-announce@lists.linbit.com
-Message-Id: <R9KTMQ.VW3EGBYRZWZJ3@linbit.com>
+	Wed, 13 Jan 2021 05:43:34 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Subject: [DRBD-announce] linstor-k8s-ha-controller 0.1.2 released
+From: Rene Peinthor <rene.peinthor@linbit.com>
+Date: Wed, 13 Jan 2021 14:43:24 +0100
+Message-ID: <CAHmn2DPB_Bxatpt_VmEeP9XN93RL7xWm36FAnGD8JmSDNCsWXQ@mail.gmail.com>
+To: drbd-user <drbd-user@lists.linbit.com>, drbd-announce@lists.linbit.com
+Content-Type: multipart/alternative; boundary="0000000000005613c505b8c853f6"
+Subject: [DRBD-announce] linstor-server 1.11.1 release
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -31,31 +25,58 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Dear LINSTOR on Kubernetes users,
+--0000000000005613c505b8c853f6
+Content-Type: text/plain; charset="UTF-8"
 
-We just released a new version of our High Availability Controller for 
-Kubernetes.
+Hi!
 
-This releases fixes a bug that caused frequent crashes and restarts of 
-the HA Controller Pod. Depending on the exact cluster configuration, 
-watches on Kubernetes Resources can time out after 10-30 minutes. This 
-release recovers from such time outs without requiring a complete 
-restart.
+This is just a bug fix release, only thing that might be worth a notice is
+that
+resource toggle-disk will now try to resolve the correct storage pool from
+its
+neighbour resources.
 
-The updated image is available on drbd.io: 
-drbd.io/linstor-k8s-ha-controller:v0.1.2
+linstor-server 1.11.1
+---------------------
+ * Improved error messages for incorrect property values
+ * Fix incorrect triggers for auto-tiebreaker (adding node/delete node)
+ * Fix auto-tiebreaker looking for wrong storage pools
+ * Fix loading of resource if external metadata property is used
+ * Fixed incorrect loading of property keys in ETCD-database
+ * Toggle-disk now tries to resolve the storage pool from already deployed
+resources
+ * Fixed missing rollback if a resource-group spawn failed
 
-If you are using our Helm chart, you can update to this release by 
-running:
- > helm upgrade <release-name> linstor/linstor --reuse-values --set 
-haController.image=drbd.io/linstor-k8s-ha-controller:v0.1.2
+https://www.linbit.com/downloads/linstor/linstor-server-1.11.1.tar.gz
 
-Best regards,
-Moritz
+Linstor PPA:
+https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
-Complete changelog:
-* Restart Kubernetes resource watches in case of timeouts.
-* Adds a --leader-election-resource-name command line flag to override 
-the lease name used by default.
+Cheers,
+Rene
 
+--0000000000005613c505b8c853f6
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+<div dir=3D"ltr">Hi!<div><br></div><div>This is just a bug fix release, onl=
+y thing that might be worth a notice is that</div><div>resource toggle-disk=
+ will now try to resolve the correct storage pool from its</div><div>neighb=
+our resources.</div><div><br></div><div><div><font face=3D"monospace">linst=
+or-server 1.11.1<br>---------------------<br>=C2=A0* Improved error message=
+s for incorrect property values<br>=C2=A0* Fix incorrect triggers for auto-=
+tiebreaker (adding node/delete node)<br>=C2=A0* Fix auto-tiebreaker looking=
+ for wrong storage pools<br>=C2=A0* Fix loading of resource if external met=
+adata property is used<br>=C2=A0* Fixed incorrect loading of property keys =
+in ETCD-database<br>=C2=A0* Toggle-disk now tries to resolve the storage po=
+ol from already deployed resources<br>=C2=A0* Fixed missing rollback if a r=
+esource-group spawn failed</font><br></div><div><br></div><div><div><font f=
+ace=3D"monospace"><a href=3D"https://www.linbit.com/downloads/linstor/linst=
+or-server-1.11.1.tar.gz" target=3D"_blank">https://www.linbit.com/downloads=
+/linstor/linstor-server-1.11.1.tar.gz</a></font><br></div><div><br></div><d=
+iv><div><div>Linstor PPA:<br><a href=3D"https://launchpad.net/~linbit/+arch=
+ive/ubuntu/linbit-drbd9-stack" rel=3D"noreferrer" target=3D"_blank">https:/=
+/launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack</a></div></div><d=
+iv><br></div><div>Cheers,<br></div><div>Rene</div></div></div></div></div>
+
+--0000000000005613c505b8c853f6--
