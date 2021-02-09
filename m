@@ -1,27 +1,20 @@
-Return-Path: <moritz.wanzenboeck@linbit.com>
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com
-	[209.85.218.51])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 201754202D9
+Return-Path: <roland.kammerer@linbit.com>
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com
+	[209.85.221.51])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id DB75742022B
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 14 Jan 2021 18:13:09 +0100 (CET)
-Received: by mail-ej1-f51.google.com with SMTP id d17so9249482ejy.9
+	Tue,  9 Feb 2021 11:13:25 +0100 (CET)
+Received: by mail-wr1-f51.google.com with SMTP id g6so7902739wrs.11
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 14 Jan 2021 09:13:09 -0800 (PST)
-Received: from x1-carbon
-	(2a02-8388-1a84-d100-658a-8a00-5609-48dc.cable.dynamic.v6.surfer.at.
-	[2a02:8388:1a84:d100:658a:8a00:5609:48dc])
-	by smtp.gmail.com with ESMTPSA id
-	s21sm1899633ejz.87.2021.01.14.09.12.07
-	for <drbd-announce@lists.linbit.com>
-	(version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-	Thu, 14 Jan 2021 09:12:07 -0800 (PST)
-Date: Thu, 14 Jan 2021 18:12:00 +0100
-From: Moritz =?iso-8859-1?q?Wanzenb=F6ck?= <moritz.wanzenboeck@linbit.com>
-To: drbd-announce@lists.linbit.com
-Message-Id: <04PXMQ.U2YYOQ7H5H481@linbit.com>
+	Tue, 09 Feb 2021 02:13:25 -0800 (PST)
+Date: Tue, 9 Feb 2021 11:13:23 +0100
+From: Roland Kammerer <roland.kammerer@linbit.com>
+To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
+Message-ID: <20210209101323.GA2233@rck.sh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Subject: [DRBD-announce] linstor-operator 1.3.1 released
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Subject: [DRBD-announce] drbd-utils-9.16.0
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -33,38 +26,60 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Dear LINSTOR on Kubernetes users,
+Dear DRBD users,
 
-We just released version 1.3.1 of our Kubernetes operator.
+this is release 9.16.0 of the lower level user space DRBD utilities.
+This release contains improved documentation and compiler warning fixes,
+as well as a number of actual new features:
 
-This release mostly contains updates to most of the deployed images.
-* LINSTOR 1.11.1 fixes an important bug in the context of Kubernetes 
-which prevented PVC with 2 replicas from automatically getting a third 
-tie breaker resource associated.
-* LINSTOR High Availability Controller was updated to no longer crash 
-when running into Kubernetes API timeouts.
-* A user reported a bug when running a specific Kernel version that 
-would randomly crash the LINSTOR Controller. This is also fixed in the 
-image update
+- Setting the initial GI and using it as initial synchronization point
+  is a trick used to skip initial sync on storage that allows for it
+  (LVM thin, zvols) for a long time. LINSTOR does that by using the
+  low-level drbdmeta command directly. Using drbdadm for it in single
+  node clusters was actually broken. This got fixed.
 
-As always, upgrades can be applied via Helm, as described in the Users 
-Guide.
+- drbdsetup events2 got some nice new features: It got a diff mode that
+  makes it easier for simple scripts to trigger actions on state
+  changes from some old state to some new state. So far one had to
+  implement this (old) state tracking on your own. Now events2 can be
+  instructed to print the old state as well, which then looks like this:
 
-Best regards,
-Moritz
+change resource name:some-resource role:Secondary->Primary \
+ may_promote:yes->no promotion_score:10102->10102
 
+  The second addition for events2 is a full mode where it prints
+  (almost) all key:value pairs regardless if the value changed or not.
+  This is mainly used in a new software component we will release soon.
 
-Changelog:
-----------
+- rename support. Resources can now be renamed on DRBD level. This
+  requires a not yet released DRBD kernel module as well. Also note that
+  renaming a resource with the new command is not the only thing one has
+  to do, one also has to rename the resource in the res file. So down/up
+  might still be the way to go in simple use cases. All in all this is
+  most useful in a LINSTOR context. There is no timeline when/if this
+  will be implemented in LINSTOR (as this is more complicated than one
+  might think), but the lower level foundations are there.
 
-### Changed
-* Default image updated:
-  * operator.controller.controllerImage: 
-drbd.io/linstor-controller:v1.11.0
-  * operator.satelliteSet.satelliteImage: 
-drbd.io/linstor-satellite:v1.11.1
-  * haController.image: drbd.io/linstor-k8s-ha-controller:v0.1.3
-  * pv-hostpath: chownerImage: quay.io/centos/centos:8
+- c-max-rate can now be set to 0 to disable rate limit. This also needs
+  the next, currently unreleased, DRBD kernel module release to work as
+  expected.
 
+If you don't need any of the new features, there is no urgent need to
+update. The new kernel release as well as the new software component
+will require this version, so if you can, install now and report any
+bugs.
 
+Regards, rck
 
+TGZ: https://www.linbit.com/downloads/drbd/utils/drbd-utils-9.16.0.tar.gz
+GIT: https://github.com/LINBIT/drbd-utils/commit/a7820b3c14497a34f955ba5ce56cf1bc9d2d353e
+PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+
+9.16.0
+--------
+ * drbd-attr/may_promote: fixes from 9.15.1
+ * drbdadm,v9: allow set-gi in single node clusters
+ * drbsetup,events2,v9: diff(erential) output
+ * drbsetup,events2,v9: add --full output
+ * v9: allow resource rename, also in drbdmon
+ * drbdadm,v9: allow c-max-rate to be disabled
