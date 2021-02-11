@@ -1,20 +1,20 @@
-Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com
-	[209.85.221.51])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id DB75742022B
+Return-Path: <philipp.reisner@linbit.com>
+Received: from mail-io1-f53.google.com (mail-io1-f53.google.com
+	[209.85.166.53])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id DFEEE4202D0
 	for <drbd-announce@lists.linbit.com>;
-	Tue,  9 Feb 2021 11:13:25 +0100 (CET)
-Received: by mail-wr1-f51.google.com with SMTP id g6so7902739wrs.11
+	Thu, 11 Feb 2021 22:46:30 +0100 (CET)
+Received: by mail-io1-f53.google.com with SMTP id z21so5939951iob.7
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 09 Feb 2021 02:13:25 -0800 (PST)
-Date: Tue, 9 Feb 2021 11:13:23 +0100
-From: Roland Kammerer <roland.kammerer@linbit.com>
-To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Message-ID: <20210209101323.GA2233@rck.sh>
+	Thu, 11 Feb 2021 13:46:30 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Subject: [DRBD-announce] drbd-utils-9.16.0
+From: Philipp Reisner <philipp.reisner@linbit.com>
+Date: Thu, 11 Feb 2021 22:46:19 +0100
+Message-ID: <CADGDV=VBBBBCanQLX+iXxN6S1KTP4-7PHT0+p+dzzRWNvy+9og@mail.gmail.com>
+To: drbd-announce@lists.linbit.com
+Content-Type: text/plain; charset="UTF-8"
+Cc: drbd-user@lists.linbit.com
+Subject: [DRBD-announce] drbd-9.0.28-0rc1
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,60 +26,46 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Dear DRBD users,
+Hi community,
 
-this is release 9.16.0 of the lower level user space DRBD utilities.
-This release contains improved documentation and compiler warning fixes,
-as well as a number of actual new features:
+I called the 9.0.26 release a 'big release'. Compared to that this will be
+a small release. Though it contains a number of fixes, they are very hard to
+trigger.
 
-- Setting the initial GI and using it as initial synchronization point
-  is a trick used to skip initial sync on storage that allows for it
-  (LVM thin, zvols) for a long time. LINSTOR does that by using the
-  low-level drbdmeta command directly. Using drbdadm for it in single
-  node clusters was actually broken. This got fixed.
+Two minor features are coming with this release:
+ 1 Resource renaming
+ 2 ability to disable the upper bandwidth boundary for the resync controller
 
-- drbdsetup events2 got some nice new features: It got a diff mode that
-  makes it easier for simple scripts to trigger actions on state
-  changes from some old state to some new state. So far one had to
-  implement this (old) state tracking on your own. Now events2 can be
-  instructed to print the old state as well, which then looks like this:
+The real exciting development is happening on the master branch. I intended to
+release that today, but issues with the build process force me to delay it until
+tomorrow. The plan is that we will do parallel releases of these two branches
+for the next 12 months. Stay tuned for more tomorrow.
 
-change resource name:some-resource role:Secondary->Primary \
- may_promote:yes->no promotion_score:10102->10102
+This is a release candidate, please help testing it.
 
-  The second addition for events2 is a full mode where it prints
-  (almost) all key:value pairs regardless if the value changed or not.
-  This is mainly used in a new software component we will release soon.
-
-- rename support. Resources can now be renamed on DRBD level. This
-  requires a not yet released DRBD kernel module as well. Also note that
-  renaming a resource with the new command is not the only thing one has
-  to do, one also has to rename the resource in the res file. So down/up
-  might still be the way to go in simple use cases. All in all this is
-  most useful in a LINSTOR context. There is no timeline when/if this
-  will be implemented in LINSTOR (as this is more complicated than one
-  might think), but the lower level foundations are there.
-
-- c-max-rate can now be set to 0 to disable rate limit. This also needs
-  the next, currently unreleased, DRBD kernel module release to work as
-  expected.
-
-If you don't need any of the new features, there is no urgent need to
-update. The new kernel release as well as the new software component
-will require this version, so if you can, install now and report any
-bugs.
-
-Regards, rck
-
-TGZ: https://www.linbit.com/downloads/drbd/utils/drbd-utils-9.16.0.tar.gz
-GIT: https://github.com/LINBIT/drbd-utils/commit/a7820b3c14497a34f955ba5ce56cf1bc9d2d353e
-PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
-
-9.16.0
+9.0.28-0rc1 (api:genl2/proto:86-119/transport:14)
 --------
- * drbd-attr/may_promote: fixes from 9.15.1
- * drbdadm,v9: allow set-gi in single node clusters
- * drbsetup,events2,v9: diff(erential) output
- * drbsetup,events2,v9: add --full output
- * v9: allow resource rename, also in drbdmon
- * drbdadm,v9: allow c-max-rate to be disabled
+ * fix a kernel OOPS (via a BUG()) upon adding a timer twice under very rare
+   timing
+ * fix a counter imbalance that could lead to assertion messages when a
+   protocol A peer disconnects with a certain timing
+ * fix a rare race with receiving bitmap and a state change while
+   establishing a connection
+ * fix UUID handling to avoid false split brain detections; this bug got
+   triggered an isolated primary that gets demoted, and temporal network
+   interruptions among the remaining nodes
+ * fix resync decision to obey disk states when the generation UUIDs are
+   equal; the effect of this bug was that you could end up with two Outdated
+   nodes after resync
+ * fix concurrent disk-attach operations
+ * Fix possible kernel warning regarding an inbalance of backing device
+   link/unlink
+ * move some amount of kernel backward compatibility code moved from the old
+   method (drbd_wrappers.h) to new cocci semantic patches
+ * add support renaming resources while its devices might be in use and
+   process IO requests
+ * Allow setting c_max_rate to 0 with the meaning that the resync controller
+   has no upper limit for the resync speed
+
+https://www.linbit.com/downloads/drbd/9.0/drbd-9.0.28-0rc1.tar.gz
+https://github.com/LINBIT/drbd/commit/24d2c899ca59668a77e03544612a5c7b5cf6d6b7
