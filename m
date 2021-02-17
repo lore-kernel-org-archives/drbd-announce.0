@@ -1,20 +1,20 @@
 Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com
-	[209.85.128.45])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 0A8F9420619
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com
+	[209.85.221.47])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 171124205F3
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 17 Feb 2021 16:40:43 +0100 (CET)
-Received: by mail-wm1-f45.google.com with SMTP id x16so2492485wmk.3
+	Wed, 17 Feb 2021 17:18:34 +0100 (CET)
+Received: by mail-wr1-f47.google.com with SMTP id t15so17936801wrx.13
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 17 Feb 2021 07:40:43 -0800 (PST)
-Date: Wed, 17 Feb 2021 16:40:40 +0100
+	Wed, 17 Feb 2021 08:18:34 -0800 (PST)
+Date: Wed, 17 Feb 2021 17:18:33 +0100
 From: Roland Kammerer <roland.kammerer@linbit.com>
 To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Message-ID: <20210217154040.GD2233@rck.sh>
+Message-ID: <20210217161833.GE2233@rck.sh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Subject: [DRBD-announce] drbdd v0.1.0-rc.1
+Subject: [DRBD-announce] linstor-proxmox v5.1.5
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,54 +26,27 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Dear DRBD-users,
+Dear PVE/LINSTOR/DRBD users,
 
-Today we announce a new component in the DRBD ecosystem, which we call
-"drbdd". drbdd is a daemon that monitors changes on DRBD resources and
-then triggers actions based on such changes (e.g., when a disk goes from
-UpToDate to some other state, or a resource might be promoted,...).
+after I had the pleasure to announce drbdd written in a modern language,
+I today can also announce an update for the plugin written in something
+that can barely be considered a programming language at all...
 
-One of the key features is that drbdd consists of a core and multiple
-plugins that accomplish different jobs. The core spawns these plugins
-and there can even be multiple instances of the same plugin.
+The new version of the plugin supports multiple LINSTOR controllers,
+separated in the config file by a ','. It will try to reach one IP after
+the other until it gets a successful answer from one of the controllers.
 
-A very quick overview about the existing and planed plugins:
+On its own this is not very useful, but if this is combined with drbdd's
+promoter plugin[1], this allows easy LINSTOR controller HA, where the
+resource that hosts the contoller DB is mounted and the controller
+service gets started by drbdd.
 
-- debugger
-The most trivial plugin that just prints all the state changes to the
-logger.  Never the less a good starting point especially for developers
+We will document such HA setups after drbdd v0.1.0 gets released
+(currently there is rc1), this is a preparation release for that.
 
-- promoter
-This is a more interesting plugin that detects if a resource might be
-promoted, and if so starts user defined services. If the resource looses
-quorum, services are stopped. If you combine that for example with a
-systemd mount service and the linstor-controller.service, you trivially
-get a form of HA without the complexity of a pacemaker setup, all
-handled by drbdd and DRBD quorum.
-
-- umh
-This is a plugin we discussed internally and the one which I'm going to
-work on next. It will replace the usermode helpers as you know them
-(i.e., no more triggered from the kernel). More importantly this will
-also allow users to define their own rules besides the handlers we
-provided.
-
-There are many more plugins we envision for this. Examples can include
-all kind of monitoring like, but not limited to, a Prometheus endpoint.
-
-An architecture overview and further documentation, especially about the
-plugins can be found here:
-https://github.com/LINBIT/drbdd
-
-Public packages can be found here:
-https://packages.linbit.com/rck/drbdd_0.1.0~rc.1-1_amd64.deb
-https://packages.linbit.com/rck/drbdd-0.1.0~rc.1-1.x86_64.rpm
-
-Please note that this *requires* the latest drbd-utils (9.16.0).
-
-Please test. Eventually - at least after umh got implemented - this will
-be shipped basically with every DRBD installation. The config file
-format and the input for plugins should be fixed (we will see :)), so
-this is a good time to make this public.
+https://github.com/LINBIT/linstor-proxmox/commit/6e8d13533b5d94c23a25fa60f116bf063477245b
+https://www.linbit.com/downloads/connectors/linstor-proxmox-5.1.5.tar.gz
 
 Regards, rck
+
+[1] https://github.com/LINBIT/drbdd/blob/master/src/plugin/promoter.md
