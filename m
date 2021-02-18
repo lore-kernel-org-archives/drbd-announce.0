@@ -1,20 +1,20 @@
 Return-Path: <philipp.reisner@linbit.com>
-Received: from mail-il1-f180.google.com (mail-il1-f180.google.com
-	[209.85.166.180])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 67AF54202F8
+Received: from mail-io1-f46.google.com (mail-io1-f46.google.com
+	[209.85.166.46])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 93DC1420649
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 18 Feb 2021 18:02:02 +0100 (CET)
-Received: by mail-il1-f180.google.com with SMTP id o7so2087774ils.2
+	Thu, 18 Feb 2021 18:02:47 +0100 (CET)
+Received: by mail-io1-f46.google.com with SMTP id f20so2704297ioo.10
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 18 Feb 2021 09:02:02 -0800 (PST)
+	Thu, 18 Feb 2021 09:02:47 -0800 (PST)
 MIME-Version: 1.0
 From: Philipp Reisner <philipp.reisner@linbit.com>
-Date: Thu, 18 Feb 2021 18:01:47 +0100
-Message-ID: <CADGDV=XLHh66P0MfB=UMV0c0R=TwwFsr8eVMXO8RU-Zpx_5BUQ@mail.gmail.com>
+Date: Thu, 18 Feb 2021 18:02:35 +0100
+Message-ID: <CADGDV=X3ShbKq9m=n9nuLsR96=xbvLVMw08XnGY2EriTOTwqTA@mail.gmail.com>
 To: drbd-announce@lists.linbit.com
 Content-Type: text/plain; charset="UTF-8"
 Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-9.0.28-0rc2
+Subject: [DRBD-announce] drbd-9.1.0-rc.2
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -28,44 +28,27 @@ List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hi,
 
-during rc1 week two bug fixes got merged. Both pretty exotic bugs (in
-the sense of affecting very few users). Just yesterday new issues were
-reported, we want to examine them before we make this a final release.
+It is a drop-in replacement for drbd-9.0.x. Same config. Same
+userspace utilities. Same wire protocol.
 
 This is a release candidate, please help testing it.
 
-9.0.28-0rc2 (api:genl2/proto:86-119/transport:14)
+9.1.0-rc.2 (api:genl2/proto:110-119/transport:16)
 --------
- * fix a regression introduces with 9.0.25; it failed to determine the
-   right device size and the connection hangs in WFBitmapS/WFBitmapT
-   repl state; to trigger this you need to do a partial resync to a
-   new node with different backing device size
- * fix a race condition that causes a detach operation to hang; it
-   is very hard to trigger
+ * merged fixes from 9.0.28-rc2
+  - fix a regression introduces with 9.0.25; it failed to determine the
+    right device size and the connection hangs in WFBitmapS/WFBitmapT
+    repl state; to trigger this you need to do a partial resync to a
+    new node with different backing device size
+  - fix a race condition that causes a detach operation to hang; it
+    is very hard to trigger
 
-9.0.28-0rc1 (api:genl2/proto:86-119/transport:14)
+9.1.0-rc.1 (api:genl2/proto:110-119/transport:16)
 --------
- * fix a kernel OOPS (via a BUG()) upon adding a timer twice under very rare
-   timing
- * fix a counter imbalance that could lead to assertion messages when a
-   protocol A peer disconnects with a certain timing
- * fix a rare race with receiving bitmap and a state change while
-   establishing a connection
- * fix UUID handling to avoid false split-brain detections; this bug got
-   triggered an isolated primary that gets demoted, and temporal network
-   interruptions among the remaining nodes
- * fix resync decision to obey disk states when the generation UUIDs are
-   equal; the effect of this bug was that you could end up with two Outdated
-   nodes after resync
- * fix concurrent disk-attach operations
- * Fix possible kernel warning regarding an inbalance of backing device
-   link/unlink
- * move some amount of kernel backward compatibility code moved from the old
-   method (drbd_wrappers.h) to new cocci semantic patches
- * add support renaming resources while its devices might be in use and
-   process IO requests
- * Allow setting c_max_rate to 0 with the meaning that the resync controller
-   has no upper limit for the resync speed
+ * was forked off from drbd 9.0.19
+ * has all changes up to 9.0.28-rc1
+ * locking in the IO-submit code path was considerably improved,
+   allowing multiple CPU to submitt in parallel
 
-https://www.linbit.com/downloads/drbd/9.0/drbd-9.0.28-0rc2.tar.gz
-https://github.com/LINBIT/drbd/commit/294ba1ebbb1de04c32bac400868e1bcbb45f64ee
+https://www.linbit.com/downloads/drbd/9/drbd-9.1.0-rc.2.tar.gz
+https://github.com/LINBIT/drbd/commit/9e40b97c3c4b2f42ea662aa9451230829f6246ed
