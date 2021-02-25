@@ -1,21 +1,20 @@
-Return-Path: <johannes@johannesthoma.com>
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.135])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 27E79420341
+Return-Path: <philipp.reisner@linbit.com>
+Received: from mail-io1-f48.google.com (mail-io1-f48.google.com
+	[209.85.166.48])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 316F14203B9
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 25 Feb 2021 17:38:27 +0100 (CET)
-Received: from johannes-air.local ([62.99.137.214]) by
-	mrelayeu.kundenserver.de (mreue010 [212.227.15.167]) with ESMTPSA
-	(Nemesis)
-	id 1MryGj-1lZp1X18VR-00nxUf for <drbd-announce@lists.linbit.com>;
-	Thu, 25 Feb 2021 17:33:26 +0100
-To: drbd-announce@lists.linbit.com
-From: Johannes Thoma <johannes@johannesthoma.com>
-Message-ID: <30e5c513-71c7-f085-4668-01ed020593c9@johannesthoma.com>
-Date: Thu, 25 Feb 2021 17:33:25 +0100
+	Thu, 25 Feb 2021 17:56:45 +0100 (CET)
+Received: by mail-io1-f48.google.com with SMTP id g27so5217758iox.2
+	for <drbd-announce@lists.linbit.com>;
+	Thu, 25 Feb 2021 08:56:45 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: multipart/alternative;
-	boundary="------------DDF086EA75962B011716F65C"
-Subject: [DRBD-announce] WinDRBD 1.0.0-rc10 released
+From: Philipp Reisner <philipp.reisner@linbit.com>
+Date: Thu, 25 Feb 2021 17:56:34 +0100
+Message-ID: <CADGDV=XwJC0HW3RCGhvz7bcNGP64ZuXMiTtC-eZ2h5pODoM-og@mail.gmail.com>
+To: drbd-announce@lists.linbit.com
+Content-Type: text/plain; charset="UTF-8"
+Cc: drbd-user@lists.linbit.com
+Subject: [DRBD-announce] drbd-9.0.28-1
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -27,117 +26,47 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-This is a multi-part message in MIME format.
---------------DDF086EA75962B011716F65C
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Hi,
 
-Dear DRBD and WinDRBD users,
+during the last week before the release, we let another few fixes in,
+which again, are really hard to trigger.
 
-We've just released another release canidate of WinDRBD: 1.0.0-rc10. This version contains an
-optimization on the network receiver side which speeds up secondary writes by a
-factor of 2-4. It also contains fixes for various BSODs.
+Two minor features are coming with this release:
+ 1 Resource renaming
+ 2 ability to disable the upper bandwidth boundary for the resync controller
 
-For now there are two registry keys that control the receiver cache: you normally
-don't have to touch them: they are in the WinDRBD services key
-(HKLM\System\CurrentControlSet\Services\WinDRBD)
+9.0.28-1 (api:genl2/proto:86-119/transport:14)
+--------
+ * fix a regression introduces with 9.0.25; it failed to determine the
+   right device size and the connection hangs in WFBitmapS/WFBitmapT
+   repl state; to trigger this you need to do a partial resync to a
+   new node with different backing device size
+ * fix an issue with netlink packets processed in parallel on multiple
+   CPUs; the bug caused drbdadm adjust failing in very rare cases
+ * fix a very rare occurrence of a reconciliation resync getting stuck
+ * fix a race condition that causes a detach operation to hang; it
+   is very hard to trigger
+ * fix a kernel OOPS (via a BUG()) upon adding a timer twice under very rare
+   timing
+ * fix a counter imbalance that could lead to assertion messages when a
+   protocol A peer disconnects with a certain timing
+ * fix a rare race with receiving bitmap and a state change while
+   establishing a connection
+ * fix UUID handling to avoid false split-brain detections; this bug got
+   triggered an isolated primary that gets demoted, and temporal network
+   interruptions among the remaining nodes
+ * fix resync decision to obey disk states when the generation UUIDs are
+   equal; the effect of this bug was that you could end up with two Outdated
+   nodes after resync
+ * fix concurrent disk-attach operations
+ * Fix possible kernel warning regarding an inbalance of backing device
+   link/unlink
+ * move some amount of kernel backward compatibility code moved from the old
+   method (drbd_wrappers.h) to new cocci semantic patches
+ * add support renaming resources while its devices might be in use and
+   process IO requests
+ * Allow setting c_max_rate to 0 with the meaning that the resync controller
+   has no upper limit for the resync speed
 
-DWORD enable_receiver_cache <0 or 1>
-DWORD receive_buffer_size <size of cache in bytes >=4K <=4M > defaults to 128K
-
-We will change these parameters later to a per resource network setting in drbd.conf.
-
-As always the installable EXE can be downloaded from Linbit's homepage:
-
-https://www.linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/
-
-(scroll down to DRBD 9 Windows Driver)
-
-Please help testing this release canidate, it is already quite close to the final
-version,
-
-- Johannes
-
----- From WHATSNEW.md:
-
-Optimization on the network side ("receiver cache"): receive from socket
-in larger chunks (defaults to 128K), this speeds up secondary writes
-by a factor of 2 to 4.
-
-Fix in wait_event: wait_event should not be interruptible. Also
-wait_for_completion should not be interruptible. This fixes lots
-of BSODs at various places (process_sender_todo, ...) which mainly
-occured at disconnecting a resource.
-
-There is also an optimization at the backing device side (backing
-device cache) but this implementation is currently broken and probably
-will be abandoned (it does not give a speedup). It is disabled by default.
-
---------------DDF086EA75962B011716F65C
-Content-Type: text/html; charset=utf-8
-Content-Transfer-Encoding: 7bit
-
-<html>
-  <head>
-
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    <div class="moz-text-html" lang="x-unicode"> Dear DRBD and WinDRBD
-      users,<br>
-      <br>
-      We've just released another release canidate of WinDRBD:
-      1.0.0-rc10. This version contains an<br>
-      optimization on the network receiver side which speeds up
-      secondary writes by a<br>
-      factor of 2-4. It also contains fixes for various BSODs.<br>
-      <br>
-      For now there are two registry keys that control the receiver
-      cache: you normally<br>
-      don't have to touch them: they are in the WinDRBD services key <br>
-      (HKLM\System\CurrentControlSet\Services\WinDRBD)<br>
-      <br>
-      DWORD enable_receiver_cache &lt;0 or 1&gt;<br>
-      DWORD receive_buffer_size &lt;size of cache in bytes &gt;=4K
-      &lt;=4M &gt; defaults to 128K<br>
-      <br>
-      We will change these parameters later to a per resource network
-      setting in drbd.conf.<br>
-      <br>
-      As always the installable EXE can be downloaded from Linbit's
-      homepage:<br>
-      <br>
-      <a class="moz-txt-link-freetext"
-href="https://www.linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/">https://www.linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/</a><br>
-      <br>
-      (scroll down to DRBD 9 Windows Driver)<br>
-      <br>
-      Please help testing this release canidate, it is already quite
-      close to the final<br>
-      version, <br>
-      <br>
-      - Johannes<br>
-      <br>
-      ---- From WHATSNEW.md:<br>
-      <br>
-      Optimization on the network side ("receiver cache"): receive from
-      socket<br>
-      in larger chunks (defaults to 128K), this speeds up secondary
-      writes<br>
-      by a factor of 2 to 4.<br>
-      <br>
-      Fix in wait_event: wait_event should not be interruptible. Also<br>
-      wait_for_completion should not be interruptible. This fixes lots<br>
-      of BSODs at various places (process_sender_todo, ...) which mainly<br>
-      occured at disconnecting a resource.<br>
-      <br>
-      There is also an optimization at the backing device side (backing<br>
-      device cache) but this implementation is currently broken and
-      probably<br>
-      will be abandoned (it does not give a speedup). It is disabled by
-      default.<br>
-    </div>
-  </body>
-</html>
-
---------------DDF086EA75962B011716F65C--
+https://www.linbit.com/downloads/drbd/9.0/drbd-9.0.28-1.tar.gz
+https://github.com/LINBIT/drbd/commit/8db03a6344e74e5c160294d80188dc31b785db61
