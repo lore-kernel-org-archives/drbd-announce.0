@@ -1,20 +1,20 @@
-Return-Path: <philipp.reisner@linbit.com>
-Received: from mail-il1-f169.google.com (mail-il1-f169.google.com
-	[209.85.166.169])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id D84B74203B9
+Return-Path: <roland.kammerer@linbit.com>
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com
+	[209.85.221.48])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 0F4CD420231
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 25 Feb 2021 18:13:31 +0100 (CET)
-Received: by mail-il1-f169.google.com with SMTP id h18so5572675ils.2
+	Fri, 26 Feb 2021 11:08:14 +0100 (CET)
+Received: by mail-wr1-f48.google.com with SMTP id b18so1519484wrn.6
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 25 Feb 2021 09:13:31 -0800 (PST)
+	Fri, 26 Feb 2021 02:08:14 -0800 (PST)
+Date: Fri, 26 Feb 2021 11:08:13 +0100
+From: Roland Kammerer <roland.kammerer@linbit.com>
+To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
+Message-ID: <20210226100812.GI2233@rck.sh>
 MIME-Version: 1.0
-From: Philipp Reisner <philipp.reisner@linbit.com>
-Date: Thu, 25 Feb 2021 18:13:19 +0100
-Message-ID: <CADGDV=Vc4oOENyWA6hz896cBZwXT=TnmdFHTiLCwtk3JKO+1cA@mail.gmail.com>
-To: drbd-announce@lists.linbit.com
-Content-Type: text/plain; charset="UTF-8"
-Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-9.1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Subject: [DRBD-announce] drbdd v0.1.0
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,23 +26,36 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Hi,
+Dear DRBD users,
 
-drbd-9.1.0 is a drop-in replacement for drbd-9.0.x. Same config. Same
-userspace utilities. Same wire protocol.
-Compared to drbd-9.0.z it contains a changeset that reduces
-contention on split-locks in the IO-submit code path of DRBD. That is
-the code path that is most critical for DRBD's IO performance. It
-needed a rework to reflect CPUs that have an increasing number of CPU
-cores and to address NVMe drives that deliver more performance if
-IO-requests are submitted from many CPUs in parallel.
+this is the first release of drbdd. It is now the suggested way for
+LINSTOR controller HA[1]. Of course, if you already have a pacemaker
+setup, or use an external database that is highly available (you still
+would need linstor-controller.service switching), or there are already
+other means as in k8s, then feel free to use that. But otherwise drbdd
+is a simple way to solve a complex problem. We assume this will be the
+standard way for LINSTOR integration in Proxmox, Opennebula, and such.
 
-9.1.0 (api:genl2/proto:110-119/transport:16)
---------
- * was forked off from drbd 9.0.19
- * has all changes up to 9.0.28-1
- * locking in the IO-submit code path was considerably improved,
-   allowing multiple CPU to submit in parallel
+Notable changes since RC2:
+- the promoter plugin now drbdadm adjusts the resources it monitors on
+  startup, so we don't need a dependency on drbd.service (the shell
+  script one shipped with drbd-utils). Obviously especially needed for
+  the LINSTOR controller HA as we can not expect that linstor itself
+  brings up the volume.
+- rpm: mark drbdd.toml as config
+- plugins are split in init/run phases, and there is now a Plugin trait.
+  So with that and PluginUpdate the plugin API should be pretty stable
+  (no guarantees at all).
+- support for systemd sd_notify, and therefore "Type=notify".
+- less noise in the logs
+- confirm that there will be a prometheus.io plugin (no time frame for
+  now)
 
-https://www.linbit.com/downloads/drbd/9/drbd-9.1.0.tar.gz
-https://github.com/LINBIT/drbd/commit/eec3daedd7bd5e518780284841090f95806fd8d9
+Regards, rck
+
+GIT: https://github.com/LINBIT/drbdd/releases/tag/v0.1.0
+TAR: https://www.linbit.com/downloads/drbd/utils/drbdd-0.1.0.tar.gz
+PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+
+[1]
+https://www.linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-linstor_ha
