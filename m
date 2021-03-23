@@ -1,21 +1,19 @@
-Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com
-	[209.85.221.53])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 9C0FB4203CE
+Return-Path: <rene.peinthor@linbit.com>
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com
+	[209.85.221.44])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 123BA4205A7
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 23 Mar 2021 14:58:01 +0100 (CET)
-Received: by mail-wr1-f53.google.com with SMTP id e18so20888219wrt.6
+	Tue, 23 Mar 2021 15:13:52 +0100 (CET)
+Received: by mail-wr1-f44.google.com with SMTP id e18so20947438wrt.6
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 23 Mar 2021 06:58:01 -0700 (PDT)
-Date: Tue, 23 Mar 2021 14:57:59 +0100
-From: Roland Kammerer <roland.kammerer@linbit.com>
-To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Message-ID: <20210323135759.GA1491@rck.sh>
+	Tue, 23 Mar 2021 07:13:52 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="DocE+STaALJfprDB"
-Content-Disposition: inline
-Subject: [DRBD-announce] drbdd v0.2.0
+From: Rene Peinthor <rene.peinthor@linbit.com>
+Date: Tue, 23 Mar 2021 15:13:41 +0100
+Message-ID: <CAHmn2DOC25DDKsfaEDS82_At0BZk+Tu0ZxZQdVNmgazyWDzhnA@mail.gmail.com>
+To: drbd-announce@lists.linbit.com, drbd-user <drbd-user@lists.linbit.com>
+Content-Type: multipart/alternative; boundary="000000000000b97cdf05be34ca08"
+Subject: [DRBD-announce] linstor-opennebula v1.1.0 release
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -27,70 +25,55 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
+--000000000000b97cdf05be34ca08
+Content-Type: text/plain; charset="UTF-8"
 
---DocE+STaALJfprDB
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Hi!
 
-Dear DRBD users,
+There have been a few patch releases since the last linstor-opennebula
+release mail, the reason
+this release gets an announcement mail is that this version now supports
+the upcoming
+OpenNebula 6.0 release.
+But it is still compatible with older OpenNebula releases, so you don't
+have to worry
+about keeping the matching version for your OpenNebula version.
 
-This is version 0.2.0 of drbdd. There have only been some minor
-documentation fixes since the last RC release. Work on the prometheus.io
-plugin has already been started.
+linstor-opennebula 1.1.0
+------------------------
+  * Support for OpenNebula 6.0
+  * add fuseblk as shared exception for deleting files
+  * improve detect_image_format and ssh piped commands
 
-The RC announcement:
+https://github.com/LINBIT/addon-linstor/archive/v1.1.0.tar.gz
 
-The main new feature is the "user mode helper" plugin, which allows
-users to define simple filters for DRBD state changes that are then
-matched. A match triggers the execution of a user defined script.
-Information is passed via environment variables.
+Best regards,
+Rene
 
-A quick example for a rule that sends an alert whenever a resource gets
-diskless looks like this:
+[1] https://docs.linbit.com/docs/linstor-guide/#ch-opennebula-linstor
 
-[[umh.device]]
-name = "now Diskless"
-command = "sms.sh $(uname -n): $DRBD_RES_NAME $DRBD_NEW_DISK_STATE"
-event-type = "Change"
-old.disk-state = { operator = "NotEquals", value = "Diskless" }
-new.disk-state = "Diskless"
+--000000000000b97cdf05be34ca08
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-I think the umh plugin has great potential to remove many hackish
-scripts that did some kind manual DRBD state tracking.
+<div dir=3D"ltr">Hi!<div><br></div><div>There have been a few patch release=
+s since the last linstor-opennebula release mail, the reason</div><div>this=
+ release=C2=A0gets an announcement mail is that this version now supports t=
+he upcoming</div><div>OpenNebula 6.0 release.</div><div>But it is still com=
+patible with older OpenNebula releases, so you don&#39;t have to worry</div=
+><div>about keeping the matching version for your OpenNebula version.</div>=
+<div><br></div><div><div>linstor-opennebula 1.1.0<br>----------------------=
+--<br>=C2=A0 * Support for OpenNebula 6.0<br>=C2=A0 * add fuseblk as shared=
+ exception for deleting files<br>=C2=A0 * improve detect_image_format and s=
+sh piped commands<br></div><div><font face=3D"monospace, monospace" size=3D=
+"1"><br></font></div><div><font face=3D"monospace" size=3D"1"><a href=3D"ht=
+tps://github.com/LINBIT/addon-linstor/archive/v1.1.0.tar.gz">https://github=
+.com/LINBIT/addon-<span class=3D"gmail-il">linstor</span>/archive/v1.1.0.ta=
+r.gz</a></font><font face=3D"monospace, monospace" size=3D"1"><br></font></=
+div><br></div><div>Best regards,</div><div>Rene</div><div><br></div><div>[1=
+]=C2=A0<a href=3D"https://docs.linbit.com/docs/linstor-guide/#ch-opennebula=
+-linstor" target=3D"_blank">https://docs.linbit.com/docs/<span class=3D"gma=
+il-il">linstor</span>-guide/#ch-<span class=3D"gmail-il">opennebula</span>-=
+<span class=3D"gmail-il">linstor</span></a></div></div>
 
-There is extensive documentation on rules, types, environment
-variables,.. [1,2]. This brings me to the second, not that exciting
-change since 0.1.0: drbdd now has proper man pages for the daemon, the
-config, and all plugins [3].
-
-Eventually this will also replace the helper scripts that are currently
-triggered by the kernel, but that will require more work on the kernel
-and low level user space parts.
-
-GIT: https://github.com/LINBIT/drbdd/releases/tag/v0.2.0
-TGZ: https://linbit.com/downloads/drbd/utils/drbdd-0.2.0.tar.gz
-PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
-
-Regards, rck
-
-[1] https://github.com/LINBIT/drbdd/blob/master/src/plugin/umh.md
-[2] man drbdd.umh
-[3] drbdd(1), drbdd.toml(5), drbdd.promoter(5), drbdd.umh(5),
-drbdd.debugger(5)
-
---DocE+STaALJfprDB
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmBZ8+IACgkQRgmezyI6
-myL6CAgAnJB7BK4YelFjxcmhzMda938yHseaghUeqlv5KI69iIlJwvolOjPKjcG7
-8K11yqncvS+bvGTZGcqECpzrOOQpJWD+M+upKaKTkujiwGSviAcbA6wQP2Fopmwr
-BfB5pr4SAagASlxtzCiGkVJUXWmt3ehiaAWrCbDHljmwGzmSqrbqvoYiBrvEP4j7
-orGG6Bfj8wdeGRToIqreXFcczVl62xaefd5LALAuVHMBkcLJ/ANzomjlZ2LrmWUk
-vftsznfA0xEM96ii3aZrCuAnu9LdZgzPcAWw5nYm6FEElAF8tbeeaAUIRvunpOn5
-bm1H0CYAeZIh6A2rzSil6aa5/cklJA==
-=vTIb
------END PGP SIGNATURE-----
-
---DocE+STaALJfprDB--
+--000000000000b97cdf05be34ca08--
