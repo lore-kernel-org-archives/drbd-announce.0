@@ -1,19 +1,20 @@
-Return-Path: <rene.peinthor@linbit.com>
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com
-	[209.85.221.44])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 123BA4205A7
+Return-Path: <philipp.reisner@linbit.com>
+Received: from mail-io1-f52.google.com (mail-io1-f52.google.com
+	[209.85.166.52])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 8F22C4203BF
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 23 Mar 2021 15:13:52 +0100 (CET)
-Received: by mail-wr1-f44.google.com with SMTP id e18so20947438wrt.6
+	Fri, 26 Mar 2021 11:12:08 +0100 (CET)
+Received: by mail-io1-f52.google.com with SMTP id x16so4841669iob.1
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 23 Mar 2021 07:13:52 -0700 (PDT)
+	Fri, 26 Mar 2021 03:12:08 -0700 (PDT)
 MIME-Version: 1.0
-From: Rene Peinthor <rene.peinthor@linbit.com>
-Date: Tue, 23 Mar 2021 15:13:41 +0100
-Message-ID: <CAHmn2DOC25DDKsfaEDS82_At0BZk+Tu0ZxZQdVNmgazyWDzhnA@mail.gmail.com>
-To: drbd-announce@lists.linbit.com, drbd-user <drbd-user@lists.linbit.com>
-Content-Type: multipart/alternative; boundary="000000000000b97cdf05be34ca08"
-Subject: [DRBD-announce] linstor-opennebula v1.1.0 release
+From: Philipp Reisner <philipp.reisner@linbit.com>
+Date: Fri, 26 Mar 2021 11:11:56 +0100
+Message-ID: <CADGDV=UBikNf=gpLP7BHYYGomG+cYJdKPLdywkmRKRwDHCfddg@mail.gmail.com>
+To: drbd-announce@lists.linbit.com
+Content-Type: text/plain; charset="UTF-8"
+Cc: drbd-user@lists.linbit.com
+Subject: [DRBD-announce] drbd-9.1.1
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -25,55 +26,44 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
---000000000000b97cdf05be34ca08
-Content-Type: text/plain; charset="UTF-8"
+Hi,
 
-Hi!
+Debian bullseyes (Debian 11.0) entered 'hard freeze' two weeks ago and we
+have customers that want to use DRBD and LINSTOR on that
+platform. Unfortunately, I made a stupid mistake a few weeks back and that
+broke the kernel compat for kernel 5.10 (which comes with bullseye). So, here
+is a release of the drbd-9.1 branch that works on bullseye and also releases
+a few fixes we have in the tree.
 
-There have been a few patch releases since the last linstor-opennebula
-release mail, the reason
-this release gets an announcement mail is that this version now supports
-the upcoming
-OpenNebula 6.0 release.
-But it is still compatible with older OpenNebula releases, so you don't
-have to worry
-about keeping the matching version for your OpenNebula version.
+What fixes?
+ Well, did you ever try to build a LINSTOR cluster containing mips64 and
+ x86_64 nodes?
+ We did, and we found out that it breaks in a small detail in DRBD's size
+ negotiation code if the node's architecture has different page
+ sizes. Mips64 has a default page size of 16k.
+ And some other esoteric things...
 
-linstor-opennebula 1.1.0
-------------------------
-  * Support for OpenNebula 6.0
-  * add fuseblk as shared exception for deleting files
-  * improve detect_image_format and ssh piped commands
+Expect the 9.0.29, and another 9.1.x release in about one month from now.
 
-https://github.com/LINBIT/addon-linstor/archive/v1.1.0.tar.gz
 
-Best regards,
-Rene
+9.1.1 (api:genl2/proto:110-119/transport:17)
+--------
+ * fix a temporal deadlock you could trigger when you exercise promotion races
+   and mix some read-only openers into the test case
+ * fix for bitmap-copy operation in a very specific and unlikely case where
+   two nodes do a bitmap-based resync due to disk-states
+ * fix size negotiation when combining nodes of different CPU architectures
+   that have different page sizes
+ * fix a very rare race where DRBD reported wrong magic in a header
+   packet right after reconnecting
+ * fix a case where DRBD ends up reporting unrelated data; it affected
+   thinly allocated resources with a diskless node in a recreate from day0
+   event
+ * changes to socket buffer sizes get applied to established
+connections immediately;
+   before it was applied after a re-connect
+ * add exists events for path objects
+ * fix a merge-mistake that broke compatibility with 5.10 kernels
 
-[1] https://docs.linbit.com/docs/linstor-guide/#ch-opennebula-linstor
-
---000000000000b97cdf05be34ca08
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr">Hi!<div><br></div><div>There have been a few patch release=
-s since the last linstor-opennebula release mail, the reason</div><div>this=
- release=C2=A0gets an announcement mail is that this version now supports t=
-he upcoming</div><div>OpenNebula 6.0 release.</div><div>But it is still com=
-patible with older OpenNebula releases, so you don&#39;t have to worry</div=
-><div>about keeping the matching version for your OpenNebula version.</div>=
-<div><br></div><div><div>linstor-opennebula 1.1.0<br>----------------------=
---<br>=C2=A0 * Support for OpenNebula 6.0<br>=C2=A0 * add fuseblk as shared=
- exception for deleting files<br>=C2=A0 * improve detect_image_format and s=
-sh piped commands<br></div><div><font face=3D"monospace, monospace" size=3D=
-"1"><br></font></div><div><font face=3D"monospace" size=3D"1"><a href=3D"ht=
-tps://github.com/LINBIT/addon-linstor/archive/v1.1.0.tar.gz">https://github=
-.com/LINBIT/addon-<span class=3D"gmail-il">linstor</span>/archive/v1.1.0.ta=
-r.gz</a></font><font face=3D"monospace, monospace" size=3D"1"><br></font></=
-div><br></div><div>Best regards,</div><div>Rene</div><div><br></div><div>[1=
-]=C2=A0<a href=3D"https://docs.linbit.com/docs/linstor-guide/#ch-opennebula=
--linstor" target=3D"_blank">https://docs.linbit.com/docs/<span class=3D"gma=
-il-il">linstor</span>-guide/#ch-<span class=3D"gmail-il">opennebula</span>-=
-<span class=3D"gmail-il">linstor</span></a></div></div>
-
---000000000000b97cdf05be34ca08--
+https://linbit.com/downloads/drbd/9/drbd-9.1.1.tar.gz
+https://github.com/LINBIT/drbd/commit/93eb226a33f425ededd08a9cc82e372494475cb8
