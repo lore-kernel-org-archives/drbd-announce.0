@@ -1,22 +1,20 @@
 Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com
-	[209.85.128.41])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id EFA7D4203BB
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com
+	[209.85.221.49])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 9052A4203B5
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 20 Apr 2021 16:08:58 +0200 (CEST)
-Received: by mail-wm1-f41.google.com with SMTP id
-	n4-20020a05600c4f84b029013151278decso8853990wmq.4
+	Mon, 26 Apr 2021 10:56:07 +0200 (CEST)
+Received: by mail-wr1-f49.google.com with SMTP id h4so45910897wrt.12
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 20 Apr 2021 07:08:58 -0700 (PDT)
-Date: Tue, 20 Apr 2021 16:08:56 +0200
+	Mon, 26 Apr 2021 01:56:07 -0700 (PDT)
+Date: Mon, 26 Apr 2021 10:56:05 +0200
 From: Roland Kammerer <roland.kammerer@linbit.com>
 To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Message-ID: <20210420140856.GF1935@rck.sh>
+Message-ID: <20210426085605.GH1935@rck.sh>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="dTy3Mrz/UPE2dbVg"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Subject: [DRBD-announce] drbd-reactor (was drbdd) v0.3.0-rc.1
+Subject: [DRBD-announce] drbd-utils v9.17.0
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -28,76 +26,85 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-
---dTy3Mrz/UPE2dbVg
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
 Dear DRBD users,
 
-this is the first RC for v0.3.0 of drbd-reactor. With this release we
-renamed the project from drbdd to drbd-reactor. We assume there are not
-too many existing installations, but if so, copy your /etc/drbdd.toml to
-/etc/drbd-reactor.toml and you should be good to roll
+this is the final release of drbd-utils. This release contains
+some bug fixes that should not affect too many people (like a 8 year
+unnoticed bug in drbdmeta that only triggers under certain conditions).
 
-This version *requires* drbd-utils >=9.17.0, the RC of drbd-utils
-released today will work.
+A change that happened between RC1 and the final release:
+- drbdadm sh-ll-dev is now allowed for diskless resources. It prints
+  "none" in this case. This is similar to a change in "dstate" some time
+  ago and while it changes existing behavior, it is considered a bug
+  fix.
 
-The most exciting feature certainly is prometheus.io monitoring for
-DRBD. We basically expose everything that is part of the events2 stream,
-plus some higher level metrics. With that it is almost trivial to
-generate useful grafana dashboards. Here is one showing parts of our
-infrastructure, so you can get a feeling what this is about:
+The noteworthy additions are:
+- drbdsetup events2 --poll now also works without --now, so also in
+  combination with for example --full. This is needed for drbdd (which
+  will be renamed to drbd-reactor soon). The events stream now also
+  contains backing device information.
+- drbdsetup invalidate(-remote) now allows a bitmap based resync after a verify.
+  "--reset-bitmap=no" allows triggering a bitmap based resync after an
+  online verify operation found some out of sync bits.
+- With Debian Bullseye I removed the dependency on dh-systemd. If you
+  build for very very old distros and you build imaged don't contain it,
+  you might need to adapt.
+- The recommends on "mail" was dropped as it only might be used if you
+  use the example handlers we provide. We assume if this is the case,
+  one tries their setup at least once, but there is no need to pull in a
+  complete mail setup via that dependency.
 
-https://transfer.sh/FhbMX/drbd-reactor-prometheus.png
+There have also been some changes to release naming (you might already
+know them from the kernel module part starting with the 9.1 series).
+Crafting a release now might require extra tools. If you use the tarball
+we provide on our web page you should be fine, but if you decide to
+create release tarballs from git, you might need to change. More details
+in:
+https://github.com/LINBIT/drbd-utils/commit/733ab29dcc247835abdd26db47947d5f7280eca6
+Also as a heads up: I might decide to remove all the "rpm"/"deb"
+related targets from the Makefiles soon. It is just too much effort to
+consider all of the possible situations like building from git, building
+a tarball form git, packages from git, packages from the tarball, a
+tarball from the tarball and then a package... Again, I expect that for
+99.99% of our users our tarballs are good enough, but if not, you will
+be on your own soon, as well if you are building packages. People doing
+that should know how to do it.
 
-Note that this is a quick draft, we are sure you can build even more
-exciting ones. A list of metrics can be found here[1]. These are the
-obvious ones, we will add others based on user feedback.
+Please test now. If nothing unexpected shows up I will do the final
+release in about a week from now.
 
-The second change I want to mention explicitly is that it is now
-possible to put toml snippets into /etc/drbd-reactor.d/. In the future
-this will make it easy to dynamically create/delete promoter
-configurations and relead drbd-reactor picking up plugins/unloading
-them.
-
-Please test. If there are no unexpected bugs, I will release the final
-version in about a week from now.
-
-Regards, rck
-
-* events2: fix device blocked type
-* events2: add "path" information
-* plugins: split into "change" and "event" plugins
-* prometheus: implement exporter
-* add drbdd.d snippets
-* promoter: add stop-services-on-exit
-* prometheus: cleanly shutdown TCP handler
-* drbdd -> drbd-reactor
-* core: add statistics polling
-* debian: rm dh-systemd
-
-DEB: https://transfer.sh/lDUkG/drbd-reactor_0.3.0-rc.1-1_amd64.deb
-RPM: https://transfer.sh/bcV4a/drbd-reactor-0.3.0-rc.1-1.x86_64.rpm
+TGZ: https://linbit.com/downloads/drbd/utils/drbd-utils-9.17.0.tar.gz
 PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack/
-TGZ: https://linbit.com/downloads/drbd/utils/drbd-reactor-0.3.0-rc.1.tar.gz
-GIT: https://github.com/LINBIT/drbd-reactor/commit/02e70e92557c86916667647f18ffaa9f7f457a7b
-[1] https://github.com/LINBIT/drbd-reactor/blob/master/src/plugin/prometheus.md
+GIT: https://github.com/LINBIT/drbd-utils/commit/b63a36e40ae9f29ade26d4fed9473ef88e3ca6c0
 
+9.17.0
+--------
+ * drbdadm,v9: fix dstate for diskless volumes
+ * build/release: use lbvers.py
+ * drbd-attr: don't leak fd to drbdsetup
+ * doc: various fixes and additions
+ * drbdsetup,events2,v9: add backing_device
+ * build,Debian: rm dh-systemd dependency
+ * drbdsetup,events2,v9: fix --poll regression
+ * drbdmeta: fix bug with ALs with small final extents
+ * build,Debian: rm mail recommends
+ * drbdsetup,events2,v9: allow --poll without --now
+ * drbdsetup,invalidate: allow bitmap based resync after verify
+ * drbdadm,sh-ll-dev: change output to "none" if diskless
 
---dTy3Mrz/UPE2dbVg
+--IS0zKkzwUGydFO0o
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmB+4HMACgkQRgmezyI6
-myJ8vQgAixig6NCzAdRbfZQbxWk/CbKHmrc7SRN957KAJ8oTejBtPzIoKe4uI80v
-xfxiP3aRreaXhS6Ua+GHDVtj3HJ6Somi3LRBfzWOBDagTnla2LLmOb5Fhq5BmLgb
-+mG9IaZ49GloGhMSBvA/HfBt4jzwQ3toGPahKLInFYtGoqlNItTdQAR0c7fWRpPi
-dT+0vwachtF+jkGL5DLTwC/y1aNWWgi0isl72r7JYo06lPqAztjgiwNnUwg+dhuk
-TmvAWZKbB1AwgKYfw0mddsRv72+TKmQLq6FMq559FuJEKsG3Z5+OFF7fzmPJLRNc
-Ikz0I/djtesEvYqXN0zR3FjXonhsrA==
-=xEkh
+iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmB+qEgACgkQRgmezyI6
+myIJmQgAor5DqNk2m24U7lUSeDQ8rLee6meJDaXdQ8c38gJXys6uXMAsi6h5FMDQ
+X4evpBZPZ56JX5GuV71g6IfwqflPdg4P3irZSW5+jyCoxyExKNfVPaCoXTpmqLDu
+ksp9g8CVyvmaVycbdmyn16F0lwN48Ukk8k952UJP61NZY+aEI3g57m9h9Ov/FNUA
+1py9MiyTzIrUIkx51SVKln4bzAdO1c28mvj+NwtIwglTwDAVP5awj2OtyR5EADw0
+cRGm8sf/zFYSfvpsRUoIur4HaT8I30Xtz0UkMaksbBRoglhjx5zltthPcgnh/8F0
+q86IIbgj40KsRqu3NivqXL43Rwy5yw==
+=R22f
 -----END PGP SIGNATURE-----
 
---dTy3Mrz/UPE2dbVg--
+--IS0zKkzwUGydFO0o--
