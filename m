@@ -1,13 +1,19 @@
-Return-Path: <johannes@johannesthoma.com>
-To: "drbd-user@lists.linbit.com" <drbd-user@lists.linbit.com>,
-	drbd-announce@lists.linbit.com
-From: Johannes Thoma <johannes@johannesthoma.com>
-Message-ID: <37757dd2-9bbe-d654-eef7-a8b17e7a92fd@johannesthoma.com>
-Date: Mon, 26 Apr 2021 19:13:58 +0200
+Return-Path: <rene.peinthor@linbit.com>
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com
+	[209.85.221.50])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 0DC2942032D
+	for <drbd-announce@lists.linbit.com>;
+	Wed, 28 Apr 2021 10:06:28 +0200 (CEST)
+Received: by mail-wr1-f50.google.com with SMTP id h15so9741463wre.11
+	for <drbd-announce@lists.linbit.com>;
+	Wed, 28 Apr 2021 01:06:28 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/alternative;
-	boundary="------------C668E20B940446612186A0D9"
-Subject: [DRBD-announce] WinDRBD 1.0.0-rc11 released
+From: Rene Peinthor <rene.peinthor@linbit.com>
+Date: Wed, 28 Apr 2021 10:06:17 +0200
+Message-ID: <CAHmn2DP6_uXXOWOjBi+BMftzkb1y7YUysx01yn5mJfDAriOOPQ@mail.gmail.com>
+To: drbd-announce@lists.linbit.com, drbd-user <drbd-user@lists.linbit.com>
+Content-Type: multipart/alternative; boundary="00000000000013490b05c103db61"
+Subject: [DRBD-announce] linstor-server 1.12.0 release
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -19,119 +25,127 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-This is a multi-part message in MIME format.
---------------C668E20B940446612186A0D9
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
+--00000000000013490b05c103db61
+Content-Type: text/plain; charset="UTF-8"
 
-Dear DRBD and WinDRBD users,
+Hi All!
 
-We've just released another version of WinDRBD: This one is 1.0.0-rc11.
-It is now based upon DRBD 9.0.28 which is the most recent (stable) version
-of DRBD. It also contains a fix of a bug that caused blue screens or system
-lockups when disconnecting.  Also we now slowly start to remove the block
-device interface (the one with the mount point in the device clause) so if
-you have systems running with WinDRBD block device interface you should
-consider now to change that to the SCSI disk interface. The reason for all
-this is that the block device interface is not compatible with some Microsoft
-applications (most notably MS SQL Server) and we don't want to maintain
-two interfaces for very much longer.
+Quite some time has passed since the last linstor-server release, therefore
+this release also
+packs a lot of new stuff into it.
 
- From the WHATSNEW.md logfile:
+1. Linstor now automatically sets a common verify algorithm for DRBD
+resources, also the next DRBD release will have improved way to trigger a
+resync of out of sync blocks.
+2. Linstor now supports shared storage pools, this can handle
+multiple nodes having access to the same physical storage. e.g. Seagate
+Exos or a shared disk in more than 1 virtual machine.
+3. Linstor now also supports Seagates Exos raid storage systems [1]
 
-What's new in version 1.0.0-rc11
---------------------------------
+We also changed the way Linstor handles the auto-quorum setting for DRBD
+resources,
+at the time this was implemented it wasn't clear how resource groups will
+pass their properties
+to child resource-definition and they were simply copied. This isn't inline
+anymore with how other properties behave in Linstor, so we now longer copy
+the property to resource definition on spawn, but inherit from the resource
+group.
+If you want to remove currently set auto-quorum property on
+resource-definitions and just use the one set by the resource group or
+controller. First set your desired default:
 
-Updated DRBD from 9.0.25 to 9.0.28.
+linstor controller opt --on-no-quorum suspend-io
 
-Fixed a system hang on disconnect: Reason was mod_timer returning
-a wrong value which later caused a use-after-free of the DRBD
-connection object.
+And then remove all on-no-quorum props from already existing resources:
 
-Print deprecation warning when using block device interface.
-This is going to be removed with the next (1.0.0-rc12) release.
+linstor -m --output-version v1 rd l | jq -r '.[0] | .[].name' | xargs -d
+$'\n' -n1 -I {} linstor rd sp {} DrbdOptions/Resource/on-no-quorum
 
-Fix a NESSUS vulnerability warning: Executable path must
-be quoted (in windrbdumhelper and windrbdlogger services).
+As always there have been a lot of smaller and bigger fixes, see commits or
+the compressed changelog below.
 
-Make sure there is no error 50 warning on drbdadm up.
+linstor-server 1.12.0
+---------------------
+ * Added auto-setting a DRBD verify algorithm on resource-definition
+ * Support for shared storage pools (same physical device)
+ * Support for Seagate Exos Enterprise storage products
+ * Added make resource available API call
+ * Reworked auto-quorum property handling, now it is properly inherited
+from RG or Controller
+ * Removed linstor-common.conf, settings are now stored directly in all res
+files
+ * Fixed checking storage pool sizes before running RG spawn (that would
+fail)
+ * Check if storage pool has enough space before running resize
+ * Fixed changing resource group for resource definition to persistent
+between restarts
+ * Fixed DRBD resource with external metadata (would always be recreated)
+ * Fixed incorrect copying of layer data in snapshots with LUKS
+ * Allow "Undelete" of a resource that is in DELETING state
+ * REST-API 1.7.0
 
-As always an installable EXE can be downloaded from the Linbit
-homepage: the URL is:
+https://www.linbit.com/downloads/linstor/linstor-server-1.12.0.tar.gz
 
-https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#windrbd
+Linstor PPA:
+https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
-Thank you for using and testing WinDRBD, as always your Bug Reports and
-other feedback is highly appreciated.
+Cheers,
+Rene
 
-Best regards,
+[1] https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/#ch-exos
 
-- Johannes
+--00000000000013490b05c103db61
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
---------------C668E20B940446612186A0D9
-Content-Type: text/html; charset=utf-8
-Content-Transfer-Encoding: 8bit
+<div dir=3D"ltr">Hi All!<div><br></div><div>Quite some time has passed sinc=
+e the last linstor-server release, therefore this release also</div><div>pa=
+cks a lot of new stuff into it.</div><div><br></div><div>1. Linstor now aut=
+omatically sets a common verify algorithm for DRBD resources, also the next=
+ DRBD release will have improved way to trigger a resync of out of sync blo=
+cks.</div><div>2. Linstor now supports shared storage pools, this can handl=
+e multiple=C2=A0nodes having access to the same physical storage. e.g. Seag=
+ate Exos or a shared disk in more than 1 virtual machine.</div><div>3. Lins=
+tor now also supports Seagates Exos raid storage systems [1]</div><div><br>=
+</div><div>We also changed the way Linstor handles the auto-quorum setting =
+for DRBD resources,</div><div>at the time this was implemented it wasn&#39;=
+t clear how resource groups will pass their properties</div><div>to child r=
+esource-definition and they were simply copied. This isn&#39;t inline anymo=
+re with how other properties behave in Linstor, so we now longer copy the p=
+roperty to resource definition on spawn, but inherit=C2=A0from the resource=
+ group.</div><div>If you want to remove currently set auto-quorum property =
+on resource-definitions and just use the one=C2=A0set by the resource group=
+ or controller. First set your desired default:</div><div><br></div><div>li=
+nstor controller opt --on-no-quorum suspend-io<br></div><div><br></div><div=
+>And then remove all on-no-quorum props from already existing resources:</d=
+iv><div><br></div><div>linstor -m --output-version v1 rd l | jq -r &#39;.[0=
+] | .[].name&#39; | xargs -d $&#39;\n&#39; -n1 -I {} linstor rd sp {} DrbdO=
+ptions/Resource/on-no-quorum<br></div><div><br></div><div>As always there h=
+ave been a lot of smaller and bigger fixes, see commits or the compressed c=
+hangelog below.</div><div><br></div><div><div><font face=3D"monospace">lins=
+tor-server 1.12.0<br>---------------------<br>=C2=A0* Added auto-setting a =
+DRBD verify algorithm on resource-definition<br>=C2=A0* Support for shared =
+storage pools (same physical device)<br>=C2=A0* Support for Seagate Exos En=
+terprise storage products<br>=C2=A0* Added make resource available API call=
+<br>=C2=A0* Reworked auto-quorum property handling, now it is properly inhe=
+rited from RG or Controller<br>=C2=A0* Removed linstor-common.conf, setting=
+s are now stored directly in all res files<br>=C2=A0* Fixed checking storag=
+e pool sizes before running RG spawn (that would fail)<br>=C2=A0* Check if =
+storage pool has enough space before running resize<br>=C2=A0* Fixed changi=
+ng resource group for resource definition to persistent between restarts<br=
+>=C2=A0* Fixed DRBD resource with external metadata (would always be recrea=
+ted)<br>=C2=A0* Fixed incorrect copying of layer data in snapshots with LUK=
+S<br>=C2=A0* Allow &quot;Undelete&quot; of a resource that is in DELETING s=
+tate<br>=C2=A0* REST-API 1.7.0</font><br></div><div><br></div><div><div><fo=
+nt face=3D"monospace"><a href=3D"https://www.linbit.com/downloads/linstor/l=
+instor-server-1.12.0.tar.gz" target=3D"_blank">https://www.linbit.com/downl=
+oads/linstor/linstor-server-1.12.0.tar.gz</a></font><br></div><div><br></di=
+v><div><div><div>Linstor PPA:<br><a href=3D"https://launchpad.net/~linbit/+=
+archive/ubuntu/linbit-drbd9-stack" rel=3D"noreferrer" target=3D"_blank">htt=
+ps://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack</a></div></di=
+v><div><br></div><div>Cheers,<br></div><div>Rene</div></div></div></div><di=
+v><br></div><div>[1]=C2=A0<a href=3D"https://linbit.com/drbd-user-guide/lin=
+stor-guide-1_0-en/#ch-exos">https://linbit.com/drbd-user-guide/linstor-guid=
+e-1_0-en/#ch-exos</a></div></div>
 
-<html>
-  <head>
-
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    Dear DRBD and WinDRBD users,<br>
-    <br>
-    We've just released another version of WinDRBD: This one is
-    1.0.0-rc11. <br>
-    It is now based upon DRBD 9.0.28 which is the most recent (stable)
-    version<br>
-    of DRBD. It also contains a fix of a bug that caused blue screens or
-    system<br>
-    lockups when disconnecting.  Also we now slowly start to remove the
-    block<br>
-    device interface (the one with the mount point in the device clause)
-    so if<br>
-    you have systems running with WinDRBD block device interface you
-    should<br>
-    consider now to change that to the SCSI disk interface. The reason
-    for all<br>
-    this is that the block device interface is not compatible with some
-    Microsoft<br>
-    applications (most notably MS SQL Server) and we don't want to
-    maintain<br>
-    two interfaces for very much longer. <br>
-    <br>
-    From the WHATSNEW.md logfile:<br>
-    <br>
-    <font face="monospace">What's new in version 1.0.0-rc11<br>
-      --------------------------------<br>
-      <br>
-      Updated DRBD from 9.0.25 to 9.0.28.<br>
-      <br>
-      Fixed a system hang on disconnect: Reason was mod_timer returning<br>
-      a wrong value which later caused a use-after-free of the DRBD<br>
-      connection object.<br>
-      <br>
-      Print deprecation warning when using block device interface.<br>
-      This is going to be removed with the next (1.0.0-rc12) release.<br>
-      <br>
-      Fix a NESSUS vulnerability warning: Executable path must<br>
-      be quoted (in windrbdumhelper and windrbdlogger services).<br>
-      <br>
-      Make sure there is no error 50 warning on drbdadm up.</font><br>
-    <br>
-    As always an installable EXE can be downloaded from the Linbit<br>
-    homepage: the URL is:<br>
-    <br>
-<a class="moz-txt-link-freetext" href="https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#windrbd">https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#windrbd</a><br>
-    <br>
-    Thank you for using and testing WinDRBD, as always your Bug Reports
-    and<br>
-    other feedback is highly appreciated.<br>
-    <br>
-    Best regards,<br>
-    <br>
-    - Johannes<br>
-  </body>
-</html>
-
---------------C668E20B940446612186A0D9--
+--00000000000013490b05c103db61--
