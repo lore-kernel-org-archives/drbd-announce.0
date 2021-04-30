@@ -1,20 +1,20 @@
-Return-Path: <philipp.reisner@linbit.com>
-Received: from mail-io1-f53.google.com (mail-io1-f53.google.com
-	[209.85.166.53])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id C18294203B5
+Return-Path: <rene.peinthor@linbit.com>
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com
+	[209.85.128.48])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 0AD97420378
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 28 Apr 2021 17:42:47 +0200 (CEST)
-Received: by mail-io1-f53.google.com with SMTP id v123so12079536ioe.10
+	Fri, 30 Apr 2021 12:39:09 +0200 (CEST)
+Received: by mail-wm1-f48.google.com with SMTP id
+	t11-20020a05600c198bb02901476e13296aso820462wmq.0
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 28 Apr 2021 08:42:47 -0700 (PDT)
+	Fri, 30 Apr 2021 03:39:09 -0700 (PDT)
 MIME-Version: 1.0
-From: Philipp Reisner <philipp.reisner@linbit.com>
-Date: Wed, 28 Apr 2021 17:42:35 +0200
-Message-ID: <CADGDV=VztH2D4MJE7TF-tk2GmKg09yk76Fd-c-EcRAJWKWSZgQ@mail.gmail.com>
-To: drbd-announce@lists.linbit.com
-Content-Type: text/plain; charset="UTF-8"
-Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-9.0.29-0rc1 & drbd-9.1.2-rc.1
+From: Rene Peinthor <rene.peinthor@linbit.com>
+Date: Fri, 30 Apr 2021 12:38:58 +0200
+Message-ID: <CAHmn2DMsGKQ9xXh+9etEVaL1Zmc6oHtnN=_-xPSD3byhyiAk5g@mail.gmail.com>
+To: drbd-announce@lists.linbit.com, drbd-user <drbd-user@lists.linbit.com>
+Content-Type: multipart/alternative; boundary="000000000000cbb63105c12e3864"
+Subject: [DRBD-announce] linstor-server release 1.12.1
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,46 +26,58 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Hi,
+--000000000000cbb63105c12e3864
+Content-Type: text/plain; charset="UTF-8"
 
-here is the next release candidate for both of our branches. I promise to write
-a bit more text for the final release, which will happen in one week if no show
-stoppers are found.
+Hi!
 
-This is a release candidate, please help testing it.
+Unfortunately, we had 2 serious bugs in the 1.12.0 release, which we just
+noticed 1 day after doing the release (regression tests were added).
+It also looks like our migration script from 1.12.0->1.12.1, for created
+resource-groups in v1.12.0 didn't work as expected, so we might come up
+with another migration fix release next week.
+But resource-groups created before 1.12.0 and after(1.12.1) should work as
+expected, if you created a resource group in 1.12.0 and can't restart your
+controller we can provide a workaround.
 
-9.0.29-0rc1 (api:genl2/proto:86-120/transport:14)
---------
- * fix data corruption when DRBD's backing disk is a degraded Linux software
-   raid (MD)
- * add correct thawing of IO requests after IO was frozen due to loss of quorum
- * fix timeout detection after idle periods and for configs with ko-count
-   when a disk on an a secondary stops delivering IO-completion events
- * fixed an issue where UUIDs where not shifted in the history slots; that
-   caused false "unrelated data" events
- * fix a temporal deadlock you could trigger when you exercise promotion races
-   and mix some read-only openers into the test case
- * fix for bitmap-copy operation in a very specific and unlikely case where
-   two nodes do a bitmap-based resync due to disk-states
- * fix size negotiation when combining nodes of different CPU architectures
-   that have different page sizes
- * fix a very rare race where DRBD reported wrong magic in a header
-   packet right after reconnecting
- * fix a case where DRBD ends up reporting unrelated data; it affected
-   thinly allocated resources with a diskless node in a recreate from day0
-   event
- * speedup open() of drbd devices if promote has not chance to go through
- * new option "--reset-bitmap=no" for the invalidate and invalidate-remote
-   commands; this allows to do a resync after online verify found differences
- * changes to socket buffer sizes get applied to established connections
-   immediately; before it was applied after a re-connect
- * add exists events for path objects
- * forbid keyed hash algorithms for online verify, csyms and HMAC base alg
- * following upstream changes to DRBD up to Linux 5.12 and updated compat
-   rules to support up to Linux 5.12
+linstor-server 1.12.1
+---------------------
+ * Fix resource group writing to database(resulting in restart errors)
+ * Fixed deleting resource definition that had once snapshots created
+ * Allow c-max-rate 0 as DRBD setting
 
-https://linbit.com/downloads/drbd/9/drbd-9.1.2-rc.1.tar.gz
-https://github.com/LINBIT/drbd/commit/8bf23d4e30fdbc907395fb9ec84cb585d82d97c6
+https://www.linbit.com/downloads/linstor/linstor-server-1.12.1.tar.gz
 
-https://linbit.com/downloads/drbd/9.0/drbd-9.0.29-0rc1.tar.gz
-https://github.com/LINBIT/drbd/commit/be52fd979504061bfa9a899e266e314f0aee4cac
+Linstor PPA:
+https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+
+Cheers,
+Rene
+
+--000000000000cbb63105c12e3864
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">Hi!<div><br></div><div>Unfortunately, we had 2 serious bug=
+s in the 1.12.0 release, which we just noticed 1 day after doing the releas=
+e (regression tests were added).</div><div>It also looks like our migration=
+ script from 1.12.0-&gt;1.12.1, for created resource-groups in v1.12.0 didn=
+&#39;t work as expected, so we might come up with another migration fix rel=
+ease next=C2=A0week.</div><div>But resource-groups created before 1.12.0 an=
+d after(1.12.1) should work as expected, if you created a resource group in=
+ 1.12.0 and can&#39;t restart=C2=A0your controller we can provide a workaro=
+und.</div><div><br></div><div><font face=3D"monospace">linstor-server 1.12.=
+1<br>---------------------<br>=C2=A0* Fix resource group writing=C2=A0to da=
+tabase(resulting in restart errors)<br>=C2=A0* Fixed deleting resource defi=
+nition that had once snapshots created<br>=C2=A0* Allow c-max-rate 0 as DRB=
+D setting</font><br></div><div><font face=3D"monospace"><br></font></div><d=
+iv><div><font face=3D"monospace"><a href=3D"https://www.linbit.com/download=
+s/linstor/linstor-server-1.12.1.tar.gz" target=3D"_blank">https://www.linbi=
+t.com/downloads/linstor/linstor-server-1.12.1.tar.gz</a></font><br></div><d=
+iv><br></div><div><div><div>Linstor PPA:<br><a href=3D"https://launchpad.ne=
+t/~linbit/+archive/ubuntu/linbit-drbd9-stack" rel=3D"noreferrer" target=3D"=
+_blank">https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack</a=
+></div></div><div><br></div><div>Cheers,<br></div><div>Rene</div></div></di=
+v></div>
+
+--000000000000cbb63105c12e3864--
