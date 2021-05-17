@@ -1,19 +1,13 @@
-Return-Path: <rene.peinthor@linbit.com>
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com
-	[209.85.221.54])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id E5D1A4202DB
-	for <drbd-announce@lists.linbit.com>;
-	Fri,  7 May 2021 11:27:37 +0200 (CEST)
-Received: by mail-wr1-f54.google.com with SMTP id t18so8471077wry.1
-	for <drbd-announce@lists.linbit.com>;
-	Fri, 07 May 2021 02:27:37 -0700 (PDT)
+Return-Path: <johannes@johannesthoma.com>
+To: "drbd-user@lists.linbit.com" <drbd-user@lists.linbit.com>,
+	drbd-announce@lists.linbit.com
+From: Johannes Thoma <johannes@johannesthoma.com>
+Message-ID: <1338eaaf-121b-9146-0c4a-99ac96990031@johannesthoma.com>
+Date: Mon, 17 May 2021 15:37:25 +0200
 MIME-Version: 1.0
-From: Rene Peinthor <rene.peinthor@linbit.com>
-Date: Fri, 7 May 2021 11:27:26 +0200
-Message-ID: <CAHmn2DMYg3eY0DLhQ8v-i9p80cHaNf6gTRcde0s_Rwem1_V8rw@mail.gmail.com>
-To: drbd-announce@lists.linbit.com, drbd-user <drbd-user@lists.linbit.com>
-Content-Type: multipart/alternative; boundary="000000000000d93b8905c1ba0988"
-Subject: [DRBD-announce] linstor-server release 1.12.3
+Content-Type: multipart/alternative;
+	boundary="------------9EF4E852DD3813045E9FF0B8"
+Subject: [DRBD-announce] WinDRBD 1.0.0-rc12 released
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -25,47 +19,113 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
---000000000000d93b8905c1ba0988
-Content-Type: text/plain; charset="UTF-8"
+This is a multi-part message in MIME format.
+--------------9EF4E852DD3813045E9FF0B8
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi All!
+Dear DRBD and WinDRBD users,
 
-There was still a problem with resource groups on postgresql DB backends,
-which should now be finally fixed and 2 smaller bug fixes as well made it
-into this release.
+We just released another rc: 1.0.0-rc12. This is a special release because in this
+release 3 bugs that affected system stability were fixed. This rc12 ran within
+a disconnect / connect loop via Windows firewall and I/O for 5 days without
+issues (releases up to rc11 used to crash after max. 2 hours for this test), so
+we think that this rc12 is a huge step forward towards a stable release.
 
-linstor-server 1.12.3
----------------------
- * Fix creating resource groups using postgresql backend
- * Fixed re-auto-placing resource-definition on moving to different rscgrp
- * Updated automatic-verify algorithm list for DRBD
+Here's the changes in rc12 from the WHATSNEW.md file:
 
-https://www.linbit.com/downloads/linstor/linstor-server-1.12.3.tar.gz
+What's new in version 1.0.0-rc12
+--------------------------------
 
-Linstor PPA:
-https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+Fixed a blue screen on disconnect: Reason was sock_really_free
+called wait_event while in APC (in interrupt) and wait_event
+tried to sleep.
 
-Cheers,
-Rene
+Fixed a missing mutex_lock in
+delete_multicast_elements_and_replies_for_file_object() which
+caused a BSOD from time to time.
 
---000000000000d93b8905c1ba0988
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Fixed deadlock in recursive calls to rcu_read_lock (which are legal)
+(rcu_read_lock (A) / synchronize_rcu (B) / rcu_read_lock (A)
+where the inner rcu used to hang forever at DISPATCH_LEVEL.
 
-<div dir=3D"ltr"><div>Hi All!</div><div><br></div><div>There was still a pr=
-oblem with resource groups on postgresql DB backends, which should now be f=
-inally fixed and 2 smaller bug fixes as well made it into this release.</di=
-v><div><br></div><div><font face=3D"monospace">linstor-server 1.12.3<br>---=
-------------------<br>=C2=A0* Fix creating resource groups using postgresql=
- backend<br>=C2=A0* Fixed re-auto-placing resource-definition on moving to =
-different rscgrp<br>=C2=A0* Updated automatic-verify algorithm list for DRB=
-D</font><br></div><div><font face=3D"monospace"><br></font></div><div><div>=
-<font face=3D"monospace"><a href=3D"https://www.linbit.com/downloads/linsto=
-r/linstor-server-1.12.3.tar.gz">https://www.linbit.com/downloads/linstor/li=
-nstor-server-1.12.3.tar.gz</a></font><br></div><div><br></div><div><div><di=
-v>Linstor PPA:<br><a href=3D"https://launchpad.net/~linbit/+archive/ubuntu/=
-linbit-drbd9-stack" rel=3D"noreferrer" target=3D"_blank">https://launchpad.=
-net/~linbit/+archive/ubuntu/linbit-drbd9-stack</a></div></div><div><br></di=
-v><div>Cheers,<br></div><div>Rene</div></div></div></div>
+WinDRBD root directory is now relocatable (currently registry key
+WinDRBDRoot in HKLM/system/CurrentControlSet/services/WinDRBD
+must be edited manually, no installer support yet)
 
---000000000000d93b8905c1ba0988--
+As always an installable EXE can be downloaded from the Linbit
+homepage: the URL is:
+
+https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#windrbd
+
+Thank you for using WInDRBD we are always excited to hear feedback from you,
+
+Best regards,
+
+- Johannes
+
+
+
+--------------9EF4E852DD3813045E9FF0B8
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: 7bit
+
+<html>
+  <head>
+
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    Dear DRBD and WinDRBD users,<br>
+    <br>
+    We just released another rc: 1.0.0-rc12. This is a special release
+    because in this<br>
+    release 3 bugs that affected system stability were fixed. This rc12
+    ran within<br>
+    a disconnect / connect loop via Windows firewall and I/O for 5 days
+    without<br>
+    issues (releases up to rc11 used to crash after max. 2 hours for
+    this test), so<br>
+    we think that this rc12 is a huge step forward towards a stable
+    release.<br>
+    <br>
+    Here's the changes in rc12 from the WHATSNEW.md file:<br>
+    <br>
+    <font face="monospace">What's new in version 1.0.0-rc12<br>
+      --------------------------------<br>
+      <br>
+      Fixed a blue screen on disconnect: Reason was sock_really_free<br>
+      called wait_event while in APC (in interrupt) and wait_event<br>
+      tried to sleep.<br>
+      <br>
+      Fixed a missing mutex_lock in<br>
+      delete_multicast_elements_and_replies_for_file_object() which<br>
+      caused a BSOD from time to time.<br>
+      <br>
+      Fixed deadlock in recursive calls to rcu_read_lock (which are
+      legal)<br>
+      (rcu_read_lock (A) / synchronize_rcu (B) / rcu_read_lock (A)<br>
+      where the inner rcu used to hang forever at DISPATCH_LEVEL.<br>
+      <br>
+      WinDRBD root directory is now relocatable (currently registry key<br>
+      WinDRBDRoot in HKLM/system/CurrentControlSet/services/WinDRBD<br>
+      must be edited manually, no installer support yet)<br>
+    </font><br>
+    As always an installable EXE can be downloaded from the Linbit<br>
+    homepage: the URL is:<br>
+    <br>
+    <a class="moz-txt-link-freetext"
+href="https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#windrbd">https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#windrbd</a><br>
+    <br>
+    Thank you for using WInDRBD we are always excited to hear feedback
+    from you,<br>
+    <br>
+    Best regards,<br>
+    <br>
+    - Johannes<br>
+    <br>
+    <br>
+  </body>
+</html>
+
+--------------9EF4E852DD3813045E9FF0B8--
