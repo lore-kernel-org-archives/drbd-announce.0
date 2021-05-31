@@ -1,19 +1,21 @@
-Return-Path: <rene.peinthor@linbit.com>
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com
-	[209.85.128.47])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id DED39420379
+Return-Path: <roland.kammerer@linbit.com>
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com
+	[209.85.221.53])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 04331420026
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 18 May 2021 14:35:28 +0200 (CEST)
-Received: by mail-wm1-f47.google.com with SMTP id b7so4736832wmh.5
+	Mon, 31 May 2021 15:35:42 +0200 (CEST)
+Received: by mail-wr1-f53.google.com with SMTP id q5so310531wrm.1
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 18 May 2021 05:35:28 -0700 (PDT)
+	Mon, 31 May 2021 06:35:42 -0700 (PDT)
+Date: Mon, 31 May 2021 15:35:40 +0200
+From: Roland Kammerer <roland.kammerer@linbit.com>
+To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
+Message-ID: <20210531133540.GE1398@rck.sh>
 MIME-Version: 1.0
-From: Rene Peinthor <rene.peinthor@linbit.com>
-Date: Tue, 18 May 2021 14:35:17 +0200
-Message-ID: <CAHmn2DP8LNjWA2oJyGJfyFWcr+RDJ8HSRKrzU4zpkXk1La8g4A@mail.gmail.com>
-To: drbd-announce@lists.linbit.com, drbd-user <drbd-user@lists.linbit.com>
-Content-Type: multipart/alternative; boundary="000000000000ed9a7605c299f1fb"
-Subject: [DRBD-announce] linstor-server release 1.12.4
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="oyUTqETQ0mS9luUI"
+Content-Disposition: inline
+Subject: [DRBD-announce] drbd-utils v9.18.0-rc.1
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -25,49 +27,68 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
---000000000000ed9a7605c299f1fb
-Content-Type: text/plain; charset="UTF-8"
 
-Hi!
+--oyUTqETQ0mS9luUI
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Still some small problems with the 1.12 release, leading to this small
-bugfix release.
+Dear DRBD users,
 
-linstor-server 1.12.4
----------------------
- * Fix controller disable auto verify algorithm
- * Update auto-verify algorithm list to not use algorithms with optional
-keys
- * Exos: fixed setting correct properties
- * Exos: recache settings
- * Exos: support OverrideVlmId property
+this is the first release candidate of drbd-utils 9.18.0. This release
+is mainly triggered by features/scripts that drbd-reactor will depend on
+soon, but contains some additions on its own as well. There is no urgent
+need to upgrade.
 
-https://www.linbit.com/downloads/linstor/linstor-server-1.12.4.tar.gz
+Notable changes:
+- as I mentioned previously in some discussion on drbd-user, the helper
+  targets for rpm building are now gone. This allowed us to simplify the
+  make-magic substantially. If you know rpm building you most likely
+  have not used these "helpers" anyways. But if, you can find them in
+  the git history/last release. Feel free to copy these to a
+  GNUmakefile or whatever works for you.
 
-Linstor PPA:
-https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+- drbd.service is basically a wrapper around the old and not too pretty
+  init shell script. This release contains a set of proper service files
+  that should be used instead. Documentation if currently "sparse"
+  (i.e., does not exist). We will add documentation within drbd-utils
+  and the users-guide soon. If you know systemd, the information in the
+  commit message actually should be good enough:
+  https://github.com/LINBIT/drbd-utils/commit/04eb3c13f062bc541683dc6d5f48a37f4a291f67
 
-Cheers,
-Rene
+- the before mentioned systemd service templates that will be used by
+  drbd-reactor and its promoter plugin soon. This will allow simple HA
+  via systemd without the complexity of pacemaker. It will even support
+  OCF resource agents, but all of that will be part of the soon to be
+  released RC1 of drbd-reactor v0.4.0.
 
---000000000000ed9a7605c299f1fb
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Regards, rck
 
-<div dir=3D"ltr"><div>Hi!</div><div><br></div><div>Still some small problem=
-s with the 1.12 release, leading to this small bugfix release.</div><div><b=
-r></div><div><font face=3D"monospace">linstor-server 1.12.4<br>------------=
----------<br>=C2=A0* Fix controller disable auto verify algorithm<br>=C2=A0=
-* Update auto-verify algorithm list to not use algorithms with optional key=
-s<br>=C2=A0* Exos: fixed setting correct properties<br>=C2=A0* Exos: recach=
-e settings<br>=C2=A0* Exos: support OverrideVlmId property</font><br></div>=
-<div><font face=3D"monospace"><br></font></div><div><div><font face=3D"mono=
-space"><a href=3D"https://www.linbit.com/downloads/linstor/linstor-server-1=
-.12.4.tar.gz" target=3D"_blank">https://www.linbit.com/downloads/linstor/li=
-nstor-server-1.12.4.tar.gz</a></font><br></div><div><br></div><div><div><di=
-v>Linstor PPA:<br><a href=3D"https://launchpad.net/~linbit/+archive/ubuntu/=
-linbit-drbd9-stack" rel=3D"noreferrer" target=3D"_blank">https://launchpad.=
-net/~linbit/+archive/ubuntu/linbit-drbd9-stack</a></div></div><div><br></di=
-v><div>Cheers,<br></div><div>Rene</div></div></div></div>
+9.18.0-rc.1
+-----------
+ * build: remove rpm related targets
+ * drbdsetup,v84: fix minor compile warnings
+ * systemd: resource specific activation
+ * systemd: drbd-reactor promoter templates
 
---000000000000ed9a7605c299f1fb--
+GIT:
+https://github.com/LINBIT/drbd-utils/commit/5d8a547e4c0afdbe84409cfdd6431d6082ca5317
+PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack/
+TGZ:
+https://linbit.com/downloads/drbd/utils/drbd-utils-9.18.0-rc.1.tar.gz
+
+--oyUTqETQ0mS9luUI
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmC05icACgkQRgmezyI6
+myIMLAf8DXONi34ny9TfCo7EY4YdC5MDHPu7LmYzTEhrh/xDqWjyv4Oymeek48o2
+l3VWBJ1/A33mzqpNaD3/DnuN3GkTnW5O8ow+2aAELehseaBkMuFH5w8VsQcNYE9s
+YMm0bfQhKYE9oR+7KSEhgoj6OHqKd8Y5LYlsKTFxWzjBB+jSnm3rUqAl/m4PZrx2
+g8vODTipCdt8RnNkf3GdDUzxNd3KQs6Stgc6F4WBTCkYn3mTuxwTkxdXrPIl5TLb
+Na3e8XEN81Flxm7oUXHS2Yf1OlIHV166sZLCrOj04m0AL6Vv5/pL0QMQseoWZMJ+
+b14/iyiegZqFiTyuADXKFMs3gIKU8A==
+=obFw
+-----END PGP SIGNATURE-----
+
+--oyUTqETQ0mS9luUI--
