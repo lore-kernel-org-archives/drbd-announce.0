@@ -1,19 +1,19 @@
-Return-Path: <moritz.wanzenboeck@linbit.com>
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com
-	[209.85.221.50])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id BCC494205D7
+Return-Path: <rene.peinthor@linbit.com>
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com
+	[209.85.221.53])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 076244202D8
 	for <drbd-announce@lists.linbit.com>;
-	Wed,  2 Jun 2021 10:19:23 +0200 (CEST)
-Received: by mail-wr1-f50.google.com with SMTP id q5so1350343wrs.4
+	Wed,  2 Jun 2021 15:54:19 +0200 (CEST)
+Received: by mail-wr1-f53.google.com with SMTP id c5so2382004wrq.9
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 02 Jun 2021 01:19:23 -0700 (PDT)
+	Wed, 02 Jun 2021 06:54:19 -0700 (PDT)
 MIME-Version: 1.0
-From: =?UTF-8?Q?Moritz_Wanzenb=C3=B6ck?= <moritz.wanzenboeck@linbit.com>
-Date: Wed, 2 Jun 2021 10:19:12 +0200
-Message-ID: <CAKnz9xKchwzwm62W8p7q4Th7ufF4QKzF+kWj3RmY_QbhcY0WFQ@mail.gmail.com>
-To: drbd-announce@lists.linbit.com
-Content-Type: text/plain; charset="UTF-8"
-Subject: [DRBD-announce] OpenStack-Cinder Driver for Linstor v2.0.0
+From: Rene Peinthor <rene.peinthor@linbit.com>
+Date: Wed, 2 Jun 2021 15:54:08 +0200
+Message-ID: <CAHmn2DP1_TnEwjHzshJJcR-fMtZjJp_9s1-0Q-6M_n36BcoTQA@mail.gmail.com>
+To: drbd-user <drbd-user@lists.linbit.com>, drbd-announce@lists.linbit.com
+Content-Type: multipart/alternative; boundary="0000000000008e8e5805c3c8cb47"
+Subject: [DRBD-announce] python-linstor/linstor-client 1.7.3 release
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -25,81 +25,56 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Dear Linstor on OpenStack users,
+--0000000000008e8e5805c3c8cb47
+Content-Type: text/plain; charset="UTF-8"
 
-We are glad to announce a new version of our OpenStack integration for Linstor.
+Hi,
 
-Version 2.0.0 of the Cinder driver makes use of many features added to
-Linstor over the last 2 years. Among those features are: Resource
-Groups, connecting to HA deployed Linstor controllers, volume backed
-live migration and many more.
+The make resource available API/command was missing in the 1.7.x release
+and is now available with this release.
 
-Among the many features added to Linstor since the last release of the
-Cinder driver, resource groups are perhaps the most important.
-Resource Groups allow specifying options for a group of related
-Linstor Resources, which makes them the ideal match for Volume Types
-in OpenStack. The Linstor driver will create a Resource Group for
-every Volume Type.
+linstor-client 1.7.3
+--------------------
+ * add make resource available command
 
-With the added support for Volume Types, it is now also possible to
-influence Linstor Resources via properties on the Volume Type. For
-example, if a Volume Type has the "linstor:redundancy" property set to
-5, every OpenStack Volume of that type will be spawned with 5
-replicas. It also allows influencing resource placement, DRBD options
-and more. For all the available options, please consult the User
-Guide.
+https://www.linbit.com/downloads/linstor/linstor-client-1.7.3.tar.gz
 
-Another addition is the support for volume backed live migration for
-the DRBD transport. This allows the live migration of a VM without
-lengthy copying of the backing volume, reducing the down time during
-migration to a few seconds.
+python-linstor 1.7.3
+--------------------
+ * docstring improvements
+ * allowed properties update
+ * add make resource available method
 
-The new driver also allows specifying multiple Linstor Controller
-addresses for use with Linstor high availability, along with HTTPS
-addresses with client authentication via TLS certificates.
+https://www.linbit.com/downloads/linstor/python-linstor-1.7.3.tar.gz
 
-The release also removed many options that were replaced by better
-alternatives.
-
-Many configuration options from cinder.conf got removed, as they are
-better served via Volume Types/Resource Groups.
-
-All options for Linstor cluster management got removed as well. The
-option to automatically create nodes and storage pools was unreliable
-at best.
-
-An updated User Guide with examples, new options and install/upgrade
-nodes is available here[1]. The driver itself is available from our
-github[2].
-
-We are in the process of upstreaming the code to the OpenStack
-project. In the meantime, we backported and tested the driver for all
-current stable releases of OpenStack (Codenames: Stein, Train, Ussuri,
-Victoria, Wallaby), so you can start using it right away.
+Linstor PPA:
+https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
 Best regards,
-Moritz
+Rene
 
-[1]: https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/#ch-openstack-linstor
-[2]: https://github.com/LINBIT/openstack-cinder/
+--0000000000008e8e5805c3c8cb47
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Linstor Cinder Driver 2.0.0
----
-* Use python-linstor 1.7.0
-* Support multiple controllers addresses
-* Support HTTPS addresses
-* Support TLS client authentication
-* Bump minimum Linstor API version to 1.4.0
-* Require cinder host to be part of the Linstor cluster
-* Support vendor properties on Volume Type
-* Create resource groups per volume type
-* Always use autoplace for new volumes
-* Support revert to snapshot when possible
-* Add support for fast retype/migration when possible
-* Automatically add temporary diskless resource if required
-* Support multi-attach for iSCSI transport
-* Support live-migration for DRBD transport
-* Support encrypted volumes if udev rules exist
-* Removed storage pool and node creation
-* Removed autoplace configuration from cinder.conf
-* Removed storage pool configuration from cinder.conf
+<div dir=3D"ltr">Hi,<div><br></div><div>The make resource available API/com=
+mand was missing in the 1.7.x release</div><div>and is now available with t=
+his release.</div><div><br></div><div><font face=3D"monospace">linstor-clie=
+nt 1.7.3<br>--------------------<br>=C2=A0* add make resource available com=
+mand<br></font></div><div><br></div><div><a href=3D"https://www.linbit.com/=
+downloads/linstor/linstor-client-1.7.3.tar.gz">https://www.linbit.com/downl=
+oads/linstor/linstor-client-1.7.3.tar.gz</a><font face=3D"monospace"><br></=
+font></div><div><font face=3D"monospace"><br></font></div><div><font face=
+=3D"monospace">python-linstor 1.7.3<br>--------------------<br>=C2=A0* docs=
+tring improvements<br>=C2=A0* allowed properties update<br>=C2=A0* add make=
+ resource available method</font><br></div><div><font face=3D"monospace"><b=
+r></font></div><div><a href=3D"https://www.linbit.com/downloads/linstor/pyt=
+hon-linstor-1.7.3.tar.gz">https://www.linbit.com/downloads/linstor/python-l=
+instor-1.7.3.tar.gz</a><font face=3D"monospace"><br></font></div><div><font=
+ face=3D"monospace"><br></font></div><div><div>Linstor PPA:<br></div><div><=
+div><a href=3D"https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-s=
+tack" rel=3D"noreferrer" target=3D"_blank">https://launchpad.net/~linbit/+a=
+rchive/ubuntu/linbit-drbd9-stack</a><br></div><div><br></div><div>Best rega=
+rds,</div><div>Rene</div></div></div></div>
+
+--0000000000008e8e5805c3c8cb47--
