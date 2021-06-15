@@ -1,22 +1,19 @@
-Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com
-	[209.85.128.50])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 50FDA4203D5
+Return-Path: <rene.peinthor@linbit.com>
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com
+	[209.85.221.53])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 5C485420307
 	for <drbd-announce@lists.linbit.com>;
-	Fri, 11 Jun 2021 16:18:47 +0200 (CEST)
-Received: by mail-wm1-f50.google.com with SMTP id
-	y13-20020a1c4b0d0000b02901c20173e165so706723wma.0
+	Tue, 15 Jun 2021 16:10:02 +0200 (CEST)
+Received: by mail-wr1-f53.google.com with SMTP id y7so18493495wrh.7
 	for <drbd-announce@lists.linbit.com>;
-	Fri, 11 Jun 2021 07:18:47 -0700 (PDT)
-Date: Fri, 11 Jun 2021 16:18:44 +0200
-From: Roland Kammerer <roland.kammerer@linbit.com>
-To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Message-ID: <20210611141844.GM1398@rck.sh>
+	Tue, 15 Jun 2021 07:10:02 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="VV4b6MQE+OnNyhkM"
-Content-Disposition: inline
-Subject: [DRBD-announce] drbd-reactor v0.4.0-rc.2
+From: Rene Peinthor <rene.peinthor@linbit.com>
+Date: Tue, 15 Jun 2021 16:09:50 +0200
+Message-ID: <CAHmn2DOf0x6sL=gv=B31MUuf-yRygK=hjfEUNnCzEnRfdyHZEQ@mail.gmail.com>
+To: drbd-announce@lists.linbit.com, drbd-user <drbd-user@lists.linbit.com>
+Content-Type: multipart/alternative; boundary="000000000000a324fd05c4ce87a2"
+Subject: [DRBD-announce] linstor-server release candidate 1.13.0-rc.1
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -28,70 +25,66 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
+--000000000000a324fd05c4ce87a2
+Content-Type: text/plain; charset="UTF-8"
 
---VV4b6MQE+OnNyhkM
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Hi!
 
-Dear DRBD users,
+We decided to skip any further 1.12 release and just move forward to the
+1.13 series,
+but this time with a release candidate.
+We reverted the somewhat dangerous fixed DRBD size patches and only included
+safe bug fixes and a new feature that is BCache layer support, for
+distributions that
+support BCache.
 
-this is RC2 of drbd-reactor v0.4.0. For the previous notable changes
-please refer to
-https://lists.linbit.com/pipermail/drbd-announce/2021-June/000454.html
+If no serious bugs get reported, we will call this release final on next
+Monday.
 
-RC1 got some internal, extensive testing, and all in all it handled
-typical LINSTOR vSAN / Pacemaker use cases including OCF agents well. Never the
-less Christoph found some bugs like not handling diskless resources well, html
-escaped output from the template library, minor misbehavior in drbd-reactorctl
-and so on. Thanks Christoph for finding these.
+linstor-server 1.13.0rc1
+---------------------
+ * BCache support for kernel >= 5.x
+ * Prometheus volume metrics now contain device_path label
+ * Reverted potential dangerous fixed size volumes for DRBD
+ * Updated to guice 5.0.1
+ * Fixed incorrect resize conditions
+ * Fixed finding active resource
+ * Fixed deleting deleting resources with external metadata
+ * API-Version 1.8.0
 
-Besides these bug fixes there is now a design document describing the reasoning
-behind the promoter plugin and which failure modes it can (not) handle. It is
-really worth reading if you plan to use drbd-reactor::promoter. Thanks Lars for
-that [1].
+https://www.linbit.com/downloads/linstor/linstor-server-1.13.0-rc.1.tar.gz
 
-Last but not least thanks to Moritz for spotting most of the stupid bugs
-in the internal reviews.
+Linstor PPA:
+https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
-I'd guess this is the last RC, and if nothing shows up the final release
-should happen in about a week from now.
+Cheers,
+Rene
 
-Regards, rck
+--000000000000a324fd05c4ce87a2
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-GIT: https://github.com/LINBIT/drbd-reactor/commit/dfa82000ec1ed54461c4b02f3dbb5702de2223c5
-TGZ: https://linbit.com/downloads/drbd/utils/drbd-reactor-0.4.0-rc.2.tar.gz
-RPM (RHEL8 alike): https://transfer.sh/1CGUkuO/drbd-reactor-0.4.0-rc.2-1.x86_64.rpm
-DEB: https://transfer.sh/1erm85c/drbd-reactor_0.4.0-rc.2-1_amd64.deb
+<div dir=3D"ltr"><div>Hi!</div><div><br></div><div>We decided to skip any f=
+urther 1.12 release and just move forward to the 1.13 series,</div><div>but=
+ this time with a release candidate.</div><div>We reverted the somewhat dan=
+gerous fixed DRBD size patches and only included</div><div>safe bug fixes a=
+nd a new feature that is BCache layer support, for distributions that</div>=
+<div>support BCache.</div><div><br></div><div>If no serious bugs get report=
+ed, we will call this release final on next Monday.</div><div><br></div><di=
+v><font face=3D"monospace">linstor-server 1.13.0rc1<br>--------------------=
+-<br>=C2=A0* BCache support for kernel &gt;=3D 5.x<br>=C2=A0* Prometheus vo=
+lume metrics now contain device_path label<br>=C2=A0* Reverted potential da=
+ngerous fixed size volumes for DRBD<br>=C2=A0* Updated to guice 5.0.1<br>=
+=C2=A0* Fixed incorrect resize conditions<br>=C2=A0* Fixed finding active r=
+esource<br>=C2=A0* Fixed deleting deleting resources with external metadata=
+<br>=C2=A0* API-Version 1.8.0</font><br></div><div><font face=3D"monospace"=
+><br></font></div><div><div><font face=3D"monospace"><a href=3D"https://www=
+.linbit.com/downloads/linstor/linstor-server-1.13.0-rc.1.tar.gz">https://ww=
+w.linbit.com/downloads/linstor/linstor-server-1.13.0-rc.1.tar.gz</a></font>=
+<br></div><div><br></div><div><div><div>Linstor PPA:<br><a href=3D"https://=
+launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack" rel=3D"noreferrer=
+" target=3D"_blank">https://launchpad.net/~linbit/+archive/ubuntu/linbit-dr=
+bd9-stack</a></div></div><div><br></div><div>Cheers,<br></div><div>Rene</di=
+v></div></div></div>
 
-[1] https://github.com/LINBIT/drbd-reactor/blob/master/doc/promoter.md
-
-[ Roland Kammerer ]
-* treewide: cleanup log messages
-* promoter: filter diskless devices for drbd-promote
-* ctl: fix verbose output for ocf.ra
-* promoter: switch to unescaped output
-* ctl: restart daemon if no files given
-* ctl,promoter: print where likely active
-* ctl: fix disable --now
-* ctl,build: add man page
-* promoter: try to stop services before start
-* doc,promoter: add design document
-* doc,promoter: add review fixes from Lars
-* doc,promoter: rm arp_sender
-
---VV4b6MQE+OnNyhkM
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmDDcLwACgkQRgmezyI6
-myI/6wgAgdI0JL741HdAyDTNhUfLsI0hTiMids3JdtPLugqt5Ft4hd93Jr36NXJS
-9EART8cWabSfyN1pTkRDdOOdre+sAE3jCdj8zwMXzxfkZ2jsFC2CMq85PEA62Gny
-GCjzlOufFRXg3QV99PcRBIIDnZhI+sVfVj5y0ME1RZDizCFEkhJUT9R3xr8WfTJJ
-tMn3moMh4TYUDuNy9Q0IzYbd9uRZRI/p3BdHMXDowIxOqZOo2mKVGkeBGc/esyHa
-oxHbLveCWc4qEOx0KM8GfNutYH+louXL8dFLNXO2AMauudU1lkeoniUuDOYe/bd+
-BsjrtmPaoB9FQPwFZ+8JEb4B426n0g==
-=W/XO
------END PGP SIGNATURE-----
-
---VV4b6MQE+OnNyhkM--
+--000000000000a324fd05c4ce87a2--
