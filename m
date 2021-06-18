@@ -1,20 +1,21 @@
 Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com
-	[209.85.128.45])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id B56F94202EC
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com
+	[209.85.221.50])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 164834202F3
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 17 Jun 2021 15:06:17 +0200 (CEST)
-Received: by mail-wm1-f45.google.com with SMTP id m3so3385832wms.4
+	Fri, 18 Jun 2021 13:18:04 +0200 (CEST)
+Received: by mail-wr1-f50.google.com with SMTP id n7so10377918wri.3
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 17 Jun 2021 06:06:17 -0700 (PDT)
-Date: Thu, 17 Jun 2021 15:06:15 +0200
+	Fri, 18 Jun 2021 04:18:04 -0700 (PDT)
+Date: Fri, 18 Jun 2021 13:18:03 +0200
 From: Roland Kammerer <roland.kammerer@linbit.com>
 To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Message-ID: <20210617130615.GP1398@rck.sh>
+Message-ID: <20210618111803.GQ1398@rck.sh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="H4SyuGOnfnj3aJqJ"
 Content-Disposition: inline
-Subject: [DRBD-announce] linstor-proxmox v5.1.6
+Subject: [DRBD-announce] drbd-reactor v0.4.0
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,40 +27,64 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Dear DRBD on Proxmox users,
 
-This is version 5.1.6 of the PVE Plugin for LINSTOR.
+--H4SyuGOnfnj3aJqJ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-If you are satisfied with your current cluster, you don't need to update.
+Dear DRBD users,
 
-Quoting the commit message that triggered that release:
+this is the final release of drbd-reactor 0.4.0.
 
-Proxmox queries the status of all storages every few seconds. There is a cache
-they pass in, but that only makes sense for multiple storages of one storage
-type (i.e., 'drbd'). One can then use that passed in cache for a "query loop"
-of all storages of that particular type. That helps, but still the plugin's
-status function gets called every few seconds with a cold cache.
+For details in this release please see RC1 [1] and RC2 [2].
 
-On large clusters (~10 nodes, a few hundred resources), executing the
-expensive "storage-pool list" query in LINSTOR every few seconds on all nodes
-saturates the LINSTOR REST-API/controller and the cluster becomes
-slow/unusable.
+There have been some additions since the last release candidate for the
+promoter plugin:
+- The promote systemd template we ship with drbd-utils 9.18.0 uses
+  'ExecCondition' to switch the resource to Primary. This keyword is not
+  available on older systemd versions (e.g., current Proxmox stable),
+  and IMO 'ExecStart' is a better fit, so generate such an override.
+- startup: the drbd-reactor.service file is now scheduled after
+  networking, so that it can bring up the DRBD resources successfully,
+  otherwise the IP for that host might not even exist and "drbdadm
+  adjust" fails.
+- coordinated shutdown: as you might know by now the promoter plugin
+  starts systemd targets (drbd-services@.target). But on system shutdown
+  these might stop, which triggers drbd-reactor to start them again,
+  while it gets stopped,... This is now solved by generating a 'Before'
+  dependency in the target override.
 
-As the plugin gets instantiated over and over again, it is not possible to keep
-a "plugin global" cache, so moving the cache to the file system looks like a
-good fit.
+With 0.4.0 released, DRBD promotion should be handled by drbd-reactor,
+so please set the according option to disable auto-promote, as shown
+here in the "HA LINSTOR Controller section" [3].
 
-The new option 'statuscache' can be set to a positive number of seconds and
-will then keep a status cache (currently only the storage pools) for that
-number of seconds. If one wants to make use of this, the option has to be set
-on *all* drbd storages in /etc/pve/storage.cfg.
+[Roland Kammerer]
+ * ctl,promoter: improve active on
+ * promoter: compat with older systemd, make promotion a dependency
+ * start after network is online
+ * promoter: improve system shutdown
 
-The cache is written to the file system in /var/cache/linstor-proxmox/. Just
-having the cache and using it was good enough to fix that particular customer's
-issues. You also might want to use a tmpfs for that directory, but that is up
-to you.
+GIT: https://github.com/LINBIT/drbd-reactor/commit/6cc8b9d7e57f3bb27a4c975d8d4f1339d60b4462
+TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-reactor-0.4.0.tar.gz
+PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
-GIT: https://github.com/LINBIT/linstor-proxmox/commit/b337aa846bcb526cc384dd588e6026b61dffcac1
-TGZ: https://pkg.linbit.com//downloads/connectors/linstor-proxmox-5.1.6.tar.gz
+[1] https://lists.linbit.com/pipermail/drbd-announce/2021-June/000454.html
+[2] https://lists.linbit.com/pipermail/drbd-announce/2021-June/000460.html
+[3] https://github.com/LINBIT/linbit-documentation/blob/master/UG9/en/administration-linstor.adoc#linstor-high-availability
 
-Regards, rck
+--H4SyuGOnfnj3aJqJ
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmDMgOUACgkQRgmezyI6
+myINhQgAk3gN1oOlwQYG+HYdAM4dcQeK5fsvNKvbo0N9zb26c51oz/yhKvnsXk+z
+kJKlWa1PMaN3X9MHFPSHjLHGTtYhdpJFNU5UUii3Bje7BUM2fNLtpe/eOHBtlHVh
+fubbPJIszZY0G9lScWuNmWbnn3hYqF7fSfNRXwQN/HeYfLxMW/znL0Nxo5ooIZnD
+RkgjsaQI62FebtPZAq3nLX0Z/ejC5m3Vs7gaBsGcVxfzNRl5MGf98PzFQZsBn/JS
+c02cVS7FJsP2iNkEVPSyx01R93hrjHTh50iXSD5UQi2zAUT/ayU65ZrlywS3GNHN
+Gfae+xNUXQwKDtFl122VXCH2476LWQ==
+=3UQI
+-----END PGP SIGNATURE-----
+
+--H4SyuGOnfnj3aJqJ--
