@@ -1,19 +1,20 @@
-Return-Path: <rene.peinthor@linbit.com>
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com
-	[209.85.208.42])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 22E554201F7
+Return-Path: <philipp.reisner@linbit.com>
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com
+	[209.85.221.47])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 414844202B8
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 15 Jul 2021 10:33:31 +0200 (CEST)
-Received: by mail-ed1-f42.google.com with SMTP id h8so6985280eds.4
+	Thu, 15 Jul 2021 15:00:58 +0200 (CEST)
+Received: by mail-wr1-f47.google.com with SMTP id r11so7656471wro.9
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 15 Jul 2021 01:33:31 -0700 (PDT)
+	Thu, 15 Jul 2021 06:00:58 -0700 (PDT)
 MIME-Version: 1.0
-From: Rene Peinthor <rene.peinthor@linbit.com>
-Date: Thu, 15 Jul 2021 10:33:21 +0200
-Message-ID: <CAHmn2DPR5YupZZHE=UABV5ZmHpKVrfuFwkZNDhOZU3_in0d5AA@mail.gmail.com>
-To: drbd-user <drbd-user@lists.linbit.com>, drbd-announce@lists.linbit.com
-Content-Type: multipart/alternative; boundary="0000000000007563ba05c725533b"
-Subject: [DRBD-announce] linstor-server release 1.13.1
+From: Philipp Reisner <philipp.reisner@linbit.com>
+Date: Thu, 15 Jul 2021 15:00:46 +0200
+Message-ID: <CADGDV=XT4CFiOPz9r1Z7e9rZnDc3zGN9jRtbW2KGxpBt7MjqZA@mail.gmail.com>
+To: drbd-announce@lists.linbit.com
+Content-Type: text/plain; charset="UTF-8"
+Cc: drbd-user@lists.linbit.com
+Subject: [DRBD-announce] drbd-9.0.30 & drbd-9.1.3
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -25,46 +26,49 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
---0000000000007563ba05c725533b
-Content-Type: text/plain; charset="UTF-8"
+Hi,
 
-Hi!
+Here is the final of drbd-9.0.30 & drbd-9.1.3. No changes that are
+worth mentioning since the rc1.
 
-This is a minor bugfix release and might only be interesting if you intend
-to work with
-BCache or LUKS layers.
+In general, this is a "small" release. I am happy to see that the
+issues in the 9.1 branch get shaken out as it is more tested and used.
 
-linstor-server 1.13.1
----------------------
- * BCache always register devices
- * ToggleDisk recreate correct layerdata (fixes LUKS toggle disk)
- * API-Version 1.8.1
+For autumn, we will have two changes in the works for the 9.1 branch.
+One will reduce the application-IO vs resync-IO lockout, ensuring
+smother IO latencies for applications during resync. The other one, if
+it works out, will reduce IO latencies for all workloads.
 
-https://pkg.linbit.com//downloads/linstor/linstor-server-1.13.1.tar.gz
+9.0.30-1 (api:genl2/proto:86-120/transport:14)
+--------
+ * fix a crash when drbd-9 node gets connected to a drbd-8.4 node, the
+   regression was introduced between 9.0.25 and 9.0.26
+ * A improved approach to serialize rsyncs from multiple sources; the previous
+   one could cause wrong accounting for online verify
+ * fix a race condition that could cause resync operations to stall when the
+   completion of one resync allows another one to proceed
+ * fix a race condition that could cause an online verify operation to not
+   terminate under specific conditions (corking enabled no other IO)
+ * fix locking of drbd_devices idr that caused (very rarely) create/remove
+   minor to fail
+
+9.1.3 (api:genl2/proto:110-120/transport:17)
+--------
+ * merged all fixes from drbd-9.0.30-0rc1
+ * fix a corner-case NULL deref in the lockless buffer pages handling; the
+   regression was introduced with 9.1.0 (released Feb 2021); To my knowledge
+   it took 6 months until someone triggered it for the first time
+ * fix sending a P_PEERS_IN_SYNC packet into a fresh connection (before
+   handshake packets); this problem was introduced when the drbd-8.x
+   compatibility code was removed
+ * remove sending a DRBD-barrier packet when processing a REQ_PREFLUSH
+   request, that improves IO-depth and improves performance with that
 
 
-Linstor PPA:
-https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+https://pkg.linbit.com/downloads/drbd/9.0/drbd-9.0.30-1.tar.gz
+https://github.com/LINBIT/drbd/commit/10bee2d57dcbc48836ac61bad434590b7b82917e
 
-Cheers,
-Rene
+https://pkg.linbit.com//downloads/drbd/9/drbd-9.1.3.tar.gz
+https://github.com/LINBIT/drbd/commit/bc157732ca77eae4033c99f1985cfdb38e52a355
 
---0000000000007563ba05c725533b
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div>Hi!</div><div><br></div><div>This is a minor bugfix r=
-elease and might only be interesting if you intend to work with</div><div>B=
-Cache or LUKS layers.</div><div><br></div><div><font face=3D"monospace">lin=
-stor-server 1.13.1<br>---------------------<br>=C2=A0* BCache always regist=
-er devices<br>=C2=A0* ToggleDisk recreate correct layerdata (fixes LUKS tog=
-gle disk)<br>=C2=A0* API-Version 1.8.1<br></font></div><div><br></div><div>=
-<a href=3D"https://pkg.linbit.com//downloads/linstor/linstor-server-1.13.1.=
-tar.gz" target=3D"_blank">https://pkg.linbit.com//downloads/linstor/linstor=
--server-1.13.1.tar.gz</a><br></div><div><br></div><div><br></div><div><div>=
-<div><div>Linstor PPA:<br><a href=3D"https://launchpad.net/~linbit/+archive=
-/ubuntu/linbit-drbd9-stack" rel=3D"noreferrer" target=3D"_blank">https://la=
-unchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack</a></div></div><div>=
-<br></div><div>Cheers,<br></div><div>Rene</div></div></div></div>
-
---0000000000007563ba05c725533b--
+- Philipp
