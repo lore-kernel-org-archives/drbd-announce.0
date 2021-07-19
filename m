@@ -1,20 +1,19 @@
-Return-Path: <philipp.reisner@linbit.com>
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com
-	[209.85.221.47])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 414844202B8
+Return-Path: <rene.peinthor@linbit.com>
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com
+	[209.85.208.48])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 936FB4202F2
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 15 Jul 2021 15:00:58 +0200 (CEST)
-Received: by mail-wr1-f47.google.com with SMTP id r11so7656471wro.9
+	Mon, 19 Jul 2021 13:54:27 +0200 (CEST)
+Received: by mail-ed1-f48.google.com with SMTP id h8so23586582eds.4
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 15 Jul 2021 06:00:58 -0700 (PDT)
+	Mon, 19 Jul 2021 04:54:27 -0700 (PDT)
 MIME-Version: 1.0
-From: Philipp Reisner <philipp.reisner@linbit.com>
-Date: Thu, 15 Jul 2021 15:00:46 +0200
-Message-ID: <CADGDV=XT4CFiOPz9r1Z7e9rZnDc3zGN9jRtbW2KGxpBt7MjqZA@mail.gmail.com>
-To: drbd-announce@lists.linbit.com
-Content-Type: text/plain; charset="UTF-8"
-Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-9.0.30 & drbd-9.1.3
+From: Rene Peinthor <rene.peinthor@linbit.com>
+Date: Mon, 19 Jul 2021 13:54:16 +0200
+Message-ID: <CAHmn2DMoP37F0oSELtK+xHS+Zb3-g01SEQQ0-XL5cOy8VSqAmA@mail.gmail.com>
+To: drbd-user <drbd-user@lists.linbit.com>, drbd-announce@lists.linbit.com
+Content-Type: multipart/alternative; boundary="000000000000642e0205c7789996"
+Subject: [DRBD-announce] python-linstor/linstor-client 1.9.0 release
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,49 +25,66 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
+--000000000000642e0205c7789996
+Content-Type: text/plain; charset="UTF-8"
+
 Hi,
 
-Here is the final of drbd-9.0.30 & drbd-9.1.3. No changes that are
-worth mentioning since the rc1.
+This client release as a new advise sub command, that may help to find
+problems within
+your cluster and even suggests possible solutions. Apart from this it has
+some smaller fixes.
 
-In general, this is a "small" release. I am happy to see that the
-issues in the 9.1 branch get shaken out as it is more tested and used.
+linstor-client 1.9.0
+--------------------
+ * Add new advise subcommand
+ * Add remote SPDK subcommand
+ * resource/volume list: always show all resources (including tiebreaker)
+ * Fix drbd options --timeout name clash
+ * Fix query-max-volume-size key error
+ * node info: only show provider/layer errors with additional option
+ * node info: add missing provider/layer
 
-For autumn, we will have two changes in the works for the 9.1 branch.
-One will reduce the application-IO vs resync-IO lockout, ensuring
-smother IO latencies for applications during resync. The other one, if
-it works out, will reduce IO latencies for all workloads.
+https://pkg.linbit.com//downloads/linstor/linstor-client-1.9.0.tar.gz
 
-9.0.30-1 (api:genl2/proto:86-120/transport:14)
---------
- * fix a crash when drbd-9 node gets connected to a drbd-8.4 node, the
-   regression was introduced between 9.0.25 and 9.0.26
- * A improved approach to serialize rsyncs from multiple sources; the previous
-   one could cause wrong accounting for online verify
- * fix a race condition that could cause resync operations to stall when the
-   completion of one resync allows another one to proceed
- * fix a race condition that could cause an online verify operation to not
-   terminate under specific conditions (corking enabled no other IO)
- * fix locking of drbd_devices idr that caused (very rarely) create/remove
-   minor to fail
+python-linstor 1.9.0
+--------------------
+ * Add remote SPDK constants
 
-9.1.3 (api:genl2/proto:110-120/transport:17)
---------
- * merged all fixes from drbd-9.0.30-0rc1
- * fix a corner-case NULL deref in the lockless buffer pages handling; the
-   regression was introduced with 9.1.0 (released Feb 2021); To my knowledge
-   it took 6 months until someone triggered it for the first time
- * fix sending a P_PEERS_IN_SYNC packet into a fresh connection (before
-   handshake packets); this problem was introduced when the drbd-8.x
-   compatibility code was removed
- * remove sending a DRBD-barrier packet when processing a REQ_PREFLUSH
-   request, that improves IO-depth and improves performance with that
+https://pkg.linbit.com//downloads/linstor/python-linstor-1.9.0.tar.gz
 
+Linstor PPA:
+https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
-https://pkg.linbit.com/downloads/drbd/9.0/drbd-9.0.30-1.tar.gz
-https://github.com/LINBIT/drbd/commit/10bee2d57dcbc48836ac61bad434590b7b82917e
+Best regards,
+Rene
 
-https://pkg.linbit.com//downloads/drbd/9/drbd-9.1.3.tar.gz
-https://github.com/LINBIT/drbd/commit/bc157732ca77eae4033c99f1985cfdb38e52a355
+--000000000000642e0205c7789996
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-- Philipp
+<div dir=3D"ltr">Hi,<div><br></div><div>This client release as a new advise=
+ sub command, that may help to find problems within</div><div>your cluster =
+and even suggests possible solutions. Apart from this it has some smaller f=
+ixes.</div><div><br></div><div><font face=3D"monospace">linstor-client 1.9.=
+0<br>--------------------<br>=C2=A0* Add new advise subcommand<br>=C2=A0* A=
+dd remote SPDK subcommand<br>=C2=A0* resource/volume list: always show all =
+resources (including tiebreaker)<br>=C2=A0* Fix drbd options --timeout name=
+ clash<br>=C2=A0* Fix query-max-volume-size key error<br>=C2=A0* node info:=
+ only show provider/layer errors with additional option<br>=C2=A0* node inf=
+o: add missing provider/layer<br></font></div><div><br></div><div><a href=
+=3D"https://pkg.linbit.com//downloads/linstor/linstor-client-1.9.0.tar.gz">=
+https://pkg.linbit.com//downloads/linstor/linstor-client-1.9.0.tar.gz</a><f=
+ont face=3D"monospace"><br></font></div><div><font face=3D"monospace"><br><=
+/font></div><div><font face=3D"monospace">python-linstor 1.9.0<br>---------=
+-----------<br>=C2=A0* Add remote SPDK constants</font><br></div><div><font=
+ face=3D"monospace"><br></font></div><div><a href=3D"https://pkg.linbit.com=
+//downloads/linstor/python-linstor-1.9.0.tar.gz">https://pkg.linbit.com//do=
+wnloads/linstor/python-linstor-1.9.0.tar.gz</a><font face=3D"monospace"><br=
+></font></div><div><font face=3D"monospace"><br></font></div><div><div>Lins=
+tor PPA:<br></div><div><div><a href=3D"https://launchpad.net/~linbit/+archi=
+ve/ubuntu/linbit-drbd9-stack" rel=3D"noreferrer" target=3D"_blank">https://=
+launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack</a><br></div><div>=
+<br></div><div>Best regards,</div><div>Rene</div></div></div></div>
+
+--000000000000642e0205c7789996--
