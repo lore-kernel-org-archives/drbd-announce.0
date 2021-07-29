@@ -1,21 +1,21 @@
 Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com
-	[209.85.128.47])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 88C8E420218
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com
+	[209.85.221.43])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 4DAB8420202
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 27 Jul 2021 10:42:15 +0200 (CEST)
-Received: by mail-wm1-f47.google.com with SMTP id
-	a192-20020a1c7fc90000b0290253b32e8796so939898wmd.0
+	Thu, 29 Jul 2021 10:02:23 +0200 (CEST)
+Received: by mail-wr1-f43.google.com with SMTP id h14so5713347wrx.10
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 27 Jul 2021 01:42:15 -0700 (PDT)
-Date: Tue, 27 Jul 2021 10:42:13 +0200
+	Thu, 29 Jul 2021 01:02:23 -0700 (PDT)
+Date: Thu, 29 Jul 2021 10:02:21 +0200
 From: Roland Kammerer <roland.kammerer@linbit.com>
 To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Message-ID: <20210727084213.GB1404@rck.sh>
+Message-ID: <20210729080221.GJ1404@rck.sh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="k1lZvvs/B4yU6o8G"
 Content-Disposition: inline
-Subject: [DRBD-announce] drbd-reactor v0.4.2
+Subject: [DRBD-announce] linstor-proxmox v5.2.1 and PVE7 information
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -27,49 +27,50 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Dear DRBD users,
 
-this is version 0.4.2 of drbd-reactor. Again, this mixes a small bug fix
-with a feature:
+--k1lZvvs/B4yU6o8G
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-As you might know the promoter plugin can use OCF agents, which are used
-by specifying "ocf:$vendor:$agent name kwargs" in the "start = []" list of the
-services. The regex used was too strict and did not work if the agent
-had a '-' in it for example (it was class [[:word:]]).
+Dear DRBD on PVE users,
 
-The feature in this release is that one can auto-reload the daemon on
-new configuration snippets. Usually a drbd-reactor setup is pretty
-static, one uses the Prometheus plugin and 1, 2 pet DRBD resources that
-are made highly available with the promoter plugin, like the LINSTOR
-controller DB. In this case users use 'drbd-reactorctl edit ...' and it
-does the daemon reloading for them. But we are also using drbd-reactor
-in future versions of linstor-gateway (removing the dependency on
-pacemaker) and in LINSTOR vSAN. These are more dynamic and highly
-available iscsi/nfs targets are created dynamically by the users. Long
-story short, in these setups it would be nice to just drop (or remove) a
-configuration snippet to /etc/drbd-reactor.d/ and the rest is handled
-automatically. And that is the feature. We now ship
-drbd-reactor-reload.{path,service} in the example/ directory. One can
-copy these to for example /etc/systemd/system and 'systemctl enable
---now drbd-reactor-reload.path' (the .service gets triggered by the path
-unit, don't enable it). drbd-reactorctl was made aware of that and only
-restarts/reloads drbd-reactor if necessary (i.e., not done by the path
-unit) to avoid unnecessary reloads. Usually, users still just want to
-use drbd-reactorctl which does the right thing (tm) without automatic
-reloading, but if you are in a more dynamic situation you now know that
-automatic reloading is possible.
+this is version 5.2.1 of linstor-proxmox. pve-storage changed its APIVER
+to 9 and also reset its APIAGE. The plugin should not be affected by
+these changes, but we still have to flag APIVER 9 as supported. This is
+exactly what this release does.
 
-GIT: https://github.com/LINBIT/drbd-reactor/releases/tag/v0.4.2
-TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-reactor-0.4.2.tar.gz
-PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+A note on PVE7: If you install/upgrade to PVE7, you obviously need to
+change the repo in /etc/apt/sources.list.d/linbit.list as well.
+Otherwise you end up with Python components (i.e, linstor-client and
+friends) not compatible with the Python version on PVE7. By "pure luck",
+the Perl and Java components should work. And now the bad news: we
+currently don't have a public 'proxmox-7' repository, but that should
+happen today/tomorrow. Please check [1] before you switch to PVE7.
 
-Regards, rck
+With this release and the hopefully soon to show up proxmox-7 repo we
+should be ready for PVE7.
 
-Changelog:
-[ Rene Peinthor ]
-* gitlab: add coverage report and use prebuilt image
+TGZ: https://pkg.linbit.com//downloads/connectors/linstor-proxmox-5.2.1.tar.gz
+GIT: https://github.com/LINBIT/linstor-proxmox/releases/tag/v5.2.1
 
-[ Roland Kammerer ]
-* promoter: fix ocf regex
-* ctl: use tempfile not in snippets
-* core,ctl: add autoload
+Changes:
+* APIVER: 9
+
+[1] https://packages.linbit.com/proxmox/dists/
+
+--k1lZvvs/B4yU6o8G
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmECYIIACgkQRgmezyI6
+myKYEgf/dKjOEbWQiZ87gLlM7FvjGHqbbS59OopJb6F1CPY2bGQ9c5at14+h6b1l
+N9fHel2j/addEso00LN9QpFCzW4L1uinZN4X6dyq45shc7NanWqSWh60SDo0ufdI
+apOtrnb1ucFUiFo87rnKkQhYyZsxIT7F0qcBcaJaDGh7fmH5pZImrL+V/DRqwkRL
+VFLO1l73DkS4lutIzquFwqvYPcPihFKjeejO0PYRW4g0qKwij2Am+wOBW3o4CSsE
+0cFZnySp7LrrDePdFa49PXDAJ/g4EqCSUf5LRrHQeYF3hnAtP8Dgvf6bl4llEHma
+WdNLqLpfGJR8K5Ou7soTvpSe5saz8Q==
+=9z+I
+-----END PGP SIGNATURE-----
+
+--k1lZvvs/B4yU6o8G--
