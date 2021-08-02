@@ -1,21 +1,13 @@
-Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com
-	[209.85.128.41])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 977B342060D
-	for <drbd-announce@lists.linbit.com>;
-	Mon,  2 Aug 2021 14:58:36 +0200 (CEST)
-Received: by mail-wm1-f41.google.com with SMTP id k4so10357435wms.3
-	for <drbd-announce@lists.linbit.com>;
-	Mon, 02 Aug 2021 05:58:36 -0700 (PDT)
-Date: Mon, 2 Aug 2021 14:58:35 +0200
-From: Roland Kammerer <roland.kammerer@linbit.com>
-To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Message-ID: <20210802125834.GO1404@rck.sh>
+Return-Path: <johannes@johannesthoma.com>
+To: "drbd-user@lists.linbit.com" <drbd-user@lists.linbit.com>,
+	drbd-announce@lists.linbit.com
+From: Johannes Thoma <johannes@johannesthoma.com>
+Message-ID: <90e9097f-5ba3-06f4-df1e-1ac7789d468d@johannesthoma.com>
+Date: Mon, 2 Aug 2021 19:33:36 +0200
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="yVhtmJPUSI46BTXb"
-Content-Disposition: inline
-Subject: [DRBD-announce] drbd-reactor v0.4.3
+Content-Type: multipart/alternative;
+	boundary="------------3A8E5FEB19C1E659B138EE33"
+Subject: [DRBD-announce] WinDRBD 1.0.0-rc13 released
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -27,60 +19,79 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
+This is a multi-part message in MIME format.
+--------------3A8E5FEB19C1E659B138EE33
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
---yVhtmJPUSI46BTXb
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Dear WinDRBD and DRBD users,
 
-Dear DRBD users,
+We are happy to announce another -rc of WinDRBD. The past 2-3
+months I have spent a lot of time fixing bugs uncovered by driver
+verifier. Driver verifier is enabled when running tests via
+the Windows Hardware Lab Kit (HLK) which in turn is required to
+obtain a certificate for loading the WinDRBD driver on
+SecureBoot enabled machines.
 
-this is version 0.4.3 of drbd-reactor which fixes some smaller bugs in
-the promoter plugin:
+The other change is an upgrade to DRBD 9.0.29 which fixes some
+subtile bugs inside the DRBD engine.
 
-- OCF arguments are now split like shell words, and not just by white
-  space. This allows arguments such as k=3D"value with spaces".
-- drbd-promote template got fixed for multi-volume resources.
-- use of drbd-service-shim.sh (requires newest 9.18.2 utils) for
-  drbd-promote override. This fixes SELinux shitting its pants.
+As always an installable image (not yet SecureBoot enabled) can
+be downloaded from the Linbit Homepage:
 
-If you don't use OCF agents, don't have multi volume resources, and
-don't have SELinux enabled, you don't need to updated immediately,
-otherwise you should.
+https://www.linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/
 
-Regards, rck
+Again all sorts of feedback is highly apreciated. Also if you
+plan to use WinDRBD (now or later) in production environments
+it is highly recommended to talk to Linbit (sales@linbit.com)
+about various options of support contracts. This makes it easier
+for us to assist you with WinDRBD in case there are problems or
+other sorts of requests (like feature requests).
 
-GIT: https://github.com/LINBIT/drbd-reactor/commit/8dd830703ed45f51b0c28b56=
-4d013e56199e00b8
-TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-reactor-0.4.3.tar.gz
-PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+Best regards,
 
-Changes:
-[ Roland Kammerer ]
-* debian: add source/format
-* doc: add snippets dir to FILES
-* README.md: add info about autoload
-* ctl: add .flake8
-* promoter: use drbd-service-shim.sh
+- Johannes
 
-[ Moritz "WanzenBug" Wanzenb=F6ck ]
-* pkgs: create /etc/drbd-reactor.d from deb/rpm
-* promoter: split ocf args using shell word splitting
-* promoter: fix drbd-promote template in multi-volume scenario
 
---yVhtmJPUSI46BTXb
-Content-Type: application/pgp-signature; name="signature.asc"
+--------------3A8E5FEB19C1E659B138EE33
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: 7bit
 
------BEGIN PGP SIGNATURE-----
+<html>
+  <head>
 
-iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmEH6/YACgkQRgmezyI6
-myKllgf/ZR3yu1HJBfKvhrldEZdgp8c+Kqy4k+Gju+0ewiT4eCiXQsUQAOm0GzMk
-Eh6wyE+NpMkscMBbVRvxpb6g0O+Ii3IYpqMN61HheZGEwdHLBpYgp58GYlk9fbJq
-ZsPI18s1mwy/52Xw1GcVY9AdEOQtjQPqOfs3m9gg69qZCHH74rvOJgyEWXVSa8JP
-ZFlAgJFxT3o7SYUvy4kAE+W7WmuGRiaDsFSXnyAyXQ2vJIOA6PZ5PGZfFZX8js46
-Ra+tlHiRGhyoxtxNN534wmp+XHFhATBAI1cuA3vk68+612hgDxhDXvWoIfWOQcUA
-eD+9WFpc0bteDyWpGr1enzuCgxIKCA==
-=vjST
------END PGP SIGNATURE-----
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    Dear WinDRBD and DRBD users,<br>
+    <br>
+    We are happy to announce another -rc of WinDRBD. The past 2-3<br>
+    months I have spent a lot of time fixing bugs uncovered by driver<br>
+    verifier. Driver verifier is enabled when running tests via<br>
+    the Windows Hardware Lab Kit (HLK) which in turn is required to<br>
+    obtain a certificate for loading the WinDRBD driver on<br>
+    SecureBoot enabled machines.<br>
+    <br>
+    The other change is an upgrade to DRBD 9.0.29 which fixes some<br>
+    subtile bugs inside the DRBD engine.<br>
+    <br>
+    As always an installable image (not yet SecureBoot enabled) can<br>
+    be downloaded from the Linbit Homepage:<br>
+    <br>
+<a class="moz-txt-link-freetext" href="https://www.linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/">https://www.linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/</a><br>
+    <br>
+    Again all sorts of feedback is highly apreciated. Also if you<br>
+    plan to use WinDRBD (now or later) in production environments<br>
+    it is highly recommended to talk to Linbit (<a class="moz-txt-link-abbreviated" href="mailto:sales@linbit.com">sales@linbit.com</a>)<br>
+    about various options of support contracts. This makes it easier<br>
+    for us to assist you with WinDRBD in case there are problems or<br>
+    other sorts of requests (like feature requests).<br>
+    <br>
+    Best regards,<br>
+    <br>
+    - Johannes<br>
+    <br>
+  </body>
+</html>
 
---yVhtmJPUSI46BTXb--
+--------------3A8E5FEB19C1E659B138EE33--
