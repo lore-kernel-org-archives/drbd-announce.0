@@ -1,13 +1,19 @@
-Return-Path: <johannes@johannesthoma.com>
-To: "drbd-user@lists.linbit.com" <drbd-user@lists.linbit.com>,
-	drbd-announce@lists.linbit.com
-From: Johannes Thoma <johannes@johannesthoma.com>
-Message-ID: <90e9097f-5ba3-06f4-df1e-1ac7789d468d@johannesthoma.com>
-Date: Mon, 2 Aug 2021 19:33:36 +0200
+Return-Path: <rene.peinthor@linbit.com>
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com
+	[209.85.218.48])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id E492A4203B1
+	for <drbd-announce@lists.linbit.com>;
+	Tue,  3 Aug 2021 14:51:39 +0200 (CEST)
+Received: by mail-ej1-f48.google.com with SMTP id e19so36201814ejs.9
+	for <drbd-announce@lists.linbit.com>;
+	Tue, 03 Aug 2021 05:51:39 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/alternative;
-	boundary="------------3A8E5FEB19C1E659B138EE33"
-Subject: [DRBD-announce] WinDRBD 1.0.0-rc13 released
+From: Rene Peinthor <rene.peinthor@linbit.com>
+Date: Tue, 3 Aug 2021 14:51:28 +0200
+Message-ID: <CAHmn2DPcKFbq=UE=3VAO0g6CURZdKGQX7nSJEY=QYM-MA2_zMA@mail.gmail.com>
+To: drbd-announce@lists.linbit.com, drbd-user <drbd-user@lists.linbit.com>
+Content-Type: multipart/alternative; boundary="00000000000097343d05c8a725ab"
+Subject: [DRBD-announce] linstor-server 1.14.0 release
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -19,79 +25,52 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-This is a multi-part message in MIME format.
---------------3A8E5FEB19C1E659B138EE33
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
+--00000000000097343d05c8a725ab
+Content-Type: text/plain; charset="UTF-8"
 
-Dear WinDRBD and DRBD users,
+Hi!
 
-We are happy to announce another -rc of WinDRBD. The past 2-3
-months I have spent a lot of time fixing bugs uncovered by driver
-verifier. Driver verifier is enabled when running tests via
-the Windows Hardware Lab Kit (HLK) which in turn is required to
-obtain a certificate for loading the WinDRBD driver on
-SecureBoot enabled machines.
+Here is the final release of 1.14.0 with a few more bug fixes added.
 
-The other change is an upgrade to DRBD 9.0.29 which fixes some
-subtile bugs inside the DRBD engine.
+linstor-server 1.14.0
+---------------------
+ * Add remote SPDK support
+ * Fix migratedisk without body content
+ * Fix toggledisk reuse node-ids
+ * Fix autosnapshotshipping only work once
+ * Fix toggledisk missing layerstack bug
+ * Fix BCache trying to register too often
+ * Fix Luks resize with newer cryptosetup versions
+ * API-Version 1.9.0
 
-As always an installable image (not yet SecureBoot enabled) can
-be downloaded from the Linbit Homepage:
-
-https://www.linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/
-
-Again all sorts of feedback is highly apreciated. Also if you
-plan to use WinDRBD (now or later) in production environments
-it is highly recommended to talk to Linbit (sales@linbit.com)
-about various options of support contracts. This makes it easier
-for us to assist you with WinDRBD in case there are problems or
-other sorts of requests (like feature requests).
-
-Best regards,
-
-- Johannes
+https://pkg.linbit.com//downloads/linstor/linstor-server-1.14.0.tar.gz
 
 
---------------3A8E5FEB19C1E659B138EE33
-Content-Type: text/html; charset=utf-8
-Content-Transfer-Encoding: 7bit
+Linstor PPA:
+https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
-<html>
-  <head>
+Cheers,
+Rene
 
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    Dear WinDRBD and DRBD users,<br>
-    <br>
-    We are happy to announce another -rc of WinDRBD. The past 2-3<br>
-    months I have spent a lot of time fixing bugs uncovered by driver<br>
-    verifier. Driver verifier is enabled when running tests via<br>
-    the Windows Hardware Lab Kit (HLK) which in turn is required to<br>
-    obtain a certificate for loading the WinDRBD driver on<br>
-    SecureBoot enabled machines.<br>
-    <br>
-    The other change is an upgrade to DRBD 9.0.29 which fixes some<br>
-    subtile bugs inside the DRBD engine.<br>
-    <br>
-    As always an installable image (not yet SecureBoot enabled) can<br>
-    be downloaded from the Linbit Homepage:<br>
-    <br>
-<a class="moz-txt-link-freetext" href="https://www.linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/">https://www.linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/</a><br>
-    <br>
-    Again all sorts of feedback is highly apreciated. Also if you<br>
-    plan to use WinDRBD (now or later) in production environments<br>
-    it is highly recommended to talk to Linbit (<a class="moz-txt-link-abbreviated" href="mailto:sales@linbit.com">sales@linbit.com</a>)<br>
-    about various options of support contracts. This makes it easier<br>
-    for us to assist you with WinDRBD in case there are problems or<br>
-    other sorts of requests (like feature requests).<br>
-    <br>
-    Best regards,<br>
-    <br>
-    - Johannes<br>
-    <br>
-  </body>
-</html>
+--00000000000097343d05c8a725ab
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
---------------3A8E5FEB19C1E659B138EE33--
+<div dir=3D"ltr"><div>Hi!</div><div><br></div><div>Here is the final releas=
+e of 1.14.0 with a few more bug fixes added.</div><div><br></div><div><font=
+ face=3D"monospace">linstor-server 1.14.0<br>---------------------<br>=C2=
+=A0* Add remote SPDK support<br>=C2=A0* Fix migratedisk without body conten=
+t<br>=C2=A0* Fix toggledisk reuse node-ids<br>=C2=A0* Fix autosnapshotshipp=
+ing only work once<br>=C2=A0* Fix toggledisk missing layerstack bug<br>=C2=
+=A0* Fix BCache trying to register too often<br>=C2=A0* Fix Luks resize wit=
+h newer cryptosetup versions<br>=C2=A0* API-Version 1.9.0</font><br></div><=
+div><br></div><div><a href=3D"https://pkg.linbit.com//downloads/linstor/lin=
+stor-server-1.14.0.tar.gz" target=3D"_blank">https://pkg.linbit.com//downlo=
+ads/linstor/linstor-server-1.14.0.tar.gz</a><br></div><div><br></div><div><=
+br></div><div><div><div><div>Linstor PPA:<br><a href=3D"https://launchpad.n=
+et/~linbit/+archive/ubuntu/linbit-drbd9-stack" rel=3D"noreferrer" target=3D=
+"_blank">https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack</=
+a></div></div><div><br></div><div>Cheers,<br></div><div>Rene</div></div></d=
+iv></div>
+
+--00000000000097343d05c8a725ab--
