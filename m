@@ -1,21 +1,19 @@
-Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com
-	[209.85.221.50])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id A20394203EF
+Return-Path: <rene.peinthor@linbit.com>
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com
+	[209.85.218.41])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id B908342003F
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 10 Aug 2021 09:25:03 +0200 (CEST)
-Received: by mail-wr1-f50.google.com with SMTP id q11so6698254wrr.9
+	Fri, 27 Aug 2021 13:40:07 +0200 (CEST)
+Received: by mail-ej1-f41.google.com with SMTP id bt14so13194978ejb.3
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 10 Aug 2021 00:25:03 -0700 (PDT)
-Date: Tue, 10 Aug 2021 09:25:01 +0200
-From: Roland Kammerer <roland.kammerer@linbit.com>
-To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Message-ID: <20210810072501.GP1404@rck.sh>
+	Fri, 27 Aug 2021 04:40:07 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="x4pBfXISqBoDm8sr"
-Content-Disposition: inline
-Subject: [DRBD-announce] drbd-reactor v0.4.4
+From: Rene Peinthor <rene.peinthor@linbit.com>
+Date: Fri, 27 Aug 2021 13:39:56 +0200
+Message-ID: <CAHmn2DO=Yg=SjkSZ9nMPHbSw803gDtG+LiiXeiFpei1rv5kp_Q@mail.gmail.com>
+To: drbd-user <drbd-user@lists.linbit.com>, drbd-announce@lists.linbit.com
+Content-Type: multipart/alternative; boundary="000000000000f3769a05ca88f188"
+Subject: [DRBD-announce] python-linstor/linstor-client 1.10.0 release
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -27,77 +25,61 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
+--000000000000f3769a05ca88f188
+Content-Type: text/plain; charset="UTF-8"
 
---x4pBfXISqBoDm8sr
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+Hi,
+
+This release brings support for the new features in the linstor-server
+1.15.0-rc.1.
+
+linstor-client 1.10.0
+---------------------
+ * Add remote and backup subcommand for S3/Linstor shipping
+ * Add resource-definition clone command
+ * Fix advise autoplace tiebreaker suggestion
+ * Fix tiebreaker shown in --faulty list
+
+https://pkg.linbit.com//downloads/linstor/linstor-client-1.10.0.tar.gz
+
+python-linstor 1.10.0
+---------------------
+ * Add methods for remote and backup manipulation
+ * Add clone resource-definition and clone status method
+
+https://pkg.linbit.com//downloads/linstor/python-linstor-1.10.0.tar.gz
+
+Linstor PPA:
+https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+
+Best regards,
+Rene
+
+--000000000000f3769a05ca88f188
+Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Dear DRBD users,
+<div dir=3D"ltr">Hi,<div><br></div><div>This release brings support for the=
+ new features in the linstor-server 1.15.0-rc.1.</div><div><br></div><div><=
+font face=3D"monospace">linstor-client 1.10.0<br>---------------------<br>=
+=C2=A0* Add remote and backup subcommand for S3/Linstor shipping<br>=C2=A0*=
+ Add resource-definition clone command<br>=C2=A0* Fix advise autoplace tieb=
+reaker suggestion<br>=C2=A0* Fix tiebreaker shown in --faulty list<br></fon=
+t></div><div><br></div><div><a href=3D"https://pkg.linbit.com//downloads/li=
+nstor/linstor-client-1.10.0.tar.gz">https://pkg.linbit.com//downloads/linst=
+or/linstor-client-1.10.0.tar.gz</a><font face=3D"monospace"><br></font></di=
+v><div><font face=3D"monospace"><br></font></div><div><font face=3D"monospa=
+ce">python-linstor 1.10.0<br>---------------------<br>=C2=A0* Add methods f=
+or remote and backup manipulation</font><br></div><div><font face=3D"monosp=
+ace">=C2=A0* Add clone resource-definition and clone status method</font></=
+div><div><font face=3D"monospace"><br></font></div><div><a href=3D"https://=
+pkg.linbit.com//downloads/linstor/python-linstor-1.10.0.tar.gz">https://pkg=
+.linbit.com//downloads/linstor/python-linstor-1.10.0.tar.gz</a><font face=
+=3D"monospace"><br></font></div><div><font face=3D"monospace"><br></font></=
+div><div><div>Linstor PPA:<br></div><div><div><a href=3D"https://launchpad.=
+net/~linbit/+archive/ubuntu/linbit-drbd9-stack" rel=3D"noreferrer" target=
+=3D"_blank">https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stac=
+k</a><br></div><div><br></div><div>Best regards,</div><div>Rene</div></div>=
+</div></div>
 
-this is version 0.4.4 of drbd-reactor. It fixes a corner case in the
-promoter plugin where preferring nodes with a favorable disk state did
-not always work. This corner case is triggered by linstor-gateway, so
-this deserves a bugfix release on its own.
-
-Details:
-On switch/fail over we want to prefer nodes with a good disk state
-(e.g., promote an UpToDate instead of a Diskless node). This is done by
-checking the DRBD state of all disks in a resource and sleeping just a
-bit on "bad nodes", so that "good nodes" win the race to promote the
-DRBD device.
-
-On drbd-reactor service reload (something linstor-gateway does when it
-adds new resources), we have to provide the current resource state to the
-newly added promoter plugin handling that new linstor-gateway resource.
-On reload drbd-reactor just pauses 'drbdsetup events2' processing, sends
-the new plugin the current resource state in a similar way how it would
-have looked like when events2 resources would have occurred and then
-continues with normal events2 processing. In this case we first told the
-plugin that the resource exists and that it may be promoted. Both
-information is in the same message. The plugin got that information (may
-promote) and started its usual cycle. It did try to check the disk
-states, but so far we did not even send any disk states. Therefor it did
-not wait and promoted immediately. As drbd-reactor is the instance to
-serialize DRBD state, the fix was easy: first tell the plugin the
-resource exists without setting may-promote, then send the rest
-(including disk states) and then an "update" that has may-promote set
-according to the current/actual state.
-
-Funny enough this is also how plain events2 looks like if the resource
-is already up. Then the first "resource exists" message also already
-sets may-promote before it sent the rest of the information (disk,
-peer-disk, connection states). That is how events2 works, it is a simple
-protocol without transactions, but there is now code in drbd-reactor to
-handle such situations.
-
-Regards, rck
-
-Changes:
-[ Roland Kammerer ]
-* build: rename build Dockerfiles
-* promoter: handle sleep for "cold boot" if res exists
-
-[ Moritz "WanzenBug" Wanzenb=F6ck ]
-* ensure reload updates don't trigger promoter early
-
-GIT: https://github.com/LINBIT/drbd-reactor/releases/tag/v0.4.4
-TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-reactor-0.4.4.tar.gz
-PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
-
---x4pBfXISqBoDm8sr
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmESKcgACgkQRgmezyI6
-myIsXggAhCQ9o65YlMgRHcCaCMMCjko2PepDmQD31tOW9CiQSgl+jTjkFogCpaE7
-U61e/nKUO8Xj0cYhX58zd78J1RAQYvy5BtFszY7EzaHZHMU5D+VgbCI1gUfANFfq
-jzRRGo0aAPEBp1c6+HhrIeAtSePncBKOi7wsjdX0TdNEJUdGy0SzS0Itu4F+D0IW
-01XlcqhW91yIVeDd+zSx4XaXuuFF6D9sDV7Gtb2PakTi5wswlCK6DgLJiLY/sGfy
-19emb46EtvKi0nPY13ivyUSZm8DiC9Wrpg3OfT1+gQtlKNjTtkkMn/pjCJZt8DBW
-8fODfe3YHf0Cv0NOI0Nb9F2imj+FDw==
-=2a+D
------END PGP SIGNATURE-----
-
---x4pBfXISqBoDm8sr--
+--000000000000f3769a05ca88f188--
