@@ -1,19 +1,19 @@
 Return-Path: <rene.peinthor@linbit.com>
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com
-	[209.85.218.41])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id B908342003F
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com
+	[209.85.208.45])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 5B1124202D8
 	for <drbd-announce@lists.linbit.com>;
-	Fri, 27 Aug 2021 13:40:07 +0200 (CEST)
-Received: by mail-ej1-f41.google.com with SMTP id bt14so13194978ejb.3
+	Fri, 27 Aug 2021 13:40:09 +0200 (CEST)
+Received: by mail-ed1-f45.google.com with SMTP id z10so9435891edb.6
 	for <drbd-announce@lists.linbit.com>;
-	Fri, 27 Aug 2021 04:40:07 -0700 (PDT)
+	Fri, 27 Aug 2021 04:40:09 -0700 (PDT)
 MIME-Version: 1.0
 From: Rene Peinthor <rene.peinthor@linbit.com>
-Date: Fri, 27 Aug 2021 13:39:56 +0200
-Message-ID: <CAHmn2DO=Yg=SjkSZ9nMPHbSw803gDtG+LiiXeiFpei1rv5kp_Q@mail.gmail.com>
+Date: Fri, 27 Aug 2021 13:39:58 +0200
+Message-ID: <CAHmn2DNHgZPvTz8LgigX6i=-CR0oaY9uNmrKbDAX+XVnZ1=Ugw@mail.gmail.com>
 To: drbd-user <drbd-user@lists.linbit.com>, drbd-announce@lists.linbit.com
-Content-Type: multipart/alternative; boundary="000000000000f3769a05ca88f188"
-Subject: [DRBD-announce] python-linstor/linstor-client 1.10.0 release
+Content-Type: multipart/alternative; boundary="0000000000000d0b7205ca88f26e"
+Subject: [DRBD-announce] linstor-server release candidate 1.15.0-rc.1
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -25,61 +25,70 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
---000000000000f3769a05ca88f188
+--0000000000000d0b7205ca88f26e
 Content-Type: text/plain; charset="UTF-8"
 
-Hi,
+Hi!
 
-This release brings support for the new features in the linstor-server
-1.15.0-rc.1.
+This release candidate is packed with 3 new features that need some
+testing, before we call it final.
 
-linstor-client 1.10.0
----------------------
- * Add remote and backup subcommand for S3/Linstor shipping
- * Add resource-definition clone command
- * Fix advise autoplace tiebreaker suggestion
- * Fix tiebreaker shown in --faulty list
+First we added backup(snapshot) shipping to Amazon S3 (or compatible
+storage providers. e.g. minio) and additionally to that, also snapshot
+shipping to another separate Linstor cluster.
 
-https://pkg.linbit.com//downloads/linstor/linstor-client-1.10.0.tar.gz
+All commands for that are in the new 1.10.0 client release (subcommands:
+remote and backup)
 
-python-linstor 1.10.0
----------------------
- * Add methods for remote and backup manipulation
- * Add clone resource-definition and clone status method
+Another feature added is clone/copy(with data) of existing resource
+definitions, this works by creating the same resources on nodes and then
+using the best storage provider methods to also copy the data. (LVM -> dd,
+LVM-Thin -> snapshots, ZFS -> send/recv).
 
-https://pkg.linbit.com//downloads/linstor/python-linstor-1.10.0.tar.gz
+This functionality is under the resource-definition command clone.
+
+linstor-server 1.15.0.rc1
+-------------------------
+ * Added backup shipping to S3
+ * Added backup shipping to another Linstor cluster
+ * Added clone/copy resource definition
+ * API-Version 1.10.0
+
+https://pkg.linbit.com//downloads/linstor/linstor-server-1.15.0-rc.1.tar.gz
+
 
 Linstor PPA:
 https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
-Best regards,
+Cheers,
 Rene
 
---000000000000f3769a05ca88f188
+--0000000000000d0b7205ca88f26e
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr">Hi,<div><br></div><div>This release brings support for the=
- new features in the linstor-server 1.15.0-rc.1.</div><div><br></div><div><=
-font face=3D"monospace">linstor-client 1.10.0<br>---------------------<br>=
-=C2=A0* Add remote and backup subcommand for S3/Linstor shipping<br>=C2=A0*=
- Add resource-definition clone command<br>=C2=A0* Fix advise autoplace tieb=
-reaker suggestion<br>=C2=A0* Fix tiebreaker shown in --faulty list<br></fon=
-t></div><div><br></div><div><a href=3D"https://pkg.linbit.com//downloads/li=
-nstor/linstor-client-1.10.0.tar.gz">https://pkg.linbit.com//downloads/linst=
-or/linstor-client-1.10.0.tar.gz</a><font face=3D"monospace"><br></font></di=
-v><div><font face=3D"monospace"><br></font></div><div><font face=3D"monospa=
-ce">python-linstor 1.10.0<br>---------------------<br>=C2=A0* Add methods f=
-or remote and backup manipulation</font><br></div><div><font face=3D"monosp=
-ace">=C2=A0* Add clone resource-definition and clone status method</font></=
-div><div><font face=3D"monospace"><br></font></div><div><a href=3D"https://=
-pkg.linbit.com//downloads/linstor/python-linstor-1.10.0.tar.gz">https://pkg=
-.linbit.com//downloads/linstor/python-linstor-1.10.0.tar.gz</a><font face=
-=3D"monospace"><br></font></div><div><font face=3D"monospace"><br></font></=
-div><div><div>Linstor PPA:<br></div><div><div><a href=3D"https://launchpad.=
-net/~linbit/+archive/ubuntu/linbit-drbd9-stack" rel=3D"noreferrer" target=
-=3D"_blank">https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stac=
-k</a><br></div><div><br></div><div>Best regards,</div><div>Rene</div></div>=
-</div></div>
+<div dir=3D"ltr"><div>Hi!</div><div><br></div><div>This release candidate=
+=C2=A0is packed with 3 new features that need some testing, before we call =
+it final.</div><div><br></div><div>First we added backup(snapshot) shipping=
+ to Amazon S3 (or compatible storage providers. e.g. minio) and additionall=
+y to that, also snapshot shipping to another separate Linstor cluster.</div=
+><div><br></div><div>All commands for that are in the new 1.10.0 client rel=
+ease (subcommands: remote and backup)</div><div><br></div><div>Another feat=
+ure added is clone/copy(with data) of existing resource definitions, this w=
+orks by creating the same resources on nodes and then using the best storag=
+e provider methods to also copy the data. (LVM -&gt; dd, LVM-Thin -&gt; sna=
+pshots, ZFS -&gt; send/recv).</div><div><br></div><div>This functionality i=
+s under the resource-definition command clone.</div><div><br></div><div><fo=
+nt face=3D"monospace">linstor-server 1.15.0.rc1<br>------------------------=
+-<br>=C2=A0* Added backup shipping to S3<br>=C2=A0* Added backup shipping t=
+o another Linstor cluster<br>=C2=A0* Added clone/copy resource definition<b=
+r>=C2=A0* API-Version 1.10.0</font><br></div><div><br></div><div><a href=3D=
+"https://pkg.linbit.com//downloads/linstor/linstor-server-1.15.0-rc.1.tar.g=
+z">https://pkg.linbit.com//downloads/linstor/linstor-server-1.15.0-rc.1.tar=
+.gz</a><br></div><div><br></div><div><br></div><div><div><div><div>Linstor =
+PPA:<br><a href=3D"https://launchpad.net/~linbit/+archive/ubuntu/linbit-drb=
+d9-stack" rel=3D"noreferrer" target=3D"_blank">https://launchpad.net/~linbi=
+t/+archive/ubuntu/linbit-drbd9-stack</a></div></div><div><br></div><div>Che=
+ers,<br></div><div>Rene</div></div></div></div>
 
---000000000000f3769a05ca88f188--
+--0000000000000d0b7205ca88f26e--
