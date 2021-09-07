@@ -1,19 +1,19 @@
 Return-Path: <rene.peinthor@linbit.com>
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com
-	[209.85.218.42])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 7C82B4202D8
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com
+	[209.85.208.46])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 18DE1420621
 	for <drbd-announce@lists.linbit.com>;
-	Tue,  7 Sep 2021 16:12:33 +0200 (CEST)
-Received: by mail-ej1-f42.google.com with SMTP id e21so19925597ejz.12
+	Tue,  7 Sep 2021 16:15:55 +0200 (CEST)
+Received: by mail-ed1-f46.google.com with SMTP id g21so14149088edw.4
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 07 Sep 2021 07:12:33 -0700 (PDT)
+	Tue, 07 Sep 2021 07:15:55 -0700 (PDT)
 MIME-Version: 1.0
 From: Rene Peinthor <rene.peinthor@linbit.com>
-Date: Tue, 7 Sep 2021 16:12:22 +0200
-Message-ID: <CAHmn2DOZQpva2TrtNt3xVK=WgViNn6sZvgrHL-Z=KamECeza8g@mail.gmail.com>
+Date: Tue, 7 Sep 2021 16:15:45 +0200
+Message-ID: <CAHmn2DPeePdUhcmeUGftbv18g4noo8OKHPBFu75i9HGoe7CsEA@mail.gmail.com>
 To: drbd-user <drbd-user@lists.linbit.com>, drbd-announce@lists.linbit.com
-Content-Type: multipart/alternative; boundary="000000000000553bac05cb685bd0"
-Subject: [DRBD-announce] linstor-server release candidate 1.15.0-rc.2
+Content-Type: multipart/alternative; boundary="00000000000068e98505cb68670f"
+Subject: [DRBD-announce] python-linstor/linstor-client 1.10.1 release
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -25,51 +25,64 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
---000000000000553bac05cb685bd0
+--00000000000068e98505cb68670f
 Content-Type: text/plain; charset="UTF-8"
 
-Hi!
+Hi,
 
-Another release candidate for 1.15.0, basically contains fixes to the new
-functionality and
-additional bug fixes to auto-evict feature
+This release adds some missing 1.15.0 functionality and new parameters for
+node restore.
 
-linstor-server 1.15.0.rc2
--------------------------
- * Added backup shipping to S3
- * Added backup shipping to another Linstor cluster
- * Added clone/copy resource definition
- * Evict: do not delete last diskful
- * Evict: inactive resource instead of delete
- * API-Version 1.10.1
+linstor-client 1.10.1
+---------------------
+ * Added snapshot delete --nodes parameter
+ * Node list show optional eviction time
+ * Node restore added delete resources/snapshots options
+ * Resource group added adjust command
 
-https://pkg.linbit.com//downloads/linstor/linstor-server-1.15.0-rc.2.tar.gz
+https://pkg.linbit.com//downloads/linstor/linstor-client-1.10.1.tar.gz
 
+python-linstor 1.10.1
+---------------------
+ * Added Resource.clone()
+ * Added snapshot-delete optional node_names list
+ * Added rscgrp adjust method
+ * Added node restore delete resources/snapshots option
+ * API 1.10.1 compat
+
+https://pkg.linbit.com//downloads/linstor/python-linstor-1.10.1.tar.gz
 
 Linstor PPA:
 https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
-Cheers,
+Best regards,
 Rene
 
---000000000000553bac05cb685bd0
+--00000000000068e98505cb68670f
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr"><div>Hi!</div><div><br></div><div>Another release candidat=
-e for 1.15.0, basically contains fixes to the new functionality=C2=A0and</d=
-iv><div>additional bug fixes to auto-evict feature</div><div><br></div><div=
-><font face=3D"monospace">linstor-server 1.15.0.rc2<br>--------------------=
------<br>=C2=A0* Added backup shipping to S3<br>=C2=A0* Added backup shippi=
-ng to another Linstor cluster<br>=C2=A0* Added clone/copy resource definiti=
-on<br>=C2=A0* Evict: do not delete last diskful<br>=C2=A0* Evict: inactive =
-resource instead of delete<br>=C2=A0* API-Version 1.10.1</font><br></div><d=
-iv><br></div><div><a href=3D"https://pkg.linbit.com//downloads/linstor/lins=
-tor-server-1.15.0-rc.2.tar.gz">https://pkg.linbit.com//downloads/linstor/li=
-nstor-server-1.15.0-rc.2.tar.gz</a><br></div><div><br></div><div><br></div>=
-<div><div><div><div>Linstor PPA:<br><a href=3D"https://launchpad.net/~linbi=
-t/+archive/ubuntu/linbit-drbd9-stack" rel=3D"noreferrer" target=3D"_blank">=
-https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack</a></div><=
-/div><div><br></div><div>Cheers,<br></div><div>Rene</div></div></div></div>
+<div dir=3D"ltr">Hi,<div><br></div><div>This release adds some missing 1.15=
+.0 functionality and new parameters for node restore.</div><div><br></div><=
+div><font face=3D"monospace">linstor-client 1.10.1<br>---------------------=
+<br>=C2=A0* Added snapshot delete --nodes parameter<br>=C2=A0* Node list sh=
+ow optional eviction time<br>=C2=A0* Node restore added delete resources/sn=
+apshots options<br>=C2=A0* Resource group added adjust command<br></font></=
+div><div><br></div><div><a href=3D"https://pkg.linbit.com//downloads/linsto=
+r/linstor-client-1.10.1.tar.gz">https://pkg.linbit.com//downloads/linstor/l=
+instor-client-1.10.1.tar.gz</a><font face=3D"monospace"><br></font></div><d=
+iv><font face=3D"monospace"><br></font></div><div><font face=3D"monospace">=
+python-linstor 1.10.1<br>---------------------<br>=C2=A0* Added Resource.cl=
+one()<br>=C2=A0* Added snapshot-delete optional node_names list<br>=C2=A0* =
+Added rscgrp adjust method<br>=C2=A0* Added node restore delete resources/s=
+napshots option<br>=C2=A0* API 1.10.1 compat</font><br></div><div><font fac=
+e=3D"monospace"><br></font></div><div><a href=3D"https://pkg.linbit.com//do=
+wnloads/linstor/python-linstor-1.10.1.tar.gz">https://pkg.linbit.com//downl=
+oads/linstor/python-linstor-1.10.1.tar.gz</a><font face=3D"monospace"><br><=
+/font></div><div><font face=3D"monospace"><br></font></div><div><div>Linsto=
+r PPA:<br></div><div><div><a href=3D"https://launchpad.net/~linbit/+archive=
+/ubuntu/linbit-drbd9-stack" rel=3D"noreferrer" target=3D"_blank">https://la=
+unchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack</a><br></div><div><b=
+r></div><div>Best regards,</div><div>Rene</div></div></div></div>
 
---000000000000553bac05cb685bd0--
+--00000000000068e98505cb68670f--
