@@ -1,19 +1,26 @@
-Return-Path: <rene.peinthor@linbit.com>
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com
-	[209.85.208.46])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 18DE1420621
+Return-Path: <johannes.thoma@linbit.com>
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com
+	[209.85.221.48])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 8CD984205DC
 	for <drbd-announce@lists.linbit.com>;
-	Tue,  7 Sep 2021 16:15:55 +0200 (CEST)
-Received: by mail-ed1-f46.google.com with SMTP id g21so14149088edw.4
+	Thu, 16 Sep 2021 14:31:06 +0200 (CEST)
+Received: by mail-wr1-f48.google.com with SMTP id i23so9248302wrb.2
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 07 Sep 2021 07:15:55 -0700 (PDT)
+	Thu, 16 Sep 2021 05:31:06 -0700 (PDT)
+Received: from johannes-air.local ([2001:858:107:1:98f:d5b5:b413:d80c])
+	by smtp.gmail.com with ESMTPSA id
+	g13sm2914196wmh.20.2021.09.16.05.31.04
+	for <drbd-announce@lists.linbit.com>
+	(version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+	Thu, 16 Sep 2021 05:31:05 -0700 (PDT)
+To: drbd-announce@lists.linbit.com
+From: Johannes Thoma <johannes.thoma@linbit.com>
+Message-ID: <dc3b5c9b-9b1f-e58b-2b7e-8e0119e46fe6@linbit.com>
+Date: Thu, 16 Sep 2021 14:31:04 +0200
 MIME-Version: 1.0
-From: Rene Peinthor <rene.peinthor@linbit.com>
-Date: Tue, 7 Sep 2021 16:15:45 +0200
-Message-ID: <CAHmn2DPeePdUhcmeUGftbv18g4noo8OKHPBFu75i9HGoe7CsEA@mail.gmail.com>
-To: drbd-user <drbd-user@lists.linbit.com>, drbd-announce@lists.linbit.com
-Content-Type: multipart/alternative; boundary="00000000000068e98505cb68670f"
-Subject: [DRBD-announce] python-linstor/linstor-client 1.10.1 release
+Content-Type: multipart/alternative;
+	boundary="------------31922AD4DC4C65C933AE6DF1"
+Subject: [DRBD-announce] WinDRBD 1.0.0-rc14 released
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -25,64 +32,66 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
---00000000000068e98505cb68670f
-Content-Type: text/plain; charset="UTF-8"
+This is a multi-part message in MIME format.
+--------------31922AD4DC4C65C933AE6DF1
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi,
+Dear WinDRBD and DRBD users,
 
-This release adds some missing 1.15.0 functionality and new parameters for
-node restore.
+This is a small update of WinDRBD. It now supports writing to the Windows
+Event Log (see the windrbd utility's help text). Also more parts of CygWin
+come along with the EXE installer (sed, simple bash, ..) so that running
+truck based replication should be possible now without having to install
+a whole cygwin installaion. This also makes the installer a little bit larger
+(still just about 3.4 MB).
 
-linstor-client 1.10.1
----------------------
- * Added snapshot delete --nodes parameter
- * Node list show optional eviction time
- * Node restore added delete resources/snapshots options
- * Resource group added adjust command
+As always, a downloadable EXE can be downloaded from the Linbit download
+site:
 
-https://pkg.linbit.com//downloads/linstor/linstor-client-1.10.1.tar.gz
-
-python-linstor 1.10.1
----------------------
- * Added Resource.clone()
- * Added snapshot-delete optional node_names list
- * Added rscgrp adjust method
- * Added node restore delete resources/snapshots option
- * API 1.10.1 compat
-
-https://pkg.linbit.com//downloads/linstor/python-linstor-1.10.1.tar.gz
-
-Linstor PPA:
-https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/
 
 Best regards,
-Rene
 
---00000000000068e98505cb68670f
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+- Johannes
 
-<div dir=3D"ltr">Hi,<div><br></div><div>This release adds some missing 1.15=
-.0 functionality and new parameters for node restore.</div><div><br></div><=
-div><font face=3D"monospace">linstor-client 1.10.1<br>---------------------=
-<br>=C2=A0* Added snapshot delete --nodes parameter<br>=C2=A0* Node list sh=
-ow optional eviction time<br>=C2=A0* Node restore added delete resources/sn=
-apshots options<br>=C2=A0* Resource group added adjust command<br></font></=
-div><div><br></div><div><a href=3D"https://pkg.linbit.com//downloads/linsto=
-r/linstor-client-1.10.1.tar.gz">https://pkg.linbit.com//downloads/linstor/l=
-instor-client-1.10.1.tar.gz</a><font face=3D"monospace"><br></font></div><d=
-iv><font face=3D"monospace"><br></font></div><div><font face=3D"monospace">=
-python-linstor 1.10.1<br>---------------------<br>=C2=A0* Added Resource.cl=
-one()<br>=C2=A0* Added snapshot-delete optional node_names list<br>=C2=A0* =
-Added rscgrp adjust method<br>=C2=A0* Added node restore delete resources/s=
-napshots option<br>=C2=A0* API 1.10.1 compat</font><br></div><div><font fac=
-e=3D"monospace"><br></font></div><div><a href=3D"https://pkg.linbit.com//do=
-wnloads/linstor/python-linstor-1.10.1.tar.gz">https://pkg.linbit.com//downl=
-oads/linstor/python-linstor-1.10.1.tar.gz</a><font face=3D"monospace"><br><=
-/font></div><div><font face=3D"monospace"><br></font></div><div><div>Linsto=
-r PPA:<br></div><div><div><a href=3D"https://launchpad.net/~linbit/+archive=
-/ubuntu/linbit-drbd9-stack" rel=3D"noreferrer" target=3D"_blank">https://la=
-unchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack</a><br></div><div><b=
-r></div><div>Best regards,</div><div>Rene</div></div></div></div>
+--------------31922AD4DC4C65C933AE6DF1
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: 7bit
 
---00000000000068e98505cb68670f--
+<html>
+  <head>
+
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <div class="moz-text-html" lang="x-unicode"> Dear WinDRBD and DRBD
+      users,<br>
+      <br>
+      This is a small update of WinDRBD. It now supports writing to the
+      Windows<br>
+      Event Log (see the windrbd utility's help text). Also more parts
+      of CygWin<br>
+      come along with the EXE installer (sed, simple bash, ..) so that
+      running<br>
+      truck based replication should be possible now without having to
+      install<br>
+      a whole cygwin installaion. This also makes the installer a little
+      bit larger<br>
+      (still just about 3.4 MB).<br>
+      <br>
+      As always, a downloadable EXE can be downloaded from the Linbit
+      download<br>
+      site:<br>
+      <br>
+      <a class="moz-txt-link-freetext"
+href="https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/">https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/</a><br>
+      <br>
+      Best regards,<br>
+      <br>
+      - Johannes<br>
+    </div>
+  </body>
+</html>
+
+--------------31922AD4DC4C65C933AE6DF1--
