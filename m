@@ -1,19 +1,19 @@
 Return-Path: <rene.peinthor@linbit.com>
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com
-	[209.85.208.53])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 29D1E420004
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com
+	[209.85.208.43])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 9CD934202F6
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 23 Sep 2021 10:38:51 +0200 (CEST)
-Received: by mail-ed1-f53.google.com with SMTP id s17so2376419edd.8
+	Thu, 23 Sep 2021 10:38:53 +0200 (CEST)
+Received: by mail-ed1-f43.google.com with SMTP id c22so20415734edn.12
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 23 Sep 2021 01:38:51 -0700 (PDT)
+	Thu, 23 Sep 2021 01:38:53 -0700 (PDT)
 MIME-Version: 1.0
 From: Rene Peinthor <rene.peinthor@linbit.com>
-Date: Thu, 23 Sep 2021 10:38:41 +0200
-Message-ID: <CAHmn2DMwUdzEgHp4pXDqZDYvCXXyMWz5B_rsAP0YBY0J9oug3g@mail.gmail.com>
-To: drbd-user <drbd-user@lists.linbit.com>, drbd-announce@lists.linbit.com
-Content-Type: multipart/alternative; boundary="0000000000006da45e05cca58f0b"
-Subject: [DRBD-announce] linstor-server release 1.15.0
+Date: Thu, 23 Sep 2021 10:38:42 +0200
+Message-ID: <CAHmn2DNP9-TzEzdv18A2UQv66rcNtZ=UWh5kQ3NuOctOAWuoDQ@mail.gmail.com>
+To: drbd-announce@lists.linbit.com, drbd-user <drbd-user@lists.linbit.com>
+Content-Type: multipart/alternative; boundary="00000000000081097305cca58fe0"
+Subject: [DRBD-announce] python-linstor/linstor-client 1.10.2 release
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -25,62 +25,57 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
---0000000000006da45e05cca58f0b
+--00000000000081097305cca58fe0
 Content-Type: text/plain; charset="UTF-8"
 
-Hi!
+Hi,
 
-Here is the final release of 1.15.0, we found a few more bugs since the
-last rc.2.
-Most of them are related to the backup shipping, but also some bugs found
-in other areas.
+Adding the backup info command for the final linstor-server 1.15.0 release.
 
-
-linstor-server 1.15.0
+linstor-client 1.10.2
 ---------------------
- * Added backup shipping to S3
- * Added backup shipping to another Linstor cluster
- * Added clone/copy resource definition
- * Evict: do not delete last diskful
- * Evict: inactive resource instead of delete
- * BCache: Fix snapshot support
- * Etcd: fixed incorrect rollback/update-delete namespace
- * Drbd: do not set discard-zeroes-if-aligned on LVM
- * Satellites: force update on fullsync, fixes satellite not reacting after
-reconnects
- * API-Version 1.10.2
+ * Added backup info command
+ * Added backup --download-only option
+ * Fix a few description typos
 
-https://pkg.linbit.com//downloads/linstor/linstor-server-1.15.0.tar.gz
+https://pkg.linbit.com//downloads/linstor/linstor-client-1.10.2.tar.gz
 
+python-linstor 1.10.2
+---------------------
+ * Add backup-info methods
+ * Add backup download-only option
+ * API 1.10.2 compat
+
+https://pkg.linbit.com//downloads/linstor/python-linstor-1.10.2.tar.gz
 
 Linstor PPA:
 https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
-Cheers,
+Best regards,
 Rene
 
---0000000000006da45e05cca58f0b
+--00000000000081097305cca58fe0
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr"><div>Hi!</div><div><br></div><div>Here is the final releas=
-e of 1.15.0, we found a few more bugs since the last rc.2.</div><div>Most o=
-f them are related to the backup shipping, but also some bugs found in othe=
-r areas.</div><div><br></div><div><br></div><div><font face=3D"monospace">l=
-instor-server 1.15.0<br>---------------------<br>=C2=A0* Added backup shipp=
-ing to S3<br>=C2=A0* Added backup shipping to another Linstor cluster<br>=
-=C2=A0* Added clone/copy resource definition<br>=C2=A0* Evict: do not delet=
-e last diskful<br>=C2=A0* Evict: inactive resource instead of delete<br>=C2=
-=A0* BCache: Fix snapshot support<br>=C2=A0* Etcd: fixed incorrect rollback=
-/update-delete namespace<br>=C2=A0* Drbd: do not set discard-zeroes-if-alig=
-ned on LVM<br>=C2=A0* Satellites: force update on fullsync, fixes satellite=
- not reacting after reconnects<br>=C2=A0* API-Version 1.10.2</font><br></di=
-v><div><br></div><div><a href=3D"https://pkg.linbit.com//downloads/linstor/=
-linstor-server-1.15.0.tar.gz">https://pkg.linbit.com//downloads/linstor/lin=
-stor-server-1.15.0.tar.gz</a><br></div><div><br></div><div><br></div><div><=
-div><div><div>Linstor PPA:<br><a href=3D"https://launchpad.net/~linbit/+arc=
-hive/ubuntu/linbit-drbd9-stack" rel=3D"noreferrer" target=3D"_blank">https:=
-//launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack</a></div></div><=
-div><br></div><div>Cheers,<br></div><div>Rene</div></div></div></div>
+<div dir=3D"ltr">Hi,<div><br></div><div>Adding the backup info command for =
+the final linstor-server 1.15.0 release.</div><div><br></div><div><font fac=
+e=3D"monospace">linstor-client 1.10.2<br>---------------------<br>=C2=A0* A=
+dded backup info command<br>=C2=A0* Added backup --download-only option<br>=
+=C2=A0* Fix a few description typos<br></font></div><div><br></div><div><a =
+href=3D"https://pkg.linbit.com//downloads/linstor/linstor-client-1.10.2.tar=
+.gz">https://pkg.linbit.com//downloads/linstor/linstor-client-1.10.2.tar.gz=
+</a><font face=3D"monospace"><br></font></div><div><font face=3D"monospace"=
+><br></font></div><div><font face=3D"monospace">python-linstor 1.10.2<br>--=
+-------------------<br>=C2=A0* Add backup-info methods<br>=C2=A0* Add backu=
+p download-only option<br>=C2=A0* API 1.10.2 compat</font><br></div><div><f=
+ont face=3D"monospace"><br></font></div><div><a href=3D"https://pkg.linbit.=
+com//downloads/linstor/python-linstor-1.10.2.tar.gz">https://pkg.linbit.com=
+//downloads/linstor/python-linstor-1.10.2.tar.gz</a><font face=3D"monospace=
+"><br></font></div><div><font face=3D"monospace"><br></font></div><div><div=
+>Linstor PPA:<br></div><div><div><a href=3D"https://launchpad.net/~linbit/+=
+archive/ubuntu/linbit-drbd9-stack" rel=3D"noreferrer" target=3D"_blank">htt=
+ps://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack</a><br></div>=
+<div><br></div><div>Best regards,</div><div>Rene</div></div></div></div>
 
---0000000000006da45e05cca58f0b--
+--00000000000081097305cca58fe0--
