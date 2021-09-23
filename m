@@ -1,26 +1,19 @@
-Return-Path: <johannes.thoma@linbit.com>
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com
-	[209.85.221.48])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 8CD984205DC
+Return-Path: <rene.peinthor@linbit.com>
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com
+	[209.85.208.53])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 29D1E420004
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 16 Sep 2021 14:31:06 +0200 (CEST)
-Received: by mail-wr1-f48.google.com with SMTP id i23so9248302wrb.2
+	Thu, 23 Sep 2021 10:38:51 +0200 (CEST)
+Received: by mail-ed1-f53.google.com with SMTP id s17so2376419edd.8
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 16 Sep 2021 05:31:06 -0700 (PDT)
-Received: from johannes-air.local ([2001:858:107:1:98f:d5b5:b413:d80c])
-	by smtp.gmail.com with ESMTPSA id
-	g13sm2914196wmh.20.2021.09.16.05.31.04
-	for <drbd-announce@lists.linbit.com>
-	(version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-	Thu, 16 Sep 2021 05:31:05 -0700 (PDT)
-To: drbd-announce@lists.linbit.com
-From: Johannes Thoma <johannes.thoma@linbit.com>
-Message-ID: <dc3b5c9b-9b1f-e58b-2b7e-8e0119e46fe6@linbit.com>
-Date: Thu, 16 Sep 2021 14:31:04 +0200
+	Thu, 23 Sep 2021 01:38:51 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/alternative;
-	boundary="------------31922AD4DC4C65C933AE6DF1"
-Subject: [DRBD-announce] WinDRBD 1.0.0-rc14 released
+From: Rene Peinthor <rene.peinthor@linbit.com>
+Date: Thu, 23 Sep 2021 10:38:41 +0200
+Message-ID: <CAHmn2DMwUdzEgHp4pXDqZDYvCXXyMWz5B_rsAP0YBY0J9oug3g@mail.gmail.com>
+To: drbd-user <drbd-user@lists.linbit.com>, drbd-announce@lists.linbit.com
+Content-Type: multipart/alternative; boundary="0000000000006da45e05cca58f0b"
+Subject: [DRBD-announce] linstor-server release 1.15.0
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -32,66 +25,62 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-This is a multi-part message in MIME format.
---------------31922AD4DC4C65C933AE6DF1
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
+--0000000000006da45e05cca58f0b
+Content-Type: text/plain; charset="UTF-8"
 
-Dear WinDRBD and DRBD users,
+Hi!
 
-This is a small update of WinDRBD. It now supports writing to the Windows
-Event Log (see the windrbd utility's help text). Also more parts of CygWin
-come along with the EXE installer (sed, simple bash, ..) so that running
-truck based replication should be possible now without having to install
-a whole cygwin installaion. This also makes the installer a little bit larger
-(still just about 3.4 MB).
+Here is the final release of 1.15.0, we found a few more bugs since the
+last rc.2.
+Most of them are related to the backup shipping, but also some bugs found
+in other areas.
 
-As always, a downloadable EXE can be downloaded from the Linbit download
-site:
 
-https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/
+linstor-server 1.15.0
+---------------------
+ * Added backup shipping to S3
+ * Added backup shipping to another Linstor cluster
+ * Added clone/copy resource definition
+ * Evict: do not delete last diskful
+ * Evict: inactive resource instead of delete
+ * BCache: Fix snapshot support
+ * Etcd: fixed incorrect rollback/update-delete namespace
+ * Drbd: do not set discard-zeroes-if-aligned on LVM
+ * Satellites: force update on fullsync, fixes satellite not reacting after
+reconnects
+ * API-Version 1.10.2
 
-Best regards,
+https://pkg.linbit.com//downloads/linstor/linstor-server-1.15.0.tar.gz
 
-- Johannes
 
---------------31922AD4DC4C65C933AE6DF1
-Content-Type: text/html; charset=utf-8
-Content-Transfer-Encoding: 7bit
+Linstor PPA:
+https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
-<html>
-  <head>
+Cheers,
+Rene
 
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    <div class="moz-text-html" lang="x-unicode"> Dear WinDRBD and DRBD
-      users,<br>
-      <br>
-      This is a small update of WinDRBD. It now supports writing to the
-      Windows<br>
-      Event Log (see the windrbd utility's help text). Also more parts
-      of CygWin<br>
-      come along with the EXE installer (sed, simple bash, ..) so that
-      running<br>
-      truck based replication should be possible now without having to
-      install<br>
-      a whole cygwin installaion. This also makes the installer a little
-      bit larger<br>
-      (still just about 3.4 MB).<br>
-      <br>
-      As always, a downloadable EXE can be downloaded from the Linbit
-      download<br>
-      site:<br>
-      <br>
-      <a class="moz-txt-link-freetext"
-href="https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/">https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/</a><br>
-      <br>
-      Best regards,<br>
-      <br>
-      - Johannes<br>
-    </div>
-  </body>
-</html>
+--0000000000006da45e05cca58f0b
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
---------------31922AD4DC4C65C933AE6DF1--
+<div dir=3D"ltr"><div>Hi!</div><div><br></div><div>Here is the final releas=
+e of 1.15.0, we found a few more bugs since the last rc.2.</div><div>Most o=
+f them are related to the backup shipping, but also some bugs found in othe=
+r areas.</div><div><br></div><div><br></div><div><font face=3D"monospace">l=
+instor-server 1.15.0<br>---------------------<br>=C2=A0* Added backup shipp=
+ing to S3<br>=C2=A0* Added backup shipping to another Linstor cluster<br>=
+=C2=A0* Added clone/copy resource definition<br>=C2=A0* Evict: do not delet=
+e last diskful<br>=C2=A0* Evict: inactive resource instead of delete<br>=C2=
+=A0* BCache: Fix snapshot support<br>=C2=A0* Etcd: fixed incorrect rollback=
+/update-delete namespace<br>=C2=A0* Drbd: do not set discard-zeroes-if-alig=
+ned on LVM<br>=C2=A0* Satellites: force update on fullsync, fixes satellite=
+ not reacting after reconnects<br>=C2=A0* API-Version 1.10.2</font><br></di=
+v><div><br></div><div><a href=3D"https://pkg.linbit.com//downloads/linstor/=
+linstor-server-1.15.0.tar.gz">https://pkg.linbit.com//downloads/linstor/lin=
+stor-server-1.15.0.tar.gz</a><br></div><div><br></div><div><br></div><div><=
+div><div><div>Linstor PPA:<br><a href=3D"https://launchpad.net/~linbit/+arc=
+hive/ubuntu/linbit-drbd9-stack" rel=3D"noreferrer" target=3D"_blank">https:=
+//launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack</a></div></div><=
+div><br></div><div>Cheers,<br></div><div>Rene</div></div></div></div>
+
+--0000000000006da45e05cca58f0b--
