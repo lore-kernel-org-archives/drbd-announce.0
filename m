@@ -1,21 +1,20 @@
-Return-Path: <johannes.thoma@linbit.com>
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com
-	[209.85.221.46])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 07D9742062B
+Return-Path: <philipp.reisner@linbit.com>
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com
+	[209.85.221.45])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 5C381420202
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 23 Sep 2021 16:30:46 +0200 (CEST)
-Received: by mail-wr1-f46.google.com with SMTP id d21so17676691wra.12
+	Mon, 27 Sep 2021 18:04:24 +0200 (CEST)
+Received: by mail-wr1-f45.google.com with SMTP id r23so27514027wra.6
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 23 Sep 2021 07:30:46 -0700 (PDT)
-To: "drbd-user@lists.linbit.com" <drbd-user@lists.linbit.com>,
-	drbd-announce@lists.linbit.com
-From: Johannes Thoma <johannes.thoma@linbit.com>
-Message-ID: <dd064340-7eba-f573-90de-0d51fd0b26c3@linbit.com>
-Date: Thu, 23 Sep 2021 16:30:42 +0200
+	Mon, 27 Sep 2021 09:04:24 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/alternative;
-	boundary="------------29B60A7BEC9B0FECE368189B"
-Subject: [DRBD-announce] WinDRBD 1.0.0-rc15 released
+From: Philipp Reisner <philipp.reisner@linbit.com>
+Date: Mon, 27 Sep 2021 18:04:11 +0200
+Message-ID: <CADGDV=Wi68xUgCzkL08N9LxEahmOncaxUXsgnWDoxvftN7Fd=A@mail.gmail.com>
+To: drbd-announce@lists.linbit.com
+Content-Type: text/plain; charset="UTF-8"
+Cc: drbd-user@lists.linbit.com
+Subject: [DRBD-announce] DRBD-9.0.31-0rc1 & drbd-9.1.4-rc.1
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -27,83 +26,50 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-This is a multi-part message in MIME format.
---------------29B60A7BEC9B0FECE368189B
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Hello,
 
-Dear WinDRBD and DRBD community,
+Here we are in the process of flushing out the fixes the accumulated
+during August and September. Most are quite specific corner cases.
 
-We are happy to announce another -rc: 1.0.0-rc15. In this release a
-thread leak is fixed that caused a thread being started and never terminated
-on each connection attempt. If you face system unstableness when a
-resource is in Connecting state you should upgrade to this release.
+A noticeable change is that the "--discard-my-data" flag (it is an
+option to the connect command) was changed. So far it was only used to
+express how a split-brain situation should be resolved. From now on
+the user can use this flag to force the resync direction (within some
+constraints).
+E.g. DRBD will not allow you to overwrite UpToDate or Consistent data
+with Inconsistent data.
 
-Other than that the installer has learned to configure WinDRBD for
-relocation of the WinDRBD sysroot ("C:\WinDRBD") and application
-("C:\Program Files\WinDRBD") directories. This is handy for example
-if you use something beside C: as your Windows system root (and
-C: is read only for example).
+This is a release candidate, please help testing it.
 
-Please help testing this release canidate: you can download the installer
-from the Linbit homepage at:
+9.0.31-0rc1 (api:genl2/proto:86-121/transport:14)
+--------
+ * fix a possible call of NULL, a regression introduced with 9.0.26
+ * fix a corner case in aborting an connect 2-phase-commit
+ * fix detection of crashed primaries
+ * fix resync decisions for crashed primaries in protocol A
+ * protect resync decisions against changes of the local UUIDs
+ * fix corner case that led to an endless loop logged
+   with "Retrying drbd_rs_del_all() later. refcnt=..."
+ * fix to resync after connecting to a diskless primary
+ * do not clear bitmap between inconsistent nodes
+ * add missing initializer for a resize 2-phase-commit
+ * reject size increase from diskless nodes if there are size-limiting peers
+ * remove queuing of 2-phare-commits; reduce complexity
+ * allow reverting resync direction by the '--discard-my-data' option
+ * new rr-conflict strategy called 'auto-discard'
 
-https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#drbd-windows
+9.1.4-rc.1 (api:genl2/proto:110-121/transport:17)
+--------
+ * merged all changes from drbd-9.0.31-0rc1
+ * enabled dynamic debug on some additional log messages
+ * remove (broken) write conflict resolution, replace it with warning
+   about the fact
+ * debugfs entry for the interval tree
 
-Thanks a lot and happy hacking,
+https://pkg.linbit.com//downloads/drbd/9.0/drbd-9.0.31-0rc1.tar.gz
+https://github.com/LINBIT/drbd/commit/a7e1dccc23b72102c922179c440e86fc52003f55
 
-Best regards,
+https://pkg.linbit.com//downloads/drbd/9/drbd-9.1.4-rc.1.tar.gz
+https://github.com/LINBIT/drbd/commit/165aede85a17c58d4c55bac717fcc5d81c44e0c5
 
-- Johannes
-
-PS: Please note that my eMail Address has changed (from johannes@johannesthoma.com
-to johannes.thoma@linbit.com) I still read eMails on both accounts but would prefer
-to receive WinDRBD related eMails at the johannes.thoma@linbit.com address.
-
---------------29B60A7BEC9B0FECE368189B
-Content-Type: text/html; charset=utf-8
-Content-Transfer-Encoding: 7bit
-
-<html>
-  <head>
-
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    Dear WinDRBD and DRBD community,<br>
-    <br>
-    We are happy to announce another -rc: 1.0.0-rc15. In this release a<br>
-    thread leak is fixed that caused a thread being started and never
-    terminated<br>
-    on each connection attempt. If you face system unstableness when a <br>
-    resource is in Connecting state you should upgrade to this release.<br>
-    <br>
-    Other than that the installer has learned to configure WinDRBD for<br>
-    relocation of the WinDRBD sysroot ("C:\WinDRBD") and application<br>
-    ("C:\Program Files\WinDRBD") directories. This is handy for example
-    <br>
-    if you use something beside C: as your Windows system root (and<br>
-    C: is read only for example).<br>
-    <br>
-    Please help testing this release canidate: you can download the
-    installer<br>
-    from the Linbit homepage at:<br>
-    <br>
-<a class="moz-txt-link-freetext" href="https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#drbd-windows">https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#drbd-windows</a><br>
-    <br>
-    Thanks a lot and happy hacking,<br>
-    <br>
-    Best regards,<br>
-    <br>
-    - Johannes<br>
-    <br>
-    PS: Please note that my eMail Address has changed (from
-    <a class="moz-txt-link-abbreviated" href="mailto:johannes@johannesthoma.com">johannes@johannesthoma.com</a><br>
-    to <a class="moz-txt-link-abbreviated" href="mailto:johannes.thoma@linbit.com">johannes.thoma@linbit.com</a>) I still read eMails on both accounts
-    but would prefer<br>
-    to receive WinDRBD related eMails at the <a class="moz-txt-link-abbreviated" href="mailto:johannes.thoma@linbit.com">johannes.thoma@linbit.com</a>
-    address.<br>
-  </body>
-</html>
-
---------------29B60A7BEC9B0FECE368189B--
+- Phil
