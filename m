@@ -1,20 +1,20 @@
-Return-Path: <philipp.reisner@linbit.com>
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com
-	[209.85.221.45])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 5C381420202
+Return-Path: <roland.kammerer@linbit.com>
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com
+	[209.85.128.46])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 3B79C420342
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 27 Sep 2021 18:04:24 +0200 (CEST)
-Received: by mail-wr1-f45.google.com with SMTP id r23so27514027wra.6
+	Mon,  4 Oct 2021 08:37:36 +0200 (CEST)
+Received: by mail-wm1-f46.google.com with SMTP id v127so12572700wme.5
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 27 Sep 2021 09:04:24 -0700 (PDT)
+	Sun, 03 Oct 2021 23:37:36 -0700 (PDT)
+Date: Mon, 4 Oct 2021 08:37:35 +0200
+From: Roland Kammerer <roland.kammerer@linbit.com>
+To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
+Message-ID: <20211004063735.GS1368@rck.sh>
 MIME-Version: 1.0
-From: Philipp Reisner <philipp.reisner@linbit.com>
-Date: Mon, 27 Sep 2021 18:04:11 +0200
-Message-ID: <CADGDV=Wi68xUgCzkL08N9LxEahmOncaxUXsgnWDoxvftN7Fd=A@mail.gmail.com>
-To: drbd-announce@lists.linbit.com
-Content-Type: text/plain; charset="UTF-8"
-Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] DRBD-9.0.31-0rc1 & drbd-9.1.4-rc.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Subject: [DRBD-announce] drbd-utils v9.19.0
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,50 +26,37 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Hello,
+Dear DRBD users,
 
-Here we are in the process of flushing out the fixes the accumulated
-during August and September. Most are quite specific corner cases.
+this is release v9.19.0 of drbd-utils. This contains all the fixes since
+the 9.18.0 release plus some other changes. 9.18.2 broke the wait-for
+family of commands, therefor users should upgrade.
 
-A noticeable change is that the "--discard-my-data" flag (it is an
-option to the connect command) was changed. So far it was only used to
-express how a split-brain situation should be resolved. From now on
-the user can use this flag to force the resync direction (within some
-constraints).
-E.g. DRBD will not allow you to overwrite UpToDate or Consistent data
-with Inconsistent data.
+GIT: https://github.com/LINBIT/drbd-utils/commit/9f2aa37c2e0438bc3e6336eb8f697cfc6c0b8243
+TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-utils-9.19.0.tar.gz
+PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack/+packages
 
-This is a release candidate, please help testing it.
+Regards, rck
 
-9.0.31-0rc1 (api:genl2/proto:86-121/transport:14)
---------
- * fix a possible call of NULL, a regression introduced with 9.0.26
- * fix a corner case in aborting an connect 2-phase-commit
- * fix detection of crashed primaries
- * fix resync decisions for crashed primaries in protocol A
- * protect resync decisions against changes of the local UUIDs
- * fix corner case that led to an endless loop logged
-   with "Retrying drbd_rs_del_all() later. refcnt=..."
- * fix to resync after connecting to a diskless primary
- * do not clear bitmap between inconsistent nodes
- * add missing initializer for a resize 2-phase-commit
- * reject size increase from diskless nodes if there are size-limiting peers
- * remove queuing of 2-phare-commits; reduce complexity
- * allow reverting resync direction by the '--discard-my-data' option
- * new rr-conflict strategy called 'auto-discard'
+Changelog:
 
-9.1.4-rc.1 (api:genl2/proto:110-121/transport:17)
---------
- * merged all changes from drbd-9.0.31-0rc1
- * enabled dynamic debug on some additional log messages
- * remove (broken) write conflict resolution, replace it with warning
-   about the fact
- * debugfs entry for the interval tree
+9.19.0
+-----------
+ * v9,events2: show changes of peer-client
+ * v9: rr-conflict strategy auto-discard for protocol A
+ * windrbd: various fixes including setting the systemd root
+ * containers: switch to UBI8
+ * v9,wait-*: fix segfault
 
-https://pkg.linbit.com//downloads/drbd/9.0/drbd-9.0.31-0rc1.tar.gz
-https://github.com/LINBIT/drbd/commit/a7e1dccc23b72102c922179c440e86fc52003f55
+9.18.2
+-----------
+ * systemd: fix SELinux for drbd-promote@.service
+ * drbdadm: allow 4096 chars for concatenated host names
+ * drbdadm: enforce max length of fields for drbdsetup
+ * build: fix redefinition of __swab{16,32,64}
 
-https://pkg.linbit.com//downloads/drbd/9/drbd-9.1.4-rc.1.tar.gz
-https://github.com/LINBIT/drbd/commit/165aede85a17c58d4c55bac717fcc5d81c44e0c5
-
-- Phil
+9.18.1
+-----------
+ * systemd: drbd@.service: pull in network-online.target
+ * systemd: fix SELinux for recent systemd templates
+ * doc: updated Japanese translation
