@@ -1,20 +1,21 @@
-Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com
-	[209.85.128.46])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 3B79C420342
+Return-Path: <johannes.thoma@linbit.com>
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com
+	[209.85.221.52])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 59CE84203DB
 	for <drbd-announce@lists.linbit.com>;
-	Mon,  4 Oct 2021 08:37:36 +0200 (CEST)
-Received: by mail-wm1-f46.google.com with SMTP id v127so12572700wme.5
+	Mon,  4 Oct 2021 19:07:22 +0200 (CEST)
+Received: by mail-wr1-f52.google.com with SMTP id k7so31863203wrd.13
 	for <drbd-announce@lists.linbit.com>;
-	Sun, 03 Oct 2021 23:37:36 -0700 (PDT)
-Date: Mon, 4 Oct 2021 08:37:35 +0200
-From: Roland Kammerer <roland.kammerer@linbit.com>
-To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Message-ID: <20211004063735.GS1368@rck.sh>
+	Mon, 04 Oct 2021 10:07:22 -0700 (PDT)
+To: "drbd-user@lists.linbit.com" <drbd-user@lists.linbit.com>,
+	drbd-announce@lists.linbit.com
+From: Johannes Thoma <johannes.thoma@linbit.com>
+Message-ID: <92af9edf-b2a5-158a-04ae-4e4a9a6f891e@linbit.com>
+Date: Mon, 4 Oct 2021 19:07:18 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Subject: [DRBD-announce] drbd-utils v9.19.0
+Content-Type: multipart/alternative;
+	boundary="------------C37C5E07D56E597678A6A641"
+Subject: [DRBD-announce] WinDRBD 1.0.0-rc16 released
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,37 +27,78 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Dear DRBD users,
+This is a multi-part message in MIME format.
+--------------C37C5E07D56E597678A6A641
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-this is release v9.19.0 of drbd-utils. This contains all the fixes since
-the 9.18.0 release plus some other changes. 9.18.2 broke the wait-for
-family of commands, therefor users should upgrade.
+Dear WinDRBD and DRBD community,
 
-GIT: https://github.com/LINBIT/drbd-utils/commit/9f2aa37c2e0438bc3e6336eb8f697cfc6c0b8243
-TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-utils-9.19.0.tar.gz
-PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack/+packages
+We just released WinDRBD release canidate 1.0.0-rc16 which is
+mainly a bug fix release. It fixes an issue on the SCSI disk
+interface which caused backing devices between 1 and 2 TB
+in size not to work properly. If you plan to use WinDRBD with
+backing devices of about 1 or 2 TB you should upgrade.
 
-Regards, rck
+Please help testing this release canidate: you can download the installer
+from the Linbit homepage at:
 
-Changelog:
+https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#drbd-windows
 
-9.19.0
------------
- * v9,events2: show changes of peer-client
- * v9: rr-conflict strategy auto-discard for protocol A
- * windrbd: various fixes including setting the systemd root
- * containers: switch to UBI8
- * v9,wait-*: fix segfault
+Thanks a lot and happy hacking,
 
-9.18.2
------------
- * systemd: fix SELinux for drbd-promote@.service
- * drbdadm: allow 4096 chars for concatenated host names
- * drbdadm: enforce max length of fields for drbdsetup
- * build: fix redefinition of __swab{16,32,64}
+Best regards,
 
-9.18.1
------------
- * systemd: drbd@.service: pull in network-online.target
- * systemd: fix SELinux for recent systemd templates
- * doc: updated Japanese translation
+- Johannes
+
+PS: Please note that my eMail Address has changed (from johannes@johannesthoma.com
+to johannes.thoma@linbit.com) I still read eMails on both accounts but would prefer
+to receive WinDRBD related eMails at the johannes.thoma@linbit.com address.
+
+--------------C37C5E07D56E597678A6A641
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: 7bit
+
+<html>
+  <head>
+
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <div class="moz-text-html" lang="x-unicode"> Dear WinDRBD and DRBD
+      community,<br>
+      <br>
+      We just released WinDRBD release canidate 1.0.0-rc16 which is<br>
+      mainly a bug fix release. It fixes an issue on the SCSI disk<br>
+      interface which caused backing devices between 1 and 2 TB<br>
+      in size not to work properly. If you plan to use WinDRBD with<br>
+      backing devices of about 1 or 2 TB you should upgrade.<br>
+      <br>
+      Please help testing this release canidate: you can download the
+      installer<br>
+      from the Linbit homepage at:<br>
+      <br>
+      <a class="moz-txt-link-freetext"
+href="https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#drbd-windows">https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#drbd-windows</a><br>
+      <br>
+      Thanks a lot and happy hacking,<br>
+      <br>
+      Best regards,<br>
+      <br>
+      - Johannes<br>
+      <br>
+      PS: Please note that my eMail Address has changed (from <a
+        class="moz-txt-link-abbreviated"
+        href="mailto:johannes@johannesthoma.com">johannes@johannesthoma.com</a><br>
+      to <a class="moz-txt-link-abbreviated"
+        href="mailto:johannes.thoma@linbit.com">johannes.thoma@linbit.com</a>)
+      I still read eMails on both accounts but would prefer<br>
+      to receive WinDRBD related eMails at the <a
+        class="moz-txt-link-abbreviated"
+        href="mailto:johannes.thoma@linbit.com">johannes.thoma@linbit.com</a>
+      address.<br>
+    </div>
+  </body>
+</html>
+
+--------------C37C5E07D56E597678A6A641--
