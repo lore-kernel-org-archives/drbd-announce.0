@@ -1,21 +1,20 @@
-Return-Path: <johannes.thoma@linbit.com>
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com
-	[209.85.221.52])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 59CE84203DB
+Return-Path: <philipp.reisner@linbit.com>
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com
+	[209.85.221.47])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 7E22D4203C9
 	for <drbd-announce@lists.linbit.com>;
-	Mon,  4 Oct 2021 19:07:22 +0200 (CEST)
-Received: by mail-wr1-f52.google.com with SMTP id k7so31863203wrd.13
+	Tue,  5 Oct 2021 19:39:52 +0200 (CEST)
+Received: by mail-wr1-f47.google.com with SMTP id k7so36716wrd.13
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 04 Oct 2021 10:07:22 -0700 (PDT)
-To: "drbd-user@lists.linbit.com" <drbd-user@lists.linbit.com>,
-	drbd-announce@lists.linbit.com
-From: Johannes Thoma <johannes.thoma@linbit.com>
-Message-ID: <92af9edf-b2a5-158a-04ae-4e4a9a6f891e@linbit.com>
-Date: Mon, 4 Oct 2021 19:07:18 +0200
+	Tue, 05 Oct 2021 10:39:52 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/alternative;
-	boundary="------------C37C5E07D56E597678A6A641"
-Subject: [DRBD-announce] WinDRBD 1.0.0-rc16 released
+From: Philipp Reisner <philipp.reisner@linbit.com>
+Date: Tue, 5 Oct 2021 19:39:38 +0200
+Message-ID: <CADGDV=WOHvDc+Rep_3q19FGiMTxgf2vskOW+uMCWsSXksZSyWQ@mail.gmail.com>
+To: drbd-announce@lists.linbit.com
+Content-Type: text/plain; charset="UTF-8"
+Cc: drbd-user@lists.linbit.com
+Subject: [DRBD-announce] DRBD-9.0.31-1 & drbd-9.1.4
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -27,78 +26,50 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-This is a multi-part message in MIME format.
---------------C37C5E07D56E597678A6A641
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Hello,
 
-Dear WinDRBD and DRBD community,
+no show-stopper came up last week, so here is the final release.
 
-We just released WinDRBD release canidate 1.0.0-rc16 which is
-mainly a bug fix release. It fixes an issue on the SCSI disk
-interface which caused backing devices between 1 and 2 TB
-in size not to work properly. If you plan to use WinDRBD with
-backing devices of about 1 or 2 TB you should upgrade.
+Many of the fixes are fixes to specific corner cases.
 
-Please help testing this release canidate: you can download the installer
-from the Linbit homepage at:
+A noticeable change is that the "--discard-my-data" flag (it is an
+option to the connect command) was changed. So far it was only used to
+express how a split-brain situation should be resolved. From now on
+the user can use this flag to force the resync direction (within some
+constraints).
+E.g. DRBD will not allow you to overwrite UpToDate or Consistent data
+with Inconsistent data.
 
-https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#drbd-windows
+PS: It is a good time to switch or plan your switch to the 9.1.x releases.
+We plan to discontinue the regular releases of 9.0.x at the end of the Year.
 
-Thanks a lot and happy hacking,
+9.0.31-1 (api:genl2/proto:86-121/transport:14)
+--------
+ * fix a possible call of NULL, a regression introduced with 9.0.26
+ * fix a corner case in aborting an connect 2-phase-commit
+ * fix detection of crashed primaries
+ * fix resync decisions for crashed primaries in protocol A
+ * protect resync decisions against changes of the local UUIDs
+ * fix corner case that led to an endless loop logged
+   with "Retrying drbd_rs_del_all() later. refcnt=..."
+ * fix to resync after connecting to a diskless primary
+ * do not clear bitmap between inconsistent nodes
+ * add missing initializer for a resize 2-phase-commit
+ * reject size increase from diskless nodes if there are size-limiting peers
+ * remove queuing of 2-phare-commits; reduce complexity
+ * allow reverting resync direction by the '--discard-my-data' option
+ * new rr-conflict strategy called 'auto-discard'
 
-Best regards,
+9.1.4 (api:genl2/proto:110-121/transport:17)
+--------
+ * merged all changes from drbd-9.0.31-0rc1
+ * enabled dynamic debug on some additional log messages
+ * remove (broken) write conflict resolution, replace it with warning
+   about the fact
+ * debugfs entry for the interval tree
 
-- Johannes
+https://pkg.linbit.com//downloads/drbd/9.0/drbd-9.0.31-1.tar.gz
+https://github.com/LINBIT/drbd/commit/7f138e7493f1e16cb10e2379b10fbd05f9466e7d
 
-PS: Please note that my eMail Address has changed (from johannes@johannesthoma.com
-to johannes.thoma@linbit.com) I still read eMails on both accounts but would prefer
-to receive WinDRBD related eMails at the johannes.thoma@linbit.com address.
-
---------------C37C5E07D56E597678A6A641
-Content-Type: text/html; charset=utf-8
-Content-Transfer-Encoding: 7bit
-
-<html>
-  <head>
-
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    <div class="moz-text-html" lang="x-unicode"> Dear WinDRBD and DRBD
-      community,<br>
-      <br>
-      We just released WinDRBD release canidate 1.0.0-rc16 which is<br>
-      mainly a bug fix release. It fixes an issue on the SCSI disk<br>
-      interface which caused backing devices between 1 and 2 TB<br>
-      in size not to work properly. If you plan to use WinDRBD with<br>
-      backing devices of about 1 or 2 TB you should upgrade.<br>
-      <br>
-      Please help testing this release canidate: you can download the
-      installer<br>
-      from the Linbit homepage at:<br>
-      <br>
-      <a class="moz-txt-link-freetext"
-href="https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#drbd-windows">https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#drbd-windows</a><br>
-      <br>
-      Thanks a lot and happy hacking,<br>
-      <br>
-      Best regards,<br>
-      <br>
-      - Johannes<br>
-      <br>
-      PS: Please note that my eMail Address has changed (from <a
-        class="moz-txt-link-abbreviated"
-        href="mailto:johannes@johannesthoma.com">johannes@johannesthoma.com</a><br>
-      to <a class="moz-txt-link-abbreviated"
-        href="mailto:johannes.thoma@linbit.com">johannes.thoma@linbit.com</a>)
-      I still read eMails on both accounts but would prefer<br>
-      to receive WinDRBD related eMails at the <a
-        class="moz-txt-link-abbreviated"
-        href="mailto:johannes.thoma@linbit.com">johannes.thoma@linbit.com</a>
-      address.<br>
-    </div>
-  </body>
-</html>
-
---------------C37C5E07D56E597678A6A641--
+https://pkg.linbit.com//downloads/drbd/9/drbd-9.1.4.tar.gz
+https://github.com/LINBIT/drbd/commit/e4de25c3a65811b0fa4733b1c2a000ee322f5cfa
