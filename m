@@ -1,21 +1,19 @@
-Return-Path: <johannes.thoma@linbit.com>
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com
-	[209.85.221.42])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 3CCC94202E4
+Return-Path: <rene.peinthor@linbit.com>
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com
+	[209.85.208.46])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id F35994205FC
 	for <drbd-announce@lists.linbit.com>;
-	Fri, 22 Oct 2021 15:57:07 +0200 (CEST)
-Received: by mail-wr1-f42.google.com with SMTP id d13so425741wrf.11
+	Thu,  4 Nov 2021 15:42:04 +0100 (CET)
+Received: by mail-ed1-f46.google.com with SMTP id g14so22004897edz.2
 	for <drbd-announce@lists.linbit.com>;
-	Fri, 22 Oct 2021 06:57:07 -0700 (PDT)
-To: "drbd-user@lists.linbit.com" <drbd-user@lists.linbit.com>,
-	drbd-announce@lists.linbit.com
-From: Johannes Thoma <johannes.thoma@linbit.com>
-Message-ID: <4889f45e-9534-0c9d-00ea-ebd01df1d397@linbit.com>
-Date: Fri, 22 Oct 2021 15:57:04 +0200
+	Thu, 04 Nov 2021 07:42:04 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/alternative;
-	boundary="------------83212AEAB973C72517D38210"
-Subject: [DRBD-announce] WinDRBD 1.0.0-rc17 released
+From: Rene Peinthor <rene.peinthor@linbit.com>
+Date: Thu, 4 Nov 2021 15:41:44 +0100
+Message-ID: <CAHmn2DMyAk6fJP8OnS82vGiq4ecg6n+DbF5ZZnmR0x=1UQwneQ@mail.gmail.com>
+To: drbd-announce@lists.linbit.com, drbd-user <drbd-user@lists.linbit.com>
+Content-Type: multipart/alternative; boundary="00000000000030ead805cff787b3"
+Subject: [DRBD-announce] linstor-server release candidate 1.16.0-rc.3
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -27,129 +25,71 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-This is a multi-part message in MIME format.
---------------83212AEAB973C72517D38210
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
+--00000000000030ead805cff787b3
+Content-Type: text/plain; charset="UTF-8"
 
-Dear DRBD and WinDRBD users,
+Hi!
 
-We are proud to release WinDRBD 1.0.0-rc17 with many new features: most
-notably no reboots on upgrading are required any more (when upgrading
-from 1.0.0-rc17 to an upcoming newer version).
+Here is a new release candidate for the next feature Linstor version, with
+2 more fixes:
+ * Fixed clone status never finish if node count doesn't match resource
+count
+ * LVM-Thin correctly set discard-zeroes-if-aligned
 
-As far as I am concerned this rc is feature complete for the stable 1.0.0
-version. Unless there are showstopper bugs coming up in the next 2
-weeks we will release the stable 1.0.0 version in 2 weeks for now.
+We expect a final release of 1.16.0 next week.
 
-Please help by testing this release canidate.
+For other changes see as usual the changes list:
 
-As always an installable EXE signed by Linbit can be downloaded from:
+linstor-server 1.16.0-rc.3
+--------------------------
+ * Added support for Kubernets CRD storage backend
+ * Added /stats REST endpoint for object counts
+ * Added snapshot support SPDK
+ * Satellite waits for drbd9 module now
+ * LVM-Thin correctly set discard-zeroes-if-aligned
+ * Fixed deleting/recreating remotes
+ * Fixed possible ACE using autoplacer JS selector
+ * Fixed resource-group adjust-all without body fail
+ * Fixed clone status never finish if node count doesn't match resource
+count
+ * API-Version 1.11.0
 
-https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#drbd-windows
+https://pkg.linbit.com//downloads/linstor/linstor-server-1.16.0-rc.3.tar.gz
 
-Here is the complete list of new features (see also the WHATSNEW.md file
-in the repo at https://github.com/LINBIT/windrbd):
 
-Driver unloading: No reboot on Upgrade/Uninstall: Future versions are able to remove
-the WinDRBD driver without reboot (you just need to take down the DRBD resources).
+Linstor PPA:
+https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
-Upgrade to 9.0.31: DRBD was upgraded to the latest version as of October 22 2021.
+Cheers,
+Rene
 
-Userland services (umhelper, log) are started on boot: Finally also the userland
-services that come with WinDRBD are started automatically.
+--00000000000030ead805cff787b3
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-/VERYSILENT install: Upgrade can be done without GUI interaction (you have to affirm
-the Linbit key the first time)
+<div dir=3D"ltr"><div>Hi!</div><div><br></div><div>Here is a new release ca=
+ndidate for the next feature Linstor version, with 2 more fixes:</div><div>=
+<span style=3D"font-family:monospace">=C2=A0* Fixed clone status never fini=
+sh if node count doesn&#39;t match resource count</span><br></div><div><spa=
+n style=3D"font-family:monospace">=C2=A0* LVM-Thin correctly set discard-ze=
+roes-if-aligned</span><span style=3D"font-family:monospace"><br></span></di=
+v><div><br></div><div>We expect a final release of 1.16.0 next week.</div><=
+div><br></div><div>For other changes see as usual the changes list:</div><d=
+iv><br></div><div><font face=3D"monospace">linstor-server 1.16.0-rc.3<br>--=
+------------------------<br>=C2=A0* Added support for Kubernets CRD storage=
+ backend<br>=C2=A0* Added /stats REST endpoint for object counts<br>=C2=A0*=
+ Added snapshot support SPDK<br>=C2=A0* Satellite waits for drbd9 module no=
+w<br>=C2=A0* LVM-Thin correctly set discard-zeroes-if-aligned<br>=C2=A0* Fi=
+xed deleting/recreating remotes<br>=C2=A0* Fixed possible ACE using autopla=
+cer JS selector<br>=C2=A0* Fixed resource-group adjust-all without body fai=
+l<br>=C2=A0* Fixed clone status never finish if node count doesn&#39;t matc=
+h resource count<br>=C2=A0* API-Version 1.11.0</font><br></div><div><br></d=
+iv><div><a href=3D"https://pkg.linbit.com//downloads/linstor/linstor-server=
+-1.16.0-rc.3.tar.gz">https://pkg.linbit.com//downloads/linstor/linstor-serv=
+er-1.16.0-rc.3.tar.gz</a><br></div><div><br></div><div><br></div><div><div>=
+<div><div>Linstor PPA:<br><a href=3D"https://launchpad.net/~linbit/+archive=
+/ubuntu/linbit-drbd9-stack" rel=3D"noreferrer" target=3D"_blank">https://la=
+unchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack</a></div></div><div>=
+<br></div><div>Cheers,<br></div><div>Rene</div></div></div></div>
 
-Setup logging: You can find a log file in the %TEMP% (C:\Windows\Temp) after installation.
-
-Online resize works: Resizing (both enlarge and shrinking) a DRBD resource while it is in
-use is working now.
-
-Dynamic disks as backing devices work: Partitions on Dynamic Disks can be used as Backing
-devices for WinDRBD resources.
-
-Fix for install userland errors message box: This was introduced in WinDRBD 1.0.0-rc15 and
-should be fixed now.
-
-Thank you for contributing to WinDRBD development by using it.
-
-Best regards and happy hacking,
-
-- Johannes
-
---------------83212AEAB973C72517D38210
-Content-Type: text/html; charset=utf-8
-Content-Transfer-Encoding: 7bit
-
-<html>
-  <head>
-
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    Dear DRBD and WinDRBD users,<br>
-    <br>
-    We are proud to release WinDRBD 1.0.0-rc17 with many new features:
-    most<br>
-    notably no reboots on upgrading are required any more (when
-    upgrading<br>
-    from 1.0.0-rc17 to an upcoming newer version). <br>
-    <br>
-    As far as I am concerned this rc is feature complete for the stable
-    1.0.0<br>
-    version. Unless there are showstopper bugs coming up in the next 2<br>
-    weeks we will release the stable 1.0.0 version in 2 weeks for now.<br>
-    <br>
-    Please help by testing this release canidate.<br>
-    <br>
-    As always an installable EXE signed by Linbit can be downloaded
-    from:<br>
-    <br>
-<a class="moz-txt-link-freetext" href="https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#drbd-windows">https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#drbd-windows</a><br>
-    <br>
-    Here is the complete list of new features (see also the WHATSNEW.md
-    file<br>
-    in the repo at <a class="moz-txt-link-freetext" href="https://github.com/LINBIT/windrbd">https://github.com/LINBIT/windrbd</a>):<br>
-    <br>
-    Driver unloading: No reboot on Upgrade/Uninstall: Future versions
-    are able to remove<br>
-    the WinDRBD driver without reboot (you just need to take down the
-    DRBD resources). <br>
-    <br>
-    Upgrade to 9.0.31: DRBD was upgraded to the latest version as of
-    October 22 2021.<br>
-    <br>
-    Userland services (umhelper, log) are started on boot: Finally also
-    the userland<br>
-    services that come with WinDRBD are started automatically. <br>
-    <br>
-    /VERYSILENT install: Upgrade can be done without GUI interaction
-    (you have to affirm<br>
-    the Linbit key the first time)<br>
-    <br>
-    Setup logging: You can find a log file in the %TEMP%
-    (C:\Windows\Temp) after installation.<br>
-    <br>
-    Online resize works: Resizing (both enlarge and shrinking) a DRBD
-    resource while it is in<br>
-    use is working now.<br>
-    <br>
-    Dynamic disks as backing devices work: Partitions on Dynamic Disks
-    can be used as Backing<br>
-    devices for WinDRBD resources.<br>
-    <br>
-    Fix for install userland errors message box: This was introduced in
-    WinDRBD 1.0.0-rc15 and<br>
-    should be fixed now. <br>
-    <br>
-    Thank you for contributing to WinDRBD development by using it.<br>
-    <br>
-    Best regards and happy hacking,<br>
-    <br>
-    - Johannes<br>
-  </body>
-</html>
-
---------------83212AEAB973C72517D38210--
+--00000000000030ead805cff787b3--
