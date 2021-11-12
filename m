@@ -1,19 +1,21 @@
-Return-Path: <rene.peinthor@linbit.com>
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com
-	[209.85.208.46])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id DC1994201EA
+Return-Path: <roland.kammerer@linbit.com>
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com
+	[209.85.221.54])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id B7786420206
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 11 Nov 2021 15:43:52 +0100 (CET)
-Received: by mail-ed1-f46.google.com with SMTP id j21so24874908edt.11
+	Fri, 12 Nov 2021 13:02:46 +0100 (CET)
+Received: by mail-wr1-f54.google.com with SMTP id d24so15160357wra.0
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 11 Nov 2021 06:43:52 -0800 (PST)
+	Fri, 12 Nov 2021 04:02:46 -0800 (PST)
+Date: Fri, 12 Nov 2021 13:02:44 +0100
+From: Roland Kammerer <roland.kammerer@linbit.com>
+To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
+Message-ID: <20211112120244.GD1745@rck.sh>
 MIME-Version: 1.0
-From: Rene Peinthor <rene.peinthor@linbit.com>
-Date: Thu, 11 Nov 2021 15:43:41 +0100
-Message-ID: <CAHmn2DNeg8_9a+G5xu7hetTtou=3uYMnZNE589a2ZMeZGLxdqg@mail.gmail.com>
-To: drbd-user <drbd-user@lists.linbit.com>, drbd-announce@lists.linbit.com
-Content-Type: multipart/alternative; boundary="000000000000064daf05d0845f1f"
-Subject: [DRBD-announce] linstor-server release 1.16.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="1yeeQ81UyVL57Vl7"
+Content-Disposition: inline
+Subject: [DRBD-announce] drbd-utils v9.19.1-rc.1
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -25,84 +27,48 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
---000000000000064daf05d0845f1f
-Content-Type: text/plain; charset="UTF-8"
 
-Hi!
+--1yeeQ81UyVL57Vl7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-And here we have the final release of linstor-server.
+Dear DRBD users,
 
-As said in rc.2, the new feature of this release is being able to use
-Kubernetes Custom Resource Definitions as a database storage backend.
+This is the first release candidate of drbd-utils 9.19.1.
 
-Have your kubernetes config ready on the controller host and set the
-following
-in your linstor.toml:
+There is no too urgent need to update for most users.
 
-[db]
-  connection_url = "k8s"
+The main fixes and improvements are that this version brings is that it
+fixes a bug for our customers that use DRBD-Proxy and want multiple
+connections to share a proxy node; that this version now also builds on
+the upcoming RHEL9.0; and that we introduced some further nice systemd
+helper. This helper can be used to demote a DRBD resource or escalate to
+a failure action, therefore its name "drbd-demote-or-escalate@.service".
+While of course it can be used stand-alone, the main purpose is
+drbd-reactor::promoter, which can then properly fail-over to a cluster
+node if "DRBD is stuck" (because there are still openers from another
+service for example). But that is something for the soon to follow
+drbd-reactor release.
 
+Regards, rck
 
-We also have a bunch of bug fixes from the 1.15.0 release:
+GIT: https://github.com/LINBIT/drbd-utils/tree/9.19.1
+TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-utils-9.19.1-rc.1.tar.gz
+PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
+--1yeeQ81UyVL57Vl7
+Content-Type: application/pgp-signature; name="signature.asc"
 
-linstor-server 1.16.0
----------------------
- * Added support for Kubernets CRD storage backend
- * Added /stats REST endpoint for object counts
- * Added snapshot support SPDK
- * Satellite waits for drbd9 module now
- * LVM-Thin correctly set discard-zeroes-if-aligned
- * Fixed deleting/recreating remotes
- * Fixed possible ACE using autoplacer JS selector
- * Fixed resource-group adjust-all without body fail
- * Fixed clone status never finish if node count doesn't match resource
-count
- * Fixed persistence of some transaction objects
- * Fixed backup shipping multiple volumes
- * Fixed backup shipping if ports are already used
- * API-Version 1.11.0
+-----BEGIN PGP SIGNATURE-----
 
-https://pkg.linbit.com//downloads/linstor/linstor-server-1.16.0.tar.gz
+iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmGOV+AACgkQRgmezyI6
+myLnWgf9Hn0x0g/Gpv0/1GoAAEM63C3idTZi4zRx0HyCysIYhuQqrG5RRsvEE9kn
+QCLjbU+5G4S/fs3X2c/etUkF5UvXWHherJKrc7z7li1VdRyAwmyIsuzxWk9GZTYY
+Em7P75ukfnfZYnPdanJK//CAJRv4QJlakJNPPGJuk5rQM4rehcM9CiWoef1hFaDA
+mUpey2npMC0F5T+koW77qe39Jv9d2fDybljChpmg/SOVl2P3MeVxfdgxFsm7hX8F
+SE7b3KeozE3Ia2Keaw4bqwdvhKn2dmtmNLj6J9T2JUyOqS5MHcUHIXgcmqOLomFQ
+xw9TpU8iYTPtloWd6jLWBdKAVC2VmA==
+=epaw
+-----END PGP SIGNATURE-----
 
-
-Linstor PPA:
-https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
-
-Cheers,
-Rene
-
---000000000000064daf05d0845f1f
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div>Hi!</div><div><br></div><div>And here we have the fin=
-al release of linstor-server.</div><div><br></div><div>As said in rc.2, the=
- new feature of this release is being able to use</div><div>Kubernetes Cust=
-om Resource Definitions as a database storage backend.</div><div><br></div>=
-<div>Have your kubernetes config ready on the controller host and set the f=
-ollowing</div><div>in your linstor.toml:</div><div><br></div><div><span sty=
-le=3D"font-family:monospace">[db]</span><br style=3D"font-family:monospace"=
-><span style=3D"font-family:monospace">=C2=A0 connection_url =3D &quot;k8s&=
-quot;</span><br></div><div><br></div><div><br></div><div>We also have a bun=
-ch of bug fixes from the 1.15.0 release:</div><div><br></div><div><br></div=
-><div><font face=3D"monospace">linstor-server 1.16.0<br>-------------------=
---<br>=C2=A0* Added support for Kubernets CRD storage backend<br>=C2=A0* Ad=
-ded /stats REST endpoint for object counts<br>=C2=A0* Added snapshot suppor=
-t SPDK<br>=C2=A0* Satellite waits for drbd9 module now<br>=C2=A0* LVM-Thin =
-correctly set discard-zeroes-if-aligned<br>=C2=A0* Fixed deleting/recreatin=
-g remotes<br>=C2=A0* Fixed possible ACE using autoplacer JS selector<br>=C2=
-=A0* Fixed resource-group adjust-all without body fail<br>=C2=A0* Fixed clo=
-ne status never finish if node count doesn&#39;t match resource count<br>=
-=C2=A0* Fixed persistence of some transaction objects<br>=C2=A0* Fixed back=
-up shipping multiple volumes<br>=C2=A0* Fixed backup shipping if ports are =
-already used<br>=C2=A0* API-Version 1.11.0</font><br></div><div><br></div><=
-div><a href=3D"https://pkg.linbit.com//downloads/linstor/linstor-server-1.1=
-6.0.tar.gz">https://pkg.linbit.com//downloads/linstor/linstor-server-1.16.0=
-.tar.gz</a><br></div><div><br></div><div><br></div><div><div><div><div>Lins=
-tor PPA:<br><a href=3D"https://launchpad.net/~linbit/+archive/ubuntu/linbit=
--drbd9-stack" rel=3D"noreferrer" target=3D"_blank">https://launchpad.net/~l=
-inbit/+archive/ubuntu/linbit-drbd9-stack</a></div></div><div><br></div><div=
->Cheers,<br></div><div>Rene</div></div></div></div>
-
---000000000000064daf05d0845f1f--
+--1yeeQ81UyVL57Vl7--
