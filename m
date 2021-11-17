@@ -1,22 +1,20 @@
-Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com
-	[209.85.221.44])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id A6DEF4205DE
+Return-Path: <moritz.wanzenboeck@linbit.com>
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com
+	[209.85.128.41])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id B36C8420204
 	for <drbd-announce@lists.linbit.com>;
-	Fri, 12 Nov 2021 15:32:17 +0100 (CET)
-Received: by mail-wr1-f44.google.com with SMTP id u1so15810534wru.13
+	Wed, 17 Nov 2021 10:43:53 +0100 (CET)
+Received: by mail-wm1-f41.google.com with SMTP id
+	g191-20020a1c9dc8000000b0032fbf912885so1576623wme.4
 	for <drbd-announce@lists.linbit.com>;
-	Fri, 12 Nov 2021 06:32:17 -0800 (PST)
-Date: Fri, 12 Nov 2021 15:32:15 +0100
-From: Roland Kammerer <roland.kammerer@linbit.com>
-To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Message-ID: <20211112143215.GE1745@rck.sh>
+	Wed, 17 Nov 2021 01:43:53 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="rS8CxjVDS/+yyDmU"
-Content-Disposition: inline
-Subject: [DRBD-announce] drbd-reactor v0.5.0-rc.1 (including HA FS mount
-	example)
+From: =?UTF-8?Q?Moritz_Wanzenb=C3=B6ck?= <moritz.wanzenboeck@linbit.com>
+Date: Wed, 17 Nov 2021 10:43:42 +0100
+Message-ID: <CAKnz9x+TR2CqSUmMaRaCSaKdsozuMaUheBCKhZTDF3RZcPyNAA@mail.gmail.com>
+To: drbd-announce@lists.linbit.com
+Content-Type: multipart/alternative; boundary="0000000000003e517d05d0f8e1f4"
+Subject: [DRBD-announce] LINSTOR Operator 1.7.0-rc.3 released
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -28,118 +26,134 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
+--0000000000003e517d05d0f8e1f4
+Content-Type: text/plain; charset="UTF-8"
 
---rS8CxjVDS/+yyDmU
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Dear LINSTOR on Kubernetes Users,
 
-Dear DRBD(-reactor) users,
+We just released a new release candidate for the upcoming Operator release:
+1.7.0-rc.3
 
-this is the first release candidate of version 0.5.0
+There are quite a few new features, which we want to ensure are ready for
+release, hence the extended release candidate phase. We did not announce
+the previous RCs, as they were mostly used for internal testing.
 
-Besides minor fixes for Ubuntu Bionic, and some upgrades for containers,
-the main feature is proper demote failure handling in the promoter
-plugin.
+The most exciting feature is certainly the option to run LINSTOR without an
+additional database for the Controller. LINSTOR 1.16.0 added experimental
+support for using the Kubernetes API directly to store its internal state.
+The current plan is to support both Etcd and Kubernetes API as datastore,
+with the eventual goal of removing Etcd support once we are happy with the
+stability of this new backend. To use it, simply disable Etcd deployment
+(--set etcd.enabled=false) and enable the "k8s" datastore (--set
+operator.controller.dbConnectionURL=k8s). You can read a bit more about the
+details in the upstream documentation. [1]
 
-There was the "on-stop-failure" action, which at one point worked, but
-did not do anything since we switched to a more fancy systemd.target
-logic. What we really care about when managing services (and a potential
-fail-over because of a service failure) is if things are stopped in a
-way that the DRBD device can be demoted to secondary. If not, we might
-need to halt or reboot the node so that another node can take over the
-DRBD resource and the services depending ot it.
+We also improved support for the LINSTOR backup feature: in order to
+securely store any access tokens for remote locations, LINSTOR needs to be
+configured with a master passphrase. If no passphrase is defined, the Helm
+chart will create one for you. Currently, the backup feature is only
+available using the LINSTOR CLI, take a look at the linstor remote ... and
+linstor backup ... commands. There are some improvements to the CSI driver
+in the pipeline which provide a more natural integration with Kubernetes.
 
-This is done via the new setting "on-drbd-demote-failure".
-"on-stop-failure" is deprecated and ignored. The new option can be set
-to any action defined for "FailureAction" as defined in systemd.unit(5).
-If the DRBD resource can not be demoted, that action is executed.
+Lastly, if a node is shut down and removed from the cluster, the Operator
+will now trigger eviction of that node, i.e. it will try to recreate the
+lost resources on a new node.
 
-Let's see how that looks like in a HA cluster providing a file system
-mount. I assume a working linstor cluster (while not strictly required).
-A good way to help us testing is using the PPA. If you are using fresh
-VMs, make sure that you restart multipathd after the first drbd-utils
-install. So, let's assume a 3 node cluster, which also has this RC of
-drbd-reactor installed:
+The chart is available from charts.linstor.io. For pre-releases helm
+requires setting the exact version:
 
-Let's create a 3 node DRBD resource:
-$ linstor rg c --place-count 3 promoter
-$ linstor rg drbd-options promoter --auto-promote no
-$ linstor rg drbd-options promoter --quorum majority
-$ linstor rg drbd-options promoter --on-no-quorum io-error
-$ linstor vg c promoter
-$ linstor rg spawn promoter test 20M
+  helm install linstor linstor/linstor --version 1.7.0-rc.3 ...
 
-And a file system:
-$ drbdadm primary test
-$ mkfs.ext4 /dev/drbd1000
-$ drbdadm secondary test
+Please help by testing this release. Please also be aware of the known
+issues listed below. Source is available, as always: [2], [3]
 
-And a mount unit for the storage:
-on *all* nodes:
-$ cat <<EOF > /etc/systemd/system/mnt-test.mount
-[Unit]
-Description=Mount /dev/drbd1000 to /mnt/test
+Best regards,
+Moritz
 
-[Mount]
-What=/dev/drbd1000
-Where=/mnt/test
-Type=ext4
-EOF
+Known Issues
+------------
 
-And a simple drbd-reactor::promoter config:
-on *all* nodes:
-$ cat <<EOF > /etc/drbd-reactor.d/mnt-test.toml
-[[promoter]]
-id = "mnt-test"
-[promoter.resources.test]
-start = ["mnt-test.mount"]
-on-drbd-demote-failure = "reboot"
-EOF
+There is one known issue with the current release candidate, related to the
+automatic master passphrase: If a LINSTOR controller restarts and tries
+connecting to a satellite, that satellite might refuse the connection, and
+you will get a "node not authorized" error in the error reports. The main
+symptoms of this is that any commands depending on a satellite hang
+indefinitely. The workaround is to restart the satellites (kubectl rollout
+restart daemonset/linstor-ns-node).
 
-on *all* nodes:
-systemctl start drbd-reactor
+Changes since 1.6.0
+-------------------
 
-Then you can check which node is Primary and has the device mounted:
-$ drbd-reactorctl status mnt-test
+Added
 
-On the node that is Primary you can do a switch-over, just for testing:
-$ drbd-reactorctl disable --now mnt-test
-$ # another node should be primary now and have the FS mounted
-$ drbd-reactorctl enable mnt-test # to re-enable the config again
+- Support LINSTORs `k8s` backend by adding the necessary RBAC resources.
+- Automatically create a LINSTOR passphrase when none is configured.
+- Automatic eviction and deletion of offline satellites if the Kubernetes
+node object was also deleted.
 
-Testing demote failure. Connect to the node that is Primary
-$ touch /mnt/test/lock
-$ sleep 3600 < /mnt/test/lock &
-$ # ^^ this creates an opener and the mount unit will be unable to stop
-$ # and the DRBD device will be unable to demote
-$ systemctl restart drbd-services@test.target # trigger a stop/restart of
-the target
+Changed
+- DRBD version 9.1.4
+- LINSTOR 1.16.0
+- LINSTOR CSI 0.16.1
+- Updated CSI sidecars
 
-This should trigger the reboot action and another node should take over
-the mount.
+[1]:
+https://github.com/piraeusdatastore/piraeus-operator/blob/master/doc/k8s-backend.md
+[2]: https://github.com/piraeusdatastore/piraeus-operator
+[3]: https://github.com/LINBIT/linstor-operator-builder
 
-Please help testing.
+--0000000000003e517d05d0f8e1f4
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Regards, rck
+<div dir=3D"ltr">Dear LINSTOR on Kubernetes Users,<br><br>We just released =
+a new release candidate for the upcoming Operator release: 1.7.0-rc.3<br><b=
+r>There are quite a few new features, which we want to ensure are ready for=
+ release, hence the extended release candidate phase. We did not announce t=
+he previous RCs, as they were mostly used for internal testing.<br><br>The =
+most exciting feature is certainly the option to run LINSTOR without an add=
+itional database for the Controller. LINSTOR 1.16.0 added experimental supp=
+ort for using the Kubernetes API directly to store its internal state. The =
+current plan is to support both Etcd and Kubernetes API as datastore, with =
+the eventual goal of removing Etcd support once we are happy with the stabi=
+lity of this new backend. To use it, simply disable Etcd deployment (--set =
+etcd.enabled=3Dfalse) and enable the &quot;k8s&quot; datastore (--set opera=
+tor.controller.dbConnectionURL=3Dk8s). You can read a bit more about the de=
+tails in the upstream documentation. [1]<br><br>We also improved support fo=
+r the LINSTOR backup feature: in order to securely store any access tokens =
+for remote locations, LINSTOR needs to be configured with a master passphra=
+se. If no passphrase is defined, the Helm chart will create one for you. Cu=
+rrently, the backup feature is only available using the LINSTOR CLI, take a=
+ look at the linstor remote ... and linstor backup ... commands. There are =
+some improvements to the CSI driver in the pipeline which provide a more na=
+tural integration with Kubernetes.<br><br>Lastly, if a node is shut down an=
+d removed from the cluster, the Operator will now trigger eviction of that =
+node, i.e. it will try to recreate the lost resources on a new node.<br><br=
+>The chart is available from <a href=3D"http://charts.linstor.io">charts.li=
+nstor.io</a>. For pre-releases helm requires setting the exact version:<br>=
+<br>=C2=A0 helm install linstor linstor/linstor --version 1.7.0-rc.3 ...<br=
+>=C2=A0 <br>Please help by testing this release. Please also be aware of th=
+e known issues listed below. Source is available, as always: [2], [3]<br><b=
+r>Best regards,<br>Moritz<br><br>Known Issues<br>------------<br><br>There =
+is one known issue with the current release candidate, related to the autom=
+atic master passphrase: If a LINSTOR controller restarts and tries connecti=
+ng to a satellite, that satellite might refuse the connection, and you will=
+ get a &quot;node not authorized&quot; error in the error reports. The main=
+ symptoms of this is that any commands depending on a satellite hang indefi=
+nitely. The workaround is to restart the satellites (kubectl rollout restar=
+t daemonset/linstor-ns-node).<br><br>Changes since 1.6.0<br>---------------=
+----<br><br>Added<br><br>- Support LINSTORs `k8s` backend by adding the nec=
+essary RBAC resources.<br>- Automatically create a LINSTOR passphrase when =
+none is configured.<br>- Automatic eviction and deletion of offline satelli=
+tes if the Kubernetes node object was also deleted.<br><br>Changed<br>- DRB=
+D version 9.1.4<br>- LINSTOR 1.16.0<br>- LINSTOR CSI 0.16.1<br>- Updated CS=
+I sidecars<br><br>[1]: <a href=3D"https://github.com/piraeusdatastore/pirae=
+us-operator/blob/master/doc/k8s-backend.md">https://github.com/piraeusdatas=
+tore/piraeus-operator/blob/master/doc/k8s-backend.md</a><br>[2]: <a href=3D=
+"https://github.com/piraeusdatastore/piraeus-operator">https://github.com/p=
+iraeusdatastore/piraeus-operator</a><br>[3]: <a href=3D"https://github.com/=
+LINBIT/linstor-operator-builder">https://github.com/LINBIT/linstor-operator=
+-builder</a></div>
 
-GIT: https://github.com/LINBIT/drbd-reactor/commit/3df014d63611b97470728838afdaf2d313f0d786
-TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-reactor-0.5.0-rc.1.tar.gz
-PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack/
-
-
---rS8CxjVDS/+yyDmU
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmGOeuoACgkQRgmezyI6
-myLClwf/chKLEzFMUgKJ9j6ll0zkwUaGU+ZMJacIOnqDPYisftEfbgKVb/KnfLRv
-aT99AeqsDtQjO2X9SgSkpOGTRUUAWS48MlYqIDuOGfRPZz4Npma3lDczz7ozbSYT
-h2Pgf8yU/Ds3bsmI+Qls/nFBwocOQpgtDs4KjkXeapjWttc1iaBryg0DG4/ikkcM
-6ACZ+U5O6t4TABD+MbGkr2qisb6cAO8J8v1I1pBC3eVzGw1NM43+D06W5V0h5idS
-EJw7I8QzKJ+qZs3SV220gpF1lESt4kHeVzVfAAAWHy2FjJLMqH2vJ5o9TF9Mgz/8
-yk0FEqJ73c3cHMMCyazmC1Pk8o+aFQ==
-=RciW
------END PGP SIGNATURE-----
-
---rS8CxjVDS/+yyDmU--
+--0000000000003e517d05d0f8e1f4--
