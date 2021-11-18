@@ -1,21 +1,20 @@
-Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com
-	[209.85.128.45])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 20C56420950
+Return-Path: <moritz.wanzenboeck@linbit.com>
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com
+	[209.85.128.44])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 5E9EF420950
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 18 Nov 2021 09:32:07 +0100 (CET)
-Received: by mail-wm1-f45.google.com with SMTP id p18so4507334wmq.5
+	Thu, 18 Nov 2021 13:17:28 +0100 (CET)
+Received: by mail-wm1-f44.google.com with SMTP id
+	k37-20020a05600c1ca500b00330cb84834fso7434068wms.2
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 18 Nov 2021 00:32:06 -0800 (PST)
-Date: Thu, 18 Nov 2021 09:32:05 +0100
-From: Roland Kammerer <roland.kammerer@linbit.com>
-To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Message-ID: <20211118083205.GG1745@rck.sh>
+	Thu, 18 Nov 2021 04:17:28 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="DSayHWYpDlRfCAAQ"
-Content-Disposition: inline
-Subject: [DRBD-announce] linstor-proxmox v5.2.2
+From: =?UTF-8?Q?Moritz_Wanzenb=C3=B6ck?= <moritz.wanzenboeck@linbit.com>
+Date: Thu, 18 Nov 2021 13:17:17 +0100
+Message-ID: <CAKnz9xJWgMc95YfJun-pG831wTeTyyNAkEz2=v60Bmwo3=ZW0Q@mail.gmail.com>
+To: drbd-announce@lists.linbit.com
+Content-Type: multipart/alternative; boundary="00000000000053282c05d10f24a0"
+Subject: [DRBD-announce] LINSTOR Operator 1.7.0-rc.4 released
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -27,37 +26,96 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
+--00000000000053282c05d10f24a0
+Content-Type: text/plain; charset="UTF-8"
 
---DSayHWYpDlRfCAAQ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Dear LINSTOR on Kubernetes Users,
 
-Dear PVE users,
+The rc.3 release contained a bug that would stop the satellite portion of
+the operator to function as expected. After the first registration of
+satellites, it would get stuck, and no new satellites, storage pools or
+other resources would be created.
 
-this is version 5.2.2 of linstor-proxmox. This is at least required if
-you intend to upgrade to 7.1, maybe also older PVE versions if Proxmox
-rolls out these changes there as well.
+This release fixes this issue, along with an improved update strategy for
+satellites.
 
-This is once more a trivial API version bump, nothing to see here.
+The chart is available from charts.linstor.io. For pre-releases helm
+requires setting the exact version:
 
-Regards, rck
+  helm install linstor linstor/linstor --version 1.7.0-rc.4 ...
 
-GIT: https://github.com/LINBIT/linstor-proxmox/commit/c1304026f71c32a75722ab7dde8cfdf5cebca73c
-TGZ: https://pkg.linbit.com/downloads/connectors/linstor-proxmox-5.2.2.tar.gz
+Please help by testing this release. Please also be aware of the known
+issues listed below. Source is available, as always: [1], [2]
 
---DSayHWYpDlRfCAAQ
-Content-Type: application/pgp-signature; name="signature.asc"
+Best regards,
+Moritz
 
------BEGIN PGP SIGNATURE-----
+Known Issues
+------------
 
-iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmGWD3wACgkQRgmezyI6
-myL7vAf/RxwoMqHgJpoGLpbA0h1Sp6IeSRbIj3FAvefNk+zEUG8oFeUtzeLptwrp
-RatI3CBi9ojFFi5JK06GqO9pYWnGBXVqaNUuiU3YrJjD1JUM9sFm0hScsTyhFHrt
-+l9588LVKlAaNuE0MRu0h1iHBlLyOG/kJe6wKoUYqq9ssjircdT31lnpWZ9QchQ9
-01tHgQAwHOWW4KbYCBiy3/O1nDDOAYpAlEKkTeyVB69ob4+j33KIKXjkEEisWNQH
-khxZc0QFGosayLnNwGz4UjCaDeYA6e/JRyJVQxgpaBTaUcOG1+NGTRitqOHbqAH2
-Q5n+FIyMQODhvj+NW57+iMqNxN8YKw==
-=96P9
------END PGP SIGNATURE-----
+There is one known issue with the current release candidate, related to the
+automatic master passphrase: If a LINSTOR controller restarts and tries
+connecting to a satellite, that satellite might refuse the connection, and
+you will get a "node not authorized" error in the error reports. The main
+symptoms of this is that any commands depending on a satellite hang
+indefinitely. The workaround is to restart the satellites (kubectl rollout
+restart daemonset/linstor-ns-node).
 
---DSayHWYpDlRfCAAQ--
+Changes since 1.6.0
+-------------------
+
+Added
+
+- Support LINSTORs `k8s` backend by adding the necessary RBAC resources.
+- Automatically create a LINSTOR passphrase when none is configured.
+- Automatic eviction and deletion of offline satellites if the Kubernetes
+node object was also deleted.
+
+Changed
+- DRBD version 9.1.4
+- LINSTOR 1.16.0
+- LINSTOR CSI 0.16.1
+- Updated CSI sidecars
+
+[1]: https://github.com/piraeusdatastore/piraeus-operator
+[2]: https://github.com/LINBIT/linstor-operator-builder
+
+--00000000000053282c05d10f24a0
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div>Dear LINSTOR on Kubernetes Users,</div><div><br></div=
+><div>The rc.3 release contained a bug that would stop the satellite portio=
+n of the operator to function as expected. After the first registration of =
+satellites, it would get stuck, and no new satellites, storage pools or oth=
+er resources would be created.</div><div><br></div><div>This release fixes =
+this issue, along with an improved update strategy for satellites.</div><di=
+v><br></div><div>The chart is available from <a href=3D"http://charts.linst=
+or.io" target=3D"_blank">charts.linstor.io</a>. For pre-releases helm requi=
+res setting the exact version:<br><br>=C2=A0 helm install linstor linstor/l=
+instor --version 1.7.0-rc.4 ...</div><div><br></div><div>Please help by tes=
+ting this release. Please also be aware of the known=20
+issues listed below. Source is available, as always: [1], [2]<br><br>Best r=
+egards,<br>Moritz</div><div><br></div><div>Known Issues<br>------------<br>=
+<br>There is one known issue with the=20
+current release candidate, related to the automatic master passphrase:=20
+If a LINSTOR controller restarts and tries connecting to a satellite,=20
+that satellite might refuse the connection, and you will get a &quot;node n=
+ot
+ authorized&quot; error in the error reports. The main symptoms of this is=
+=20
+that any commands depending on a satellite hang indefinitely. The=20
+workaround is to restart the satellites (kubectl rollout restart=20
+daemonset/linstor-ns-node).<br><br>Changes since 1.6.0<br>-----------------=
+--<br><br>Added<br><br>- Support LINSTORs `k8s` backend by adding the neces=
+sary RBAC resources.<br>- Automatically create a LINSTOR passphrase when no=
+ne is configured.<br>- Automatic eviction and deletion of offline satellite=
+s if the Kubernetes node object was also deleted.<br><br>Changed<br>- DRBD =
+version 9.1.4<br>- LINSTOR 1.16.0<br>- LINSTOR CSI 0.16.1<br>- Updated CSI =
+sidecars</div><div><br></div><div>[1]: <a href=3D"https://github.com/piraeu=
+sdatastore/piraeus-operator" target=3D"_blank">https://github.com/piraeusda=
+tastore/piraeus-operator</a><br>[2]: <a href=3D"https://github.com/LINBIT/l=
+instor-operator-builder" target=3D"_blank">https://github.com/LINBIT/linsto=
+r-operator-builder</a></div></div>
+
+--00000000000053282c05d10f24a0--
