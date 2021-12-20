@@ -1,19 +1,21 @@
-Return-Path: <gabor.hernadi@linbit.com>
-Received: from mail-yb1-f178.google.com (mail-yb1-f178.google.com
-	[209.85.219.178])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id ED5A9420958
+Return-Path: <philipp.reisner@linbit.com>
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com
+	[209.85.128.51])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id CBA0E4203D8
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 15 Dec 2021 09:29:22 +0100 (CET)
-Received: by mail-yb1-f178.google.com with SMTP id g17so52972455ybe.13
+	Mon, 20 Dec 2021 16:28:01 +0100 (CET)
+Received: by mail-wm1-f51.google.com with SMTP id
+	b186-20020a1c1bc3000000b00345734afe78so162199wmb.0
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 15 Dec 2021 00:29:22 -0800 (PST)
+	Mon, 20 Dec 2021 07:28:01 -0800 (PST)
 MIME-Version: 1.0
-From: =?UTF-8?B?R8OhYm9yIEhlcm7DoWRp?= <gabor.hernadi@linbit.com>
-Date: Wed, 15 Dec 2021 09:29:11 +0100
-Message-ID: <CAL16tNa+BNQ_FmPcoEJnN=ubYztp6X2ebCHoQRE2m8K93D3SUQ@mail.gmail.com>
-To: drbd-announce@lists.linbit.com, drbd-user <drbd-user@lists.linbit.com>
-Content-Type: multipart/alternative; boundary="0000000000004d9fd805d32b1a30"
-Subject: [DRBD-announce] Linstor and log4j
+From: Philipp Reisner <philipp.reisner@linbit.com>
+Date: Mon, 20 Dec 2021 16:27:49 +0100
+Message-ID: <CADGDV=UEyEi0HXiQqXnJOOSL3siodamXGb0GQOufOD1gqDiccA@mail.gmail.com>
+To: drbd-announce@lists.linbit.com
+Content-Type: text/plain; charset="UTF-8"
+Cc: drbd-user@lists.linbit.com
+Subject: [DRBD-announce] drbd-9.2.0-rc.3
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -25,37 +27,18 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
---0000000000004d9fd805d32b1a30
-Content-Type: text/plain; charset="UTF-8"
+Hello,
 
-Hello!
+and here is the 3rd release candidate for drbd-9.2.0
 
-As we received a few questions regarding the recently discovered security
-issues with log4j, we want to clarify that Linstor is *not* using log4j but
-logback as a logging framework.
-Linstor is therefore NOT vulnerable for security issues in the log4j
-library.
+It turned out that in the new coordination between resync and
+application IOs a corner case was not properly considered. Fixed and
+tested this, now we are turning back to the community and asking you
+if you find a way to break it.
 
-Linstor is open source and is using Gradle to manage its dependencies.
-Linstor's dependencies can be found via GitHub[1]
+We wish you a Merry Christmas and a Happy New Year!
 
-[1] https://github.com/LINBIT/linstor-server/blob/master/build.gradle
+https://pkg.linbit.com//downloads/drbd/9/drbd-9.2.0-rc.3.tar.gz
 
-Best regards,
-Gabor
-
---0000000000004d9fd805d32b1a30
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr">Hello!<br><br>As we received a few questions regarding the=
- recently discovered security issues with log4j, we want to clarify that Li=
-nstor is *not* using log4j but logback as a logging framework.<br>Linstor i=
-s therefore NOT vulnerable for security issues in the log4j library.<br><br=
->Linstor is open source and is using Gradle to manage its dependencies. Lin=
-stor&#39;s dependencies can be found via GitHub[1]<br><br>[1] <a href=3D"ht=
-tps://github.com/LINBIT/linstor-server/blob/master/build.gradle">https://gi=
-thub.com/LINBIT/linstor-server/blob/master/build.gradle</a><br><br>Best reg=
-ards,<br>Gabor</div>
-
---0000000000004d9fd805d32b1a30--
+best regards,
+ Phil
