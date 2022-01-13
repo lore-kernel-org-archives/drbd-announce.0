@@ -1,21 +1,21 @@
-Return-Path: <philipp.reisner@linbit.com>
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com
-	[209.85.128.51])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id CBA0E4203D8
+Return-Path: <roland.kammerer@linbit.com>
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com
+	[209.85.128.47])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 4FE6342063D
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 20 Dec 2021 16:28:01 +0100 (CET)
-Received: by mail-wm1-f51.google.com with SMTP id
-	b186-20020a1c1bc3000000b00345734afe78so162199wmb.0
+	Thu, 13 Jan 2022 15:17:24 +0100 (CET)
+Received: by mail-wm1-f47.google.com with SMTP id w26so3996712wmi.0
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 20 Dec 2021 07:28:01 -0800 (PST)
+	Thu, 13 Jan 2022 06:17:24 -0800 (PST)
+Date: Thu, 13 Jan 2022 15:17:21 +0100
+From: Roland Kammerer <roland.kammerer@linbit.com>
+To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
+Message-ID: <YeA0caah1YgdS0Zf@rck.sh>
 MIME-Version: 1.0
-From: Philipp Reisner <philipp.reisner@linbit.com>
-Date: Mon, 20 Dec 2021 16:27:49 +0100
-Message-ID: <CADGDV=UEyEi0HXiQqXnJOOSL3siodamXGb0GQOufOD1gqDiccA@mail.gmail.com>
-To: drbd-announce@lists.linbit.com
-Content-Type: text/plain; charset="UTF-8"
-Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-9.2.0-rc.3
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="WvxHRqm5TJSb9pow"
+Content-Disposition: inline
+Subject: [DRBD-announce] drbd-utils v9.20.0
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -27,18 +27,60 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Hello,
 
-and here is the 3rd release candidate for drbd-9.2.0
+--WvxHRqm5TJSb9pow
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-It turned out that in the new coordination between resync and
-application IOs a corner case was not properly considered. Fixed and
-tested this, now we are turning back to the community and asking you
-if you find a way to break it.
+Dear DRBD-users,
 
-We wish you a Merry Christmas and a Happy New Year!
+this is drbd-utils version 9.20.0. There is no too urgent need for an
+update if the current 9.19.1 utils work for you, but this version has
+some new features and several bug fixes as well.
 
-https://pkg.linbit.com//downloads/drbd/9/drbd-9.2.0-rc.3.tar.gz
+Most notably meta data is now created in chunks which allows the process
+to be interrupted and helps for large DRBD resources where the meta data
+then is also quite big. It is now also possible to specify how the meta
+data should be zeroed out.
 
-best regards,
- Phil
+Other fixes/improvements include crm-fence-peer which now works better
+with Pacemaker 2.1. drbd-attr which called a non-existing "drbadm" so
+far got fixed as well.
+
+For more details please check the individual commit messages.
+
+Regards, rck
+
+Changelog:
+
+9.20.0
+-----------
+ * drbdmeta: do init in chunks; allow different methods
+ * build: various minor fixes (udev detection, POSIX,
+   compiler flags, allow doc building with asciidoctor,...)
+ * drbd.ocf: fix type (relevant for certain pcs versions)
+ * drbd-attr: fix typo "drbadm" -> "drbdadm"
+ * crm-fence-peer: fix timeout with Pacemaker 2.1
+
+GIT:
+https://github.com/LINBIT/drbd-utils/commit/ef3ee681e05e886fcd890466d8d99aefd80b724c
+TGZ:
+https://pkg.linbit.com//downloads/drbd/utils/drbd-utils-9.20.0.tar.gz
+PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+
+--WvxHRqm5TJSb9pow
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmHgNG0ACgkQRgmezyI6
+myLGxAf9E4qf3gX8n4aFzh5GMKX4Q/w7wpFaiwzLEWLnKQbZMkGFtZYY/h2Ac5nP
+XBRsSEsHvbai6g565NjO5v91aS4d1pTalchmfPCWIIyl/Kti80KAz/aqJN9kCghw
+9uwQmlu4ooUOpvlQVU08K0nbHqavRij2+9pwJ1NfaVLvfnrckiUz3NkNZbPVEuKH
+vRBe5WBYh0g9B3PV5WHsM94AGUZNW8yIghprDUHTVE3z8mMRv3c6fBgEXzkWoli6
+5cw9ltUl4j8HqIwggPHEab1IfWoWgFH7tx7VSeEa92sOevQqhQAvgFr1MVKT5LuF
+XobL58twgNZ9nyWk8yuQELn1I2vxiQ==
+=2axf
+-----END PGP SIGNATURE-----
+
+--WvxHRqm5TJSb9pow--
