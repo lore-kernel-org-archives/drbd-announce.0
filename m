@@ -1,21 +1,22 @@
-Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com
-	[209.85.128.47])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 4FE6342063D
+Return-Path: <johannes.thoma@linbit.com>
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com
+	[209.85.128.52])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 2E751420629
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 13 Jan 2022 15:17:24 +0100 (CET)
-Received: by mail-wm1-f47.google.com with SMTP id w26so3996712wmi.0
+	Thu, 13 Jan 2022 16:08:30 +0100 (CET)
+Received: by mail-wm1-f52.google.com with SMTP id
+	c126-20020a1c9a84000000b00346f9ebee43so3847507wme.4
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 13 Jan 2022 06:17:24 -0800 (PST)
-Date: Thu, 13 Jan 2022 15:17:21 +0100
-From: Roland Kammerer <roland.kammerer@linbit.com>
-To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Message-ID: <YeA0caah1YgdS0Zf@rck.sh>
+	Thu, 13 Jan 2022 07:08:30 -0800 (PST)
+Content-Type: multipart/alternative;
+	boundary="------------iiYUU16CZnImYEoPtC0uv4YD"
+Message-ID: <dca4146d-741d-1651-83d3-8725472fe34e@linbit.com>
+Date: Thu, 13 Jan 2022 16:08:28 +0100
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="WvxHRqm5TJSb9pow"
-Content-Disposition: inline
-Subject: [DRBD-announce] drbd-utils v9.20.0
+To: "drbd-user@lists.linbit.com" <drbd-user@lists.linbit.com>,
+	drbd-announce@lists.linbit.com
+From: Johannes Thoma <johannes.thoma@linbit.com>
+Subject: [DRBD-announce] WinDRBD 1.0.0-rc19 released
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -27,60 +28,81 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
+This is a multi-part message in MIME format.
+--------------iiYUU16CZnImYEoPtC0uv4YD
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
---WvxHRqm5TJSb9pow
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Dear WinDRBD users,
 
-Dear DRBD-users,
+There is a new release canidate in which two reasons for bluescreens (BSODs) are
+fixed. One happened in earlier releases when a resync is running for a longer time
+(such as syncing 16TB volumes) the other one was a blue screen that happened
+sometimes on network interruptions (the later was actually a DRBD bug - the first
+one we found in over 5 years of WinDRBD development).
 
-this is drbd-utils version 9.20.0. There is no too urgent need for an
-update if the current 9.19.1 utils work for you, but this version has
-some new features and several bug fixes as well.
+The binary installer - as always - can be downloaded from the Linbit website:
 
-Most notably meta data is now created in chunks which allows the process
-to be interrupted and helps for large DRBD resources where the meta data
-then is also quite big. It is now also possible to specify how the meta
-data should be zeroed out.
+https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#drbd-windows
 
-Other fixes/improvements include crm-fence-peer which now works better
-with Pacemaker 2.1. drbd-attr which called a non-existing "drbadm" so
-far got fixed as well.
+You can update from 1.0.0-rc18 (or 1.0.0-rc17) without rebooting and automatically
+(non-interactive if you chose to always trust software from Linbit HA Solutions once).
+Make sure that no drbdsetup events2 processes are running any more. Furthermore
+bring all your resources down before upgrading (the installer can do this but
+sometimes this might fail, so it is better if you do this manually).
 
-For more details please check the individual commit messages.
+Please help by testing this release canidate, the syncer bug was actually found by
+someone from the WinDRBD user community (thanks a lot!).
 
-Regards, rck
+Best regards,
 
-Changelog:
+- Johannes
+--------------iiYUU16CZnImYEoPtC0uv4YD
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-9.20.0
------------
- * drbdmeta: do init in chunks; allow different methods
- * build: various minor fixes (udev detection, POSIX,
-   compiler flags, allow doc building with asciidoctor,...)
- * drbd.ocf: fix type (relevant for certain pcs versions)
- * drbd-attr: fix typo "drbadm" -> "drbdadm"
- * crm-fence-peer: fix timeout with Pacemaker 2.1
+<html>
+  <head>
 
-GIT:
-https://github.com/LINBIT/drbd-utils/commit/ef3ee681e05e886fcd890466d8d99aefd80b724c
-TGZ:
-https://pkg.linbit.com//downloads/drbd/utils/drbd-utils-9.20.0.tar.gz
-PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    Dear WinDRBD users,<br>
+    <br>
+    There is a new release canidate in which two reasons for bluescreens
+    (BSODs) are<br>
+    fixed. One happened in earlier releases when a resync is running for
+    a longer time<br>
+    (such as syncing 16TB volumes) the other one was a blue screen that
+    happened<br>
+    sometimes on network interruptions (the later was actually a DRBD
+    bug - the first<br>
+    one we found in over 5 years of WinDRBD development).<br>
+    <br>
+    The binary installer - as always - can be downloaded from the Linbit
+    website:<br>
+    <br>
+    <a class="moz-txt-link-freetext"
+href="https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#drbd-windows">https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#drbd-windows</a><br>
+    <br>
+    You can update from 1.0.0-rc18 (or 1.0.0-rc17) without rebooting and
+    automatically<br>
+    (non-interactive if you chose to always trust software from Linbit
+    HA Solutions once).<br>
+    Make sure that no drbdsetup events2 processes are running any more.
+    Furthermore<br>
+    bring all your resources down before upgrading (the installer can do
+    this but<br>
+    sometimes this might fail, so it is better if you do this manually).<br>
+    <br>
+    Please help by testing this release canidate, the syncer bug was
+    actually found by<br>
+    someone from the WinDRBD user community (thanks a lot!).<br>
+    <br>
+    Best regards,<br>
+    <br>
+    - Johannes<br>
+  </body>
+</html>
 
---WvxHRqm5TJSb9pow
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmHgNG0ACgkQRgmezyI6
-myLGxAf9E4qf3gX8n4aFzh5GMKX4Q/w7wpFaiwzLEWLnKQbZMkGFtZYY/h2Ac5nP
-XBRsSEsHvbai6g565NjO5v91aS4d1pTalchmfPCWIIyl/Kti80KAz/aqJN9kCghw
-9uwQmlu4ooUOpvlQVU08K0nbHqavRij2+9pwJ1NfaVLvfnrckiUz3NkNZbPVEuKH
-vRBe5WBYh0g9B3PV5WHsM94AGUZNW8yIghprDUHTVE3z8mMRv3c6fBgEXzkWoli6
-5cw9ltUl4j8HqIwggPHEab1IfWoWgFH7tx7VSeEa92sOevQqhQAvgFr1MVKT5LuF
-XobL58twgNZ9nyWk8yuQELn1I2vxiQ==
-=2axf
------END PGP SIGNATURE-----
-
---WvxHRqm5TJSb9pow--
+--------------iiYUU16CZnImYEoPtC0uv4YD--
