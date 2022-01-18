@@ -1,22 +1,20 @@
-Return-Path: <johannes.thoma@linbit.com>
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com
-	[209.85.128.52])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 2E751420629
+Return-Path: <moritz.wanzenboeck@linbit.com>
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com
+	[209.85.128.44])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 6B00242094A
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 13 Jan 2022 16:08:30 +0100 (CET)
-Received: by mail-wm1-f52.google.com with SMTP id
-	c126-20020a1c9a84000000b00346f9ebee43so3847507wme.4
+	Tue, 18 Jan 2022 16:14:09 +0100 (CET)
+Received: by mail-wm1-f44.google.com with SMTP id
+	25-20020a05600c231900b003497473a9c4so6587079wmo.5
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 13 Jan 2022 07:08:30 -0800 (PST)
-Content-Type: multipart/alternative;
-	boundary="------------iiYUU16CZnImYEoPtC0uv4YD"
-Message-ID: <dca4146d-741d-1651-83d3-8725472fe34e@linbit.com>
-Date: Thu, 13 Jan 2022 16:08:28 +0100
+	Tue, 18 Jan 2022 07:14:09 -0800 (PST)
 MIME-Version: 1.0
-To: "drbd-user@lists.linbit.com" <drbd-user@lists.linbit.com>,
-	drbd-announce@lists.linbit.com
-From: Johannes Thoma <johannes.thoma@linbit.com>
-Subject: [DRBD-announce] WinDRBD 1.0.0-rc19 released
+From: =?UTF-8?Q?Moritz_Wanzenb=C3=B6ck?= <moritz.wanzenboeck@linbit.com>
+Date: Tue, 18 Jan 2022 16:13:57 +0100
+Message-ID: <CAKnz9xJW3wNs6pK5nQvYrgxb6JDpx6GoXgwZDaSvMB6THu5_AQ@mail.gmail.com>
+To: drbd-announce@lists.linbit.com
+Content-Type: multipart/alternative; boundary="0000000000007fe6c005d5dcb898"
+Subject: [DRBD-announce] LINSTOR Operator 1.7.1
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -28,81 +26,114 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-This is a multi-part message in MIME format.
---------------iiYUU16CZnImYEoPtC0uv4YD
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+--0000000000007fe6c005d5dcb898
+Content-Type: text/plain; charset="UTF-8"
 
-Dear WinDRBD users,
+Dear LINSTOR on Kubernetes Users,
 
-There is a new release canidate in which two reasons for bluescreens (BSODs) are
-fixed. One happened in earlier releases when a resync is running for a longer time
-(such as syncing 16TB volumes) the other one was a blue screen that happened
-sometimes on network interruptions (the later was actually a DRBD bug - the first
-one we found in over 5 years of WinDRBD development).
+We just released LINSTOR Operator 1.7.1.
 
-The binary installer - as always - can be downloaded from the Linbit website:
+For the most part, this release focuses on small incremental improvements
+and quality of life improvements.
 
-https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#drbd-windows
+One new feature is support for Flatcar Container Linux. Flatcar Container
+Linux is an immutable, Container focused Linux distribution. Since it is
+immutable, package management is quite a bit different, so in order to use
+LINSTOR Operator, you need the following changes to your helm config:
 
-You can update from 1.0.0-rc18 (or 1.0.0-rc17) without rebooting and automatically
-(non-interactive if you chose to always trust software from Linbit HA Solutions once).
-Make sure that no drbdsetup events2 processes are running any more. Furthermore
-bring all your resources down before upgrading (the installer can do this but
-sometimes this might fail, so it is better if you do this manually).
+  operator:
+    satelliteSet:
+      kernelModuleInjectionAdditionalSourceDirectory: none
+      kernelModuleInjectionImage: drbd.io/drbd9-flatcar:v9.1.5_ptf.1
+      kernelModuleInjectionMode: Compile
 
-Please help by testing this release canidate, the syncer bug was actually found by
-someone from the WinDRBD user community (thanks a lot!).
+There are also fixes to TLS setup for satellites and preparation for an
+updated LINSTOR CSI which finally will support backups to S3.
+
+The new chart version is available from https://charts.linstor.io and new
+images are available from drbd.io. The usual upgrade procedure applies:
+
+$ helm repo update
+$ helm upgrade linstor-op linstor/linstor -f orig.yaml
+
+For more information, please take a look at the upgrade guide. [1]
+Source code is, as always, available upstream. [2]
 
 Best regards,
+Moritz
 
-- Johannes
---------------iiYUU16CZnImYEoPtC0uv4YD
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+[1]:
+https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-upgrade
+[2]: https://github.com/piraeusdatastore/piraeus-operator
 
-<html>
-  <head>
+Full changes
+----------------------------
 
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    Dear WinDRBD users,<br>
-    <br>
-    There is a new release canidate in which two reasons for bluescreens
-    (BSODs) are<br>
-    fixed. One happened in earlier releases when a resync is running for
-    a longer time<br>
-    (such as syncing 16TB volumes) the other one was a blue screen that
-    happened<br>
-    sometimes on network interruptions (the later was actually a DRBD
-    bug - the first<br>
-    one we found in over 5 years of WinDRBD development).<br>
-    <br>
-    The binary installer - as always - can be downloaded from the Linbit
-    website:<br>
-    <br>
-    <a class="moz-txt-link-freetext"
-href="https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#drbd-windows">https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#drbd-windows</a><br>
-    <br>
-    You can update from 1.0.0-rc18 (or 1.0.0-rc17) without rebooting and
-    automatically<br>
-    (non-interactive if you chose to always trust software from Linbit
-    HA Solutions once).<br>
-    Make sure that no drbdsetup events2 processes are running any more.
-    Furthermore<br>
-    bring all your resources down before upgrading (the installer can do
-    this but<br>
-    sometimes this might fail, so it is better if you do this manually).<br>
-    <br>
-    Please help by testing this release canidate, the syncer bug was
-    actually found by<br>
-    someone from the WinDRBD user community (thanks a lot!).<br>
-    <br>
-    Best regards,<br>
-    <br>
-    - Johannes<br>
-  </body>
-</html>
+Added
+--------
+- Allow the external-provisioner and external-snapshotter access to
+secrets. This is required to support StorageClass and SnapshotClass secrets.
+- Instruct external-provisioner to pass PVC name+namespace to the CSI
+driver, enabling optional support for PVC based names for LINSTOR volumes.
+- Allow setting the log level of LINSTOR components via CRs. Other
+components are left using their default log level. The new default log
+level is INFO (was DEBUG previously, which was often too verbose).
+- Override the kernel source directory used when compiling DRBD (defaults
+to /usr/src). set
+operator.satelliteSet.kernelModuleInjectionAdditionalSourceDirectory=none
+to disable this mount.
+- etcd-chart: add option to set priorityClassName.
+Fixed
+--------
+- Use correct secret name when setting up TLS for satellites
+- Correctly configure ServiceMonitor resource if TLS is enabled for LINSTOR
+Controller.
 
---------------iiYUU16CZnImYEoPtC0uv4YD--
+--0000000000007fe6c005d5dcb898
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div>Dear LINSTOR on Kubernetes Users,</div><div><br></div=
+><div>We just released LINSTOR Operator 1.7.1.</div><div><br></div><div>For=
+ the most part, this release focuses on small incremental improvements and =
+quality of life improvements.</div><div><br></div><div>One new feature is s=
+upport for Flatcar Container Linux. Flatcar Container Linux is an immutable=
+, Container focused Linux distribution. Since it is immutable, package mana=
+gement is quite a bit different, so in order to use LINSTOR Operator, you n=
+eed the following changes to your helm config:<br><br></div><div>=C2=A0 ope=
+rator:</div><div>=C2=A0=C2=A0=C2=A0 satelliteSet:</div><div>=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 kernelModuleInjectionAdditionalSourceDirectory: none</div><=
+div>=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 kernelModuleInjectionImage: <a href=3D"h=
+ttp://drbd.io/drbd9-flatcar:v9.1.5_ptf.1">drbd.io/drbd9-flatcar:v9.1.5_ptf.=
+1</a></div><div>=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 kernelModuleInjectionMode: C=
+ompile</div><div><br></div><div>There are also fixes to TLS setup for satel=
+lites and preparation for an updated LINSTOR CSI which finally will support=
+ backups to S3.<br></div><div><br></div><div>The new chart version is avail=
+able from <a href=3D"https://charts.linstor.io" target=3D"_blank">https://c=
+harts.linstor.io</a> and new images are available from <a href=3D"http://dr=
+bd.io" target=3D"_blank">drbd.io</a>. The usual upgrade procedure applies:<=
+/div><div><br>$ helm repo update<br>$ helm upgrade linstor-op linstor/linst=
+or -f orig.yaml<br><br>For more information, please take a look at the upgr=
+ade guide. [1]<br>Source code is, as always, available upstream. [2]<br><br=
+>Best regards,<br>Moritz<br><br>[1]: <a href=3D"https://linbit.com/drbd-use=
+r-guide/linstor-guide-1_0-en/#s-kubernetes-upgrade" target=3D"_blank">https=
+://linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-upgrade</a=
+><br>[2]: <a href=3D"https://github.com/piraeusdatastore/piraeus-operator" =
+target=3D"_blank">https://github.com/piraeusdatastore/piraeus-operator</a><=
+/div><div><br></div><div>Full changes<br></div><div>-----------------------=
+-----</div><div><br></div><div>Added<br></div><div>--------<br>- Allow the =
+external-provisioner and external-snapshotter access to secrets. This is re=
+quired to support StorageClass and SnapshotClass secrets.<br>- Instruct ext=
+ernal-provisioner to pass PVC name+namespace to the CSI driver, enabling op=
+tional support for PVC based names for LINSTOR volumes.<br>- Allow setting =
+the log level of LINSTOR components via CRs. Other components are left usin=
+g their default log level. The new default log level is INFO (was DEBUG pre=
+viously, which was often too verbose).<br>- Override the kernel source dire=
+ctory used when compiling DRBD (defaults to /usr/src). set operator.satelli=
+teSet.kernelModuleInjectionAdditionalSourceDirectory=3Dnone to disable this=
+ mount.<br>- etcd-chart: add option to set priorityClassName.<br>Fixed<br>-=
+-------<br>- Use correct secret name when setting up TLS for satellites<br>=
+- Correctly configure ServiceMonitor resource if TLS is enabled for LINSTOR=
+ Controller.<br></div></div>
+
+--0000000000007fe6c005d5dcb898--
