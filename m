@@ -1,20 +1,22 @@
-Return-Path: <moritz.wanzenboeck@linbit.com>
+Return-Path: <roland.kammerer@linbit.com>
 Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com
 	[209.85.128.44])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 6B00242094A
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 12CF74205D5
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 18 Jan 2022 16:14:09 +0100 (CET)
+	Wed, 19 Jan 2022 13:32:18 +0100 (CET)
 Received: by mail-wm1-f44.google.com with SMTP id
-	25-20020a05600c231900b003497473a9c4so6587079wmo.5
+	l12-20020a7bc34c000000b003467c58cbdfso14266783wmj.2
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 18 Jan 2022 07:14:09 -0800 (PST)
+	Wed, 19 Jan 2022 04:32:18 -0800 (PST)
+Date: Wed, 19 Jan 2022 13:32:16 +0100
+From: Roland Kammerer <roland.kammerer@linbit.com>
+To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
+Message-ID: <YegE0OAHmhCVvQgY@rck.sh>
 MIME-Version: 1.0
-From: =?UTF-8?Q?Moritz_Wanzenb=C3=B6ck?= <moritz.wanzenboeck@linbit.com>
-Date: Tue, 18 Jan 2022 16:13:57 +0100
-Message-ID: <CAKnz9xJW3wNs6pK5nQvYrgxb6JDpx6GoXgwZDaSvMB6THu5_AQ@mail.gmail.com>
-To: drbd-announce@lists.linbit.com
-Content-Type: multipart/alternative; boundary="0000000000007fe6c005d5dcb898"
-Subject: [DRBD-announce] LINSTOR Operator 1.7.1
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="F61nrrC4xBTgMw42"
+Content-Disposition: inline
+Subject: [DRBD-announce] drbd-reactor v0.5.2
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,114 +28,66 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
---0000000000007fe6c005d5dcb898
-Content-Type: text/plain; charset="UTF-8"
 
-Dear LINSTOR on Kubernetes Users,
-
-We just released LINSTOR Operator 1.7.1.
-
-For the most part, this release focuses on small incremental improvements
-and quality of life improvements.
-
-One new feature is support for Flatcar Container Linux. Flatcar Container
-Linux is an immutable, Container focused Linux distribution. Since it is
-immutable, package management is quite a bit different, so in order to use
-LINSTOR Operator, you need the following changes to your helm config:
-
-  operator:
-    satelliteSet:
-      kernelModuleInjectionAdditionalSourceDirectory: none
-      kernelModuleInjectionImage: drbd.io/drbd9-flatcar:v9.1.5_ptf.1
-      kernelModuleInjectionMode: Compile
-
-There are also fixes to TLS setup for satellites and preparation for an
-updated LINSTOR CSI which finally will support backups to S3.
-
-The new chart version is available from https://charts.linstor.io and new
-images are available from drbd.io. The usual upgrade procedure applies:
-
-$ helm repo update
-$ helm upgrade linstor-op linstor/linstor -f orig.yaml
-
-For more information, please take a look at the upgrade guide. [1]
-Source code is, as always, available upstream. [2]
-
-Best regards,
-Moritz
-
-[1]:
-https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-upgrade
-[2]: https://github.com/piraeusdatastore/piraeus-operator
-
-Full changes
-----------------------------
-
-Added
---------
-- Allow the external-provisioner and external-snapshotter access to
-secrets. This is required to support StorageClass and SnapshotClass secrets.
-- Instruct external-provisioner to pass PVC name+namespace to the CSI
-driver, enabling optional support for PVC based names for LINSTOR volumes.
-- Allow setting the log level of LINSTOR components via CRs. Other
-components are left using their default log level. The new default log
-level is INFO (was DEBUG previously, which was often too verbose).
-- Override the kernel source directory used when compiling DRBD (defaults
-to /usr/src). set
-operator.satelliteSet.kernelModuleInjectionAdditionalSourceDirectory=none
-to disable this mount.
-- etcd-chart: add option to set priorityClassName.
-Fixed
---------
-- Use correct secret name when setting up TLS for satellites
-- Correctly configure ServiceMonitor resource if TLS is enabled for LINSTOR
-Controller.
-
---0000000000007fe6c005d5dcb898
-Content-Type: text/html; charset="UTF-8"
+--F61nrrC4xBTgMw42
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr"><div>Dear LINSTOR on Kubernetes Users,</div><div><br></div=
-><div>We just released LINSTOR Operator 1.7.1.</div><div><br></div><div>For=
- the most part, this release focuses on small incremental improvements and =
-quality of life improvements.</div><div><br></div><div>One new feature is s=
-upport for Flatcar Container Linux. Flatcar Container Linux is an immutable=
-, Container focused Linux distribution. Since it is immutable, package mana=
-gement is quite a bit different, so in order to use LINSTOR Operator, you n=
-eed the following changes to your helm config:<br><br></div><div>=C2=A0 ope=
-rator:</div><div>=C2=A0=C2=A0=C2=A0 satelliteSet:</div><div>=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 kernelModuleInjectionAdditionalSourceDirectory: none</div><=
-div>=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 kernelModuleInjectionImage: <a href=3D"h=
-ttp://drbd.io/drbd9-flatcar:v9.1.5_ptf.1">drbd.io/drbd9-flatcar:v9.1.5_ptf.=
-1</a></div><div>=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 kernelModuleInjectionMode: C=
-ompile</div><div><br></div><div>There are also fixes to TLS setup for satel=
-lites and preparation for an updated LINSTOR CSI which finally will support=
- backups to S3.<br></div><div><br></div><div>The new chart version is avail=
-able from <a href=3D"https://charts.linstor.io" target=3D"_blank">https://c=
-harts.linstor.io</a> and new images are available from <a href=3D"http://dr=
-bd.io" target=3D"_blank">drbd.io</a>. The usual upgrade procedure applies:<=
-/div><div><br>$ helm repo update<br>$ helm upgrade linstor-op linstor/linst=
-or -f orig.yaml<br><br>For more information, please take a look at the upgr=
-ade guide. [1]<br>Source code is, as always, available upstream. [2]<br><br=
->Best regards,<br>Moritz<br><br>[1]: <a href=3D"https://linbit.com/drbd-use=
-r-guide/linstor-guide-1_0-en/#s-kubernetes-upgrade" target=3D"_blank">https=
-://linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-upgrade</a=
-><br>[2]: <a href=3D"https://github.com/piraeusdatastore/piraeus-operator" =
-target=3D"_blank">https://github.com/piraeusdatastore/piraeus-operator</a><=
-/div><div><br></div><div>Full changes<br></div><div>-----------------------=
------</div><div><br></div><div>Added<br></div><div>--------<br>- Allow the =
-external-provisioner and external-snapshotter access to secrets. This is re=
-quired to support StorageClass and SnapshotClass secrets.<br>- Instruct ext=
-ernal-provisioner to pass PVC name+namespace to the CSI driver, enabling op=
-tional support for PVC based names for LINSTOR volumes.<br>- Allow setting =
-the log level of LINSTOR components via CRs. Other components are left usin=
-g their default log level. The new default log level is INFO (was DEBUG pre=
-viously, which was often too verbose).<br>- Override the kernel source dire=
-ctory used when compiling DRBD (defaults to /usr/src). set operator.satelli=
-teSet.kernelModuleInjectionAdditionalSourceDirectory=3Dnone to disable this=
- mount.<br>- etcd-chart: add option to set priorityClassName.<br>Fixed<br>-=
--------<br>- Use correct secret name when setting up TLS for satellites<br>=
-- Correctly configure ServiceMonitor resource if TLS is enabled for LINSTOR=
- Controller.<br></div></div>
+Dear DRBD users,
 
---0000000000007fe6c005d5dcb898--
+this is version 0.5.2 of drbd-reactor. There is no too critical bug,
+never the less this release contains a number of fixes and users should
+update.
+
+To highlight some of the fixes the output of "drbd-reactorctl status" is
+now properly ordered and it is now possible to use "uncommon" resource
+names in the promoter plugin. The later is probably the biggest fix in
+this release. So far if a DRBD resource contained characters that need
+systemd escaping the generated systemd templates have not been properly
+systemd escaped. This is now fixed and resource names such as "foo-01"
+('-' being a char that needs escaping) are possible.
+
+One additional feature I want to highlight is that the promoter plugin
+now checks for certain DRBD properties and writes warnings to the log if
+they are not fulfilled (e.g., disabled auto-promote, quorum settings).
+These requirements are documented here:
+https://github.com/LINBIT/drbd-reactor/blob/master/doc/promoter.md#drbd-res=
+ource-configuration
+
+GIT: https://github.com/LINBIT/drbd-reactor/commit/e4d83969cb3e3a1b3ac1efb8=
+4e86fa54741aaa48
+TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-reactor-0.5.2.tar.gz
+PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+
+Changelog:
+[Roland Kammerer]
+* promoter: add auto-generated header
+* ctl: extend env
+* umh: add on-no-quorum-io-error.sh example
+* promoter: check for drbd options
+* build: allow 'make rpm' from release tarballs
+* promoter: systemd escape template names
+* ctl: linstor-gateway hint
+
+[ Christoph B=F6hmwalder ]
+* ctl: use subprocess.run instead of os.system
+
+Regards, rck
+
+--F61nrrC4xBTgMw42
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmHoBMkACgkQRgmezyI6
+myIQsAf+J365oRayMqCnE9vgHM8vlyLsefhhdsPa4X8UW1h2eNT5w9yYIZNlIzDv
+l8kb88S+nXAyoTGdynRe5tcxMTSvq0oxpu1SLxoZdrP5xIuakTYTrGgTSJ3TQIdL
+U5r/GpcFTCCkgS7KnRypR9Q903wVFOq6yMVq1o2ngkJlUn9lzc4I24KGXE2ArMxT
+eJoOhkMCpXUQAR1mrp5N7gJtQ1lhinFesYas243Iqd37GGWFd3wAmHvlxxKs9dPl
+mn+0NZvJ06k2ArNhaTucgsyZquNT2MLRVspDHbmb+f4v0CGOTitk11DgWAj8oV6S
+fSEf8Q+pGhLO2RJAfswOtxH3nXTSKA==
+=GxE9
+-----END PGP SIGNATURE-----
+
+--F61nrrC4xBTgMw42--
