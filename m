@@ -1,21 +1,21 @@
-Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com
-	[209.85.221.44])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 2234B420639
+Return-Path: <johannes.thoma@linbit.com>
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com
+	[209.85.221.48])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id BD845420638
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 26 Jan 2022 14:06:03 +0100 (CET)
-Received: by mail-wr1-f44.google.com with SMTP id e8so23879973wrc.0
+	Wed, 26 Jan 2022 16:27:17 +0100 (CET)
+Received: by mail-wr1-f48.google.com with SMTP id s18so26391107wrv.7
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 26 Jan 2022 05:06:03 -0800 (PST)
-Date: Wed, 26 Jan 2022 14:06:01 +0100
-From: Roland Kammerer <roland.kammerer@linbit.com>
-To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Message-ID: <YfFHOewjt4lMa36x@rck.sh>
+	Wed, 26 Jan 2022 07:27:17 -0800 (PST)
+Content-Type: multipart/alternative;
+	boundary="------------alGz0wOpKYSlofyrZEwbKYJG"
+Message-ID: <685cb75e-0e4f-b6d5-4399-3036ed8ef17b@linbit.com>
+Date: Wed, 26 Jan 2022 16:27:14 +0100
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="4M3vl23J2uQgXbpS"
-Content-Disposition: inline
-Subject: [DRBD-announce] drbd-utils v9.20.1
+To: "drbd-user@lists.linbit.com" <drbd-user@lists.linbit.com>,
+	drbd-announce@lists.linbit.com
+From: Johannes Thoma <johannes.thoma@linbit.com>
+Subject: [DRBD-announce] WinDRBD 1.0.0-rc20 released
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -27,46 +27,96 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
+This is a multi-part message in MIME format.
+--------------alGz0wOpKYSlofyrZEwbKYJG
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
---4M3vl23J2uQgXbpS
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Dear WinDRBD users,
 
-Dear DRBD users,
+This is a new release of WinDRBD which contains 2 minor fixes as
+well as an upgrade to the newest upstream DRBD version 9.0.32.
 
-this is version 9.20.1 of drbd-utils, which should not matter to most
-users, we just had a very specific use case in one of our helper
-libraries that triggered these changes:
+ From the WHATSNEW.md file:
 
-- drbdmeta can and usually is called from a higher level command like
-  drbdadm/drbdsetup. drbdmeta might ask the user for confirmation. In
-  libraries such a call might hang as drbdmeta waits for confirmation.
-  If there is no TTY we don't have to wait, we just fail.
+---
 
-- but drbdmeta also has a "--force" flag, why not use that? First of all
-  not waiting if there is not a TTY is valid on it's own, and more
-  importantly, drbdadm did not pass along the "--force" flag. This
-  is now possible.
+Fixed a bug that triggered invalid page chain assertion and lead to
+         connection abort at the beginning of sync. This also fixed
+         a hang when changing the role (primary / secondary) while
+         sync was going on.
 
-Regards, rck
+Fixed several memory leaks.
 
-GIT: https://github.com/linbit/drbd-utils/tree/9.20.1
-TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-utils-9.20.1.tar.gz
-PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+Upgrade to DRBD 9.0.32
 
---4M3vl23J2uQgXbpS
-Content-Type: application/pgp-signature; name="signature.asc"
+---
 
------BEGIN PGP SIGNATURE-----
+This release canidate is so far as I am concerned quite close to 1.0.0
+and hence 'almost' production ready. As always unless somebody finds
+a showstopper bug (BSOD or similar).
 
-iQEyBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmHxRzQACgkQRgmezyI6
-myI5CQf3VZtTf45PEsCNhZ+OjzdvSHUQVYH7G+4/tgQz2IPUAwjsZi8vWQh4WDOB
-qziNojHNIYCeSD1pOLRqLJtZfz+6jksUWKdTlFdiu/n47cGqJu7mostcFoj8Rs9t
-fxlyOo184yTs8dGY8k+DYeWU2UQOiDDVzOISx9MpkBsWqNl6fuuoXDFW0u0o6uGN
-ul+2Dd3uuO0hMlHklg++CLdILvb5xxeAyafuFuX9dCpfu4+qaZ6mL+mZGMSN3oMv
-Y8jBQt2uwMfbkExNkA3xyn48ue1fK2Ys6RjSZLFGgn78/WU1xFUjoOa4BShctkV4
-2Wzhm5TF5GzcbI9h1SqCbJsEJRbf
-=Do3C
------END PGP SIGNATURE-----
+The installer - as always - can be downloaded from the Linbit webpage:
 
---4M3vl23J2uQgXbpS--
+https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#drbd-windows
+
+Also as always please help WinDRBD development by testing this release
+canidate - thanks a lot in advance.
+
+Best regards,
+
+- Johannes
+
+--------------alGz0wOpKYSlofyrZEwbKYJG
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+<html>
+  <head>
+
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    Dear WinDRBD users,<br>
+    <br>
+    This is a new release of WinDRBD which contains 2 minor fixes as<br>
+    well as an upgrade to the newest upstream DRBD version 9.0.32.<br>
+    <br>
+    From the WHATSNEW.md file:<br>
+    <br>
+    ---<br>
+    <br>
+    Fixed a bug that triggered invalid page chain assertion and lead to<br>
+            connection abort at the beginning of sync. This also fixed<br>
+            a hang when changing the role (primary / secondary) while<br>
+            sync was going on.<br>
+    <br>
+    Fixed several memory leaks.<br>
+    <br>
+    Upgrade to DRBD 9.0.32<br>
+    <br>
+    ---<br>
+    <br>
+    This release canidate is so far as I am concerned quite close to
+    1.0.0<br>
+    and hence 'almost' production ready. As always unless somebody finds<br>
+    a showstopper bug (BSOD or similar).<br>
+    <br>
+    The installer - as always - can be downloaded from the Linbit
+    webpage:<br>
+    <br>
+    <a class="moz-txt-link-freetext"
+href="https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#drbd-windows">https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#drbd-windows</a><br>
+    <br>
+    Also as always please help WinDRBD development by testing this
+    release<br>
+    canidate - thanks a lot in advance.<br>
+    <br>
+    Best regards,<br>
+    <br>
+    - Johannes<br>
+    <br>
+  </body>
+</html>
+
+--------------alGz0wOpKYSlofyrZEwbKYJG--
