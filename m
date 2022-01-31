@@ -1,21 +1,21 @@
 Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com
-	[209.85.221.43])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 9740A420336
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com
+	[209.85.221.51])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 49C04420336
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 31 Jan 2022 08:43:58 +0100 (CET)
-Received: by mail-wr1-f43.google.com with SMTP id c23so23575559wrb.5
+	Mon, 31 Jan 2022 09:47:26 +0100 (CET)
+Received: by mail-wr1-f51.google.com with SMTP id h21so23872403wrb.8
 	for <drbd-announce@lists.linbit.com>;
-	Sun, 30 Jan 2022 23:43:58 -0800 (PST)
-Date: Mon, 31 Jan 2022 08:43:56 +0100
+	Mon, 31 Jan 2022 00:47:26 -0800 (PST)
+Date: Mon, 31 Jan 2022 09:47:25 +0100
 From: Roland Kammerer <roland.kammerer@linbit.com>
 To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Message-ID: <YfeTPJd2RHKE9kZk@rck.sh>
+Message-ID: <YfeiHRZav0sRaQo3@rck.sh>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="//Eogvyr/pExsA0p"
+	protocol="application/pgp-signature"; boundary="A08yVjd35fIDJdGE"
 Content-Disposition: inline
-Subject: [DRBD-announce] drbd-utils v9.20.2
+Subject: [DRBD-announce] drbd-reactor v0.5.3
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -28,63 +28,57 @@ List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
 
---//Eogvyr/pExsA0p
-Content-Type: text/plain; charset=utf-8
+--A08yVjd35fIDJdGE
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
 Dear DRBD users,
 
-this is drbd-utils v9.20.2. It it is a minor bugfix release for
-Pacemaker/crm-fence-peer users. If you don't use Pacemaker, or you have
-a Pacemaker version that works with 9.20.1, you don't need to upgrade.
+This is version 0.5.3 of DRBD Reactor. It fixes a bug where under
+certain conditions information about peer disks and paths got lost on
+connection updates. As this affected the core in theory all plugins that
+use that information are affected as well. The bug was found by a
+customer in the UMH plugin for example that did not trigger on peer
+device changes. All users should update. While fixing this bug I also
+saw that some environment variables set by the UMH plugin did not match
+their documented names. This got fixed.
 
-As this is a single commit bugfix release let's just quote Lars:
+Some more details: Reactor uses the (drbdsetup) events2 stream and
+updates objects on DRBD event updates. Usually the information in
+events2 is 1:1 what Reactor saves in its internal structs. If we get
+an update (a "change event" in events2 speak), we just overwrite the
+existing struct with the new content. What was overlooked is that the
+connection struct not only holds its own information, but also the
+structs for peer devices and paths. So on connection changes peer
+devices and paths got overwritten with their default slices of structs
+which are empty. This is now fixed, existing peer devices and paths are
+copied to the update.
 
-> crm-fence-peer: fix timeout with Pacemaker 2.0.5: milli seconds vs seconds
->
-> Addendum to 8a28be74bc6efa93931c957e54c01abb18b984fe
-> Commit message of the above cited here:
->=20
-> > crmadmin timeout was in milli seconds for <=3D 2.0.x,
-> > but became a TIMESPEC with default seconds in >=3D 2.1.
-> >
-> > Up to 2.0.4, atoi() was used, which effectively ignores "trailing garba=
-ge",
-> > so we could get away with always appending "ms".
-> > But with 2.0.5, it became g_option_context_parse G_OPTION_ARG_INT, which
-> > "Cannot parse integer value =E2=80=9C200ms=E2=80=9D for --timeout" :-|
-> >
-> > So grep the help message for "timeout.*milliseconds",
-> > and if not present, append an explicit "ms" unit.
->=20
-> And this is where I got it wrong :-(
-> somewhere later they re-organised the help text
-> so now I would need to parse --help-all.
->=20
-> Instead try to actually call "crmadmin -t 100ms --version".
-> If that works, it apparently understands (or ignores)
-> the "ms" unit.
+GIT: https://github.com/LINBIT/drbd-reactor/releases/tag/v0.5.3
+TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-reactor-0.5.3.tar.gz
+PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
 Regards, rck
 
-GIT: https://github.com/LINBIT/drbd-utils/tree/9.20.2
-TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-utils-9.20.2.tar.gz
-PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+Changelog:
 
---//Eogvyr/pExsA0p
+[ Roland Kammerer ]
+* core: preserve pds/paths on conn updates
+* umh: fix env for peerdevice state
+
+--A08yVjd35fIDJdGE
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmH3kzgACgkQRgmezyI6
-myIYpAf9ErvLrhE4+BOg6j/aRmoxlmLjyvdVgwcpRAkcj6X6CiUEBI3GU78KbqlS
-w4abSrBzs8SJom1pCYM5cN+zdSsnMWLKMZVj9lN2scSVpwWomW/zrEdpsMDqQnW3
-JhAyvg7BbShq/MBivqFE31bbvB0KbDQCZu7R+etfiwVxZyfbROZwE0bcaWxSpyo/
-ExuWkXBEhEx+AxwgycFcHNzmn05iaedmejukoUv++MEj4DbKRTFNHBNYyqiaGN+i
-KxywV56TBc0wYbmy6JiKaJ1/aylxEy/NBK43z22g/bZWQMIYiiXatrwFNu5iJ1v4
-oESXVRdNK0uqUFUcIPp9E5vyiJ3TdQ==
-=ZAAF
+iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmH3ohkACgkQRgmezyI6
+myJNkQf/eC7oBuXncQ/oFtGP8TmIi1kJzMdvkXnCiBUsGN5LEyHRg1mQVD6AkUnf
++t3cfAM17ZktEw7rHs7Aic01+pMbNKMz2Gbk0VKnR8NkgKHEbHcBHJ734Qs8INlX
+JohrJ22bx7daHuHDcU7vCpNC9F3Zd08o6TsD6F4sVKLuxh6hm2wRPLOgl6leppdm
+4DhlC53Sclwc5C3InF9K0lX6xKQhxHB4yj8Zz4Hh8RltCpvtgmSHcmN5Lo8U0IZj
+9CugboWDjQKPiPzdz+GHsaQiTT5tFOQmDih84jYnwDEaXjnOJPf8f3JJWh/gwYQ9
+IotqGGQwKdq8eY7eeZEdhbw/3RP/LQ==
+=K6RR
 -----END PGP SIGNATURE-----
 
---//Eogvyr/pExsA0p--
+--A08yVjd35fIDJdGE--
