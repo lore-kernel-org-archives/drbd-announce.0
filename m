@@ -1,21 +1,21 @@
-Return-Path: <johannes.thoma@linbit.com>
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com
-	[209.85.221.48])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id BD845420638
+Return-Path: <roland.kammerer@linbit.com>
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com
+	[209.85.221.43])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 9740A420336
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 26 Jan 2022 16:27:17 +0100 (CET)
-Received: by mail-wr1-f48.google.com with SMTP id s18so26391107wrv.7
+	Mon, 31 Jan 2022 08:43:58 +0100 (CET)
+Received: by mail-wr1-f43.google.com with SMTP id c23so23575559wrb.5
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 26 Jan 2022 07:27:17 -0800 (PST)
-Content-Type: multipart/alternative;
-	boundary="------------alGz0wOpKYSlofyrZEwbKYJG"
-Message-ID: <685cb75e-0e4f-b6d5-4399-3036ed8ef17b@linbit.com>
-Date: Wed, 26 Jan 2022 16:27:14 +0100
+	Sun, 30 Jan 2022 23:43:58 -0800 (PST)
+Date: Mon, 31 Jan 2022 08:43:56 +0100
+From: Roland Kammerer <roland.kammerer@linbit.com>
+To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
+Message-ID: <YfeTPJd2RHKE9kZk@rck.sh>
 MIME-Version: 1.0
-To: "drbd-user@lists.linbit.com" <drbd-user@lists.linbit.com>,
-	drbd-announce@lists.linbit.com
-From: Johannes Thoma <johannes.thoma@linbit.com>
-Subject: [DRBD-announce] WinDRBD 1.0.0-rc20 released
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="//Eogvyr/pExsA0p"
+Content-Disposition: inline
+Subject: [DRBD-announce] drbd-utils v9.20.2
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -27,96 +27,64 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-This is a multi-part message in MIME format.
---------------alGz0wOpKYSlofyrZEwbKYJG
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
 
-Dear WinDRBD users,
+--//Eogvyr/pExsA0p
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-This is a new release of WinDRBD which contains 2 minor fixes as
-well as an upgrade to the newest upstream DRBD version 9.0.32.
+Dear DRBD users,
 
- From the WHATSNEW.md file:
+this is drbd-utils v9.20.2. It it is a minor bugfix release for
+Pacemaker/crm-fence-peer users. If you don't use Pacemaker, or you have
+a Pacemaker version that works with 9.20.1, you don't need to upgrade.
 
----
+As this is a single commit bugfix release let's just quote Lars:
 
-Fixed a bug that triggered invalid page chain assertion and lead to
-         connection abort at the beginning of sync. This also fixed
-         a hang when changing the role (primary / secondary) while
-         sync was going on.
+> crm-fence-peer: fix timeout with Pacemaker 2.0.5: milli seconds vs seconds
+>
+> Addendum to 8a28be74bc6efa93931c957e54c01abb18b984fe
+> Commit message of the above cited here:
+>=20
+> > crmadmin timeout was in milli seconds for <=3D 2.0.x,
+> > but became a TIMESPEC with default seconds in >=3D 2.1.
+> >
+> > Up to 2.0.4, atoi() was used, which effectively ignores "trailing garba=
+ge",
+> > so we could get away with always appending "ms".
+> > But with 2.0.5, it became g_option_context_parse G_OPTION_ARG_INT, which
+> > "Cannot parse integer value =E2=80=9C200ms=E2=80=9D for --timeout" :-|
+> >
+> > So grep the help message for "timeout.*milliseconds",
+> > and if not present, append an explicit "ms" unit.
+>=20
+> And this is where I got it wrong :-(
+> somewhere later they re-organised the help text
+> so now I would need to parse --help-all.
+>=20
+> Instead try to actually call "crmadmin -t 100ms --version".
+> If that works, it apparently understands (or ignores)
+> the "ms" unit.
 
-Fixed several memory leaks.
+Regards, rck
 
-Upgrade to DRBD 9.0.32
+GIT: https://github.com/LINBIT/drbd-utils/tree/9.20.2
+TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-utils-9.20.2.tar.gz
+PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
----
+--//Eogvyr/pExsA0p
+Content-Type: application/pgp-signature; name="signature.asc"
 
-This release canidate is so far as I am concerned quite close to 1.0.0
-and hence 'almost' production ready. As always unless somebody finds
-a showstopper bug (BSOD or similar).
+-----BEGIN PGP SIGNATURE-----
 
-The installer - as always - can be downloaded from the Linbit webpage:
+iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmH3kzgACgkQRgmezyI6
+myIYpAf9ErvLrhE4+BOg6j/aRmoxlmLjyvdVgwcpRAkcj6X6CiUEBI3GU78KbqlS
+w4abSrBzs8SJom1pCYM5cN+zdSsnMWLKMZVj9lN2scSVpwWomW/zrEdpsMDqQnW3
+JhAyvg7BbShq/MBivqFE31bbvB0KbDQCZu7R+etfiwVxZyfbROZwE0bcaWxSpyo/
+ExuWkXBEhEx+AxwgycFcHNzmn05iaedmejukoUv++MEj4DbKRTFNHBNYyqiaGN+i
+KxywV56TBc0wYbmy6JiKaJ1/aylxEy/NBK43z22g/bZWQMIYiiXatrwFNu5iJ1v4
+oESXVRdNK0uqUFUcIPp9E5vyiJ3TdQ==
+=ZAAF
+-----END PGP SIGNATURE-----
 
-https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#drbd-windows
-
-Also as always please help WinDRBD development by testing this release
-canidate - thanks a lot in advance.
-
-Best regards,
-
-- Johannes
-
---------------alGz0wOpKYSlofyrZEwbKYJG
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-<html>
-  <head>
-
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    Dear WinDRBD users,<br>
-    <br>
-    This is a new release of WinDRBD which contains 2 minor fixes as<br>
-    well as an upgrade to the newest upstream DRBD version 9.0.32.<br>
-    <br>
-    From the WHATSNEW.md file:<br>
-    <br>
-    ---<br>
-    <br>
-    Fixed a bug that triggered invalid page chain assertion and lead to<br>
-            connection abort at the beginning of sync. This also fixed<br>
-            a hang when changing the role (primary / secondary) while<br>
-            sync was going on.<br>
-    <br>
-    Fixed several memory leaks.<br>
-    <br>
-    Upgrade to DRBD 9.0.32<br>
-    <br>
-    ---<br>
-    <br>
-    This release canidate is so far as I am concerned quite close to
-    1.0.0<br>
-    and hence 'almost' production ready. As always unless somebody finds<br>
-    a showstopper bug (BSOD or similar).<br>
-    <br>
-    The installer - as always - can be downloaded from the Linbit
-    webpage:<br>
-    <br>
-    <a class="moz-txt-link-freetext"
-href="https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#drbd-windows">https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#drbd-windows</a><br>
-    <br>
-    Also as always please help WinDRBD development by testing this
-    release<br>
-    canidate - thanks a lot in advance.<br>
-    <br>
-    Best regards,<br>
-    <br>
-    - Johannes<br>
-    <br>
-  </body>
-</html>
-
---------------alGz0wOpKYSlofyrZEwbKYJG--
+--//Eogvyr/pExsA0p--
