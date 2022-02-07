@@ -1,21 +1,20 @@
-Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com
-	[209.85.221.51])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 49C04420336
+Return-Path: <philipp.reisner@linbit.com>
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com
+	[209.85.221.44])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id BF9644202E4
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 31 Jan 2022 09:47:26 +0100 (CET)
-Received: by mail-wr1-f51.google.com with SMTP id h21so23872403wrb.8
+	Mon,  7 Feb 2022 08:11:59 +0100 (CET)
+Received: by mail-wr1-f44.google.com with SMTP id m5so5678150wrb.2
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 31 Jan 2022 00:47:26 -0800 (PST)
-Date: Mon, 31 Jan 2022 09:47:25 +0100
-From: Roland Kammerer <roland.kammerer@linbit.com>
-To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Message-ID: <YfeiHRZav0sRaQo3@rck.sh>
+	Sun, 06 Feb 2022 23:11:59 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="A08yVjd35fIDJdGE"
-Content-Disposition: inline
-Subject: [DRBD-announce] drbd-reactor v0.5.3
+From: Philipp Reisner <philipp.reisner@linbit.com>
+Date: Mon, 7 Feb 2022 08:11:47 +0100
+Message-ID: <CADGDV=VnmCwrmV8r7vt3Qpqr-DxV+2oif96Y9bL81f75NOg4yQ@mail.gmail.com>
+To: drbd-announce@lists.linbit.com
+Content-Type: text/plain; charset="UTF-8"
+Cc: drbd-user@lists.linbit.com
+Subject: [DRBD-announce] drbd-9.1.6-rc.1
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -27,58 +26,52 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
+Hi,
 
---A08yVjd35fIDJdGE
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+In this cycle, we learned that DRBD was not dealing correctly with internal
+meta-data on backing devices larger than 128TB. Why did we not discover this
+earlier? (we pretend that DRBD can hand up to 1PB per volume/device) Well,
+we tested with device-mapper-based thinly provisioned LVs. It turns out that
+device-mapper considers 0-byte sized write requests valid. The bug was that
+DRBD issued writes with a length of 0 bytes. The first customer that used a
+SCSI device larger than 128TB then made us aware of the problem.
 
-Dear DRBD users,
+Considerable effort went into recovering IO and unfreezing requests after
+and IO frozen DRBD unfreezes.
 
-This is version 0.5.3 of DRBD Reactor. It fixes a bug where under
-certain conditions information about peer disks and paths got lost on
-connection updates. As this affected the core in theory all plugins that
-use that information are affected as well. The bug was found by a
-customer in the UMH plugin for example that did not trigger on peer
-device changes. All users should update. While fixing this bug I also
-saw that some environment variables set by the UMH plugin did not match
-their documented names. This got fixed.
+Another surprise was that DRBD caused unnecessary allocations in thinly
+provisioned backing devices when the resync was throttled. We took the
+chance to rework this part of the code. Now it will never cause such
+unnecessary allocations. The real resync rate is now closer to the requested
+c-max-rate setting than before.
 
-Some more details: Reactor uses the (drbdsetup) events2 stream and
-updates objects on DRBD event updates. Usually the information in
-events2 is 1:1 what Reactor saves in its internal structs. If we get
-an update (a "change event" in events2 speak), we just overwrite the
-existing struct with the new content. What was overlooked is that the
-connection struct not only holds its own information, but also the
-structs for peer devices and paths. So on connection changes peer
-devices and paths got overwritten with their default slices of structs
-which are empty. This is now fixed, existing peer devices and paths are
-copied to the update.
+A drawback of the new implementation is that with high discard-granularities
+(e.g. 512KB) the slowest it can go is 5MB/sec. I believe that is just an
+academic problem, in the real world people want to resync a lot quicker, and
+real devices with such high discard granularity are rare.
 
-GIT: https://github.com/LINBIT/drbd-reactor/releases/tag/v0.5.3
-TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-reactor-0.5.3.tar.gz
-PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+At the moment, this is a release candidate. Please give it a try.
 
-Regards, rck
 
-Changelog:
+9.1.6-rc.1 (api:genl2/proto:110-121/transport:17)
+--------
+ * fix IO to internal meta-data for backing device larger than 128TB
+ * fix resending requests towards diskless peers, this is relevant when
+   fencing is enabled, but the connection is re-established before fencing
+   succeeds; when the bug triggered it lead to "stuck" requests
+ * remove lockless buffer pages handling; it still contained very hard to
+   trigger bugs
+ * make sure DRBD's resync does not cause unnecessary allocation in a
+   thinly provisioned backing device on a resync target node
+ * avoid unnecessary resync (or split-brain) due to a wrongly generated
+   new current UUID when an already IO frozen DBRD gets new writes
+ * small fix to autopromote, when an application tries a read-only open
+   before it does a read-write open immediately after the peer primary
+   vanished ungracefully
+ * split out the secure boot key into a package on its own, that is
+   necessary to allow installation of multiple drbd kernel module packages
+ * Support for building containers for flacar linux
 
-[ Roland Kammerer ]
-* core: preserve pds/paths on conn updates
-* umh: fix env for peerdevice state
 
---A08yVjd35fIDJdGE
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmH3ohkACgkQRgmezyI6
-myJNkQf/eC7oBuXncQ/oFtGP8TmIi1kJzMdvkXnCiBUsGN5LEyHRg1mQVD6AkUnf
-+t3cfAM17ZktEw7rHs7Aic01+pMbNKMz2Gbk0VKnR8NkgKHEbHcBHJ734Qs8INlX
-JohrJ22bx7daHuHDcU7vCpNC9F3Zd08o6TsD6F4sVKLuxh6hm2wRPLOgl6leppdm
-4DhlC53Sclwc5C3InF9K0lX6xKQhxHB4yj8Zz4Hh8RltCpvtgmSHcmN5Lo8U0IZj
-9CugboWDjQKPiPzdz+GHsaQiTT5tFOQmDih84jYnwDEaXjnOJPf8f3JJWh/gwYQ9
-IotqGGQwKdq8eY7eeZEdhbw/3RP/LQ==
-=K6RR
------END PGP SIGNATURE-----
-
---A08yVjd35fIDJdGE--
+https://pkg.linbit.com//downloads/drbd/9/drbd-9.1.6-rc.1.tar.gz
+https://github.com/LINBIT/drbd/commit/712dddb6a29d6cfcf7122f432184fefc9cf393f3
