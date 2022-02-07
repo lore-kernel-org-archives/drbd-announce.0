@@ -1,20 +1,21 @@
-Return-Path: <philipp.reisner@linbit.com>
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com
-	[209.85.221.44])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id BF9644202E4
+Return-Path: <johannes.thoma@linbit.com>
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com
+	[209.85.218.49])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 15BF442032B
 	for <drbd-announce@lists.linbit.com>;
-	Mon,  7 Feb 2022 08:11:59 +0100 (CET)
-Received: by mail-wr1-f44.google.com with SMTP id m5so5678150wrb.2
+	Mon,  7 Feb 2022 12:44:07 +0100 (CET)
+Received: by mail-ej1-f49.google.com with SMTP id ka4so41101804ejc.11
 	for <drbd-announce@lists.linbit.com>;
-	Sun, 06 Feb 2022 23:11:59 -0800 (PST)
+	Mon, 07 Feb 2022 03:44:07 -0800 (PST)
+Content-Type: multipart/alternative;
+	boundary="------------nqWphZqGRDBTpJVC9fQH8WIb"
+Message-ID: <28ee954c-4129-4f9e-7c55-b3019eb62f1c@linbit.com>
+Date: Mon, 7 Feb 2022 12:44:05 +0100
 MIME-Version: 1.0
-From: Philipp Reisner <philipp.reisner@linbit.com>
-Date: Mon, 7 Feb 2022 08:11:47 +0100
-Message-ID: <CADGDV=VnmCwrmV8r7vt3Qpqr-DxV+2oif96Y9bL81f75NOg4yQ@mail.gmail.com>
-To: drbd-announce@lists.linbit.com
-Content-Type: text/plain; charset="UTF-8"
-Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-9.1.6-rc.1
+To: "drbd-user@lists.linbit.com" <drbd-user@lists.linbit.com>,
+	drbd-announce@lists.linbit.com
+From: Johannes Thoma <johannes.thoma@linbit.com>
+Subject: [DRBD-announce] WinDRBD 1.0.0 released
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,52 +27,125 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Hi,
+This is a multi-part message in MIME format.
+--------------nqWphZqGRDBTpJVC9fQH8WIb
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-In this cycle, we learned that DRBD was not dealing correctly with internal
-meta-data on backing devices larger than 128TB. Why did we not discover this
-earlier? (we pretend that DRBD can hand up to 1PB per volume/device) Well,
-we tested with device-mapper-based thinly provisioned LVs. It turns out that
-device-mapper considers 0-byte sized write requests valid. The bug was that
-DRBD issued writes with a length of 0 bytes. The first customer that used a
-SCSI device larger than 128TB then made us aware of the problem.
+Dear DRBD and WinDRBD users,
 
-Considerable effort went into recovering IO and unfreezing requests after
-and IO frozen DRBD unfreezes.
+Finally we are releasing WinDRBD 1.0.0, the first stable production-ready
+version of WinDRBD after almost 5 years of development. This is an
+important milestone in WinDRBD development. Technically it is
+the same as the last rc20 release canidate with a few extra DRBD
+patches.
 
-Another surprise was that DRBD caused unnecessary allocations in thinly
-provisioned backing devices when the resync was throttled. We took the
-chance to rework this part of the code. Now it will never cause such
-unnecessary allocations. The real resync rate is now closer to the requested
-c-max-rate setting than before.
+At this point I would like to thank everybody who helped to make
+this happen: Philipp Reisner and the DRBD team at Linbit, Sungeun
+Kim and the WDRBD team at Mantech and many members of the
+WinDRBD and DRBD community for testing and lots of ideas how
+to improve WinDRBD.
 
-A drawback of the new implementation is that with high discard-granularities
-(e.g. 512KB) the slowest it can go is 5MB/sec. I believe that is just an
-academic problem, in the real world people want to resync a lot quicker, and
-real devices with such high discard granularity are rare.
+This release is meant for using Microsoft Windows machines (and
+Windows / Linux mixed setups) in an HA environment. The next
+upcoming features are Secure Boot (we are already working on
+this), using DRBD 9.1 as DRBD engine and last but not least,
+LINSTOR support. If there is demand we may also continue our
+work on Microsoft cluster manager integration, please let us
+know when you need this. Also we can finalize WinDRBD as
+root device ("C:") which already works but is complicated to
+set up at the moment, again please drop us an eMail if this
+feature is on your wishlist.
 
-At the moment, this is a release candidate. Please give it a try.
+Since WinDRBD uses the original source code of DRBD internally,
+the features of WinDRBD are almost the same as the ones of
+DRBD. One noteable exception is auto promote which we don't
+support because Windows starts accessing a Disk as soon as
+it gets online (so nodes would compete for becoming Primary).
+Therefore auto promote does not really make sense on the
+Windows platforms.
 
+As always we are providing a self-contained installer EXE for
+Windows: unless you want to develop for WinDRBD yourself
+it is recommended to use the installer since it also contains a
+Linbit (DigiCert) signed driver (note that SecureBoot is not
+supported yet):
 
-9.1.6-rc.1 (api:genl2/proto:110-121/transport:17)
---------
- * fix IO to internal meta-data for backing device larger than 128TB
- * fix resending requests towards diskless peers, this is relevant when
-   fencing is enabled, but the connection is re-established before fencing
-   succeeds; when the bug triggered it lead to "stuck" requests
- * remove lockless buffer pages handling; it still contained very hard to
-   trigger bugs
- * make sure DRBD's resync does not cause unnecessary allocation in a
-   thinly provisioned backing device on a resync target node
- * avoid unnecessary resync (or split-brain) due to a wrongly generated
-   new current UUID when an already IO frozen DBRD gets new writes
- * small fix to autopromote, when an application tries a read-only open
-   before it does a read-write open immediately after the peer primary
-   vanished ungracefully
- * split out the secure boot key into a package on its own, that is
-   necessary to allow installation of multiple drbd kernel module packages
- * Support for building containers for flacar linux
+https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#drbd-windows
 
+Also, as always if you plan to use WinDRBD in your production
+environment it is highly recommended and appreciated that you
+talk to Linbit (www.linbit.com) for support options.
 
-https://pkg.linbit.com//downloads/drbd/9/drbd-9.1.6-rc.1.tar.gz
-https://github.com/LINBIT/drbd/commit/712dddb6a29d6cfcf7122f432184fefc9cf393f3
+Thank you for using WinDRBD and looking forward to hearing
+from you,
+
+Best regards,
+
+- Johannes
+--------------nqWphZqGRDBTpJVC9fQH8WIb
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<html>
+  <head>
+
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    Dear DRBD and WinDRBD users,<br>
+    <br>
+    Finally we are releasing WinDRBD 1.0.0, the first stable
+    production-ready<br>
+    version of WinDRBD after almost 5 years of development. This is an<br>
+    important milestone in WinDRBD development. Technically it is <br>
+    the same as the last rc20 release canidate with a few extra DRBD<br>
+    patches.<br>
+    <br>
+    At this point I would like to thank everybody who helped to make<br>
+    this happen: Philipp Reisner and the DRBD team at Linbit, Sungeun<br>
+    Kim and the WDRBD team at Mantech and many members of the<br>
+    WinDRBD and DRBD community for testing and lots of ideas how<br>
+    to improve WinDRBD.<br>
+    <br>
+    This release is meant for using Microsoft Windows machines (and<br>
+    Windows / Linux mixed setups) in an HA environment. The next<br>
+    upcoming features are Secure Boot (we are already working on<br>
+    this), using DRBD 9.1 as DRBD engine and last but not least,<br>
+    LINSTOR support. If there is demand we may also continue our<br>
+    work on Microsoft cluster manager integration, please let us<br>
+    know when you need this. Also we can finalize WinDRBD as<br>
+    root device ("C:") which already works but is complicated to<br>
+    set up at the moment, again please drop us an eMail if this<br>
+    feature is on your wishlist.<br>
+    <br>
+    Since WinDRBD uses the original source code of DRBD internally,<br>
+    the features of WinDRBD are almost the same as the ones of<br>
+    DRBD. One noteable exception is auto promote which we don't<br>
+    support because Windows starts accessing a Disk as soon as<br>
+    it gets online (so nodes would compete for becoming Primary).<br>
+    Therefore auto promote does not really make sense on the<br>
+    Windows platforms.<br>
+    <br>
+    As always we are providing a self-contained installer EXE for<br>
+    Windows: unless you want to develop for WinDRBD yourself<br>
+    it is recommended to use the installer since it also contains a <br>
+    Linbit (DigiCert) signed driver (note that SecureBoot is not<br>
+    supported yet):<br>
+    <br>
+<a class="moz-txt-link-freetext" href="https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#drbd-windows">https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#drbd-windows</a><br>
+    <br>
+    Also, as always if you plan to use WinDRBD in your production<br>
+    environment it is highly recommended and appreciated that you<br>
+    talk to Linbit (<a class="moz-txt-link-abbreviated" href="http://www.linbit.com">www.linbit.com</a>) for support options.<br>
+    <br>
+    Thank you for using WinDRBD and looking forward to hearing<br>
+    from you,<br>
+    <br>
+    Best regards,<br>
+    <br>
+    - Johannes<br>
+  </body>
+</html>
+
+--------------nqWphZqGRDBTpJVC9fQH8WIb--
