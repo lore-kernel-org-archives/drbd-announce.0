@@ -1,30 +1,20 @@
-Return-Path: <lars.ellenberg@linbit.com>
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com
-	[209.85.218.49])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id D95924205EC
+Return-Path: <philipp.reisner@linbit.com>
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com
+	[209.85.221.49])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 8E74B42036B
 	for <drbd-announce@lists.linbit.com>;
-	Wed,  9 Feb 2022 18:42:34 +0100 (CET)
-Received: by mail-ej1-f49.google.com with SMTP id p24so9565751ejo.1
+	Mon, 14 Feb 2022 18:02:45 +0100 (CET)
+Received: by mail-wr1-f49.google.com with SMTP id d27so27938488wrc.6
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 09 Feb 2022 09:42:34 -0800 (PST)
-Received: from grappa.linbit (62-99-137-214.static.upcbusiness.at.
-	[62.99.137.214]) by smtp.gmail.com with ESMTPSA id
-	m25sm5756138edr.104.2022.02.09.09.42.33
-	for <drbd-announce@lists.linbit.com>
-	(version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-	Wed, 09 Feb 2022 09:42:33 -0800 (PST)
-Resent-Message-ID: <20220209174232.GA1667193@grappa.linbit>
-Message-ID: <c972afbd-4834-83f5-54d1-c5dbacaa41c1@linbit.com>
-Date: Tue, 8 Feb 2022 16:23:26 +0100
+	Mon, 14 Feb 2022 09:02:45 -0800 (PST)
 MIME-Version: 1.0
-Content-Language: en-US
-From: =?UTF-8?Q?Christoph_B=c3=b6hmwalder?= <christoph.boehmwalder@linbit.com>
+From: Philipp Reisner <philipp.reisner@linbit.com>
+Date: Mon, 14 Feb 2022 18:02:34 +0100
+Message-ID: <CADGDV=Uj9VTP1uFu1QpXS8Une-hars2zVzpUYNA-X0-Fwm6MEA@mail.gmail.com>
 To: drbd-announce@lists.linbit.com
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
-Errors-To: drbd-user-bounces@lists.linbit.com
+Content-Type: text/plain; charset="UTF-8"
 Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] [DRBD-user] linstor-gateway v0.11.0-rc.2
+Subject: [DRBD-announce] drbd-9.1.6 and drbd-9.2.0-rc.4
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -38,32 +28,51 @@ List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hello,
 
-For the first time in this format, I am pleased to announce a new 
-release of LINSTOR Gateway.
+In this cycle, we learned that DRBD was not dealing correctly with internal
+meta-data on backing devices larger than 128TB. Why did we not discover this
+earlier? (we pretend that DRBD can hand up to 1PB per volume/device) Well,
+we tested with device-mapper-based thinly provisioned LVs. It turns out that
+device-mapper considers 0-byte sized write requests valid. The bug was that
+DRBD issued writes with a length of 0 bytes. The first customer that used a
+SCSI device larger than 128TB then made us aware of the problem.
 
-LINSTOR Gateway aims to semi-automate the setup and maintenance of 
-highly available iSCSI and NVMe-oF targets, as well as NFS exports.
-It does so by orchestrating resources in LINSTOR and DRBD Reactor.
+Considerable effort went into recovering IO and unfreezing requests after
+and IO frozen DRBD unfreezes.
 
-The tool has been hosted on GitHub for a while, but as public interest 
-has gone up we have decided to also announce its releases on this list.
+Another surprise was that DRBD caused unnecessary allocations in thinly
+provisioned backing devices when the resync was throttled. We took the
+chance to rework this part of the code. Now it will never cause such
+unnecessary allocations. The real resync rate is now closer to the requested
+c-max-rate setting than before.
 
-LINSTOR Gateway is still in the testing and development phase, so your 
-help in testing this release candidate and providing feedback would be 
-greatly appreciated.
+A drawback of the new implementation is that with high discard-granularities
+(e.g. 512KB) the slowest it can go is 5MB/sec. I believe that is just an
+academic problem, in the real world people want to resync a lot quicker, and
+real devices with such high discard granularity are rare.
 
-https://github.com/LINBIT/linstor-gateway/releases/v0.11.0-rc.2
 
----
+9.1.6 (api:genl2/proto:110-121/transport:17)
+--------
+ * fix IO to internal meta-data for backing device larger than 128TB
+ * fix resending requests towards diskless peers, this is relevant when
+   fencing is enabled, but the connection is re-established before fencing
+   succeeds; when the bug triggered it lead to "stuck" requests
+ * remove lockless buffer pages handling; it still contained very hard to
+   trigger bugs
+ * make sure DRBD's resync does not cause unnecessary allocation in a
+   thinly provisioned backing device on a resync target node
+ * avoid unnecessary resync (or split-brain) due to a wrongly generated
+   new current UUID when an already IO frozen DBRD gets new writes
+ * small fix to autopromote, when an application tries a read-only open
+   before it does a read-write open immediately after the peer primary
+   vanished ungracefully
+ * split out the secure boot key into a package on its own, that is
+   necessary to allow installation of multiple drbd kernel module packages
+ * Support for building containers for flacar linux
 
-Also see the following links to learn more about these technologies:
+https://pkg.linbit.com//downloads/drbd/9/drbd-9.1.6.tar.gz
+https://github.com/LINBIT/drbd/commit/f85adeb71f16a0aead1e875665e2fb68852d94eb
+...and drbd-9.2.0-rc.4 contains the same changes.
 
-https://github.com/LINBIT/linstor-gateway
-https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/#ch-linstor-gateway
-https://github.com/LINBIT/drbd-reactor
-https://github.com/LINBIT/linstor-server
-_______________________________________________
-Star us on GITHUB: https://github.com/LINBIT
-drbd-user mailing list
-drbd-user@lists.linbit.com
-https://lists.linbit.com/mailman/listinfo/drbd-user
+https://pkg.linbit.com//downloads/drbd/9/drbd-9.2.0-rc.4.tar.gz
+https://github.com/LINBIT/drbd/commit/5828124e330af6238cec2bf396145b4e04487c5f
