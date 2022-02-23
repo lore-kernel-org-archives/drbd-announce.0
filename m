@@ -1,21 +1,19 @@
-Return-Path: <johannes.thoma@linbit.com>
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com
-	[209.85.208.44])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id D575042017B
+Return-Path: <rene.peinthor@linbit.com>
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com
+	[209.85.208.41])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 0D759420177
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 17 Feb 2022 18:03:29 +0100 (CET)
-Received: by mail-ed1-f44.google.com with SMTP id s24so4385743edr.5
+	Wed, 23 Feb 2022 15:44:27 +0100 (CET)
+Received: by mail-ed1-f41.google.com with SMTP id x5so44450118edd.11
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 17 Feb 2022 09:03:29 -0800 (PST)
-Content-Type: multipart/alternative;
-	boundary="------------ofmtRICiF8TOwY647oCZJ4pp"
-Message-ID: <7649893c-ecdd-a924-cfc4-30a36a69f558@linbit.com>
-Date: Thu, 17 Feb 2022 18:02:26 +0100
+	Wed, 23 Feb 2022 06:44:27 -0800 (PST)
 MIME-Version: 1.0
-To: "drbd-user@lists.linbit.com" <drbd-user@lists.linbit.com>,
-	drbd-announce@lists.linbit.com
-From: Johannes Thoma <johannes.thoma@linbit.com>
-Subject: [DRBD-announce] WinDRBD 1.0.1 released
+From: Rene Peinthor <rene.peinthor@linbit.com>
+Date: Wed, 23 Feb 2022 15:44:16 +0100
+Message-ID: <CAHmn2DO2yoadKTF+9O4KbvP+vyptq9mpFxLJJAsgQ3oRmxLQsg@mail.gmail.com>
+To: drbd-announce@lists.linbit.com, drbd-user <drbd-user@lists.linbit.com>
+Content-Type: multipart/alternative; boundary="0000000000009d3ed805d8b080fb"
+Subject: [DRBD-announce] linstor-server release candidate 1.18.0-rc.3
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -27,78 +25,67 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-This is a multi-part message in MIME format.
---------------ofmtRICiF8TOwY647oCZJ4pp
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+--0000000000009d3ed805d8b080fb
+Content-Type: text/plain; charset="UTF-8"
 
-Dear WinDRBD users,
+Hi!
 
-We are releasing a minor update to WinDRBD 1.0.0 which contains two changes:
+We already arrived at rc.3 as we internally noted some problems with
+packages and had to redo them.
 
-The timeout for user mode helper scripts has been dropped from the kernel module.
-This allows scripts to run longer than the previously hardcoded 10 seconds. They
-now may take as long as they like.
+This version brings performance improvements and fixes for the Kubernetes
+CRD database backend, but the backend still needs some testing. So be aware
+that it might not be ready yet for production.
+Node related events (create, delete, evicted, restored, ...) can now be
+listened to via server sent events.
 
-On drbdsetup status --json --verbose --statistics now the reason for a suspend
-of a resource is also printed. This is a fix from upstream drbd-utils.
+linstor-server 1.18.0-rc.3
+--------------------------
+ * Kubernetes CRD fixes and performance improvements
+ * Cryptsetup is limited to 256MB during format
+ * New REST-API to create a valid H2 embedded database backup
+ * Better enabling of auto-quorum, tiebreaker recreation
+ * Clone ZFS has a new option to use zfs clone instead of zfs send/recv
+ * ZFS allocated size uses now REFER instead of USED for volumes
+ * Added resource sync status API
+ * Fixes in backup shipping
+ * API-Version 1.13.0
 
-We also fixed the git hash of the drbd-headers WinDRBD is based on so building
-WinDRBD from source should be a little bit easier now.
+https://pkg.linbit.com//downloads/linstor/linstor-server-1.18.0-rc.3.tar.gz
 
-Unless you need the JSON output or user mode helpers that run longer than
-10 seconds you don't need to update.
 
-If you update a binary signed installer can be downloaded from (as always):
+Linstor PPA:
+https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
-https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#drbd-windows
+Cheers,
+Rene
 
-Best regards,
+--0000000000009d3ed805d8b080fb
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-- Johannes
---------------ofmtRICiF8TOwY647oCZJ4pp
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+<div dir=3D"ltr"><div>Hi!</div><div><br></div><div>We already arrived at rc=
+.3 as we internally noted some problems with packages and had to redo them.=
+</div><div><br></div><div>This version brings performance improvements and =
+fixes for the Kubernetes CRD database backend, but the backend still needs =
+some testing. So be aware that it might not be ready yet for production.</d=
+iv><div>Node related events (create, delete, evicted, restored, ...) can no=
+w be listened to via server sent events.</div><div><br></div><div><font fac=
+e=3D"monospace">linstor-server 1.18.0-rc.3<br>--------------------------<br=
+>=C2=A0* Kubernetes CRD=C2=A0fixes and performance improvements<br>=C2=A0* =
+Cryptsetup is limited to 256MB during format<br>=C2=A0* New REST-API to cre=
+ate a valid H2 embedded database backup<br>=C2=A0* Better enabling=C2=A0of =
+auto-quorum, tiebreaker recreation<br>=C2=A0* Clone ZFS has a new option to=
+ use zfs clone instead of zfs send/recv<br>=C2=A0* ZFS allocated size uses =
+now REFER instead of USED for volumes</font></div><div><font face=3D"monosp=
+ace">=C2=A0* Added resource sync status API<br>=C2=A0* Fixes in backup ship=
+ping<br>=C2=A0* API-Version 1.13.0</font><br></div><div><br></div><div><a h=
+ref=3D"https://pkg.linbit.com//downloads/linstor/linstor-server-1.18.0-rc.3=
+.tar.gz">https://pkg.linbit.com//downloads/linstor/linstor-server-1.18.0-rc=
+.3.tar.gz</a><br></div><div><br></div><div><br></div><div><div><div><div>Li=
+nstor PPA:<br><a href=3D"https://launchpad.net/~linbit/+archive/ubuntu/linb=
+it-drbd9-stack" rel=3D"noreferrer" target=3D"_blank">https://launchpad.net/=
+~linbit/+archive/ubuntu/linbit-drbd9-stack</a></div></div><div><br></div><d=
+iv>Cheers,<br></div><div>Rene</div></div></div></div>
 
-<html>
-  <head>
-
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    Dear WinDRBD users,<br>
-    <br>
-    We are releasing a minor update to WinDRBD 1.0.0 which contains two
-    changes:<br>
-    <br>
-    The timeout for user mode helper scripts has been dropped from the
-    kernel module.<br>
-    This allows scripts to run longer than the previously hardcoded 10
-    seconds. They<br>
-    now may take as long as they like.<br>
-    <br>
-    On drbdsetup status --json --verbose --statistics now the reason for
-    a suspend<br>
-    of a resource is also printed. This is a fix from upstream
-    drbd-utils.<br>
-    <br>
-    We also fixed the git hash of the drbd-headers WinDRBD is based on
-    so building<br>
-    WinDRBD from source should be a little bit easier now. <br>
-    <br>
-    Unless you need the JSON output or user mode helpers that run longer
-    than<br>
-    10 seconds you don't need to update.<br>
-    <br>
-    If you update a binary signed installer can be downloaded from (as
-    always):<br>
-    <br>
-<a class="moz-txt-link-freetext" href="https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#drbd-windows">https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#drbd-windows</a><br>
-    <br>
-    Best regards,<br>
-    <br>
-    - Johannes<br>
-  </body>
-</html>
-
---------------ofmtRICiF8TOwY647oCZJ4pp--
+--0000000000009d3ed805d8b080fb--
