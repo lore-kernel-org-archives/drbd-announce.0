@@ -1,20 +1,19 @@
-Return-Path: <philipp.reisner@linbit.com>
-Received: from mail-yb1-f172.google.com (mail-yb1-f172.google.com
-	[209.85.219.172])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 66D394201DD
+Return-Path: <rene.peinthor@linbit.com>
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com
+	[209.85.208.49])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 369594201E1
 	for <drbd-announce@lists.linbit.com>;
-	Mon,  7 Mar 2022 16:12:51 +0100 (CET)
-Received: by mail-yb1-f172.google.com with SMTP id g1so31599243ybe.4
+	Tue, 15 Mar 2022 10:54:40 +0100 (CET)
+Received: by mail-ed1-f49.google.com with SMTP id j25so10037114edj.11
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 07 Mar 2022 07:12:51 -0800 (PST)
+	Tue, 15 Mar 2022 02:54:40 -0700 (PDT)
 MIME-Version: 1.0
-From: Philipp Reisner <philipp.reisner@linbit.com>
-Date: Mon, 7 Mar 2022 16:12:39 +0100
-Message-ID: <CADGDV=V3KnZ04o8QanyBA6Ax6wXct4ZR4vs1_i8u0turbYJPvw@mail.gmail.com>
-To: drbd-announce@lists.linbit.com
-Content-Type: multipart/alternative; boundary="00000000000038fa1805d9a24c94"
-Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-9.1.7-rc.1
+From: Rene Peinthor <rene.peinthor@linbit.com>
+Date: Tue, 15 Mar 2022 10:53:29 +0100
+Message-ID: <CAHmn2DPGM6AEaGVTu0jGcaEvN0zN=b99uoqHt_sjDGG0-ndsuQ@mail.gmail.com>
+To: drbd-user <drbd-user@lists.linbit.com>, drbd-announce@lists.linbit.com
+Content-Type: multipart/alternative; boundary="0000000000008ca68905da3ec54c"
+Subject: [DRBD-announce] linstor-server release 1.18.0
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,57 +25,70 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
---00000000000038fa1805d9a24c94
+--0000000000008ca68905da3ec54c
 Content-Type: text/plain; charset="UTF-8"
 
-Hello,
+Hi!
 
-I am starting the drbd-9.1.7 release cycle early. This time, the most
-relevant change is fixing IO request unfreezing on diskless nodes. It
-turned out this was broken, now there is a test that examines all these
-cases. A number of bugs got fixed in this area.
-These are important fixes for users that have "on-no-quorum suspend-io" in
-their configs.
+Here is the final release of version 1.18.0, it is nearly the same as rc3
+with a few more CRD fixes. So the rest of the mail is nearly a copy of the
+rc3:
 
-At the moment, this is a release candidate. Please give it a try.
+This version brings performance improvements and fixes for the Kubernetes
+CRD database backend, but the backend still needs some testing. So be aware
+that it might not be ready yet for production.
+Node related events (create, delete, evicted, restored, ...) can now be
+listened to via server sent events.
 
-9.1.7-rc.1 (api:genl2/proto:110-121/transport:17)
---------
- * fix for a "forgotten" resync after IO was suspended due to lack of quorum
- * refactored IO suspend/resume fixing severl bugs; the worst one could
-   lead to premature request completion
- * disable discards on diskless if diskful peers do not support it
- * make demote to secondary a two-phase state transition; that guarantees
-that
-   after demotion, DRBD will not write to any meta-data in the cluster
- * enable "--force primary" in for no-quorum situations
+linstor-server 1.18.0
+--------------------------
+ * Kubernetes CRD fixes and performance improvements
+ * Cryptsetup is limited to 256MB during format
+ * New REST-API to create a valid H2 embedded database backup
+ * Better enabling of auto-quorum, tiebreaker recreation
+ * Clone ZFS has a new option to use zfs clone instead of zfs send/recv
+ * ZFS allocated size uses now REFER instead of USED for volumes
+ * Added resource sync status API
+ * Fixes in backup shipping
+ * Sentry client library updated
+ * API-Version 1.13.0
 
-https://pkg.linbit.com//downloads/drbd/9/drbd-9.1.7-rc.1.tar.gz
-https://github.com/LINBIT/drbd/commit/0065e5810a5458381ccbb99052027abc973611ae
+https://pkg.linbit.com//downloads/linstor/linstor-server-1.18.0.tar.gz
 
---00000000000038fa1805d9a24c94
+
+Linstor PPA:
+https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+
+Cheers,
+Rene
+
+--0000000000008ca68905da3ec54c
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr">Hello,<br><br>I am starting the drbd-9.1.7 release cycle e=
-arly. This time, the most relevant change is fixing IO request unfreezing o=
-n diskless nodes. It turned out this was broken, now there is a test that e=
-xamines all these cases. A number of bugs got fixed in this area.<div>These=
- are important fixes for users that have &quot;on-no-quorum suspend-io&quot=
-; in their configs.<br><br>At the moment, this is a release candidate. Plea=
-se give it a try.<br><br>9.1.7-rc.1 (api:genl2/proto:110-121/transport:17)<=
-br>--------<br>=C2=A0* fix for a &quot;forgotten&quot; resync after IO was =
-suspended due to lack of quorum<br>=C2=A0* refactored IO suspend/resume fix=
-ing severl bugs; the worst one could<br>=C2=A0 =C2=A0lead to premature requ=
-est completion<br>=C2=A0* disable discards on diskless if diskful peers do =
-not support it<br>=C2=A0* make demote to secondary a two-phase state transi=
-tion; that guarantees that<br>=C2=A0 =C2=A0after demotion, DRBD will not wr=
-ite to any meta-data in the cluster<br>=C2=A0* enable &quot;--force primary=
-&quot; in for no-quorum situations<br><br><a href=3D"https://pkg.linbit.com=
-//downloads/drbd/9/drbd-9.1.7-rc.1.tar.gz">https://pkg.linbit.com//download=
-s/drbd/9/drbd-9.1.7-rc.1.tar.gz</a><br><a href=3D"https://github.com/LINBIT=
-/drbd/commit/0065e5810a5458381ccbb99052027abc973611ae">https://github.com/L=
-INBIT/drbd/commit/0065e5810a5458381ccbb99052027abc973611ae</a><br><br><br><=
-/div></div>
+<div dir=3D"ltr"><div>Hi!</div><div><br></div><div>Here is the final releas=
+e of version 1.18.0, it is nearly the same as rc3 with a few more CRD fixes=
+. So the rest of the mail is nearly a copy of the rc3:</div><div><br></div>=
+<div>This version brings performance improvements and fixes for the Kuberne=
+tes CRD database backend, but the backend still needs some testing. So be a=
+ware that it might not be ready yet for production.</div><div>Node related =
+events (create, delete, evicted, restored, ...) can now be listened to via =
+server sent events.</div><div><br></div><div><font face=3D"monospace">linst=
+or-server 1.18.0<br>--------------------------<br>=C2=A0* Kubernetes CRD=C2=
+=A0fixes and performance improvements<br>=C2=A0* Cryptsetup is limited to 2=
+56MB during format<br>=C2=A0* New REST-API to create a valid H2 embedded da=
+tabase backup<br>=C2=A0* Better enabling=C2=A0of auto-quorum, tiebreaker re=
+creation<br>=C2=A0* Clone ZFS has a new option to use zfs clone instead of =
+zfs send/recv<br>=C2=A0* ZFS allocated size uses now REFER instead of USED =
+for volumes<br>=C2=A0* Added resource sync status API<br>=C2=A0* Fixes in b=
+ackup shipping<br>=C2=A0* Sentry client library updated<br>=C2=A0* API-Vers=
+ion 1.13.0</font><br></div><div><br></div><div><a href=3D"https://pkg.linbi=
+t.com//downloads/linstor/linstor-server-1.18.0.tar.gz">https://pkg.linbit.c=
+om//downloads/linstor/linstor-server-1.18.0.tar.gz</a><br></div><div><br></=
+div><div><br></div><div><div><div><div>Linstor PPA:<br><a href=3D"https://l=
+aunchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack" rel=3D"noreferrer"=
+ target=3D"_blank">https://launchpad.net/~linbit/+archive/ubuntu/linbit-drb=
+d9-stack</a></div></div><div><br></div><div>Cheers,<br></div><div>Rene</div=
+></div></div></div>
 
---00000000000038fa1805d9a24c94--
+--0000000000008ca68905da3ec54c--
