@@ -1,22 +1,21 @@
-Return-Path: <christoph.boehmwalder@linbit.com>
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com
-	[209.85.208.49])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id CBBF84201E3
+Return-Path: <johannes.thoma@linbit.com>
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com
+	[209.85.221.44])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 4F4F24201DC
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 17 Mar 2022 15:03:17 +0100 (CET)
-Received: by mail-ed1-f49.google.com with SMTP id y22so6713435eds.2
+	Mon, 28 Mar 2022 16:06:08 +0200 (CEST)
+Received: by mail-wr1-f44.google.com with SMTP id a1so20550670wrh.10
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 17 Mar 2022 07:03:17 -0700 (PDT)
-Message-ID: <0816133c-9854-7a62-1435-3bb8bf1e9938@linbit.com>
-Date: Thu, 17 Mar 2022 15:03:13 +0100
+	Mon, 28 Mar 2022 07:06:08 -0700 (PDT)
+Content-Type: multipart/alternative;
+	boundary="------------I0hprnTLmeFG2NgiN8JxrBpu"
+Message-ID: <eaf6a168-01c2-28fd-33a8-1562bd1d32de@linbit.com>
+Date: Mon, 28 Mar 2022 16:06:05 +0200
 MIME-Version: 1.0
-Content-Language: en-US
-To: drbd-announce@lists.linbit.com
-From: =?UTF-8?Q?Christoph_B=c3=b6hmwalder?= <christoph.boehmwalder@linbit.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] linstor-gateway v0.12.0-rc.1
+To: "drbd-user@lists.linbit.com" <drbd-user@lists.linbit.com>,
+	drbd-announce@lists.linbit.com
+From: Johannes Thoma <johannes.thoma@linbit.com>
+Subject: [DRBD-announce] WinDRBD 1.0.2 released
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -28,46 +27,68 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Hello,
+This is a multi-part message in MIME format.
+--------------I0hprnTLmeFG2NgiN8JxrBpu
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-a new version of LINSTOR Gateway has just been released.
+Dear DRBD and WinDRBD users,
 
+This is a minor release of WinDRBD in which logging to the kernel logfile when
+drbdadm status is run is removed. We had a user that ran drbdadm status every
+5 seconds which ended up in a 70 GB logfile with mostly useless information.
+Unless you are running drbdadm status in a loop you don't need to upgrade.
 
-https://github.com/LINBIT/linstor-gateway/releases/tag/v0.12.1-rc.1
+Please note that probably using drbdsetup events2 is a better wait to monitor
+WinDRBD resources.
 
+As always the installer is available from the Linbit website at:
 
-Its main purpose is to fix a typo in the health check for LINSTOR's 
-`allowed-files` configuration. This misconfiguration can lead to the 
-cluster not coming up correctly from a "cold start" (where all nodes 
-have been shut off).
+https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/
 
-Users of 0.11.0 should upgrade and rerun `linstor-gateway check-health`.
+Thank you for using WinDRBD, please also join our community meeting next
+Thursday March 31 (more info on the Linbit homepage).
 
-Full changelog:
+Best regards,
 
-Features
---------
-* Add a new endpoint, `/v2/status`, to query the status of the server
-* Support CORS for the REST API
-* Generate more readable toml files (`start` entries are on separate lines)
-* Mark LINSTOR resources as degraded if the actual place count is lower 
-than desired
-* Point users to `linstor advise resource` if any resources are degraded
+- Johannes
+--------------I0hprnTLmeFG2NgiN8JxrBpu
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Fixes
------
-* Healthcheck: fix the path of the LINSTOR Satellite systemd override 
-directory
+<html>
+  <head>
 
-Miscellaneous
--------------
-* Update Go dependencies
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    Dear DRBD and WinDRBD users,<br>
+    <br>
+    This is a minor release of WinDRBD in which logging to the kernel
+    logfile when<br>
+    drbdadm status is run is removed. We had a user that ran drbdadm
+    status every<br>
+    5 seconds which ended up in a 70 GB logfile with mostly useless
+    information.<br>
+    Unless you are running drbdadm status in a loop you don't need to
+    upgrade.<br>
+    <br>
+    Please note that probably using drbdsetup events2 is a better wait
+    to monitor<br>
+    WinDRBD resources.<br>
+    <br>
+    As always the installer is available from the Linbit website at:<br>
+    <br>
+<a class="moz-txt-link-freetext" href="https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/">https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/</a><br>
+    <br>
+    Thank you for using WinDRBD, please also join our community meeting
+    next<br>
+    Thursday March 31 (more info on the Linbit homepage).<br>
+    <br>
+    Best regards,<br>
+    <br>
+    - Johannes<br>
+  </body>
+</html>
 
-
-Thank you for testing!
-
-Regards,
--- 
-Christoph Böhmwalder
-LINBIT | Keeping the Digital World Running
-DRBD HA —  Disaster Recovery — Software defined Storage
+--------------I0hprnTLmeFG2NgiN8JxrBpu--
