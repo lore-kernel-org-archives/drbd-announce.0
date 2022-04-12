@@ -1,21 +1,20 @@
-Return-Path: <roland.kammerer@linbit.com>
+Return-Path: <philipp.reisner@linbit.com>
 Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com
 	[209.85.221.43])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id D25FA4205A5
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id A1A6D420124
 	for <drbd-announce@lists.linbit.com>;
-	Tue,  5 Apr 2022 13:25:02 +0200 (CEST)
-Received: by mail-wr1-f43.google.com with SMTP id w4so18761762wrg.12
+	Tue, 12 Apr 2022 18:17:49 +0200 (CEST)
+Received: by mail-wr1-f43.google.com with SMTP id e8so12058151wra.7
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 05 Apr 2022 04:25:02 -0700 (PDT)
-Date: Tue, 5 Apr 2022 13:25:00 +0200
-From: Roland Kammerer <roland.kammerer@linbit.com>
-To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Message-ID: <YkwnDN+Jiq2L0UKU@rck.sh>
+	Tue, 12 Apr 2022 09:17:49 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="I6BtPkedI+zNppnO"
-Content-Disposition: inline
-Subject: [DRBD-announce] drbd-reactor v0.6.0
+From: Philipp Reisner <philipp.reisner@linbit.com>
+Date: Tue, 12 Apr 2022 18:17:37 +0200
+Message-ID: <CADGDV=WB=dTzh+GiBKusJrcQTiUHFr51xAdExyoN4TrCOq47kw@mail.gmail.com>
+To: drbd-announce@lists.linbit.com
+Content-Type: text/plain; charset="UTF-8"
+Cc: drbd-user@lists.linbit.com
+Subject: [DRBD-announce] drbd-9.1.7-rc.2
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -27,71 +26,60 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
+Hello,
 
---I6BtPkedI+zNppnO
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+You all noticed the unusual long rc.1 phase. We were working on smaller
+issues with unfreezing IO-requests after quorum loss and regaining
+quorum. At this point, one thing gave the other. We discovered how difficult
+it is to gracefully recover a primary node that lost quorum. It was like a
+super narrow path, where every misstep led to the need to reboot the
+node. Examples:
+  * When you did a drbdadm secondary while someone held the device open (a
+    mounted FS) -> deadlock [fixed now].
+  * You needed to reconfigure 'on-no-quorum' from 'suspend' to 'io-error' and
+    then unmount the filesystem
+  * Finally, make the node secondary and re-integrate it with the others
 
-Dear DRBD users,
+Changing the DRBD configuration just for recovering a node is not
+practicable when we advertise to use LINSTOR for configuring DRBD. The
+end-users are even not aware of LINSTOR but use it through the Kubernetes
+and the linstor CSI driver.
 
-this is the final release 0.6.0 of drbd-reactor. This is a feature
-driven release that brings some nice additions to drbd-reactorctl (the
-daemon part is unchanged).
+The solution: drbdadm secondary --force
+Starting with the next drbd-utils v9.21 a forced demotion allows you to make
+a primary with suspended IOs secondary. All the frozen IO requests terminate
+with IO-errors, causing the filesystem to go into read-only mode. Unmount
+it. Recovery finished.
+For a similar purpose, it got a new configuration option
+'on-suspended-primary-outdated' which you can set to 'force-secondary'. This
+enables automatic recovery of such a primary lost quorum IO suspended
+node. When it connects to a partition that has a primary with a more recent
+data generation it automatically demotes the primary with the older data and
+frozen IO.
 
-So far you had to have some deeper knowledge to switch over
-highly-available resources managed by the promoter plugin. This was
-basically:
+It also got compatibility for up to Linux 5.15 (hello Ubuntu users, your
+next LTS will land in about 2 weeks and have such a kernel).
 
-$ drbd-reactorctl disable --now resname
-$ drbdsetup status # in a loop to see if another node took over
-$ drbd-reactorctl enable resname # so that it can fall back eventually
+PS: Looks like on this 5.15 kernel there is a new way to deadlock DRBD with
+IO errors from the lower layers. (we are investigating right now)
 
-This for example could have had the problem that the resource was kept
-disabled if during disabling it a on-drbd-demote-failure action
-triggered and the system for example rebooted.
+Please help test these new features, and everything else.
 
-Long story short, there is now "drbd-reactorctl evict [resname]" that
-evicts a resource (or all of them) from the current node. It also checks
-if another node took over and reports the status nicely and makes sure
-that resname gets enabled back again.
+9.1.7-rc.2 (api:genl2/proto:110-121/transport:17)
+--------
+ * avoid deadlock upon trying to down an io-frozen DRBD device that
+   has a file system mounted
+ * fix DRBD to not send too large resync requests at multiples of 8TiB
+ * fix for a "forgotten" resync after IO was suspended due to lack of quorum
+ * refactored IO suspend/resume fixing several bugs; the worst one could
+   lead to premature request completion
+ * disable discards on diskless if diskful peers do not support it
+ * make demote to secondary a two-phase state transition; that guarantees that
+   after demotion, DRBD will not write to any meta-data in the cluster
+ * enable "--force primary" in for no-quorum situations
+ * allow graceful recovery of primary lacking quorum and therefore
+   have forzen IO requests; that includes "--force secondary"
+ * following upstream changes to DRBD up to Linux 5.15 and updated compat
 
-Temporarily pushing away a resource from the current node is one thing,
-but sometimes one wants that the current node stays blocked and that
-resources don't fall back. For example a maintenance action to upgrade
-the DRBD kernel module. This can be done with:
-
-$ drbd-reactorctl evict --keep-masked resname
-
-This systemctl --runtime masks the generated target for the resource and
-it will not be able to start on this node. A benefit of --runtime is
-that it gets unmasked after a reboot without admin interaction. If you
-don't need to reboot, one can issue that command:
-
-$ drbd-reactorclt evict --unmask resname
-
-The second addition is bash completion for drbd-reactorctl.
-
-While smaller features, I think this really makes admin-life a lot easier.
-
-Regards, rck
-
-GIT: https://github.com/LINBIT/drbd-reactor/commit/0ac05aae218a0df44b62367d1f6ce700afadba78
-TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-reactor-0.6.0.tar.gz
-PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
-
---I6BtPkedI+zNppnO
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmJMJwMACgkQRgmezyI6
-myJKzAf9EjIwlst5oeLc6pFql9Mq9X0QwEY4+9ZI8YX68pSKUl+j+CjmW5mvO8ha
-kAG8H4G6pmbZCQSc/JiGHkqSVeDg7b6loABeTXr3l8Jda9L64JJaJvl9NUsJoL88
-Poh6xOIlhrINbfQPIxbRbn+bgJ9P7ceaXZP6YSUxxByngNlWsg+Y74trUY7aplj/
-xpBhz3idQfp+Nz2HEK1Iwi+v1j5K/MYiz3GCqnmfyygvjVyvol6br+cgnLDhHQlG
-Ky18llwKlYx6Zph3kK1rxib3G9K6L7YGpB3JwgsaiAtjp+T7Qi3yB2cU9Yl+3K/E
-0N6Mjt08Ksn9KTZAnJOzUBS9BTg/4A==
-=AiJP
------END PGP SIGNATURE-----
-
---I6BtPkedI+zNppnO--
+https://pkg.linbit.com//downloads/drbd/9/drbd-9.1.7-rc.2.tar.gz
+https://github.com/LINBIT/drbd/commit/7434965d91d0e275dacc2940177a28eed5a17f4d
