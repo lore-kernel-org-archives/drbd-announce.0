@@ -1,20 +1,21 @@
-Return-Path: <philipp.reisner@linbit.com>
+Return-Path: <roland.kammerer@linbit.com>
 Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com
 	[209.85.221.43])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id A1A6D420124
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 14B98420004
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 12 Apr 2022 18:17:49 +0200 (CEST)
-Received: by mail-wr1-f43.google.com with SMTP id e8so12058151wra.7
+	Thu, 14 Apr 2022 14:22:43 +0200 (CEST)
+Received: by mail-wr1-f43.google.com with SMTP id u3so6674840wrg.3
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 12 Apr 2022 09:17:49 -0700 (PDT)
+	Thu, 14 Apr 2022 05:22:43 -0700 (PDT)
+Date: Thu, 14 Apr 2022 14:22:41 +0200
+From: Roland Kammerer <roland.kammerer@linbit.com>
+To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
+Message-ID: <YlgSEaw8oNuUJr5s@rck.sh>
 MIME-Version: 1.0
-From: Philipp Reisner <philipp.reisner@linbit.com>
-Date: Tue, 12 Apr 2022 18:17:37 +0200
-Message-ID: <CADGDV=WB=dTzh+GiBKusJrcQTiUHFr51xAdExyoN4TrCOq47kw@mail.gmail.com>
-To: drbd-announce@lists.linbit.com
-Content-Type: text/plain; charset="UTF-8"
-Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-9.1.7-rc.2
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="5bZPmlv55B5t7Eg8"
+Content-Disposition: inline
+Subject: [DRBD-announce] drbd-utils v9.21.0-rc.1
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,60 +27,54 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Hello,
 
-You all noticed the unusual long rc.1 phase. We were working on smaller
-issues with unfreezing IO-requests after quorum loss and regaining
-quorum. At this point, one thing gave the other. We discovered how difficult
-it is to gracefully recover a primary node that lost quorum. It was like a
-super narrow path, where every misstep led to the need to reboot the
-node. Examples:
-  * When you did a drbdadm secondary while someone held the device open (a
-    mounted FS) -> deadlock [fixed now].
-  * You needed to reconfigure 'on-no-quorum' from 'suspend' to 'io-error' and
-    then unmount the filesystem
-  * Finally, make the node secondary and re-integrate it with the others
+--5bZPmlv55B5t7Eg8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Changing the DRBD configuration just for recovering a node is not
-practicable when we advertise to use LINSTOR for configuring DRBD. The
-end-users are even not aware of LINSTOR but use it through the Kubernetes
-and the linstor CSI driver.
+Dear DRBD users,
 
-The solution: drbdadm secondary --force
-Starting with the next drbd-utils v9.21 a forced demotion allows you to make
-a primary with suspended IOs secondary. All the frozen IO requests terminate
-with IO-errors, causing the filesystem to go into read-only mode. Unmount
-it. Recovery finished.
-For a similar purpose, it got a new configuration option
-'on-suspended-primary-outdated' which you can set to 'force-secondary'. This
-enables automatic recovery of such a primary lost quorum IO suspended
-node. When it connects to a partition that has a primary with a more recent
-data generation it automatically demotes the primary with the older data and
-frozen IO.
+this is the first RC for drbd-utils 9.21.0. The main reason is the
+addition of "secondary --force" Phil wrote about in the DRBD kernel
+module RC announce.
 
-It also got compatibility for up to Linux 5.15 (hello Ubuntu users, your
-next LTS will land in about 2 weeks and have such a kernel).
+This also includes all the fixes from 9.20.1 and 9.20.2, and various
+other small fixes like a fix for "drbdadm sh-resource", and fixes for
+notify.sh for DRBD9. Please see the Changelog and the commit history for
+more details.
 
-PS: Looks like on this 5.15 kernel there is a new way to deadlock DRBD with
-IO errors from the lower layers. (we are investigating right now)
+Regards, rck
 
-Please help test these new features, and everything else.
+TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-utils-9.21.0-rc.1.tar.gz
+GIT: https://github.com/LINBIT/drbd-utils/commit/313cd3005cd759e44dd6c394ba6a8d9abdcf68c1
+PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
-9.1.7-rc.2 (api:genl2/proto:110-121/transport:17)
---------
- * avoid deadlock upon trying to down an io-frozen DRBD device that
-   has a file system mounted
- * fix DRBD to not send too large resync requests at multiples of 8TiB
- * fix for a "forgotten" resync after IO was suspended due to lack of quorum
- * refactored IO suspend/resume fixing several bugs; the worst one could
-   lead to premature request completion
- * disable discards on diskless if diskful peers do not support it
- * make demote to secondary a two-phase state transition; that guarantees that
-   after demotion, DRBD will not write to any meta-data in the cluster
- * enable "--force primary" in for no-quorum situations
- * allow graceful recovery of primary lacking quorum and therefore
-   have forzen IO requests; that includes "--force secondary"
- * following upstream changes to DRBD up to Linux 5.15 and updated compat
+Changelog:
+ 9.21.0-rc.1
+-----------
+ * drbdsetup,v9: show susupend reason in json output
+ * drbdsetup,v9: add secondary --force
+ * drbdsetup,v9: fix *susp_str() for events2 diff mode
+ * drdbdadm,v9: fix sh-resource
+ * doc: various improvements
+ * windrbd: ask user if for admin if access denied
+ * ocf: deal with situation where PM node name and actual node name do
+ * not match
+ * notify.sh: deal with unset DRBD_PEER env variable
 
-https://pkg.linbit.com//downloads/drbd/9/drbd-9.1.7-rc.2.tar.gz
-https://github.com/LINBIT/drbd/commit/7434965d91d0e275dacc2940177a28eed5a17f4d
+--5bZPmlv55B5t7Eg8
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmJYEg4ACgkQRgmezyI6
+myISiAf/cQooV9wRzYa9dwY1WpbKs5lhxhDnv8hkK59Vy9MBWyypqd0/nuwpHM6a
+X2gJbcjcL7C15twAS6nFYp4I6mREhfY3ormnikwXora7ZlV+7+FS6BHfmW3RYlxO
+5C0F4cOONJnaBhfoa6+tpCp6Sj3flyvxQjQTCQ48rs3zUtKkbNIaHTqfAaCukMu5
+S4p3ecbSr3W/K2XBc+FvpJEraIWfqkzOJ4WsSWrnPOzVohAbPSIGFBrvYhs7ceiB
+AsJ3wgOzBycBglzX6be0Uwc6Y0hTYuGC5zzbmJdZet5qUrjWjxhEenIfcYY6Nwep
+8F3LLakqTJSZQ+I2YQ2sU65WsKPIzw==
+=a32P
+-----END PGP SIGNATURE-----
+
+--5bZPmlv55B5t7Eg8--
