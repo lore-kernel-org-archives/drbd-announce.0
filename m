@@ -1,21 +1,21 @@
 Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com
-	[209.85.128.46])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 80A624201DC
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com
+	[209.85.128.50])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 6953D4201DC
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 26 Apr 2022 11:13:37 +0200 (CEST)
-Received: by mail-wm1-f46.google.com with SMTP id
-	1-20020a05600c248100b00393fbf11a05so60637wms.3
+	Thu, 28 Apr 2022 08:57:01 +0200 (CEST)
+Received: by mail-wm1-f50.google.com with SMTP id p189so2349166wmp.3
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 26 Apr 2022 02:13:36 -0700 (PDT)
-Date: Tue, 26 Apr 2022 11:13:35 +0200
+	Wed, 27 Apr 2022 23:57:01 -0700 (PDT)
+Date: Thu, 28 Apr 2022 08:56:59 +0200
 From: Roland Kammerer <roland.kammerer@linbit.com>
 To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Message-ID: <Yme3v51RJ+pIxn63@rck.sh>
+Message-ID: <Ymo6u7r0eg+W4l/2@rck.sh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="JOLhUiwTgyOFdQfv"
 Content-Disposition: inline
-Subject: [DRBD-announce] PPA transition to Jammy
+Subject: [DRBD-announce] drbd-utils v9.21.1
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -27,22 +27,36 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Dear PPA users,
 
-As some might know we have a PPA providing the DRBD9 stack[1]. From
-today I started building new releases (drbd-utils and linstor-server RC
-as of later today) for Focal and Jammy, but no longer for Bionic.
+--JOLhUiwTgyOFdQfv
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-I will build everything we already have (linstor client,
-drbd-reactor,...) for Jammy in the next days. But there is now a period
-where new stuff does no longer show up in Bionic, and Jammy is not yet
-complete. Jammy should be complete at the end of the week, I will post
-an update here.
+Dear DRBD users,
 
-I will delete all Bionic packages in about a month from when Jammy is
-complete. This deletion only affects the PPA, our customers of course
-still get support for all officially supported Ubuntu releases.
+this is version 9.21.1 of DRBD utils. Unfortunately dropping the
+'unused' --peer option broke drbd.ocf. This is the only fix in that
+bugfix release.
 
 Regards, rck
 
-[1] https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack/
+GIT: https://github.com/LINBIT/drbd-utils/tree/9.21.1
+TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-utils-9.21.1.tar.gz
+PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+
+--JOLhUiwTgyOFdQfv
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmJqOrkACgkQRgmezyI6
+myIBJwf/W7vcNbDAn1rz8zMsHSt6g2sdoylcci+Y017eWoBlBjTucl+MPrRMLYEG
+QYP0IqcS7kSLuGvxx1+7MjXthr07piCSlXaNvxPOT7qg5sxYxLF3C5xNKFl2060n
+yvBiRQNEucDKnotQOx7PtNUU0ql/FoLpQg/r/ao+iz1UfwxTRXugnkZFb59jsITI
+lZkffuf1e5y+Y/LN1YVIJ+SRWdY7hIN7fCGYsoak60yiy/8Z83MQobH2lJpFVMPd
+lxck1HyT63xU8jdeX/K4cm/JVIFxEMU4IJlWYzwmVXWw8Jf1Q9ysHm4yGjNkzt/F
+CXFG42qaRw83O0CHMUoC/kj36hApNg==
+=5wWe
+-----END PGP SIGNATURE-----
+
+--JOLhUiwTgyOFdQfv--
