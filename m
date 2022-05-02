@@ -1,22 +1,19 @@
-Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com
-	[209.85.128.45])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 865904201B9
+Return-Path: <gabor.hernadi@linbit.com>
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com
+	[209.85.210.181])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 8DE624201DB
 	for <drbd-announce@lists.linbit.com>;
-	Fri, 29 Apr 2022 11:59:25 +0200 (CEST)
-Received: by mail-wm1-f45.google.com with SMTP id
-	p7-20020a05600c358700b00393e80c59daso5073229wmq.0
+	Mon,  2 May 2022 16:54:56 +0200 (CEST)
+Received: by mail-pf1-f181.google.com with SMTP id i24so12472541pfa.7
 	for <drbd-announce@lists.linbit.com>;
-	Fri, 29 Apr 2022 02:59:25 -0700 (PDT)
-Date: Fri, 29 Apr 2022 11:59:23 +0200
-From: Roland Kammerer <roland.kammerer@linbit.com>
-To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Message-ID: <Ymu2++S9+1dSfk+/@rck.sh>
+	Mon, 02 May 2022 07:54:56 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="1bHrdBnCvGm/UOyw"
-Content-Disposition: inline
-Subject: [DRBD-announce] drbd-reactor v0.6.1
+From: =?UTF-8?B?R8OhYm9yIEhlcm7DoWRp?= <gabor.hernadi@linbit.com>
+Date: Mon, 2 May 2022 16:54:44 +0200
+Message-ID: <CAL16tNbBsbo6D_-6uchBBhh0G8Y10rG+OsJZc0jfT1sFGDJ3rg@mail.gmail.com>
+To: drbd-user <drbd-user@lists.linbit.com>, drbd-announce@lists.linbit.com
+Content-Type: multipart/alternative; boundary="000000000000446ea005de0893cb"
+Subject: [DRBD-announce] linstor-server release 1.18.1-rc.2
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -28,47 +25,70 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
+--000000000000446ea005de0893cb
+Content-Type: text/plain; charset="UTF-8"
 
---1bHrdBnCvGm/UOyw
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Hello,
 
-Dear DRBD users,
+This second release candidate is almost the same as the first, but with a
+small bugfix regarding creating backups to S3, as well as whitelisting new
+DRBD options available since drbd-utils 9.21.1
 
-this is a quickfix release (v0.6.1) of drbd-reactor to work properly
-with latest utils (9.21). These introduce a new keyword in the events2
-stream and drbd-reactor did then not parse the events2 line
-successfully and ignored it. For the promoter plugin the result is that
-resources are not initially brought up, or that they don't fail over.
+For completeness sake, here are the release notes from rc.1:
+Starting with this version, users are able to temporarily mix storage pool
+types to allow a migration of data to a different storage type. Please be
+aware that mixing storage types can lead to various problems, and therefore
+only use this feature when necessary.
+Additionally, a few database-related bugs including some experimental
+CRD-related issues have been found and removed.
 
-This version should work with current and older drbd-utils. I might
-rethink the decision that the parser is that strict, maybe it is better
-to just ignore unknown key/value pairs instead.
+linstor-server 1.18.1-rc.2
+--------------------------
+ * update drbd-options for drbd-utils 9.21.1
+ * Fix s3 multipart upload bug involving unit mismatch
+ * Allow mixing resource storage pool types for migration purposes
+ * Several bug fixes related to the Kubernetes database driver
+ * Small fixes in backup shipping
+ * When the DB has an error, the controller will now also have an error and
+stop running as the DB was empty/faulty
+ * Log more information on startup
+ * API Version 1.13.1
 
-The PPA is currently building, and please note that the rust toolchain
-shipped with Debian Buster (oldstable) is too old to compile one of our
-dependencies. If you really need to build for that distribution, update
-your toolchain (e.g., via rustup).
+https://pkg.linbit.com//downloads/linstor/linstor-server-1.18.1-rc.2.tar.gz
 
-Regards, rck
 
-GIT: https://github.com/LINBIT/drbd-reactor/commit/0570437d20b3d4b9b8348171ff2b19d8acaa17b7
-TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-reactor-0.6.1.tar.gz
-PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack/
+Linstor PPA:
+https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
---1bHrdBnCvGm/UOyw
-Content-Type: application/pgp-signature; name="signature.asc"
+Cheers,
+Gabor
 
------BEGIN PGP SIGNATURE-----
+--000000000000446ea005de0893cb
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmJrtvYACgkQRgmezyI6
-myIhwAf9EZFtn/pXYphITJOZKw9tCOUDs2YikbId+wfEjLZrg3uUEW3AstVgtHVQ
-aLB2U7aRcFjgvO2uxI2Ve36kOIld0SKNHt8R5LSPNqq4Zo0qu6gF3VxH0rhNzUrh
-ds18WP7pJJCdigk5Wce3fSkGuhe+gpPzEx0sMfOuvWLYKQ4u1MLTP48pCN/1GBLb
-hQmmkBOv6YFr8y/ZOYwOwvgzv/BqfKZJahostaylZS1xn6d6N5LwrybYW8jwAfzD
-aGJ2E7eAJRqRQCtWh4n8mT4u87IsCCRJI7suWiZjt1zLLrUvHGCHE/I/wDorehld
-8humcrwUGFDT1YQmV2Ibe5QGtJrHuQ==
-=fG+c
------END PGP SIGNATURE-----
+<div dir=3D"ltr"><div>Hello,</div><div><br></div><div>This second release c=
+andidate is almost the same as the first, but with a small bugfix regarding=
+ creating backups to S3, as well as whitelisting new DRBD options available=
+ since drbd-utils 9.21.1</div><div><br></div><div>For completeness sake, he=
+re are the release notes from rc.1:<br></div><div></div><div>Starting with =
+this version, users are able to temporarily mix storage pool types to allow=
+ a migration of data to a different storage type. Please be aware that mixi=
+ng storage types can lead to various problems, and therefore only use this =
+feature when necessary.<br>Additionally, a few database-related bugs includ=
+ing some experimental CRD-related issues have been found and removed.<br><b=
+r>linstor-server 1.18.1-rc.2<br>--------------------------</div><div>=C2=A0=
+* update drbd-options for drbd-utils 9.21.1</div><div>=C2=A0* Fix s3 multip=
+art upload bug involving unit mismatch</div><div>=C2=A0* Allow mixing resou=
+rce storage pool types for migration purposes<br>=C2=A0* Several bug fixes =
+related to the Kubernetes database driver<br>=C2=A0* Small fixes in backup =
+shipping<br>=C2=A0* When the DB has an error, the controller will now also =
+have an error and stop running as the DB was empty/faulty<br>=C2=A0* Log mo=
+re information on startup<br>=C2=A0* API Version 1.13.1<br><br><a href=3D"h=
+ttps://pkg.linbit.com//downloads/linstor/linstor-server-1.18.1-rc.2.tar.gz"=
+>https://pkg.linbit.com//downloads/linstor/linstor-server-1.18.1-rc.2.tar.g=
+z</a><br><br><br>Linstor PPA:<br><a href=3D"https://launchpad.net/~linbit/+=
+archive/ubuntu/linbit-drbd9-stack">https://launchpad.net/~linbit/+archive/u=
+buntu/linbit-drbd9-stack</a><br><br>Cheers,</div><div>Gabor</div></div>
 
---1bHrdBnCvGm/UOyw--
+--000000000000446ea005de0893cb--
