@@ -1,19 +1,20 @@
-Return-Path: <rene.peinthor@linbit.com>
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com
-	[209.85.208.49])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id E8C764201EA
+Return-Path: <moritz.wanzenboeck@linbit.com>
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com
+	[209.85.128.51])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id E529E4202A8
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 12 May 2022 14:55:51 +0200 (CEST)
-Received: by mail-ed1-f49.google.com with SMTP id t5so6073141edw.11
+	Fri, 13 May 2022 14:28:19 +0200 (CEST)
+Received: by mail-wm1-f51.google.com with SMTP id
+	1-20020a05600c248100b00393fbf11a05so6839949wms.3
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 12 May 2022 05:55:51 -0700 (PDT)
+	Fri, 13 May 2022 05:28:19 -0700 (PDT)
 MIME-Version: 1.0
-From: Rene Peinthor <rene.peinthor@linbit.com>
-Date: Thu, 12 May 2022 14:55:40 +0200
-Message-ID: <CAHmn2DNDef1VUBvaQX93Bw3_CpN+JOk2upWVSW5nsyeY-oeCPg@mail.gmail.com>
-To: drbd-user <drbd-user@lists.linbit.com>, drbd-announce@lists.linbit.com
-Content-Type: multipart/alternative; boundary="000000000000ddefcf05ded01333"
-Subject: [DRBD-announce] linstor-server release 1.18.1
+From: =?UTF-8?Q?Moritz_Wanzenb=C3=B6ck?= <moritz.wanzenboeck@linbit.com>
+Date: Fri, 13 May 2022 14:27:08 +0200
+Message-ID: <CAKnz9x+6tdmB2iYYYpq35YmNnPurN_4vx_tB1RNVWgx450_P6Q@mail.gmail.com>
+To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
+Content-Type: text/plain; charset="UTF-8"
+Subject: [DRBD-announce] LINSTOR Operator release 1.8.1
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -25,82 +26,59 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
---000000000000ddefcf05ded01333
-Content-Type: text/plain; charset="UTF-8"
+Dear LINBIT SDS on Kubernetes users,
 
-Hi!
+We just released LINSTOR Operator 1.8.1.
 
-Here is the final release of version 1.18.1, a few more bug fixes were
-added since rc.2, but nothing additional was added since then.
+As expected for a patch release, no dramatic changes here, instead
+just bringing all components to their latest release:
 
-Starting with this version, users are able to temporarily mix storage pool
-types to allow a migration of data to a different storage type. Please be
-aware that mixing storage types can lead to various problems, and therefore
-only use this feature when necessary.
-Use the AllowMixingStoragePoolDriver property to enable this.
+- LINSTOR 1.18.1: includes some stability improvements and support for
+DRBD 9.1.7 features.
+- DRBD 9.1.7: improves the way suspend of workloads works when losing quorum.
+- LINSTOR CSI 0.19.0: fixes issues when provisioning big file system
+volumes and when restoring a backup in a zoned cluster.
 
-Additionally, a few database-related bugs including some experimental
-CRD-related issues have been found and removed.
+For LINSTOR CSI, there is one important note: If you provisioned an
+empty volume using <0.19.0, but never used it until upgrading to
+0.19.0 the volume will not attach. The solution is to delete the claim
+and create it again. As the volumes were empty and never used, this
+likely doesn't actually impact anyone.
 
-linstor-server 1.18.1
----------------------
- * update drbd-options for drbd-utils 9.21.1
- * Fix s3 multipart upload bug involving unit mismatch
- * Allow mixing resource storage pool types for migration purposes
- * Several bug fixes related to the Kubernetes database driver
- * Small fixes in backup shipping
- * When the DB has an error, the controller will now also have an error and
-stop running as the DB was empty/faulty
- * Log more information on startup
- * Fix local IP finding on controller
- * Fix zfs snapshot restore duplicate zpool name
- * Fix volume-group properties not correctly handled
- * Extend rs-discard-granularity automatic checks
- * Fix Node modify node-type port
- * Fixes in TaskScheduler(race-conditions, exceptions)
- * API Version 1.13.1
+For the operator itself: if you are using the "k8s" backend, you no
+longer need to confirm creating a backup of the database before
+upgrading: this is now directly handled by the operator, and the charm
+hook was removed.
 
-https://pkg.linbit.com//downloads/linstor/linstor-server-1.18.1.tar.gz
+The new chart is available from https://charts.linstor.io. New images
+are available from drbd.io. The usual upgrade procedure applies:
 
+$ helm repo update
+$ helm upgrade linstor-op linstor/linstor -f orig.yaml
 
-Linstor PPA:
-https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+For more information, please take a look at the upgrade guide. [1]
 
-Cheers,
-Rene
+Source code is, as always, available upstream. [2]
 
---000000000000ddefcf05ded01333
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Best regards,
+Moritz
 
-<div dir=3D"ltr"><div>Hi!</div><div><br></div><div>Here is the final releas=
-e of version 1.18.1, a few more bug fixes=C2=A0were added since rc.2, but n=
-othing additional was added since then.</div><div><br></div><div>Starting w=
-ith this version, users are able to temporarily mix storage pool types to a=
-llow a migration of data to a different storage type. Please be aware that =
-mixing storage types can lead to various problems, and therefore only use t=
-his feature when necessary.</div><div>Use the AllowMixingStoragePoolDriver =
-property to enable this.</div><div><br>Additionally, a few database-related=
- bugs including some experimental CRD-related issues have been found and re=
-moved.<br></div><div><br></div><div><font face=3D"monospace">linstor-server=
- 1.18.1<br>---------------------<br>=C2=A0* update drbd-options for drbd-ut=
-ils 9.21.1<br>=C2=A0* Fix s3 multipart upload bug involving unit mismatch<b=
-r>=C2=A0* Allow mixing resource storage pool types for migration purposes<b=
-r>=C2=A0* Several bug fixes related to the Kubernetes database driver<br>=
-=C2=A0* Small fixes in backup shipping<br>=C2=A0* When the DB has an error,=
- the controller will now also have an error and stop running as the DB was =
-empty/faulty<br>=C2=A0* Log more information on startup<br>=C2=A0* Fix loca=
-l IP finding on controller<br>=C2=A0* Fix zfs snapshot restore duplicate zp=
-ool name<br>=C2=A0* Fix volume-group properties not correctly handled<br>=
-=C2=A0* Extend rs-discard-granularity automatic checks<br>=C2=A0* Fix Node =
-modify node-type port<br>=C2=A0* Fixes in TaskScheduler(race-conditions, ex=
-ceptions)<br>=C2=A0* API Version 1.13.1</font><br></div><div><br></div><div=
-><a href=3D"https://pkg.linbit.com//downloads/linstor/linstor-server-1.18.1=
-.tar.gz">https://pkg.linbit.com//downloads/linstor/linstor-server-1.18.1.ta=
-r.gz</a><br></div><div><br></div><div><br></div><div><div><div><div>Linstor=
- PPA:<br><a href=3D"https://launchpad.net/~linbit/+archive/ubuntu/linbit-dr=
-bd9-stack" rel=3D"noreferrer" target=3D"_blank">https://launchpad.net/~linb=
-it/+archive/ubuntu/linbit-drbd9-stack</a></div></div><div><br></div><div>Ch=
-eers,<br></div><div>Rene</div></div></div></div>
+[1]: https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-upgrade
+[2]: https://github.com/piraeusdatastore/piraeus-operator
 
---000000000000ddefcf05ded01333--
+Full Changes
+------------
+
+### Changed
+
+- Default images:
+  * LINSTOR 1.18.1
+  * LINSTOR CSI 0.19.0
+  * DRBD 9.1.7
+  * DRBD Reactor 0.6.1
+
+### Added
+
+- Upgrades involving k8s databases no longer require manually
+confirming a backup exists using
+  `--set IHaveBackedUpAllMyLinstorResources=true`.
