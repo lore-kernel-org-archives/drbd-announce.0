@@ -1,19 +1,21 @@
-Return-Path: <rene.peinthor@linbit.com>
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com
-	[209.85.218.41])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id A204B4203A9
+Return-Path: <johannes.thoma@linbit.com>
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com
+	[209.85.218.45])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id C0F024203A9
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 23 May 2022 10:31:55 +0200 (CEST)
-Received: by mail-ej1-f41.google.com with SMTP id gi33so18661412ejc.3
+	Mon, 23 May 2022 21:25:59 +0200 (CEST)
+Received: by mail-ej1-f45.google.com with SMTP id rq11so8793897ejc.4
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 23 May 2022 01:31:55 -0700 (PDT)
+	Mon, 23 May 2022 12:25:59 -0700 (PDT)
+Content-Type: multipart/alternative;
+	boundary="------------xcF3yfRCpuIpdYG7sqpsC7sE"
+Message-ID: <0e43e7cc-f3a1-92b0-18c2-f5ce46f6b427@linbit.com>
+Date: Mon, 23 May 2022 21:25:56 +0200
 MIME-Version: 1.0
-From: Rene Peinthor <rene.peinthor@linbit.com>
-Date: Mon, 23 May 2022 10:31:44 +0200
-Message-ID: <CAHmn2DOe3Fb889Qmeen3eHxb0BEr7P8vVc6hZr_omwM=2HPd_A@mail.gmail.com>
-To: drbd-announce@lists.linbit.com, drbd-user <drbd-user@lists.linbit.com>
-Content-Type: multipart/alternative; boundary="00000000000035501405dfa9accd"
-Subject: [DRBD-announce] linstor-server release 1.18.2
+To: "drbd-user@lists.linbit.com" <drbd-user@lists.linbit.com>,
+	drbd-announce@lists.linbit.com
+From: Johannes Thoma <johannes.thoma@linbit.com>
+Subject: [DRBD-announce] WinDRBD 1.1.0-rc1 released
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -25,44 +27,89 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
---00000000000035501405dfa9accd
-Content-Type: text/plain; charset="UTF-8"
+This is a multi-part message in MIME format.
+--------------xcF3yfRCpuIpdYG7sqpsC7sE
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi!
+Dear WinDRBD users,
 
-Just a small bug fix release.
+This is the first release canidate for the new windrbd 1.1 branch. The major
+change in 1.1 is that the driver is signed directly by Microsoft which should
+make it run with SecureBoot enabled. To get a driver signed by Microsoft,
+certain tests (hardware lab kit - HLK) must be passed so we fixed the driver
+so that the required tests pass. This also should make the driver more stable
+when interacting with the NT kernel using the plug and play (PnP) protocol.
 
-linstor-server 1.18.2
----------------------
- * ZFS check if quota is set on dataset
- * Fix node reconnect out-of-scope bug
- * Fix RPM java dependency
- * API Version 1.13.1
+As always a signed (this time from Microsoft) driver installer can be downloaded
+from the Linbit homepage:
 
-https://pkg.linbit.com//downloads/linstor/linstor-server-1.18.2.tar.gz
+https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#drbd-windows
 
+This is a release canidate - do not use on production systems.
 
-Linstor PPA:
-https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+This is a release canidate - please help testing it.
 
-Cheers,
-Rene
+We are in particular interested if the driver loads on all SecureBoot environments
+(it loads on our test VM with SecureBoot enabled). In addition we would like to
+know if upgrading from a 1.0 release to 1.1 works (without rebooting).
 
---00000000000035501405dfa9accd
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Thank you for contributing to WinDRBD development by testing this release
+canidate.
 
-<div dir=3D"ltr"><div>Hi!</div><div><br></div><div>Just a small bug fix rel=
-ease.</div><div><br></div><div><font face=3D"monospace">linstor-server 1.18=
-.2<br>---------------------<br>=C2=A0* ZFS check if quota is set on dataset=
-<br>=C2=A0* Fix node reconnect out-of-scope bug<br>=C2=A0* Fix RPM java dep=
-endency<br>=C2=A0* API Version 1.13.1</font><br></div><div><br></div><div><=
-a href=3D"https://pkg.linbit.com//downloads/linstor/linstor-server-1.18.2.t=
-ar.gz">https://pkg.linbit.com//downloads/linstor/linstor-server-1.18.2.tar.=
-gz</a><br></div><div><br></div><div><br></div><div><div><div><div>Linstor P=
-PA:<br><a href=3D"https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd=
-9-stack" rel=3D"noreferrer" target=3D"_blank">https://launchpad.net/~linbit=
-/+archive/ubuntu/linbit-drbd9-stack</a></div></div><div><br></div><div>Chee=
-rs,<br></div><div>Rene</div></div></div></div>
+Best regards,
 
---00000000000035501405dfa9accd--
+- Johannes
+--------------xcF3yfRCpuIpdYG7sqpsC7sE
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<html>
+  <head>
+
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    Dear WinDRBD users,<br>
+    <br>
+    This is the first release canidate for the new windrbd 1.1 branch.
+    The major<br>
+    change in 1.1 is that the driver is signed directly by Microsoft
+    which should<br>
+    make it run with SecureBoot enabled. To get a driver signed by
+    Microsoft,<br>
+    certain tests (hardware lab kit - HLK) must be passed so we fixed
+    the driver<br>
+    so that the required tests pass. This also should make the driver
+    more stable<br>
+    when interacting with the NT kernel using the plug and play (PnP)
+    protocol.<br>
+    <br>
+    As always a signed (this time from Microsoft) driver installer can
+    be downloaded<br>
+    from the Linbit homepage: <br>
+    <br>
+<a class="moz-txt-link-freetext" href="https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#drbd-windows">https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#drbd-windows</a><br>
+    <br>
+    This is a release canidate - do not use on production systems.<br>
+    <br>
+    This is a release canidate - please help testing it. <br>
+    <br>
+    We are in particular interested if the driver loads on all
+    SecureBoot environments<br>
+    (it loads on our test VM with SecureBoot enabled). In addition we
+    would like to<br>
+    know if upgrading from a 1.0 release to 1.1 works (without
+    rebooting).<br>
+    <br>
+    Thank you for contributing to WinDRBD development by testing this
+    release<br>
+    canidate.<br>
+    <br>
+    Best regards,<br>
+    <br>
+    - Johannes<br>
+  </body>
+</html>
+
+--------------xcF3yfRCpuIpdYG7sqpsC7sE--
