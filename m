@@ -1,21 +1,19 @@
-Return-Path: <johannes.thoma@linbit.com>
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com
-	[209.85.208.43])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 0F9FF4203CF
+Return-Path: <moritz.wanzenboeck@linbit.com>
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com
+	[209.85.221.43])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id B4F32420471
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 24 May 2022 15:46:45 +0200 (CEST)
-Received: by mail-ed1-f43.google.com with SMTP id j4so18712152edq.6
+	Tue, 24 May 2022 16:01:45 +0200 (CEST)
+Received: by mail-wr1-f43.google.com with SMTP id u3so25881762wrg.3
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 24 May 2022 06:46:45 -0700 (PDT)
-Content-Type: multipart/alternative;
-	boundary="------------6nm4YREPCYY1KNLFYk705iWn"
-Message-ID: <810b0011-29a9-a5cc-c492-13a9ef68ff45@linbit.com>
-Date: Tue, 24 May 2022 15:46:43 +0200
+	Tue, 24 May 2022 07:01:45 -0700 (PDT)
 MIME-Version: 1.0
-To: "drbd-user@lists.linbit.com" <drbd-user@lists.linbit.com>,
-	drbd-announce@lists.linbit.com
-From: Johannes Thoma <johannes.thoma@linbit.com>
-Subject: [DRBD-announce] WinDRBD 1.1.0-rc1 errata
+From: =?UTF-8?Q?Moritz_Wanzenb=C3=B6ck?= <moritz.wanzenboeck@linbit.com>
+Date: Tue, 24 May 2022 16:01:33 +0200
+Message-ID: <CAKnz9xKNaA++R5h7g_tROX8mRZ=bS8y0u9iajWggVMx=Rn5Q9w@mail.gmail.com>
+To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
+Content-Type: text/plain; charset="UTF-8"
+Subject: [DRBD-announce] LINSTOR Operator 1.8.2 released
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -27,55 +25,42 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-This is a multi-part message in MIME format.
---------------6nm4YREPCYY1KNLFYk705iWn
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Dear LINBIT SDS on Kubernetes users,
 
-Dear WinDRBD users,
+We just released LINSTOR Operator 1.8.2.
 
-Yesterday I copiied the wrong file which resulted in an errnous version of
-the WinDRBD installer (1.1.0-rc1) to be on the linbit download site. The
-error was that upgrading from 1.0.X to 1.1.0-rc1 didn't work correctly.
-It was "just" an installer issue but today we replaced the file on the Linbit
-download page. So, if you downloaded 1.1.0-rc1 yesterday please download
-and install it again.
+Again, this is just a release to update some components, notably the
+latest LINSTOR 1.18.2.
 
-Sorry for the inconvenience,
+- LINSTOR 1.18.2
+- LINSTOR CSI 0.19.1: fixes issues around cluster with quorum disabled
+
+The new chart is available from https://charts.linstor.io. New images
+are available from drbd.io. The usual upgrade procedure applies:
+
+$ helm repo update
+$ helm upgrade linstor-op linstor/linstor -f orig.yaml
+
+For more information, please take a look at the upgrade guide. [1]
+
+Source code is, as always, available upstream. [2]
 
 Best regards,
+Moritz
 
-- Johannes
---------------6nm4YREPCYY1KNLFYk705iWn
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+[1]: https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-upgrade
+[2]: https://github.com/piraeusdatastore/piraeus-operator
 
-<html>
-  <head>
+Full Changes
+------------
 
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    Dear WinDRBD users,<br>
-    <br>
-    Yesterday I copiied the wrong file which resulted in an errnous
-    version of<br>
-    the WinDRBD installer (1.1.0-rc1) to be on the linbit download site.
-    The<br>
-    error was that upgrading from 1.0.X to 1.1.0-rc1 didn't work
-    correctly.<br>
-    It was "just" an installer issue but today we replaced the file on
-    the Linbit<br>
-    download page. So, if you downloaded 1.1.0-rc1 yesterday please
-    download<br>
-    and install it again.<br>
-    <br>
-    Sorry for the inconvenience,<br>
-    <br>
-    Best regards,<br>
-    <br>
-    - Johannes<br>
-  </body>
-</html>
+### Added
+- Option to disable creation of monitoring resources.
+- Optional sidecars and volumes for all created workloads.
 
---------------6nm4YREPCYY1KNLFYk705iWn--
+### Changed
+
+- Default images:
+  * LINSTOR 1.18.2
+  * LINSTOR CSI 0.19.1
+  * DRBD Reactor 0.7.0
