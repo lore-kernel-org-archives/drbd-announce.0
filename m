@@ -1,19 +1,22 @@
-Return-Path: <moritz.wanzenboeck@linbit.com>
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com
-	[209.85.221.43])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id B4F32420471
+Return-Path: <roland.kammerer@linbit.com>
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com
+	[209.85.128.53])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id C809F4205EF
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 24 May 2022 16:01:45 +0200 (CEST)
-Received: by mail-wr1-f43.google.com with SMTP id u3so25881762wrg.3
+	Wed,  8 Jun 2022 13:27:07 +0200 (CEST)
+Received: by mail-wm1-f53.google.com with SMTP id
+	m39-20020a05600c3b2700b0039c511ebbacso4185379wms.3
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 24 May 2022 07:01:45 -0700 (PDT)
-MIME-Version: 1.0
-From: =?UTF-8?Q?Moritz_Wanzenb=C3=B6ck?= <moritz.wanzenboeck@linbit.com>
-Date: Tue, 24 May 2022 16:01:33 +0200
-Message-ID: <CAKnz9xKNaA++R5h7g_tROX8mRZ=bS8y0u9iajWggVMx=Rn5Q9w@mail.gmail.com>
+	Wed, 08 Jun 2022 04:27:07 -0700 (PDT)
+Date: Wed, 8 Jun 2022 13:27:05 +0200
+From: Roland Kammerer <roland.kammerer@linbit.com>
 To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Content-Type: text/plain; charset="UTF-8"
-Subject: [DRBD-announce] LINSTOR Operator 1.8.2 released
+Message-ID: <YqCHiUWG+c4XVKrM@rck.sh>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="WwFBfALkLYlUJCoK"
+Content-Disposition: inline
+Subject: [DRBD-announce] drbd-utils v9.21.2
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -25,42 +28,38 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Dear LINBIT SDS on Kubernetes users,
 
-We just released LINSTOR Operator 1.8.2.
+--WwFBfALkLYlUJCoK
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Again, this is just a release to update some components, notably the
-latest LINSTOR 1.18.2.
+Dear DRBD users,
 
-- LINSTOR 1.18.2
-- LINSTOR CSI 0.19.1: fixes issues around cluster with quorum disabled
+this is drbd-utils 9.21.2. There is no urgent need to upgrade, it
+improves the shim that is used in drbd-reactor to allow using the
+recently added 'secondary --force' feature. This release is merely to
+bump the version so we can depend on it in the next drbd-reactor
+release.
 
-The new chart is available from https://charts.linstor.io. New images
-are available from drbd.io. The usual upgrade procedure applies:
+TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-utils-9.21.2.tar.gz
+GIT: https://github.com/LINBIT/drbd-utils/tree/9.21.2
+PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
-$ helm repo update
-$ helm upgrade linstor-op linstor/linstor -f orig.yaml
+Regards, rck
 
-For more information, please take a look at the upgrade guide. [1]
+--WwFBfALkLYlUJCoK
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Source code is, as always, available upstream. [2]
+-----BEGIN PGP SIGNATURE-----
 
-Best regards,
-Moritz
+iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmKgh3kACgkQRgmezyI6
+myLYVQgAnPCtSj6AsXcdQZdrNWAcj9x7LeNbzqPSNJSlswdRzfyRXNAW0NfwJ9HV
+ruA+XeNJL1wLSnGSEqzBAbjdKCiinLbLzTxcDtod7VrhfQAolMVFOIDu1Gr05//k
+Hev2kN7n9n7sNbH0T7To8nkSY0+ZXW3j36aCQMdWQjAuN4t5zMOjo26xYN4vhRjd
+v7tRRs9dIfSDxQyy4AufeJm4tv7XOLPMVy9CIPyExXer6cPPjk5alKIzxeaTAQ76
+zZMw6TSkMPfsx/Gy961Q63GIDgOmbYUkEShA5HVj3r4+1QM2AtFesemYNUMvk16s
+9V5OG5LVttRacPxjIX+JdjvpeBgZ5Q==
+=jkAy
+-----END PGP SIGNATURE-----
 
-[1]: https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-upgrade
-[2]: https://github.com/piraeusdatastore/piraeus-operator
-
-Full Changes
-------------
-
-### Added
-- Option to disable creation of monitoring resources.
-- Optional sidecars and volumes for all created workloads.
-
-### Changed
-
-- Default images:
-  * LINSTOR 1.18.2
-  * LINSTOR CSI 0.19.1
-  * DRBD Reactor 0.7.0
+--WwFBfALkLYlUJCoK--
