@@ -1,21 +1,21 @@
 Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com
-	[209.85.128.52])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 90B0E420647
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com
+	[209.85.221.47])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id D164C4203C5
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 30 Jun 2022 12:55:07 +0200 (CEST)
-Received: by mail-wm1-f52.google.com with SMTP id n185so11063071wmn.4
+	Fri,  1 Jul 2022 15:30:42 +0200 (CEST)
+Received: by mail-wr1-f47.google.com with SMTP id v9so3246227wrp.7
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 30 Jun 2022 03:55:07 -0700 (PDT)
-Date: Thu, 30 Jun 2022 12:55:05 +0200
+	Fri, 01 Jul 2022 06:30:42 -0700 (PDT)
+Date: Fri, 1 Jul 2022 15:30:40 +0200
 From: Roland Kammerer <roland.kammerer@linbit.com>
 To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Message-ID: <Yr2BCZXQNlAW55U6@rck.sh>
+Message-ID: <Yr73ACtHA0fpuT2z@rck.sh>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="hfAdP6kixbvZmB67"
+	protocol="application/pgp-signature"; boundary="7yiewJ0/QI3K1x4Z"
 Content-Disposition: inline
-Subject: [DRBD-announce] drbd-reactor v0.8.0
+Subject: [DRBD-announce] drbd-utils v9.21.3
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -28,58 +28,36 @@ List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
 
---hfAdP6kixbvZmB67
+--7yiewJ0/QI3K1x4Z
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-Dear DRBD Reactor users,
+Dear DRBD-users,
 
-this is drbd-reactor version 0.8.0. There have not been any changes
-since RC1, the slightly adapted original announcement for you
-convenience:
-
-The main change is integration of "secondary --force" in the promoter
-plugin. IMO that is a very nice feature and can make the difference
-between rebooting a node hat has hundreds of resources just because of
-one faulty service and handling that scenario more benign, even
-recovering from an isolated Primary.
-
-There is a blog post that goes into more details here [1].
-
-Using secondary-force is now the default with v0.8.0, no configuration
-changes necessary. Old behavior can be restored by setting
-"secondary-force = false" in a promoter section. This requires a kernel
-module >= 9.1.7 and drbd-utils >= 9.21.2
+this is version 9.21.3 of DRBD utils. It fixes 1 bug that occurred if
+you had very large disks and therefore a large activity log. Now
+"apply-al" for bitmap sizes > 4GiB should work as expected. There is no
+too urgent need to upgrade if your disks are "small" enough.
 
 Regards, rck
 
-Changelog:
-* CI: update for gitlab 15.0
-* prometheus: expose force-io-failures
-* doc: typo fix
-* promoter: implement secondary --force
-* bump min versions for secondary --force
-* core: mv version checks to main
-
-GIT: https://github.com/LINBIT/drbd-reactor/commit/c14b7903734a0152a5fc992c0bde5ac2f66fa08b
-TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-reactor-0.8.0.tar.gz
+GIT: https://github.com/linbit/drbd-utils/tree/9.21.3
+TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-utils-9.21.3.tar.gz
 PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
-[1] https://linbit.com/blog/drbd-reactor-recovering-an-isolated-drbd-primary/
-
---hfAdP6kixbvZmB67
+--7yiewJ0/QI3K1x4Z
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmK9gQUACgkQRgmezyI6
-myJzGwf/SsFvlbrp7imeWyO6+WhAdfGVzksPhRGXB2OIG8wYw2mIu9CBZqatpB4G
-sLd9Uy8ajJ3+0eCzdEbCPmVhnbWvjytHUQHo1WZh2YNrdUUMuuAPTG6Ib1T+WAiJ
-5Gr11ItEjww2APuYyyk2S2gTanOFFuaaE5CxfNw4sx0H6d5WLTIVAkEXFOrFX1sB
-FRaiyJ3l0VlqzSW2t5L36f69tE0VT9hBzIe8JQ5FebZrAj0SvtPBT8UhjKTcgVMA
-NjcltWYNNoJTt7RL+SG5YkWs61Za48fFfjv6T/YbUQpWHLd0tTyvhVjJUtiLKnQg
-dNuKwkffWN/cndEWafrTtPJLvwyytA==
-=kiBH
+iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmK+9v0ACgkQRgmezyI6
+myJw1Qf/TvmnsJCdxf9xJaEEoJ9f1rxgKiQFbkU2oKwZcMRBol1xa+TlRwEx7ilr
+DI9OI9Z2a3JTFyGvax7QVZSV6hU1BVV/EKU8lpC6whqa6FCL37c86e2aOPNDjkq7
+DzUJze18zKO7tGUNevnOXNP6Drsb4ASQhl0KhTWImOvXKAn1J+gtAtz4Wvy3hvWh
+tUHFfd7h/wdIPKEmw7E4qKLnJqXbbF4e7h6UAFeC7FqICkYCyvMTb9KqIsfcnoWZ
+nbCfAN9ozVL1aIMezL5W+q1w7ZRwYurjQl3NLR7wVVf1DLtoMhdYlie34LzyvZG7
+ur17IUitUarxRS2XPmMbG8QKb+tiUA==
+=8opv
 -----END PGP SIGNATURE-----
 
---hfAdP6kixbvZmB67--
+--7yiewJ0/QI3K1x4Z--
