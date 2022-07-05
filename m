@@ -1,21 +1,22 @@
 Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com
-	[209.85.221.47])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id D164C4203C5
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com
+	[209.85.128.42])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 85B7C420643
 	for <drbd-announce@lists.linbit.com>;
-	Fri,  1 Jul 2022 15:30:42 +0200 (CEST)
-Received: by mail-wr1-f47.google.com with SMTP id v9so3246227wrp.7
+	Tue,  5 Jul 2022 09:52:16 +0200 (CEST)
+Received: by mail-wm1-f42.google.com with SMTP id
+	be14-20020a05600c1e8e00b003a04a458c54so6772294wmb.3
 	for <drbd-announce@lists.linbit.com>;
-	Fri, 01 Jul 2022 06:30:42 -0700 (PDT)
-Date: Fri, 1 Jul 2022 15:30:40 +0200
+	Tue, 05 Jul 2022 00:52:16 -0700 (PDT)
+Date: Tue, 5 Jul 2022 09:52:13 +0200
 From: Roland Kammerer <roland.kammerer@linbit.com>
 To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Message-ID: <Yr73ACtHA0fpuT2z@rck.sh>
+Message-ID: <YsPtrarONjoc0bo6@rck.sh>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="7yiewJ0/QI3K1x4Z"
+	protocol="application/pgp-signature"; boundary="QwWfLjYqXAsyuDYj"
 Content-Disposition: inline
-Subject: [DRBD-announce] drbd-utils v9.21.3
+Subject: [DRBD-announce] linstor-proxmox v6.0.1-rc.1
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -28,36 +29,67 @@ List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
 
---7yiewJ0/QI3K1x4Z
+--QwWfLjYqXAsyuDYj
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-Dear DRBD-users,
+Dear DRBD/LINSTOR/PVE users,
 
-this is version 9.21.3 of DRBD utils. It fixes 1 bug that occurred if
-you had very large disks and therefore a large activity log. Now
-"apply-al" for bitmap sizes > 4GiB should work as expected. There is no
-too urgent need to upgrade if your disks are "small" enough.
+this is RC1 of the linstor-proxmox plugin 6.0.1. This was triggered by a
+bug report[1] and fixes cloning container storage from snapshots in
+several ways:
+
+When one clones a container from a snapshot, PVE does:
+- activate_volume() a new LINSTOR resource based on the snapshot
+  (snap_$snapname...).
+- create the new image vm-$id... (alloc_image()).
+- internally copies the content from that "temporary" snapshot resource
+  to the new image.
+
+This had several problems:
+- if a second clone was created we failed as the "temporary" snapshot
+  DRBD resource already existed.
+- we never removed that "temporary" resource.
+
+The first part is easy, only create that LINSTOR/DRBD resource when
+needed, otherwise skip it, that resource is supposed to be read-only.
+
+Deleting is more involved as to my best knowledge we don't get any
+"deactivate" call to delete that resource after the copy finished. The
+best we can do is to keep that resource and delete it on
+volume_snapshot_delete(). We saw that problem already when implementing
+vzdump support. I think we can assume that we always want to delete that
+snapshot resource when the actual snapshot is removed.
+
+This means that between the clone(s) and the time the base snapshot gets
+removed, we keep that temporary/unnecessary resource. But IMO that is
+the best we can do and certainly better than not deleting it at all.
+
+Please test, if there aren't any complaints this will be released in
+about a week from now. Fetching LINTORPlugin.pm, overwriting the
+existing one, and 'systemctl restart pvedaemon.service' should be good
+enough to test.
 
 Regards, rck
 
-GIT: https://github.com/linbit/drbd-utils/tree/9.21.3
-TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-utils-9.21.3.tar.gz
-PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+GIT: https://github.com/LINBIT/linstor-proxmox/commit/c432fb16aac26d6d510ad7f2a689146d2d2c1f95
+TGZ: https://pkg.linbit.com//downloads/connectors/linstor-proxmox-6.0.1-rc.1.tar.gz
 
---7yiewJ0/QI3K1x4Z
+[1] https://github.com/LINBIT/linstor-proxmox/issues/51
+
+--QwWfLjYqXAsyuDYj
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmK+9v0ACgkQRgmezyI6
-myJw1Qf/TvmnsJCdxf9xJaEEoJ9f1rxgKiQFbkU2oKwZcMRBol1xa+TlRwEx7ilr
-DI9OI9Z2a3JTFyGvax7QVZSV6hU1BVV/EKU8lpC6whqa6FCL37c86e2aOPNDjkq7
-DzUJze18zKO7tGUNevnOXNP6Drsb4ASQhl0KhTWImOvXKAn1J+gtAtz4Wvy3hvWh
-tUHFfd7h/wdIPKEmw7E4qKLnJqXbbF4e7h6UAFeC7FqICkYCyvMTb9KqIsfcnoWZ
-nbCfAN9ozVL1aIMezL5W+q1w7ZRwYurjQl3NLR7wVVf1DLtoMhdYlie34LzyvZG7
-ur17IUitUarxRS2XPmMbG8QKb+tiUA==
-=8opv
+iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmLD7aQACgkQRgmezyI6
+myLhKwgAnwPUEpAIFI9qstLTiXbsqGBTMVNQp982YFmPkwzalAX3O7l4Uvvb+eEZ
+a7DZtD5ez57tUUHC8H527tJmafYIy/raK7y54mDQAjcIayMnP2h1pP85IACTV7q7
+U0BM9dHYVwS3jB6PV3K8Db1PpyFF+NSElsZ8oC/E6TaIcDDXu7re555zgFOWaWyR
+fru3wmt/WbziAfUcm252p3CCcdXd2lBxl0AT/PaiNd8iQDcJFu3tX7uLvgXOnMQU
+wnZcGe6JCdH8g/ZK3Ag0gYvzSMRtWLh4IfONLUOKG114US+8onQ8fTJBhzZXhOzq
+/KnXo5yi6ui7w7sROH92Ha+StpFVYw==
+=0nhd
 -----END PGP SIGNATURE-----
 
---7yiewJ0/QI3K1x4Z--
+--QwWfLjYqXAsyuDYj--
