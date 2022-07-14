@@ -1,21 +1,21 @@
-Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com
-	[209.85.221.47])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id C2B10420647
+Return-Path: <philipp.reisner@linbit.com>
+Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com
+	[209.85.128.182])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 349A342097E
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 12 Jul 2022 09:37:17 +0200 (CEST)
-Received: by mail-wr1-f47.google.com with SMTP id v14so9934811wra.5
+	Thu, 14 Jul 2022 17:40:02 +0200 (CEST)
+Received: by mail-yw1-f182.google.com with SMTP id
+	00721157ae682-31c9b70c382so21071857b3.6
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 12 Jul 2022 00:37:17 -0700 (PDT)
-Date: Tue, 12 Jul 2022 09:37:15 +0200
-From: Roland Kammerer <roland.kammerer@linbit.com>
-To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Message-ID: <Ys0kqwWYybYAcVwJ@rck.sh>
+	Thu, 14 Jul 2022 08:40:02 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="WJNecHu1GWRwVPzo"
-Content-Disposition: inline
-Subject: [DRBD-announce] linstor-proxmox v6.0.1
+From: Philipp Reisner <philipp.reisner@linbit.com>
+Date: Thu, 14 Jul 2022 17:39:50 +0200
+Message-ID: <CADGDV=V_ODJ6oHdm6tx6Ja_3ftwxTzfms6nD3Am8339YGJMOmQ@mail.gmail.com>
+To: drbd-announce@lists.linbit.com
+Content-Type: text/plain; charset="UTF-8"
+Cc: drbd-user@lists.linbit.com
+Subject: [DRBD-announce] drbd-9.1.8
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -27,63 +27,33 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
+Hello DRBD users,
 
---WJNecHu1GWRwVPzo
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Here is the final drbd-9.1.8 release. Another rc in the 9.2 series will
+follow next week.
+With this release we restored the protocol compatibility with drbd-8.4. The
+reason behind this is that we want to discontinue drbd-9.0. Since upstream
+Linux still contains drbd-8.4 we want to have our active branches protocol
+compatible with 8.4. Next step for the upstream journey is to build
+the CI pipeline for an in-tree DRBD.
+In the one week of release candidate state, we got aware of one issue
+that is actually a regression in drbd-9.1.7. It is about re-integrating
+a node with a backing disk to a diskless primary node.
 
-Dear DRBD/LINSTOR/PVE users,
+9.1.8 (api:genl2/proto:110-121/transport:17)
+--------
+ * restore protocol compatibility with drbd-8.4
+ * detect peers that died silently when starting a two-phase-commit
+ * correctly abort two-phase-commits when a connection breaks between
+   phases 1 and 2
+ * allow re-connect to a node that was forced into secondary role and
+   where an opener is still present from the last time it was primary
+ * fix a race condition that allowed to configure two peers with the
+   same node id
+ * ensure that an open() call fails within the auto-promote timeout
+   if it can not succeed
+ * build fixes for RHEL9
+ * following upstream changes to DRBD up to Linux 5.17 and updated compat
 
-this is linstor-proxmox plugin version 6.0.1. This was triggered by a
-bug report[1] and fixes cloning container storage from snapshots in
-several ways. There have not been any changes since 6.0.1-rc.1.
-
-When one clones a container from a snapshot, PVE does:
-- activate_volume() a new LINSTOR resource based on the snapshot
-  (snap_$snapname...).
-- create the new image vm-$id... (alloc_image()).
-- internally copies the content from that "temporary" snapshot resource
-  to the new image.
-
-This had several problems:
-- if a second clone was created we failed as the "temporary" snapshot
-  DRBD resource already existed.
-- we never removed that "temporary" resource.
-
-The first part is easy, only create that LINSTOR/DRBD resource when
-needed, otherwise skip it, that resource is supposed to be read-only.
-
-Deleting is more involved as to my best knowledge we don't get any
-"deactivate" call to delete that resource after the copy finished. The
-best we can do is to keep that resource and delete it on
-volume_snapshot_delete(). We saw that problem already when implementing
-vzdump support. I think we can assume that we always want to delete that
-snapshot resource when the actual snapshot is removed.
-
-This means that between the clone(s) and the time the base snapshot gets
-removed, we keep that temporary/unnecessary resource. But IMO that is
-the best we can do and certainly better than not deleting it at all.
-
-Regards, rck
-
-GIT: https://github.com/LINBIT/linstor-proxmox/commit/c38e52a6fb0634f19b054fffed905464153f947c
-TGZ: https://pkg.linbit.com//downloads/connectors/linstor-proxmox-6.0.1.tar.gz
-
-[1] https://github.com/LINBIT/linstor-proxmox/issues/51
-
---WJNecHu1GWRwVPzo
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmLNJKMACgkQRgmezyI6
-myKbKgf9G6CBzonl+GKyJu/1JIrqIqTsvem4cIBxz9trrj7sl+sdtmvUev9VFJZp
-F54K19nKgd9RUX+Ns8KoeYRiOujGdBJQyP4PfjLh/az8Y66r9ZRvUXLJMSy28eTR
-v+P7nAkMnTACO81ybOUXRu2jtlGbiZrAmTcyIi8vgiho7kPsVkkPxiOEgR/FgFXl
-oWNX/ym8+/E6YozDCIZBqn90H7qPZSX42tr++RjqEi8PqzMcEoFLf72bZflYHvmy
-LPqfSweoy2HubBg6stUSKvaDMtqwarWLG5dLCCMuw1v0y6Uz+kAIcZFhjtSHyOWu
-eGu1KX+Jnz/rN4Gw2Nf0bS1m+2Wz+g==
-=x/6I
------END PGP SIGNATURE-----
-
---WJNecHu1GWRwVPzo--
+https://github.com/LINBIT/drbd/commit/2240f77a45d20474f1fd0e187fd4e3e876f5726c
+https://pkg.linbit.com/downloads/drbd/9/drbd-9.1.8.tar.gz
