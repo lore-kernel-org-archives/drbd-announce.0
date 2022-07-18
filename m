@@ -1,21 +1,21 @@
-Return-Path: <philipp.reisner@linbit.com>
-Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com
-	[209.85.128.182])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 349A342097E
+Return-Path: <roland.kammerer@linbit.com>
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com
+	[209.85.221.45])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 4C5E04202D6
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 14 Jul 2022 17:40:02 +0200 (CEST)
-Received: by mail-yw1-f182.google.com with SMTP id
-	00721157ae682-31c9b70c382so21071857b3.6
+	Mon, 18 Jul 2022 08:12:58 +0200 (CEST)
+Received: by mail-wr1-f45.google.com with SMTP id b26so15532669wrc.2
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 14 Jul 2022 08:40:02 -0700 (PDT)
+	Sun, 17 Jul 2022 23:12:58 -0700 (PDT)
+Date: Mon, 18 Jul 2022 08:12:56 +0200
+From: Roland Kammerer <roland.kammerer@linbit.com>
+To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
+Message-ID: <YtT56IpW1QwQSZ6n@rck.sh>
 MIME-Version: 1.0
-From: Philipp Reisner <philipp.reisner@linbit.com>
-Date: Thu, 14 Jul 2022 17:39:50 +0200
-Message-ID: <CADGDV=V_ODJ6oHdm6tx6Ja_3ftwxTzfms6nD3Am8339YGJMOmQ@mail.gmail.com>
-To: drbd-announce@lists.linbit.com
-Content-Type: text/plain; charset="UTF-8"
-Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-9.1.8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="o/F2a8jSCwNIZ4oL"
+Content-Disposition: inline
+Subject: [DRBD-announce] drbd-utils v9.21.4
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -27,33 +27,44 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Hello DRBD users,
 
-Here is the final drbd-9.1.8 release. Another rc in the 9.2 series will
-follow next week.
-With this release we restored the protocol compatibility with drbd-8.4. The
-reason behind this is that we want to discontinue drbd-9.0. Since upstream
-Linux still contains drbd-8.4 we want to have our active branches protocol
-compatible with 8.4. Next step for the upstream journey is to build
-the CI pipeline for an in-tree DRBD.
-In the one week of release candidate state, we got aware of one issue
-that is actually a regression in drbd-9.1.7. It is about re-integrating
-a node with a backing disk to a diskless primary node.
+--o/F2a8jSCwNIZ4oL
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-9.1.8 (api:genl2/proto:110-121/transport:17)
---------
- * restore protocol compatibility with drbd-8.4
- * detect peers that died silently when starting a two-phase-commit
- * correctly abort two-phase-commits when a connection breaks between
-   phases 1 and 2
- * allow re-connect to a node that was forced into secondary role and
-   where an opener is still present from the last time it was primary
- * fix a race condition that allowed to configure two peers with the
-   same node id
- * ensure that an open() call fails within the auto-promote timeout
-   if it can not succeed
- * build fixes for RHEL9
- * following upstream changes to DRBD up to Linux 5.17 and updated compat
+Dear DRBD-users,
 
-https://github.com/LINBIT/drbd/commit/2240f77a45d20474f1fd0e187fd4e3e876f5726c
-https://pkg.linbit.com/downloads/drbd/9/drbd-9.1.8.tar.gz
+this is version 9.21.4 of drbd-utils. It is a bugfix release, but if things
+worked for you so far there is no too urgent need to update. The fixes were
+triggered by customers in rare edge cases like an uncommon drbd-proxy setup.
+The second fix is for the sh-ip subcommand that segfaulted when IP
+configuration was only specified on connection/path level and not on a more
+global level like the on-section.
+
+Regards, rck
+
+GIT: https://github.com/linbit/drbd-utils/tree/9.21.4
+TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-utils-9.21.4.tar.gz
+PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+
+ 9.21.4
+-----------
+ * drbdadm,v9: fix potential segfault in postparse
+ * drbdadm,v9: fix sh-ip when set on connection/path
+
+--o/F2a8jSCwNIZ4oL
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmLU+eMACgkQRgmezyI6
+myI1Vgf/Todqwb+VhorR7AfL/6sE/oNHr51H2p2e9uUu7uQIunJgpYATlcvUfNYU
+nNYS2DBxAenixF2dk5E/V2U8dKobgP+cVPsJqZcQF8xHZpIdJF9OEsGXPhkWOnNn
+DwkDJTJZBRFpsE5hTQrxKbi8aHhlcOQhUmriyAVa1UTz6vu5QL/6v49DwMu4xy8V
+Ns94aC++oDrBONLf/YOea8IVp+tXQPgFocr6yO/QjZnRjs3ghlYMiNJ476LA6Xsq
+bfc+yhWEHsLPLZ2+IJMNyEeyq77RaVO6m77z3Rb7/WNNZgTnkZdhlesg+MTWaYW6
+B5PcU2Dod0lcN5uD2BOigXKy8o3GDw==
+=s5v0
+-----END PGP SIGNATURE-----
+
+--o/F2a8jSCwNIZ4oL--
