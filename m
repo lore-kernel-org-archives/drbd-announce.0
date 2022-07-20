@@ -1,21 +1,19 @@
-Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com
-	[209.85.221.45])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 4C5E04202D6
+Return-Path: <rene.peinthor@linbit.com>
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com
+	[209.85.208.52])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 165F94201D1
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 18 Jul 2022 08:12:58 +0200 (CEST)
-Received: by mail-wr1-f45.google.com with SMTP id b26so15532669wrc.2
+	Wed, 20 Jul 2022 10:52:26 +0200 (CEST)
+Received: by mail-ed1-f52.google.com with SMTP id m16so22850852edb.11
 	for <drbd-announce@lists.linbit.com>;
-	Sun, 17 Jul 2022 23:12:58 -0700 (PDT)
-Date: Mon, 18 Jul 2022 08:12:56 +0200
-From: Roland Kammerer <roland.kammerer@linbit.com>
-To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Message-ID: <YtT56IpW1QwQSZ6n@rck.sh>
+	Wed, 20 Jul 2022 01:52:26 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="o/F2a8jSCwNIZ4oL"
-Content-Disposition: inline
-Subject: [DRBD-announce] drbd-utils v9.21.4
+From: Rene Peinthor <rene.peinthor@linbit.com>
+Date: Wed, 20 Jul 2022 10:52:15 +0200
+Message-ID: <CAHmn2DN1vqbdF77xnUE1jTKnU_Q6-P0xd38fdph3S_QZEtq9Hg@mail.gmail.com>
+To: drbd-user <drbd-user@lists.linbit.com>, drbd-announce@lists.linbit.com
+Content-Type: multipart/alternative; boundary="000000000000637b7005e438b8a0"
+Subject: [DRBD-announce] linstor-server 1.19.0
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -27,44 +25,78 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
+--000000000000637b7005e438b8a0
+Content-Type: text/plain; charset="UTF-8"
 
---o/F2a8jSCwNIZ4oL
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Hi!
 
-Dear DRBD-users,
+This is the final release of 1.19.0, a few small fixes are the only change
+between the RC and this. Rest of the mail is a copy of the RC announcement.
 
-this is version 9.21.4 of drbd-utils. It is a bugfix release, but if things
-worked for you so far there is no too urgent need to update. The fixes were
-triggered by customers in rare edge cases like an uncommon drbd-proxy setup.
-The second fix is for the sh-ip subcommand that segfaulted when IP
-configuration was only specified on connection/path level and not on a more
-global level like the on-section.
+This release brings a new scheduled backup shipping feature.
+This means you can now create cron-like scheduled Linstor
+backups(Full/Incremental) that can be shipped to S3 or another linstor
+cluster.
 
-Regards, rck
+Basically you create a schedule with
+linstor schedule create ...
+and then enable it for a backup:
+linstor backup schedule enable ...
 
-GIT: https://github.com/linbit/drbd-utils/tree/9.21.4
-TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-utils-9.21.4.tar.gz
-PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+More documentation should be in the LINSTOR guide at the end of the week.
 
- 9.21.4
------------
- * drbdadm,v9: fix potential segfault in postparse
- * drbdadm,v9: fix sh-ip when set on connection/path
+linstor-server 1.19.0
+---------------------
+ * Added scheduled backup shipping
+ * CRD backend fixes/improvements
+ * SOS-Report support now sending large files
+ * SOS-Report added more filters
+ * Physical-storage api use LVM VDO commands
+ * Fix user DRBD verify algorithm list reading/setting
+ * Attempt to fix stuck volume resizes
+ * Fix Postgresql external files updates
+ * Fix support for Google/DigitalOcean S3 remotes
+ * Autoplace: better tiebreaker with autoplace constraints
+ * API Version 1.14.0
 
---o/F2a8jSCwNIZ4oL
-Content-Type: application/pgp-signature; name="signature.asc"
+https://pkg.linbit.com//downloads/linstor/linstor-server-1.19.0.tar.gz
 
------BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmLU+eMACgkQRgmezyI6
-myI1Vgf/Todqwb+VhorR7AfL/6sE/oNHr51H2p2e9uUu7uQIunJgpYATlcvUfNYU
-nNYS2DBxAenixF2dk5E/V2U8dKobgP+cVPsJqZcQF8xHZpIdJF9OEsGXPhkWOnNn
-DwkDJTJZBRFpsE5hTQrxKbi8aHhlcOQhUmriyAVa1UTz6vu5QL/6v49DwMu4xy8V
-Ns94aC++oDrBONLf/YOea8IVp+tXQPgFocr6yO/QjZnRjs3ghlYMiNJ476LA6Xsq
-bfc+yhWEHsLPLZ2+IJMNyEeyq77RaVO6m77z3Rb7/WNNZgTnkZdhlesg+MTWaYW6
-B5PcU2Dod0lcN5uD2BOigXKy8o3GDw==
-=s5v0
------END PGP SIGNATURE-----
+Linstor PPA:
+https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
---o/F2a8jSCwNIZ4oL--
+Cheers,
+Rene
+
+--000000000000637b7005e438b8a0
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div>Hi!</div><div><br></div><div>This is the final releas=
+e of 1.19.0, a few small fixes are the only change between the RC and this.=
+ Rest of the mail is a copy of the RC announcement.</div><div><br></div><di=
+v>This release brings a new scheduled backup shipping feature.</div><div>Th=
+is means you can now create cron-like scheduled Linstor backups(Full/Increm=
+ental) that can be shipped to S3 or another linstor cluster.</div><div><br>=
+</div><div>Basically you create a schedule with</div><div>linstor schedule =
+create ...</div><div>and then enable it for a backup:</div><div>linstor bac=
+kup schedule enable ...</div><div><br></div><div>More documentation should =
+be in the LINSTOR guide at the end of the week.</div><div><br></div><div><f=
+ont face=3D"monospace">linstor-server 1.19.0<br>---------------------<br>=
+=C2=A0* Added scheduled backup shipping<br>=C2=A0* CRD backend fixes/improv=
+ements<br>=C2=A0* SOS-Report support now sending large files<br>=C2=A0* SOS=
+-Report added more filters<br>=C2=A0* Physical-storage api use LVM VDO comm=
+ands<br>=C2=A0* Fix user DRBD verify algorithm list reading/setting<br>=C2=
+=A0* Attempt to fix stuck volume resizes<br>=C2=A0* Fix Postgresql external=
+ files updates<br>=C2=A0* Fix support for Google/DigitalOcean S3 remotes<br=
+>=C2=A0* Autoplace: better tiebreaker with autoplace constraints<br>=C2=A0*=
+ API Version 1.14.0</font><br></div><div><br></div><div><a href=3D"https://=
+pkg.linbit.com//downloads/linstor/linstor-server-1.19.0.tar.gz">https://pkg=
+.linbit.com//downloads/linstor/linstor-server-1.19.0.tar.gz</a><br></div><d=
+iv><br></div><div><br></div><div><div><div><div>Linstor PPA:<br><a href=3D"=
+https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack" rel=3D"no=
+referrer" target=3D"_blank">https://launchpad.net/~linbit/+archive/ubuntu/l=
+inbit-drbd9-stack</a></div></div><div><br></div><div>Cheers,<br></div><div>=
+Rene</div></div></div></div>
+
+--000000000000637b7005e438b8a0--
