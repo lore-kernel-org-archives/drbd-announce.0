@@ -1,19 +1,19 @@
-Return-Path: <rene.peinthor@linbit.com>
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com
-	[209.85.218.45])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 16361420647
+Return-Path: <moritz.wanzenboeck@linbit.com>
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com
+	[209.85.160.171])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 640594207B8
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 27 Jul 2022 10:08:38 +0200 (CEST)
-Received: by mail-ej1-f45.google.com with SMTP id tk8so30122845ejc.7
+	Wed, 27 Jul 2022 15:52:22 +0200 (CEST)
+Received: by mail-qt1-f171.google.com with SMTP id x11so12604105qts.13
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 27 Jul 2022 01:08:38 -0700 (PDT)
+	Wed, 27 Jul 2022 06:52:22 -0700 (PDT)
 MIME-Version: 1.0
-From: Rene Peinthor <rene.peinthor@linbit.com>
-Date: Wed, 27 Jul 2022 10:08:27 +0200
-Message-ID: <CAHmn2DOvCrr5yfMhfFWgGvxKuDqB8F15_OuwaGCd3GBmWQ2tuw@mail.gmail.com>
-To: drbd-announce@lists.linbit.com, drbd-user <drbd-user@lists.linbit.com>
-Content-Type: multipart/alternative; boundary="000000000000a0eeb405e4c4ece7"
-Subject: [DRBD-announce] linstor-server 1.19.1
+From: =?UTF-8?Q?Moritz_Wanzenb=C3=B6ck?= <moritz.wanzenboeck@linbit.com>
+Date: Wed, 27 Jul 2022 15:52:10 +0200
+Message-ID: <CAKnz9x+rokd30t7h=uJ0fhzstt=Z9oY2uie==nU6Kjd-AEzisQ@mail.gmail.com>
+To: drbd-user@lists.linbit.com, drbd-announce@lists.linbit.com
+Content-Type: text/plain; charset="UTF-8"
+Subject: [DRBD-announce] LINSTOR Operator 1.9.1
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -25,45 +25,76 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
---000000000000a0eeb405e4c4ece7
-Content-Type: text/plain; charset="UTF-8"
+Dear LINBIT SDS on Kubernetes users,
 
-Hi!
+We just released LINSTOR Operator 1.9.1.
 
-A small linstor-server bugfix release, which you probably don't need if you
-are not using ETCD or the auto snapshot feature.
+Right before we wanted to announce 1.9.0 today, we noticed an issue,
+so here is the announcement for 1.9.1 instead.
 
-linstor-server 1.19.1
----------------------
- * Fixed loading remotes with ETCD backend
- * Autosnapshot: fix property not working on RG or controller
- * API Version 1.14.0
+This is for the most part a maintenance release, updating component
+versions. In particular, the latest LINSTOR 1.19.1.
 
-https://pkg.linbit.com//downloads/linstor/linstor-server-1.19.1.tar.gz
+One significant change with this release is the deprecation of the
+included HA Controller component. We have replaced it with a
+completely new version, available as a separate chart from our Helm
+repository. This new LINSTOR HA Controller does not need any special
+annotation on the Pods to work, and can be deployed by running:
 
+  helm repo update
+  helm install linstor-ha-controller linstor/linstor-ha-controller
 
-Linstor PPA:
-https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+Another new component is the LINSTOR Affinity Controller. It ensures
+that affinity on PersistentVolume is always in sync with LINSTOR. This
+is important if you want to use strict affinity for improved data
+locality, but have to change nodes from time to time. This is also
+available as a separate chart:
 
-Cheers,
-Rene
+  helm repo update
+  helm install linstor-affinity-controller linstor/linstor-affinity-controller
 
---000000000000a0eeb405e4c4ece7
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+The new chart is available from https://charts.linstor.io. New images
+are available from drbd.io. The usual upgrade procedure applies:
 
-<div dir=3D"ltr"><div>Hi!</div><div><br></div><div>A small linstor-server b=
-ugfix release, which you probably don&#39;t need if you are not using ETCD =
-or the auto snapshot=C2=A0feature.</div><div><br></div><div><font face=3D"m=
-onospace">linstor-server 1.19.1<br>---------------------<br>=C2=A0* Fixed l=
-oading remotes with ETCD backend<br>=C2=A0* Autosnapshot: fix property not =
-working on RG or controller<br>=C2=A0* API Version 1.14.0</font><br></div><=
-div><br></div><div><a href=3D"https://pkg.linbit.com//downloads/linstor/lin=
-stor-server-1.19.1.tar.gz">https://pkg.linbit.com//downloads/linstor/linsto=
-r-server-1.19.1.tar.gz</a><br></div><div><br></div><div><br></div><div><div=
-><div><div>Linstor PPA:<br><a href=3D"https://launchpad.net/~linbit/+archiv=
-e/ubuntu/linbit-drbd9-stack" rel=3D"noreferrer" target=3D"_blank">https://l=
-aunchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack</a></div></div><div=
-><br></div><div>Cheers,<br></div><div>Rene</div></div></div></div>
+$ helm repo update
+$ helm upgrade linstor-op linstor/linstor -f orig.yaml
 
---000000000000a0eeb405e4c4ece7--
+An updated User's Guide with detailed instructions will be available
+shortly. For more information, please take a look at the upgrade
+guide. [1]
+
+Source code is, as always, available upstream. [2]
+
+Best regards,
+Moritz
+
+[1]: https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-upgrade
+[2]: https://github.com/piraeusdatastore/piraeus-operator
+
+Full Changes
+------------
+
+### Added
+
+- Support for custom labels and annotations with added options to `values.yaml`.
+
+### Changed
+- Satellite operator now reports basic satellite status even if
+controller is not reachable
+- Query single satellite devices to receive errors when the satellite
+is offline instead of assuming
+  devices are already configured.
+- Disabled the legacy HA Controller deployment by default. It has been
+replaced a separate chart linstor-ha-controller
+- Default images:
+  * LINSTOR 1.19.1
+  * LINSTOR CSI 0.20.0
+  * DRBD 9.1.8
+  * DRBD Reactor 0.8.0
+  * external CSI images to latest versions
+
+### Fixed
+- `last-applied-configuration` annotation was never updated, so
+updating of some fields was not performed correctly.
+- Patch logic forgot to include `last-applied-configuration`
+annotation in some cases.
