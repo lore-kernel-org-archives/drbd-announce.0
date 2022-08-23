@@ -1,19 +1,21 @@
-Return-Path: <moritz.wanzenboeck@linbit.com>
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com
-	[209.85.160.171])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 640594207B8
+Return-Path: <philipp.reisner@linbit.com>
+Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com
+	[209.85.210.53])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 9FC11420643
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 27 Jul 2022 15:52:22 +0200 (CEST)
-Received: by mail-qt1-f171.google.com with SMTP id x11so12604105qts.13
+	Tue, 23 Aug 2022 15:48:08 +0200 (CEST)
+Received: by mail-ot1-f53.google.com with SMTP id
+	h20-20020a056830165400b00638ac7ddba5so9822793otr.4
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 27 Jul 2022 06:52:22 -0700 (PDT)
+	Tue, 23 Aug 2022 06:48:08 -0700 (PDT)
 MIME-Version: 1.0
-From: =?UTF-8?Q?Moritz_Wanzenb=C3=B6ck?= <moritz.wanzenboeck@linbit.com>
-Date: Wed, 27 Jul 2022 15:52:10 +0200
-Message-ID: <CAKnz9x+rokd30t7h=uJ0fhzstt=Z9oY2uie==nU6Kjd-AEzisQ@mail.gmail.com>
-To: drbd-user@lists.linbit.com, drbd-announce@lists.linbit.com
+From: Philipp Reisner <philipp.reisner@linbit.com>
+Date: Tue, 23 Aug 2022 15:46:56 +0200
+Message-ID: <CADGDV=Xu8ubutDy8aB4LbFYcM78yc1qdB4d3f_w33vN-rqdfVA@mail.gmail.com>
+To: drbd-announce@lists.linbit.com
 Content-Type: text/plain; charset="UTF-8"
-Subject: [DRBD-announce] LINSTOR Operator 1.9.1
+Cc: drbd-user@lists.linbit.com
+Subject: [DRBD-announce] drbd-9.1.9-rc.1
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -25,76 +27,37 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Dear LINBIT SDS on Kubernetes users,
+Hello,
 
-We just released LINSTOR Operator 1.9.1.
+during the summer season, we learned that in the progress of following
+upstream changes and introducing compatibility code (tests and coccinelle
+spatch files) we broke DRBD on partitions on all kernels older than Linux
+5.10.
 
-Right before we wanted to announce 1.9.0 today, we noticed an issue,
-so here is the announcement for 1.9.1 instead.
+Yes, partitions are handled differently than logic volumes in some details in
+the kernel.  As good, old partitioning is still as a thing, this is the main
+reason to get a release out in August.
 
-This is for the most part a maintenance release, updating component
-versions. In particular, the latest LINSTOR 1.19.1.
+The other fixes are mostly hard to trigger or for exotic configurations or
+seldom-performed operations.
 
-One significant change with this release is the deprecation of the
-included HA Controller component. We have replaced it with a
-completely new version, available as a separate chart from our Helm
-repository. This new LINSTOR HA Controller does not need any special
-annotation on the Pods to work, and can be deployed by running:
+This is a release candidate, please help test it.
 
-  helm repo update
-  helm install linstor-ha-controller linstor/linstor-ha-controller
+9.1.9-rc.1 (api:genl2/proto:110-121/transport:17)
+--------
+ * fix a mistake in the compat generation code; it broke DRBD on
+   partitions on kernel older than linux 5.10 (this was introduced
+   with drbd-9.1.8; not affected: logical volumes)
+ * fix for a bug (introduced with drbd-9.0.0), that caused possible
+   inconsistencies in the mirror when using the 'resync-after' option
+ * fix a bug that could cause a request to get stuck after an unlucky
+   timing with a loss of connection
+ * close a very small timing window between connect and promote that
+   could lead to the new-current-uuid not being transmitted to the
+   concurrently connecting peer, which might lead to denied connections
+   later on
+ * fix a recently introduced OOPS when adding new volumes to a
+   connected resource
 
-Another new component is the LINSTOR Affinity Controller. It ensures
-that affinity on PersistentVolume is always in sync with LINSTOR. This
-is important if you want to use strict affinity for improved data
-locality, but have to change nodes from time to time. This is also
-available as a separate chart:
-
-  helm repo update
-  helm install linstor-affinity-controller linstor/linstor-affinity-controller
-
-The new chart is available from https://charts.linstor.io. New images
-are available from drbd.io. The usual upgrade procedure applies:
-
-$ helm repo update
-$ helm upgrade linstor-op linstor/linstor -f orig.yaml
-
-An updated User's Guide with detailed instructions will be available
-shortly. For more information, please take a look at the upgrade
-guide. [1]
-
-Source code is, as always, available upstream. [2]
-
-Best regards,
-Moritz
-
-[1]: https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-upgrade
-[2]: https://github.com/piraeusdatastore/piraeus-operator
-
-Full Changes
-------------
-
-### Added
-
-- Support for custom labels and annotations with added options to `values.yaml`.
-
-### Changed
-- Satellite operator now reports basic satellite status even if
-controller is not reachable
-- Query single satellite devices to receive errors when the satellite
-is offline instead of assuming
-  devices are already configured.
-- Disabled the legacy HA Controller deployment by default. It has been
-replaced a separate chart linstor-ha-controller
-- Default images:
-  * LINSTOR 1.19.1
-  * LINSTOR CSI 0.20.0
-  * DRBD 9.1.8
-  * DRBD Reactor 0.8.0
-  * external CSI images to latest versions
-
-### Fixed
-- `last-applied-configuration` annotation was never updated, so
-updating of some fields was not performed correctly.
-- Patch logic forgot to include `last-applied-configuration`
-annotation in some cases.
+https://pkg.linbit.com//downloads/drbd/9/drbd-9.1.9-rc.1.tar.gz
+https://github.com/LINBIT/drbd/commit/5b458b1a5ca74bec2ce498f5ad29a9bd0e7b4ad2
