@@ -1,21 +1,21 @@
-Return-Path: <philipp.reisner@linbit.com>
-Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com
-	[209.85.210.53])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 9FC11420643
+Return-Path: <johannes.thoma@linbit.com>
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com
+	[209.85.221.50])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 705984201AA
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 23 Aug 2022 15:48:08 +0200 (CEST)
-Received: by mail-ot1-f53.google.com with SMTP id
-	h20-20020a056830165400b00638ac7ddba5so9822793otr.4
+	Thu, 25 Aug 2022 19:09:06 +0200 (CEST)
+Received: by mail-wr1-f50.google.com with SMTP id b5so21136279wrr.5
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 23 Aug 2022 06:48:08 -0700 (PDT)
+	Thu, 25 Aug 2022 10:09:06 -0700 (PDT)
+Content-Type: multipart/alternative;
+	boundary="------------GiSRSeuBtizYUubioHOtmnVr"
+Message-ID: <57edf902-be8c-9f6f-fc0a-6424e8fce49c@linbit.com>
+Date: Thu, 25 Aug 2022 19:08:03 +0200
 MIME-Version: 1.0
-From: Philipp Reisner <philipp.reisner@linbit.com>
-Date: Tue, 23 Aug 2022 15:46:56 +0200
-Message-ID: <CADGDV=Xu8ubutDy8aB4LbFYcM78yc1qdB4d3f_w33vN-rqdfVA@mail.gmail.com>
-To: drbd-announce@lists.linbit.com
-Content-Type: text/plain; charset="UTF-8"
-Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-9.1.9-rc.1
+To: "drbd-user@lists.linbit.com" <drbd-user@lists.linbit.com>,
+	drbd-announce@lists.linbit.com
+From: Johannes Thoma <johannes.thoma@linbit.com>
+Subject: [DRBD-announce] WinDRBD 1.1.0-rc2 released
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -27,37 +27,121 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Hello,
+This is a multi-part message in MIME format.
+--------------GiSRSeuBtizYUubioHOtmnVr
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-during the summer season, we learned that in the progress of following
-upstream changes and introducing compatibility code (tests and coccinelle
-spatch files) we broke DRBD on partitions on all kernels older than Linux
-5.10.
+Dear DRBD and WinDRBD users,
 
-Yes, partitions are handled differently than logic volumes in some details in
-the kernel.  As good, old partitioning is still as a thing, this is the main
-reason to get a release out in August.
+I spent a lot of time working on LINSTOR for Windows, which I expect to be
+merged into upstream LINSTOR later this year. Therefore the WinDRBD
+development was on hold for a time, but now we continue (besides others
+making SyncSource much faster).
 
-The other fixes are mostly hard to trigger or for exotic configurations or
-seldom-performed operations.
+Working with LINSTOR also revealed hard to trigger WinDRBD / DRBD bugs,
+some of which are fixed with this release canidate.
 
-This is a release candidate, please help test it.
+ From the WHATSNEW.md file:
 
-9.1.9-rc.1 (api:genl2/proto:110-121/transport:17)
---------
- * fix a mistake in the compat generation code; it broke DRBD on
-   partitions on kernel older than linux 5.10 (this was introduced
-   with drbd-9.1.8; not affected: logical volumes)
- * fix for a bug (introduced with drbd-9.0.0), that caused possible
-   inconsistencies in the mirror when using the 'resync-after' option
- * fix a bug that could cause a request to get stuck after an unlucky
-   timing with a loss of connection
- * close a very small timing window between connect and promote that
-   could lead to the new-current-uuid not being transmitted to the
-   concurrently connecting peer, which might lead to denied connections
-   later on
- * fix a recently introduced OOPS when adding new volumes to a
-   connected resource
+What's new in version 1.1.0-rc2
+---------------------------
 
-https://pkg.linbit.com//downloads/drbd/9/drbd-9.1.9-rc.1.tar.gz
-https://github.com/LINBIT/drbd/commit/5b458b1a5ca74bec2ce498f5ad29a9bd0e7b4ad2
+Can install self-signed WinDRBD driver via ssh
+
+Improve sync speed when sync source
+
+Fixed a WinDRBD stuckness on drbdadm secondary when there was more
+than one Volume.
+
+Fixed online resize while connected.
+
+So, if you want to give this release canidate a try, please do!
+
+You can download the installer from:
+
+https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/
+
+If you wish to build WinDRBD from source, here is the sounrde repo on github:
+
+https://github.com/LINBIT/windrbd
+
+Since for building WinDRBD still a mixed Linux/Windows build setup is necessary
+I recommend to use the installer if you just want to use (and not to develop for)
+WinDRBD. I am working on making build possible on Linux only (using Wine for
+the Windows part).
+
+Best wishes and please let us know about feature requests, bug reports and more
+stuff regarding WinDRBD, either on github or by eMail,
+
+- Johannes Thoma
+
+
+--------------GiSRSeuBtizYUubioHOtmnVr
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<html>
+  <head>
+
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    Dear DRBD and WinDRBD users,<br>
+    <br>
+    I spent a lot of time working on LINSTOR for Windows, which I expect
+    to be<br>
+    merged into upstream LINSTOR later this year. Therefore the WinDRBD<br>
+    development was on hold for a time, but now we continue (besides
+    others<br>
+    making SyncSource much faster).<br>
+    <br>
+    Working with LINSTOR also revealed hard to trigger WinDRBD / DRBD
+    bugs, <br>
+    some of which are fixed with this release canidate.<br>
+    <br>
+    From the WHATSNEW.md file:<br>
+    <br>
+    <font face="monospace">What's new in version 1.1.0-rc2<br>
+      ---------------------------<br>
+      <br>
+      Can install self-signed WinDRBD driver via ssh<br>
+      <br>
+      Improve sync speed when sync source<br>
+      <br>
+      Fixed a WinDRBD stuckness on drbdadm secondary when there was more<br>
+      than one Volume.<br>
+      <br>
+      Fixed online resize while connected.<br>
+      <br>
+    </font>So, if you want to give this release canidate a try, please
+    do!<br>
+    <br>
+    You can download the installer from:<br>
+    <br>
+<a class="moz-txt-link-freetext" href="https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/">https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/</a><br>
+    <br>
+    If you wish to build WinDRBD from source, here is the sounrde repo
+    on github:<br>
+    <br>
+    <a class="moz-txt-link-freetext" href="https://github.com/LINBIT/windrbd">https://github.com/LINBIT/windrbd</a><br>
+    <br>
+    Since for building WinDRBD still a mixed Linux/Windows build setup
+    is necessary<br>
+    I recommend to use the installer if you just want to use (and not to
+    develop for)<br>
+    WinDRBD. I am working on making build possible on Linux only (using
+    Wine for<br>
+    the Windows part).<br>
+    <br>
+    Best wishes and please let us know about feature requests, bug
+    reports and more<br>
+    stuff regarding WinDRBD, either on github or by eMail, <br>
+    <br>
+    - Johannes Thoma<br>
+    <br>
+    <br>
+  </body>
+</html>
+
+--------------GiSRSeuBtizYUubioHOtmnVr--
