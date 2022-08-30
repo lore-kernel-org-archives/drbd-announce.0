@@ -1,20 +1,21 @@
 Return-Path: <philipp.reisner@linbit.com>
-Received: from mail-oi1-f176.google.com (mail-oi1-f176.google.com
-	[209.85.167.176])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id C145B4205FD
+Received: from mail-oa1-f47.google.com (mail-oa1-f47.google.com
+	[209.85.160.47])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 1D6E44206B5
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 29 Aug 2022 13:37:30 +0200 (CEST)
-Received: by mail-oi1-f176.google.com with SMTP id t140so9977747oie.8
+	Tue, 30 Aug 2022 18:01:05 +0200 (CEST)
+Received: by mail-oa1-f47.google.com with SMTP id
+	586e51a60fabf-11f4e634072so3509955fac.13
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 29 Aug 2022 04:37:30 -0700 (PDT)
+	Tue, 30 Aug 2022 09:01:05 -0700 (PDT)
 MIME-Version: 1.0
 From: Philipp Reisner <philipp.reisner@linbit.com>
-Date: Mon, 29 Aug 2022 13:37:18 +0200
-Message-ID: <CADGDV=Vpb5MTmxPhssZ09=ZjPww2L8AGyt31A5QuBqU5Hbq=sg@mail.gmail.com>
+Date: Tue, 30 Aug 2022 17:59:53 +0200
+Message-ID: <CADGDV=WGEfD7vomdcbMuDdGr=VXhCmFtV9RZwPCVMfzEWx7vtA@mail.gmail.com>
 To: drbd-announce@lists.linbit.com
 Content-Type: text/plain; charset="UTF-8"
 Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-9.1.9
+Subject: [DRBD-announce] drbd-9.2.0-rc.7
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,36 +27,43 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Hello,
+Hi,
 
-during the summer season, we learned that in the progress of following
-upstream changes and introducing compatibility code (tests and coccinelle
-spatch files) we broke DRBD on partitions on all kernels older than Linux
-5.10.
+we think that we fixed all known issues in the drbd-9.2 branch. (With the
+exception of the RDMA transport, which still has known issues)
 
-Yes, partitions are handled differently than logic volumes in some details in
-the kernel.  As good, old partitioning is still as a thing, this is the main
-reason to get a release out in August.
+This time it comes with a new feature: Support for network namespaces
 
-The other fixes are mostly hard to trigger or for exotic configurations or
-seldom-performed operations.
+That means that a drbd path (the part of a drbd connection that has IP
+addresses), will live in the network namespace, from which it was created.
 
-9.1.9 (api:genl2/proto:110-121/transport:17)
+You might ask, what is this good for?
+
+This is very useful when it is used with Kubernetes. Up to now Piraeus
+Data-Store could only use the host networking namespace. Not the networking
+namespace that is available to the containers. In various managed Kubernetes
+environments this "host networking" might be constrained, shielded from
+the internet, etc...
+With that new feature, Piraeus Data-Store can place the DRBD traffic into the
+other network. I would call it the "overlay network" (though I am not sure if
+Kubernetes people use that expression).
+
+A short reminder, the other advantages of drbd-9.2 over 9.1 are:
+ * lower latency for mirrored write requests
+ * lower contention between application IO and resync IO
+ * much better resync performance on thinly provisioned backends
+ * support for network namespaces
+ * a RDMA transport (still has known issues)
+
+Please help test this pre-release.
+
+9.2.0-rc.7 (api:genl2/proto:110-121/transport:18)
 --------
- * fix a mistake in the compat generation code; it broke DRBD on
-   partitions on kernel older than linux 5.10 (this was introduced
-   with drbd-9.1.8; not affected: logical volumes)
- * fix for a bug (introduced with drbd-9.0.0), that caused possible
-   inconsistencies in the mirror when using the 'resync-after' option
- * fix a bug that could cause a request to get stuck after an unlucky
-   timing with a loss of connection
- * close a very small timing window between connect and promote that
-   could lead to the new-current-uuid not being transmitted to the
-   concurrently connecting peer, which might lead to denied connections
-   later on
- * fix a recently introduced OOPS when adding new volumes to a
-   connected resource
- * fix online attach when the connection to a 3rd node is down
+ * support for network namespaces
+ * multiple fixes to the merge-discards-during-resync functionality
+ * fix reference counting in AL with drbd-8.4 peers
+ * stricter limit for the set of characters allowed in resource names
+ * merge changes from the drbd 9.1.9 release
 
-https://pkg.linbit.com//downloads/drbd/9/drbd-9.1.9.tar.gz
-https://github.com/LINBIT/drbd/commit/a2b9ca1057069e0dbc7c5322b3c7d611c582b1e6
+https://pkg.linbit.com//downloads/drbd/9/drbd-9.2.0-rc.7.tar.gz
+https://github.com/LINBIT/drbd/commit/61c4a219d2bba3241c60ea6d69bab70e93d1de84
