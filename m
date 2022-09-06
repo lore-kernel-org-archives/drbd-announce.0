@@ -1,21 +1,21 @@
-Return-Path: <philipp.reisner@linbit.com>
-Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com
-	[209.85.210.53])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id E0F51420667
+Return-Path: <roland.kammerer@linbit.com>
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com
+	[209.85.221.46])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id A017A4210D9
 	for <drbd-announce@lists.linbit.com>;
-	Mon,  5 Sep 2022 09:37:44 +0200 (CEST)
-Received: by mail-ot1-f53.google.com with SMTP id
-	h20-20020a056830165400b00638ac7ddba5so5669919otr.4
+	Tue,  6 Sep 2022 14:58:15 +0200 (CEST)
+Received: by mail-wr1-f46.google.com with SMTP id bj14so2060703wrb.12
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 05 Sep 2022 00:37:44 -0700 (PDT)
+	Tue, 06 Sep 2022 05:58:15 -0700 (PDT)
+Date: Tue, 6 Sep 2022 14:58:13 +0200
+From: Roland Kammerer <roland.kammerer@linbit.com>
+To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
+Message-ID: <YxdD5cRDseYFvidx@rck.sh>
 MIME-Version: 1.0
-From: Philipp Reisner <philipp.reisner@linbit.com>
-Date: Mon, 5 Sep 2022 09:37:32 +0200
-Message-ID: <CADGDV=WVa9Dak4hejBrwP85u-7tj+cySjerfADvWLA9eOxJ0Ow@mail.gmail.com>
-To: drbd-announce@lists.linbit.com
-Content-Type: text/plain; charset="UTF-8"
-Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-9.1.11
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="IUTfRl54PKpUox6K"
+Content-Disposition: inline
+Subject: [DRBD-announce] drbd-utils v9.22.0-rc.1
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -27,25 +27,83 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Hello,
 
-The fix for the request processing that was quickly released with drbd-9.1.10,
-created another problem in the request processing code. This other problem is
-only reproducibly by us when we artificially delay a CPU thread by
-instrumenting the code.
-This bug in the request processing code can again lead to kernel crashes.
+--IUTfRl54PKpUox6K
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-This last week gives us a lot of homework on how to cover the request
-processing code better in our automated tests.
+Dear DRBD users,
 
-Again, a quick release to get the 9.1.x branch into a general usable state.
+This is drbd-utils version 9.22.0-rc.1. I assume this will get a
+slightly longer RC phase to give users time to test the changes and give
+feedback.
 
+We deprecated named connections. This was a feature I assume not too
+many users were aware of anyways, but it was possible to name
+connections and if no name was given, the name of the peer was used as
+default. This was for example then presented as "conn-name" in events2.
+We have by now ways too many projects that assume that they can get the
+peer's name from "conn-name" and would break if that is an arbitrary
+name. Quite frankly, some of my tools/projects have that assumption as
+well. If you have a custom name set for a connection it is now ignored,
+an error gets printed, but the parser does not fail hard. In future
+release I might change that to failing hard, so please get rid of named
+connections now!
 
-9.1.11 (api:genl2/proto:110-121/transport:17)
---------
- * The change introduced with 9.1.10 created another problem that might
-   lead to premature request completion (kernel crash); reverted that
-   change and fix it in another way
+The second bigger change is that the rpm part now generates a
+drbd-selinux sub package containing an updated SELinux policy. Depending
+on the host distribution, that package might even become a runtime
+dependency for the drbd-utils sub package. Users/downstream building
+packages should add "checkpolicy", and "selinux-policy-devel" to their
+build systems. The Debian (alike) world is not affected by that change,
+as SELinux isn't that widely used (by default) there.
 
-https://pkg.linbit.com//downloads/drbd/9/drbd-9.1.11.tar.gz
-https://github.com/LINBIT/drbd/commit/ba3a5505c843e1dae30f8307ce918f24255e0dad
+Please test!
+
+TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-utils-9.22.0-rc.1.tar.gz
+GIT: https://github.com/LINBIT/drbd-utils/commit/04f894198b3c18dd5fc2759a24e9246eee0f7379
+PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack/
+
+Regards, rck
+
+Changes since 9.21.0:
+
+ 9.22.0-rc.1
+-----------
+ * parser,v9: deprecate named connections
+ * drbd-selinux: add sub package, minor packaging/spec changes
+ * drbdadm: allow files from expanded glob to vanish
+
+ 9.21.4
+-----------
+ * drbdadm,v9: fix potential segfault in postparse
+ * drbdadm,v9: fix sh-ip when set on connection/path
+
+ 9.21.3
+-----------
+ * drbdmeta: fix apply-al for bitmap sizes > 4GiB
+
+ 9.21.2
+-----------
+ * drbd-service-shim.sh: add secondary --force
+
+ 9.21.1
+-----------
+ * ocf: fix for dropped --peer option
+
+--IUTfRl54PKpUox6K
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmMXQ9kACgkQRgmezyI6
+myLeWQf9HUeu7EGSAI6dxcbenP0288nP6plnsiDja5rvr66G7XQyWsuprrE6R5Oz
+KgK9c8IJbZBkY9JJfh/sMO37dQ2O28ZtMtLHodSBt+alOmpyx/FNjD1uLkiFVU1Z
+E7wFzGONp5pC2QeNDiarFC5b2gTXVU4ALvAc0AC1pZzyQ0OmW7cMnC9L0K/VCdU+
+CfhUFQtaUGjYd8HnrUjKgsflPCtFu3FAs9ggnxB2UxKpychjZ/eRTpKMy0uBvFKJ
+nWU1Hpw8b5fzMu6Z9wmJwAI3agJuctlsl7Azp4IHfC9KF7y4ARXkchGoEA5lZ2Cq
+JGqq5jQRl59B+nAZHysfFXhmolPR3w==
+=ulbx
+-----END PGP SIGNATURE-----
+
+--IUTfRl54PKpUox6K--
