@@ -1,21 +1,21 @@
 Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com
-	[209.85.221.46])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id A017A4210D9
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com
+	[209.85.221.42])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 438924210CE
 	for <drbd-announce@lists.linbit.com>;
-	Tue,  6 Sep 2022 14:58:15 +0200 (CEST)
-Received: by mail-wr1-f46.google.com with SMTP id bj14so2060703wrb.12
+	Fri,  9 Sep 2022 11:07:51 +0200 (CEST)
+Received: by mail-wr1-f42.google.com with SMTP id c11so1614417wrp.11
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 06 Sep 2022 05:58:15 -0700 (PDT)
-Date: Tue, 6 Sep 2022 14:58:13 +0200
+	Fri, 09 Sep 2022 02:07:51 -0700 (PDT)
+Date: Fri, 9 Sep 2022 11:07:49 +0200
 From: Roland Kammerer <roland.kammerer@linbit.com>
 To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Message-ID: <YxdD5cRDseYFvidx@rck.sh>
+Message-ID: <YxsCZS0WHvYRxE84@rck.sh>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="IUTfRl54PKpUox6K"
+	protocol="application/pgp-signature"; boundary="NEFybTifMe9hxPQz"
 Content-Disposition: inline
-Subject: [DRBD-announce] drbd-utils v9.22.0-rc.1
+Subject: [DRBD-announce] drbd-reactor v0.9.0-rc.2
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -28,82 +28,101 @@ List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
 
---IUTfRl54PKpUox6K
+--NEFybTifMe9hxPQz
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
 Dear DRBD users,
 
-This is drbd-utils version 9.22.0-rc.1. I assume this will get a
-slightly longer RC phase to give users time to test the changes and give
-feedback.
+this is RC2 for drbd-reactor version 0.9.0. You did not miss RC1, I found
+a stupid bug in RC1 when I rolled it out on one of our internal
+clusters...
 
-We deprecated named connections. This was a feature I assume not too
-many users were aware of anyways, but it was possible to name
-connections and if no name was given, the name of the peer was used as
-default. This was for example then presented as "conn-name" in events2.
-We have by now ways too many projects that assume that they can get the
-peer's name from "conn-name" and would break if that is an arbitrary
-name. Quite frankly, some of my tools/projects have that assumption as
-well. If you have a custom name set for a connection it is now ignored,
-an error gets printed, but the parser does not fail hard. In future
-release I might change that to failing hard, so please get rid of named
-connections now!
+The main new feature is that the promoter plugin can now freeze the
+services of the currently active node when it loses quorum and then thaw
+them when the node gains quorum again. This might be an advantage when
+starting services takes a long time (e.g., huge databases). Freezing and
+thawing is instant and uses the according cgroup features via systemctl
+freeze/thaw.
 
-The second bigger change is that the rpm part now generates a
-drbd-selinux sub package containing an updated SELinux policy. Depending
-on the host distribution, that package might even become a runtime
-dependency for the drbd-utils sub package. Users/downstream building
-packages should add "checkpolicy", and "selinux-policy-devel" to their
-build systems. The Debian (alike) world is not affected by that change,
-as SELinux isn't that widely used (by default) there.
+Copying from the documentation [1]:
+The default behavior when a DRBD Primary looses quorum is to immediately
+stop the generated target unit and hope that other nodes still having
+quorum will successfully start the service. This works well if services
+can be failed over/started on another node in reasonable time.
+Unfortunately there are services that take a very long time to start,
+for example huge data bases.
 
-Please test!
+When a DRBD Primary looses its quorum we basically have two possibilities:
 
-TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-utils-9.22.0-rc.1.tar.gz
-GIT: https://github.com/LINBIT/drbd-utils/commit/04f894198b3c18dd5fc2759a24e9246eee0f7379
-PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack/
+- the rest of the nodes, or at least parts of it still have quorum: Then
+  these have to start the service, they are the only ones with quorum,
+  but still we could keep the old Primary in a frozen state. And then,
+  when the nodes with quorum come into contact with the old Primary,
+  then it should stop the service and its storage should become in sync
+  with the other nodes.
+- the rest of the nodes are not able to form a partition with quorum. In
+  such a scenario there are no alternatives anyways, we would need to
+  keep the Primary frozen. But if the nodes eventually join the old
+  Primary again, and quorum would be restored, we could just
+  unfreeze/thaw the old Primary (which is also the new Primary).
+
+There are several requirements for this to work properly:
+
+- A system with unified cgroups. If the file
+  /sys/fs/cgroup/cgroup.controllers exists you should be fine. That
+  requires a relatively "new" kernel. Note that "even" RHEL8 for example
+  needs the addition of systemd.unified_cgroup_hierarchy on the kernel
+  command line.
+- a service that can tolerate to be frozen
+- DRBD option on-suspended-primary-outdated set to force-secondary
+- DRBD option on-quorum-loss set to suspend-io
+- DRBD net option rr-conflict set to retry-connect
+
+If these requirements are fulfilled, then one can set the promoter
+option "on-quorum-loss" to "freeze".
+
+Consider this as an experimental feature, and most users probably should
+not enable that by default. It is a feature that might be handy in
+specific situations, the more classic behavior of stopping the services
+might be the better default for most users.
+
+Also, and that is important in general, check the output of "systemctl
+status drbd-reactor.service", it runs all kinds of DRBD option checks on
+your DRBD resources and tells you which options are missing/wrong.
+Follow these suggestions!
 
 Regards, rck
 
-Changes since 9.21.0:
+GIT: https://github.com/LINBIT/drbd-reactor/commit/a5cf59bf84359f0095154e8db78489c627f968ad
+TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-reactor-0.9.0-rc.2.tar.gz
+PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
- 9.22.0-rc.1
------------
- * parser,v9: deprecate named connections
- * drbd-selinux: add sub package, minor packaging/spec changes
- * drbdadm: allow files from expanded glob to vanish
+Changelog:
+[ Roland Kammerer ]
+* doc: make man pages o+r
+* docs,promoter: hint to use provided packages
+* promoter: warn if mount unit is topmost unit
+* promoter: implement on-quorum-loss policy
+* promoter: relax ocf parser
+* ctl: add resource filter
+* ctl: fix status without res filter
 
- 9.21.4
------------
- * drbdadm,v9: fix potential segfault in postparse
- * drbdadm,v9: fix sh-ip when set on connection/path
+[1] https://github.com/LINBIT/drbd-reactor/blob/master/doc/promoter.md#freezing-resources
 
- 9.21.3
------------
- * drbdmeta: fix apply-al for bitmap sizes > 4GiB
-
- 9.21.2
------------
- * drbd-service-shim.sh: add secondary --force
-
- 9.21.1
------------
- * ocf: fix for dropped --peer option
-
---IUTfRl54PKpUox6K
+--NEFybTifMe9hxPQz
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmMXQ9kACgkQRgmezyI6
-myLeWQf9HUeu7EGSAI6dxcbenP0288nP6plnsiDja5rvr66G7XQyWsuprrE6R5Oz
-KgK9c8IJbZBkY9JJfh/sMO37dQ2O28ZtMtLHodSBt+alOmpyx/FNjD1uLkiFVU1Z
-E7wFzGONp5pC2QeNDiarFC5b2gTXVU4ALvAc0AC1pZzyQ0OmW7cMnC9L0K/VCdU+
-CfhUFQtaUGjYd8HnrUjKgsflPCtFu3FAs9ggnxB2UxKpychjZ/eRTpKMy0uBvFKJ
-nWU1Hpw8b5fzMu6Z9wmJwAI3agJuctlsl7Azp4IHfC9KF7y4ARXkchGoEA5lZ2Cq
-JGqq5jQRl59B+nAZHysfFXhmolPR3w==
-=ulbx
+iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmMbAlkACgkQRgmezyI6
+myJ2fQgApNr3f4ATBKvM0ioXJb5uKuwR5YYEs2YnD6LcofK+gl9Dxm6CLqmExiry
+gAnZF2IRvppdaE00PbBQGDuxA2imkUEUKJrgHJ2laUpy5UhfQFjWRI9BQpFU3b99
+ygFKZKiZdetD0zla+kcY2WZ8JhJ+oblX94QEsXMU330aeYCPlqH6q1UrTTrB9WmX
+jHm4S34m58Sm4UFsQWq9/CDxkviKZk+wlpBW0G/lwGHO+PL+TIcMSFMoird9rW17
+uyhondekY5fKOxs7jYgODtU8wtYcbG787oT+yLfZGGXflWPFBxFPn8L751wYCKoz
+oZCJkF8xs5SA7qzSroNMwJ7/j2/uUQ==
+=5ekK
 -----END PGP SIGNATURE-----
 
---IUTfRl54PKpUox6K--
+--NEFybTifMe9hxPQz--
