@@ -1,21 +1,21 @@
-Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com
-	[209.85.221.42])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 438924210CE
+Return-Path: <johannes.thoma@linbit.com>
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com
+	[209.85.221.45])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 4A50C4201D9
 	for <drbd-announce@lists.linbit.com>;
-	Fri,  9 Sep 2022 11:07:51 +0200 (CEST)
-Received: by mail-wr1-f42.google.com with SMTP id c11so1614417wrp.11
+	Fri, 16 Sep 2022 13:57:00 +0200 (CEST)
+Received: by mail-wr1-f45.google.com with SMTP id g3so14751568wrq.13
 	for <drbd-announce@lists.linbit.com>;
-	Fri, 09 Sep 2022 02:07:51 -0700 (PDT)
-Date: Fri, 9 Sep 2022 11:07:49 +0200
-From: Roland Kammerer <roland.kammerer@linbit.com>
-To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Message-ID: <YxsCZS0WHvYRxE84@rck.sh>
+	Fri, 16 Sep 2022 04:57:00 -0700 (PDT)
+Content-Type: multipart/alternative;
+	boundary="------------bhTRkOUl0cKUg0zpcFsFbf3T"
+Message-ID: <9c0370cb-29a6-5c8f-8e94-e11c19aac322@linbit.com>
+Date: Fri, 16 Sep 2022 13:56:58 +0200
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="NEFybTifMe9hxPQz"
-Content-Disposition: inline
-Subject: [DRBD-announce] drbd-reactor v0.9.0-rc.2
+To: "drbd-user@lists.linbit.com" <drbd-user@lists.linbit.com>,
+	drbd-announce@lists.linbit.com
+From: Johannes Thoma <johannes.thoma@linbit.com>
+Subject: [DRBD-announce] WinDRBD 1.1.0-rc3 released
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -27,102 +27,103 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
+This is a multi-part message in MIME format.
+--------------bhTRkOUl0cKUg0zpcFsFbf3T
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
---NEFybTifMe9hxPQz
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Dear DRBD and WinDRBD users,
 
-Dear DRBD users,
+This is another release canidate for the 1.1 branch of WinDRBD.
+It mainly contains bugfixes and the installer already knows
+about LINSTOR: it will stop and start again the linstor-satellite
+on upgrade (if it exists).
 
-this is RC2 for drbd-reactor version 0.9.0. You did not miss RC1, I found
-a stupid bug in RC1 when I rolled it out on one of our internal
-clusters...
+Also we fixed an issue with using existing data. Since this
+requires configuration file changes we will publish a
+tech guide on the LINBIT website soon explaining how
+this can be done. Also c-max-rate setting should
+work now, allowing to sync at slower speed.
 
-The main new feature is that the promoter plugin can now freeze the
-services of the currently active node when it loses quorum and then thaw
-them when the node gains quorum again. This might be an advantage when
-starting services takes a long time (e.g., huge databases). Freezing and
-thawing is instant and uses the according cgroup features via systemctl
-freeze/thaw.
+This is a release canidate please help by testing it.
 
-Copying from the documentation [1]:
-The default behavior when a DRBD Primary looses quorum is to immediately
-stop the generated target unit and hope that other nodes still having
-quorum will successfully start the service. This works well if services
-can be failed over/started on another node in reasonable time.
-Unfortunately there are services that take a very long time to start,
-for example huge data bases.
+As always, you can download the installer from:
 
-When a DRBD Primary looses its quorum we basically have two possibilities:
+https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/
 
-- the rest of the nodes, or at least parts of it still have quorum: Then
-  these have to start the service, they are the only ones with quorum,
-  but still we could keep the old Primary in a frozen state. And then,
-  when the nodes with quorum come into contact with the old Primary,
-  then it should stop the service and its storage should become in sync
-  with the other nodes.
-- the rest of the nodes are not able to form a partition with quorum. In
-  such a scenario there are no alternatives anyways, we would need to
-  keep the Primary frozen. But if the nodes eventually join the old
-  Primary again, and quorum would be restored, we could just
-  unfreeze/thaw the old Primary (which is also the new Primary).
+ From the WHATSNEW.md file:
 
-There are several requirements for this to work properly:
+Fix a DRBD issue that causes a resource to be stucked in Negoiating
+on attach when there were 3 nodes.
 
-- A system with unified cgroups. If the file
-  /sys/fs/cgroup/cgroup.controllers exists you should be fine. That
-  requires a relatively "new" kernel. Note that "even" RHEL8 for example
-  needs the addition of systemd.unified_cgroup_hierarchy on the kernel
-  command line.
-- a service that can tolerate to be frozen
-- DRBD option on-suspended-primary-outdated set to force-secondary
-- DRBD option on-quorum-loss set to suspend-io
-- DRBD net option rr-conflict set to retry-connect
+Workaround for a (possible) Windows bug when reusing data of
+NTFS partitions larger than 1.3TB. (You will have to specify
+a drive letter where to mount the WinDRBD device)
 
-If these requirements are fulfilled, then one can set the promoter
-option "on-quorum-loss" to "freeze".
+Short timeout of drbdadm defaults to 30 seconds for Windows
+systems.
 
-Consider this as an experimental feature, and most users probably should
-not enable that by default. It is a feature that might be handy in
-specific situations, the more classic behavior of stopping the services
-might be the better default for most users.
+Implemented disk statistics thereby fixing the resync rate
+controller (setting c-max-rate had no effect before).
 
-Also, and that is important in general, check the output of "systemctl
-status drbd-reactor.service", it runs all kinds of DRBD option checks on
-your DRBD resources and tells you which options are missing/wrong.
-Follow these suggestions!
+Installer: stop and restart LINSTOR satellite if present
 
-Regards, rck
+Best regards,
 
-GIT: https://github.com/LINBIT/drbd-reactor/commit/a5cf59bf84359f0095154e8db78489c627f968ad
-TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-reactor-0.9.0-rc.2.tar.gz
-PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+- Johannes
+--------------bhTRkOUl0cKUg0zpcFsFbf3T
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Changelog:
-[ Roland Kammerer ]
-* doc: make man pages o+r
-* docs,promoter: hint to use provided packages
-* promoter: warn if mount unit is topmost unit
-* promoter: implement on-quorum-loss policy
-* promoter: relax ocf parser
-* ctl: add resource filter
-* ctl: fix status without res filter
+<html>
+  <head>
 
-[1] https://github.com/LINBIT/drbd-reactor/blob/master/doc/promoter.md#freezing-resources
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    Dear DRBD and WinDRBD users,<br>
+    <br>
+    This is another release canidate for the 1.1 branch of WinDRBD.<br>
+    It mainly contains bugfixes and the installer already knows<br>
+    about LINSTOR: it will stop and start again the linstor-satellite<br>
+    on upgrade (if it exists).<br>
+    <br>
+    Also we fixed an issue with using existing data. Since this<br>
+    requires configuration file changes we will publish a<br>
+    tech guide on the LINBIT website soon explaining how<br>
+    this can be done. Also c-max-rate setting should<br>
+    work now, allowing to sync at slower speed.<br>
+    <br>
+    This is a release canidate please help by testing it.<br>
+    <br>
+    As always, you can download the installer from:<br>
+    <br>
+    <a class="moz-txt-link-freetext"
+href="https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/">https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/</a><br>
+    <br>
+    From the WHATSNEW.md file:<br>
+    <br>
+    <font face="monospace">Fix a DRBD issue that causes a resource to be
+      stucked in Negoiating<br>
+      on attach when there were 3 nodes.<br>
+      <br>
+      Workaround for a (possible) Windows bug when reusing data of<br>
+      NTFS partitions larger than 1.3TB. (You will have to specify<br>
+      a drive letter where to mount the WinDRBD device)<br>
+      <br>
+      Short timeout of drbdadm defaults to 30 seconds for Windows<br>
+      systems.<br>
+      <br>
+      Implemented disk statistics thereby fixing the resync rate<br>
+      controller (setting c-max-rate had no effect before).<br>
+      <br>
+      Installer: stop and restart LINSTOR satellite if present<br>
+    </font><br>
+    Best regards,<br>
+    <br>
+    - Johannes<font face="monospace"><br>
+    </font>
+  </body>
+</html>
 
---NEFybTifMe9hxPQz
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmMbAlkACgkQRgmezyI6
-myJ2fQgApNr3f4ATBKvM0ioXJb5uKuwR5YYEs2YnD6LcofK+gl9Dxm6CLqmExiry
-gAnZF2IRvppdaE00PbBQGDuxA2imkUEUKJrgHJ2laUpy5UhfQFjWRI9BQpFU3b99
-ygFKZKiZdetD0zla+kcY2WZ8JhJ+oblX94QEsXMU330aeYCPlqH6q1UrTTrB9WmX
-jHm4S34m58Sm4UFsQWq9/CDxkviKZk+wlpBW0G/lwGHO+PL+TIcMSFMoird9rW17
-uyhondekY5fKOxs7jYgODtU8wtYcbG787oT+yLfZGGXflWPFBxFPn8L751wYCKoz
-oZCJkF8xs5SA7qzSroNMwJ7/j2/uUQ==
-=5ekK
------END PGP SIGNATURE-----
-
---NEFybTifMe9hxPQz--
+--------------bhTRkOUl0cKUg0zpcFsFbf3T--
