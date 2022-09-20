@@ -1,22 +1,19 @@
-Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com
-	[209.85.128.41])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 55AF64201CB
+Return-Path: <rene.peinthor@linbit.com>
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com
+	[209.85.208.47])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 097E64205A5
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 20 Sep 2022 09:42:55 +0200 (CEST)
-Received: by mail-wm1-f41.google.com with SMTP id
-	n35-20020a05600c502300b003b4924c6868so422433wmr.1
+	Tue, 20 Sep 2022 16:02:21 +0200 (CEST)
+Received: by mail-ed1-f47.google.com with SMTP id e18so4019532edj.3
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 20 Sep 2022 00:42:55 -0700 (PDT)
-Date: Tue, 20 Sep 2022 09:42:53 +0200
-From: Roland Kammerer <roland.kammerer@linbit.com>
-To: drbd-user@lists.linbit.com, drbd-announce@lists.linbit.com
-Message-ID: <Yylu/bm4YwuvQEu6@rck.sh>
+	Tue, 20 Sep 2022 07:02:21 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="Pku+5Vk4hOyPE+9w"
-Content-Disposition: inline
-Subject: [DRBD-announce] drbd-utils v9.22.0
+From: Rene Peinthor <rene.peinthor@linbit.com>
+Date: Tue, 20 Sep 2022 16:02:00 +0200
+Message-ID: <CAHmn2DOm8VX5apOXh7T9q+Mihckajvmo_v92GTcVcVKvq7ii3A@mail.gmail.com>
+To: drbd-announce@lists.linbit.com, drbd-user <drbd-user@lists.linbit.com>
+Content-Type: multipart/alternative; boundary="000000000000a6fed705e91c46e1"
+Subject: [DRBD-announce] python-linstor/linstor-client 1.15.0 release
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -28,81 +25,76 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
+--000000000000a6fed705e91c46e1
+Content-Type: text/plain; charset="UTF-8"
 
---Pku+5Vk4hOyPE+9w
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Hi,
 
-Dear DRBD users,
+For the linstor-server rc, here are the new python library and linstor
+client:
 
-This is drbd-utils version 9.22.0. There have not been any reported
-issues since RC1, the only change is some changed wording in the
-documentation.
+## linstor-client
+### Added
 
-We deprecated named connections. This was a feature I assume not too
-many users were aware of anyways, but it was possible to name
-connections and if no name was given, the name of the peer was used as
-default. This was for example then presented as "conn-name" in events2.
-We have by now ways too many projects that assume that they can get the
-peer's name from "conn-name" and would break if that is an arbitrary
-name. Quite frankly, some of my tools/projects have that assumption as
-well. If you have a custom name set for a connection it is now ignored,
-an error gets printed, but the parser does not fail hard. In future
-release I might change that to failing hard, so please get rid of named
-connections now!
+* Added autoplace-options to resource-group spawn command
+* Added `--show-props` option to all possible list commands to add custom
+props columns
+* Added commands for the key-value-store API
+* Added SED support in the physical-storage-create command
+* Added EBS support/commands
+* Advise added too many replicas issue and filtering by issue type
 
-The second bigger change is that the rpm part now generates a
-drbd-selinux sub package containing an updated SELinux policy. Depending
-on the host distribution, that package might even become a runtime
-dependency for the drbd-utils sub package. Users/downstream building
-packages should add "checkpolicy", and "selinux-policy-devel" to their
-build systems. The Debian (alike) world is not affected by that change,
-as SELinux isn't that widely used (by default) there.
+### Fixed
 
-TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-utils-9.22.0.tar.gz
-GIT: https://github.com/LINBIT/drbd-utils/commit/409097fe02187f83790b88ac3e0d94f3c167adab
-PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack/
+* Fixed typos in vd help
 
-Regards, rck
+https://pkg.linbit.com//downloads/linstor/linstor-client-1.15.0.tar.gz
 
-Changes since 9.21.0:
+## python-linstor
+### Added
 
- 9.22.0
------------
- * parser,v9: deprecate named connections
- * drbd-selinux: add sub package, minor packaging/spec changes
- * drbdadm: allow files from expanded glob to vanish
+* Added autoplace-options to resource-group spawn method
+* Added SED support for physical-storage create
+* Added EBS support
 
- 9.21.4
------------
- * drbdadm,v9: fix potential segfault in postparse
- * drbdadm,v9: fix sh-ip when set on connection/path
+### Changed
 
- 9.21.3
------------
- * drbdmeta: fix apply-al for bitmap sizes > 4GiB
+* linstor-common: update
+* Compatible to API Version 1.15.0
 
- 9.21.2
------------
- * drbd-service-shim.sh: add secondary --force
+https://pkg.linbit.com//downloads/linstor/python-linstor-1.15.0.tar.gz
 
- 9.21.1
------------
- * ocf: fix for dropped --peer option
+Linstor PPA:
+https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
---Pku+5Vk4hOyPE+9w
-Content-Type: application/pgp-signature; name="signature.asc"
+Best regards,
+Rene
 
------BEGIN PGP SIGNATURE-----
+--000000000000a6fed705e91c46e1
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmMpbvkACgkQRgmezyI6
-myLhqgf/SkqT5teatXDBzRBpU6hZLwvv2ahqjMyJKSv93nwE8vS5Qunu4NmFAkFr
-wQpsuZ/p7SuNoX3Ze5a6lar96Ix5kUs8uSamWvVYfpSW5MnoCmdP9z6HTjks2vGF
-twGIS4OSJgN7I3tc04cH9K6gu60u73RR9OEICbvazNx7Pa0owkQNXQtzIbjEHzQv
-GlXayBxMfv9dYJpGlsqGqHb7HhNeEJXkD+NTX++zTScXZyBEF1jLgXN98DFesiyy
-PG2rvinG3YvPuU+ufzm8rO/Md9ttWCJnWaOWUW122nyalLjFMFZCcsUn6iYpM0u4
-nAcRd+OKyghGwB+XrD4qa+ZwTk9e2w==
-=iFt3
------END PGP SIGNATURE-----
+<div dir=3D"ltr"><div>Hi,</div><div><br></div><div>For the linstor-server r=
+c, here are the new python library and linstor client:</div><div><br></div>=
+<div>## linstor-client</div><div>### Added<br></div><div><br>* Added autopl=
+ace-options to resource-group spawn command<br>* Added `--show-props` optio=
+n to all possible list commands to add custom props columns<br>* Added comm=
+ands for the key-value-store API<br>* Added SED support in the physical-sto=
+rage-create command<br>* Added EBS support/commands<br>* Advise added too m=
+any replicas issue and filtering by issue type<br><br>### Fixed<br><br>* Fi=
+xed typos in vd help<br></div><div><br></div><div><a href=3D"https://pkg.li=
+nbit.com//downloads/linstor/linstor-client-1.15.0.tar.gz">https://pkg.linbi=
+t.com//downloads/linstor/linstor-client-1.15.0.tar.gz</a><br></div><br><div=
+>## python-linstor</div><div>### Added<br><br>* Added autoplace-options to =
+resource-group spawn method<br>* Added SED support for physical-storage cre=
+ate<br>* Added EBS support<br><br>### Changed<br><br>* linstor-common: upda=
+te<br>* Compatible to API Version 1.15.0<br></div><div><br></div><div><a hr=
+ef=3D"https://pkg.linbit.com//downloads/linstor/python-linstor-1.15.0.tar.g=
+z">https://pkg.linbit.com//downloads/linstor/python-linstor-1.15.0.tar.gz</=
+a><br></div><div><br></div><div><div>Linstor PPA:<br></div><div><div><a hre=
+f=3D"https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack" rel=
+=3D"noreferrer" target=3D"_blank">https://launchpad.net/~linbit/+archive/ub=
+untu/linbit-drbd9-stack</a><br></div><div><br></div><div>Best regards,</div=
+><div>Rene</div></div></div></div>
 
---Pku+5Vk4hOyPE+9w--
+--000000000000a6fed705e91c46e1--
