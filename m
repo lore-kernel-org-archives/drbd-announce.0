@@ -1,21 +1,22 @@
-Return-Path: <johannes.thoma@linbit.com>
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com
-	[209.85.221.45])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 4A50C4201D9
+Return-Path: <roland.kammerer@linbit.com>
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com
+	[209.85.128.41])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 55AF64201CB
 	for <drbd-announce@lists.linbit.com>;
-	Fri, 16 Sep 2022 13:57:00 +0200 (CEST)
-Received: by mail-wr1-f45.google.com with SMTP id g3so14751568wrq.13
+	Tue, 20 Sep 2022 09:42:55 +0200 (CEST)
+Received: by mail-wm1-f41.google.com with SMTP id
+	n35-20020a05600c502300b003b4924c6868so422433wmr.1
 	for <drbd-announce@lists.linbit.com>;
-	Fri, 16 Sep 2022 04:57:00 -0700 (PDT)
-Content-Type: multipart/alternative;
-	boundary="------------bhTRkOUl0cKUg0zpcFsFbf3T"
-Message-ID: <9c0370cb-29a6-5c8f-8e94-e11c19aac322@linbit.com>
-Date: Fri, 16 Sep 2022 13:56:58 +0200
+	Tue, 20 Sep 2022 00:42:55 -0700 (PDT)
+Date: Tue, 20 Sep 2022 09:42:53 +0200
+From: Roland Kammerer <roland.kammerer@linbit.com>
+To: drbd-user@lists.linbit.com, drbd-announce@lists.linbit.com
+Message-ID: <Yylu/bm4YwuvQEu6@rck.sh>
 MIME-Version: 1.0
-To: "drbd-user@lists.linbit.com" <drbd-user@lists.linbit.com>,
-	drbd-announce@lists.linbit.com
-From: Johannes Thoma <johannes.thoma@linbit.com>
-Subject: [DRBD-announce] WinDRBD 1.1.0-rc3 released
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="Pku+5Vk4hOyPE+9w"
+Content-Disposition: inline
+Subject: [DRBD-announce] drbd-utils v9.22.0
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -27,103 +28,81 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-This is a multi-part message in MIME format.
---------------bhTRkOUl0cKUg0zpcFsFbf3T
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-Dear DRBD and WinDRBD users,
+--Pku+5Vk4hOyPE+9w
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-This is another release canidate for the 1.1 branch of WinDRBD.
-It mainly contains bugfixes and the installer already knows
-about LINSTOR: it will stop and start again the linstor-satellite
-on upgrade (if it exists).
+Dear DRBD users,
 
-Also we fixed an issue with using existing data. Since this
-requires configuration file changes we will publish a
-tech guide on the LINBIT website soon explaining how
-this can be done. Also c-max-rate setting should
-work now, allowing to sync at slower speed.
+This is drbd-utils version 9.22.0. There have not been any reported
+issues since RC1, the only change is some changed wording in the
+documentation.
 
-This is a release canidate please help by testing it.
+We deprecated named connections. This was a feature I assume not too
+many users were aware of anyways, but it was possible to name
+connections and if no name was given, the name of the peer was used as
+default. This was for example then presented as "conn-name" in events2.
+We have by now ways too many projects that assume that they can get the
+peer's name from "conn-name" and would break if that is an arbitrary
+name. Quite frankly, some of my tools/projects have that assumption as
+well. If you have a custom name set for a connection it is now ignored,
+an error gets printed, but the parser does not fail hard. In future
+release I might change that to failing hard, so please get rid of named
+connections now!
 
-As always, you can download the installer from:
+The second bigger change is that the rpm part now generates a
+drbd-selinux sub package containing an updated SELinux policy. Depending
+on the host distribution, that package might even become a runtime
+dependency for the drbd-utils sub package. Users/downstream building
+packages should add "checkpolicy", and "selinux-policy-devel" to their
+build systems. The Debian (alike) world is not affected by that change,
+as SELinux isn't that widely used (by default) there.
 
-https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/
+TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-utils-9.22.0.tar.gz
+GIT: https://github.com/LINBIT/drbd-utils/commit/409097fe02187f83790b88ac3e0d94f3c167adab
+PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack/
 
- From the WHATSNEW.md file:
+Regards, rck
 
-Fix a DRBD issue that causes a resource to be stucked in Negoiating
-on attach when there were 3 nodes.
+Changes since 9.21.0:
 
-Workaround for a (possible) Windows bug when reusing data of
-NTFS partitions larger than 1.3TB. (You will have to specify
-a drive letter where to mount the WinDRBD device)
+ 9.22.0
+-----------
+ * parser,v9: deprecate named connections
+ * drbd-selinux: add sub package, minor packaging/spec changes
+ * drbdadm: allow files from expanded glob to vanish
 
-Short timeout of drbdadm defaults to 30 seconds for Windows
-systems.
+ 9.21.4
+-----------
+ * drbdadm,v9: fix potential segfault in postparse
+ * drbdadm,v9: fix sh-ip when set on connection/path
 
-Implemented disk statistics thereby fixing the resync rate
-controller (setting c-max-rate had no effect before).
+ 9.21.3
+-----------
+ * drbdmeta: fix apply-al for bitmap sizes > 4GiB
 
-Installer: stop and restart LINSTOR satellite if present
+ 9.21.2
+-----------
+ * drbd-service-shim.sh: add secondary --force
 
-Best regards,
+ 9.21.1
+-----------
+ * ocf: fix for dropped --peer option
 
-- Johannes
---------------bhTRkOUl0cKUg0zpcFsFbf3T
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+--Pku+5Vk4hOyPE+9w
+Content-Type: application/pgp-signature; name="signature.asc"
 
-<html>
-  <head>
+-----BEGIN PGP SIGNATURE-----
 
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    Dear DRBD and WinDRBD users,<br>
-    <br>
-    This is another release canidate for the 1.1 branch of WinDRBD.<br>
-    It mainly contains bugfixes and the installer already knows<br>
-    about LINSTOR: it will stop and start again the linstor-satellite<br>
-    on upgrade (if it exists).<br>
-    <br>
-    Also we fixed an issue with using existing data. Since this<br>
-    requires configuration file changes we will publish a<br>
-    tech guide on the LINBIT website soon explaining how<br>
-    this can be done. Also c-max-rate setting should<br>
-    work now, allowing to sync at slower speed.<br>
-    <br>
-    This is a release canidate please help by testing it.<br>
-    <br>
-    As always, you can download the installer from:<br>
-    <br>
-    <a class="moz-txt-link-freetext"
-href="https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/">https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/</a><br>
-    <br>
-    From the WHATSNEW.md file:<br>
-    <br>
-    <font face="monospace">Fix a DRBD issue that causes a resource to be
-      stucked in Negoiating<br>
-      on attach when there were 3 nodes.<br>
-      <br>
-      Workaround for a (possible) Windows bug when reusing data of<br>
-      NTFS partitions larger than 1.3TB. (You will have to specify<br>
-      a drive letter where to mount the WinDRBD device)<br>
-      <br>
-      Short timeout of drbdadm defaults to 30 seconds for Windows<br>
-      systems.<br>
-      <br>
-      Implemented disk statistics thereby fixing the resync rate<br>
-      controller (setting c-max-rate had no effect before).<br>
-      <br>
-      Installer: stop and restart LINSTOR satellite if present<br>
-    </font><br>
-    Best regards,<br>
-    <br>
-    - Johannes<font face="monospace"><br>
-    </font>
-  </body>
-</html>
+iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmMpbvkACgkQRgmezyI6
+myLhqgf/SkqT5teatXDBzRBpU6hZLwvv2ahqjMyJKSv93nwE8vS5Qunu4NmFAkFr
+wQpsuZ/p7SuNoX3Ze5a6lar96Ix5kUs8uSamWvVYfpSW5MnoCmdP9z6HTjks2vGF
+twGIS4OSJgN7I3tc04cH9K6gu60u73RR9OEICbvazNx7Pa0owkQNXQtzIbjEHzQv
+GlXayBxMfv9dYJpGlsqGqHb7HhNeEJXkD+NTX++zTScXZyBEF1jLgXN98DFesiyy
+PG2rvinG3YvPuU+ufzm8rO/Md9ttWCJnWaOWUW122nyalLjFMFZCcsUn6iYpM0u4
+nAcRd+OKyghGwB+XrD4qa+ZwTk9e2w==
+=iFt3
+-----END PGP SIGNATURE-----
 
---------------bhTRkOUl0cKUg0zpcFsFbf3T--
+--Pku+5Vk4hOyPE+9w--
