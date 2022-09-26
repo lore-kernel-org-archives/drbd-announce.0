@@ -1,19 +1,21 @@
-Return-Path: <rene.peinthor@linbit.com>
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com
-	[209.85.218.46])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 5281A4205C8
+Return-Path: <roland.kammerer@linbit.com>
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com
+	[209.85.221.54])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 4FA98420306
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 20 Sep 2022 16:09:30 +0200 (CEST)
-Received: by mail-ej1-f46.google.com with SMTP id dv25so6366712ejb.12
+	Mon, 26 Sep 2022 13:20:05 +0200 (CEST)
+Received: by mail-wr1-f54.google.com with SMTP id x18so9674867wrm.7
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 20 Sep 2022 07:09:30 -0700 (PDT)
+	Mon, 26 Sep 2022 04:20:05 -0700 (PDT)
+Date: Mon, 26 Sep 2022 13:20:03 +0200
+From: Roland Kammerer <roland.kammerer@linbit.com>
+To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
+Message-ID: <YzGK4xKyRkqvwegp@rck.sh>
 MIME-Version: 1.0
-From: Rene Peinthor <rene.peinthor@linbit.com>
-Date: Tue, 20 Sep 2022 16:09:18 +0200
-Message-ID: <CAHmn2DODAaEZqowPwn+esUVcDUiYh_La_Zi=32q+ftf=+8GQ4g@mail.gmail.com>
-To: drbd-announce@lists.linbit.com, drbd-user <drbd-user@lists.linbit.com>
-Content-Type: multipart/alternative; boundary="00000000000067159e05e91c60f1"
-Subject: [DRBD-announce] linstor-server 1.20.0-rc.1
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="tI1HokQczjcYdXF1"
+Content-Disposition: inline
+Subject: [DRBD-announce] drbd-reactor v0.9.0-rc.3
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -25,80 +27,45 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
---00000000000067159e05e91c60f1
-Content-Type: text/plain; charset="UTF-8"
 
-Hi!
-
-Here is the first release candidate of the upcoming 1.20.0 release, which
-adds support
-for Amazon EBS backed storage and several fixes to backup-shipping.
-
-More details can be found in the changelog below:
-
-## linstor-server
-### Added
-
-* Added basic support for [SED](
-https://trustedcomputinggroup.org/resource/self-encrypting-drives-sed-overview/
-)
-* Added support for Amazon EBS storage
-* Added ignore reason for storage layers. Used to skip processing resource
-which would fail anyway.
-
-### Changed
-
-* Improved DB-update-logging
-* ZFS: only scan datasets used by Linstor
-* Improved auto-diskful mechanic, also removing exceeding replicas
-
-### Fixed
-
-* Fixed backup with mixing internal and external metadata
-* Fixed storage-pool size-check on snapshot restore
-* Fixed several issues with backup-shipping (NPE, failed shippings, ...)
-* Fixed auto snapshot not working after controller restart
-* Fixed "LinStor" spelling errors
-* Fixed PropsCon concurrentModExc
-* Fixed very long k8s CRD DB backend Controller loading time
-
-https://pkg.linbit.com//downloads/linstor/linstor-server-1.20.0-rc.1.tar.gz
-
-
-Linstor PPA:
-https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
-
-Cheers,
-Rene
-
---00000000000067159e05e91c60f1
-Content-Type: text/html; charset="UTF-8"
+--tI1HokQczjcYdXF1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr"><div>Hi!</div><div><br></div><div>Here is the first releas=
-e candidate of the upcoming 1.20.0 release, which adds support</div><div>fo=
-r Amazon EBS backed storage and several fixes to backup-shipping.</div><div=
-><br></div><div>More details can be found in the changelog below:</div><div=
-><br></div><div>## linstor-server</div><div>### Added<br><br>* Added basic =
-support for [SED](<a href=3D"https://trustedcomputinggroup.org/resource/sel=
-f-encrypting-drives-sed-overview/">https://trustedcomputinggroup.org/resour=
-ce/self-encrypting-drives-sed-overview/</a>)<br>* Added support for Amazon =
-EBS storage<br>* Added ignore reason for storage layers. Used to skip proce=
-ssing resource which would fail anyway.<br><br>### Changed<br><br>* Improve=
-d DB-update-logging<br>* ZFS: only scan datasets used by Linstor<br>* Impro=
-ved auto-diskful mechanic, also removing exceeding replicas<br><br>### Fixe=
-d<br><br>* Fixed backup with mixing internal and external metadata<br>* Fix=
-ed storage-pool size-check on snapshot restore<br>* Fixed several issues wi=
-th backup-shipping (NPE, failed shippings, ...)<br>* Fixed auto snapshot no=
-t working after controller restart<br>* Fixed &quot;LinStor&quot; spelling =
-errors<br>* Fixed PropsCon concurrentModExc<br>* Fixed very long k8s CRD DB=
- backend Controller loading time<br></div><div><br></div><div><a href=3D"ht=
-tps://pkg.linbit.com//downloads/linstor/linstor-server-1.20.0-rc.1.tar.gz">=
-https://pkg.linbit.com//downloads/linstor/linstor-server-1.20.0-rc.1.tar.gz=
-</a><br></div><div><br></div><div><br></div><div><div><div><div>Linstor PPA=
-:<br><a href=3D"https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-=
-stack" rel=3D"noreferrer" target=3D"_blank">https://launchpad.net/~linbit/+=
-archive/ubuntu/linbit-drbd9-stack</a></div></div><div><br></div><div>Cheers=
-,<br></div><div>Rene</div></div></div></div>
+Dear DRBD users,
 
---00000000000067159e05e91c60f1--
+this is RC3 of the upcoming drbd-reactor version 0.9.0. There was only
+one commit in the promoter plugin that now does not run "systemctl
+freeze" with all services as arguments in one call, but calls freeze for
+every service individually. That allows is to filter service we don't
+want freeze actions like in mount units and we can write better
+warn/error messages if we split that up into several calls.
+
+No big change, and only visible if one enables freezing, but sill a
+change I want people give the chance to test before the final version.
+
+Regards, rck
+
+GIT: https://github.com/LINBIT/drbd-reactor/commit/183ba9ff477536e7e3acdcec=
+41d97a9fe4153cad=20
+TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-reactor-0.9.0-rc.3.t=
+ar.gz
+PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+
+--tI1HokQczjcYdXF1
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmMxiuAACgkQRgmezyI6
+myLHOwf+O3Zgf3sfy+Fu8a3nvYlr4cTz+vn/5fG4yVkmcOOWWOjNvDSZug2pZbOk
+hsz+gBeIDrYkrXCawAYqRJcH9rMQayMwuzElhbNsbFp8BlJE6hGWcXgemu7L98Gk
+9yivjKprC0SpvZe0tWgILlWMaqWT3S6D8XAGxgjmVV32H9XiyEOTdVsGeGcIBv2p
+fS6o4vyin6OlLL1RjhGK4Ni/Aj3wAHPAIKtRhCtfdIG5Y+KAyDRCw5KC6Rh728wC
+97PKsWWTIhxhkXYMtN+nPbzPLaiK24eNKrIj3JU6sQOWVNv4CrR3vwk9bs3gsw6a
+uAiUjgdt5EOyihSG/1rH/qBSuB2luQ==
+=T/uM
+-----END PGP SIGNATURE-----
+
+--tI1HokQczjcYdXF1--
