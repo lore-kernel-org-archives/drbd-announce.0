@@ -1,21 +1,21 @@
-Return-Path: <philipp.reisner@linbit.com>
-Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com
-	[209.85.128.176])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 47D5C420170
+Return-Path: <johannes.thoma@linbit.com>
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com
+	[209.85.218.41])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 655074201BD
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 28 Sep 2022 10:58:29 +0200 (CEST)
-Received: by mail-yw1-f176.google.com with SMTP id
-	00721157ae682-3529c491327so28763327b3.13
+	Wed, 28 Sep 2022 17:02:32 +0200 (CEST)
+Received: by mail-ej1-f41.google.com with SMTP id sb3so27697065ejb.9
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 28 Sep 2022 01:58:29 -0700 (PDT)
+	Wed, 28 Sep 2022 08:02:32 -0700 (PDT)
+Content-Type: multipart/alternative;
+	boundary="------------70Fw1nlIcUI4X06xEH0TX0Ec"
+Message-ID: <24984f62-8f89-82d1-b6b0-7a056a9d4d9d@linbit.com>
+Date: Wed, 28 Sep 2022 17:02:28 +0200
 MIME-Version: 1.0
-From: Philipp Reisner <philipp.reisner@linbit.com>
-Date: Wed, 28 Sep 2022 10:58:17 +0200
-Message-ID: <CADGDV=UEDGfFFS2yEx9=7c14n7QWzAcE_HnOkuof6mWw-RcZmg@mail.gmail.com>
-To: drbd-announce@lists.linbit.com
-Content-Type: multipart/alternative; boundary="000000000000dbbaa005e9b8f6c8"
-Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-9.2.0-rc.8
+To: "drbd-user@lists.linbit.com" <drbd-user@lists.linbit.com>,
+	drbd-announce@lists.linbit.com
+From: Johannes Thoma <johannes.thoma@linbit.com>
+Subject: [DRBD-announce] WinDRBD 1.1.0-rc4 released
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -27,78 +27,95 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
---000000000000dbbaa005e9b8f6c8
-Content-Type: text/plain; charset="UTF-8"
+This is a multi-part message in MIME format.
+--------------70Fw1nlIcUI4X06xEH0TX0Ec
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hello,
+Dear DRBD and WinDRBD users,
 
-Finally, the RDMA transport got the long necessary attention. Now it tests
-successfully on RHEL9 clones. And, BTW, we enabled also all of the regular
-tests, that test network interruption via iptables also for the RDMA
-transport. (iptables can only fetch RoCE packets with rdma_rxe, the
-software-
-only RoCE driver)
+This is another release canidate for the WinDRBD 1.1 branch. It
+fixes a rare BSOD where there is still I/O in flight when drbdadm
+secondary / drbdadm down is run. This bug was discovered by
+a user from India and shows how important your feedback about
+WinDRBD usage is.
 
-This RC comes a bit delayed since I wanted to include the interesting
-fixes/improvements to the quorum code. (These changes originate from the
-drbd-9.1 branch.) They fix quorum at the moment a fresh node joins a quorate
-but incomplete partition.
+Other than that, starting with this release running drbdsetup
+(including drbdsetup events2) processes are terminated by
+the installer (this required a driver change, so you won't see
+that feature until you install the next release). This makes
+install failures less common.
 
-Unless someone finds a show-stopper within a week, this is the last release
-candidate before the 9.2.0 final release.
+As far as I am concerned this is the last release canidate
+before the final 1.1.0 release. In tradition to Phil's request
+to the community for DRBD ("This is a release canidate,
+please help testing it") I would kindly ask to test this
+version and report errors if you find some. If there is
+no show-stopper within a week found I will tag and
+release 1.1.0 next week.
 
-A short reminder, the other advantages of drbd-9.2 over 9.1 are:
- * lower latency for mirrored write requests
- * lower contention between application IO and resync IO
- * much better resync performance on thinly provisioned backends
- * support for network namespaces
- * an RDMA transport
+As always, you can download the installer from:
 
-Please help test this pre-release.
+https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#drbd-windows
 
-9.2.0-rc.8 (api:genl2/proto:110-121/transport:18)
---------
- * fix the RDMA transport to work on more recent kernels (like RHEL9)
- * improve transmit timeout handling of the RDMA transport
- * register DRBD has pernet device for namespace management
- * merged fixes from the drbd-9.1 branch, including
-  - request handling (9.1.11)
-  - fix quorum when fresh nodes join a quorate but incomplete partition
-  - minor state handling fixes/improvements
+ From the WHATSNEW.md file:
 
-https://pkg.linbit.com//downloads/drbd/9/drbd-9.2.0-rc.8.tar.gz
-https://github.com/LINBIT/drbd/commit/55eca3ae75cd91b83c0eefc205c9560de2408c49
+Quit drbdsetup events2 processes on upgrading.
 
---000000000000dbbaa005e9b8f6c8
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Fixed a BSOD on I/O while removing the Windows Disk device.
+(there was an issue with remove locks).
 
-<div dir=3D"ltr">Hello,<br><br>Finally, the RDMA transport got the long nec=
-essary attention. Now it tests<br>successfully on RHEL9 clones. And, BTW, w=
-e enabled also all of the regular<br>tests, that test network interruption =
-via iptables also for the RDMA<br>transport. (iptables can only fetch RoCE =
-packets with rdma_rxe, the software-<div>only RoCE driver)<br><br>This RC c=
-omes a bit delayed since I wanted to include the interesting<br>fixes/impro=
-vements to the quorum code. (These changes originate from the<br>drbd-9.1 b=
-ranch.) They fix quorum at the moment a fresh node joins a quorate<br>but i=
-ncomplete partition.<br><br>Unless someone finds a show-stopper within a we=
-ek, this is the last release<br>candidate before the 9.2.0 final release.<b=
-r><br>A short reminder, the other advantages of drbd-9.2 over 9.1 are:<br>=
-=C2=A0* lower latency for mirrored write requests<br>=C2=A0* lower contenti=
-on between application IO and resync IO<br>=C2=A0* much better resync perfo=
-rmance on thinly provisioned backends<br>=C2=A0* support for network namesp=
-aces<br>=C2=A0* an RDMA transport<br><br>Please help test this pre-release.=
-<br><br>9.2.0-rc.8 (api:genl2/proto:110-121/transport:18)<br>--------<br>=
-=C2=A0* fix the RDMA transport to work on more recent kernels (like RHEL9)<=
-br>=C2=A0* improve transmit timeout handling of the RDMA transport<br>=C2=
-=A0* register DRBD has pernet device for namespace management<br>=C2=A0* me=
-rged fixes from the drbd-9.1 branch, including<br>=C2=A0 - request handling=
- (9.1.11)<br>=C2=A0 - fix quorum when fresh nodes join a quorate but incomp=
-lete partition<br>=C2=A0 - minor state handling fixes/improvements<br><br><=
-div><a href=3D"https://pkg.linbit.com//downloads/drbd/9/drbd-9.2.0-rc.8.tar=
-.gz">https://pkg.linbit.com//downloads/drbd/9/drbd-9.2.0-rc.8.tar.gz</a><br=
-><a href=3D"https://github.com/LINBIT/drbd/commit/55eca3ae75cd91b83c0eefc20=
-5c9560de2408c49">https://github.com/LINBIT/drbd/commit/55eca3ae75cd91b83c0e=
-efc205c9560de2408c49</a><br></div></div></div>
+Best regards,
 
---000000000000dbbaa005e9b8f6c8--
+- Johannes
+--------------70Fw1nlIcUI4X06xEH0TX0Ec
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<html>
+  <head>
+
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    Dear DRBD and WinDRBD users,<br>
+    <br>
+    This is another release canidate for the WinDRBD 1.1 branch. It<br>
+    fixes a rare BSOD where there is still I/O in flight when drbdadm<br>
+    secondary / drbdadm down is run. This bug was discovered by<br>
+    a user from India and shows how important your feedback about<br>
+    WinDRBD usage is.<br>
+    <br>
+    Other than that, starting with this release running drbdsetup<br>
+    (including drbdsetup events2) processes are terminated by<br>
+    the installer (this required a driver change, so you won't see<br>
+    that feature until you install the next release). This makes<br>
+    install failures less common.<br>
+    <br>
+    As far as I am concerned this is the last release canidate<br>
+    before the final 1.1.0 release. In tradition to Phil's request<br>
+    to the community for DRBD ("This is a release canidate,<br>
+    please help testing it") I would kindly ask to test this<br>
+    version and report errors if you find some. If there is<br>
+    no show-stopper within a week found I will tag and<br>
+    release 1.1.0 next week.<br>
+    <br>
+    As always, you can download the installer from:<br>
+    <br>
+<a class="moz-txt-link-freetext" href="https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#drbd-windows">https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#drbd-windows</a><br>
+    <br>
+    From the WHATSNEW.md file:<br>
+    <font face="monospace"><br>
+      Quit drbdsetup events2 processes on upgrading.<br>
+      <br>
+      Fixed a BSOD on I/O while removing the Windows Disk device.<br>
+      (there was an issue with remove locks).<br>
+    </font><br>
+    Best regards,<br>
+    <br>
+    - Johannes<font face="monospace"><br>
+    </font>
+  </body>
+</html>
+
+--------------70Fw1nlIcUI4X06xEH0TX0Ec--
