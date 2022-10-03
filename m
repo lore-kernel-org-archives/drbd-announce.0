@@ -1,21 +1,21 @@
-Return-Path: <johannes.thoma@linbit.com>
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com
-	[209.85.218.41])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 655074201BD
+Return-Path: <roland.kammerer@linbit.com>
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com
+	[209.85.128.47])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id D583D420668
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 28 Sep 2022 17:02:32 +0200 (CEST)
-Received: by mail-ej1-f41.google.com with SMTP id sb3so27697065ejb.9
+	Mon,  3 Oct 2022 13:52:49 +0200 (CEST)
+Received: by mail-wm1-f47.google.com with SMTP id e18so6840626wmq.3
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 28 Sep 2022 08:02:32 -0700 (PDT)
-Content-Type: multipart/alternative;
-	boundary="------------70Fw1nlIcUI4X06xEH0TX0Ec"
-Message-ID: <24984f62-8f89-82d1-b6b0-7a056a9d4d9d@linbit.com>
-Date: Wed, 28 Sep 2022 17:02:28 +0200
+	Mon, 03 Oct 2022 04:52:49 -0700 (PDT)
+Date: Mon, 3 Oct 2022 13:52:47 +0200
+From: Roland Kammerer <roland.kammerer@linbit.com>
+To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
+Message-ID: <YzrND9hxJRTg5VAa@rck.sh>
 MIME-Version: 1.0
-To: "drbd-user@lists.linbit.com" <drbd-user@lists.linbit.com>,
-	drbd-announce@lists.linbit.com
-From: Johannes Thoma <johannes.thoma@linbit.com>
-Subject: [DRBD-announce] WinDRBD 1.1.0-rc4 released
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="E/cg+kjCE/cfxvCO"
+Content-Disposition: inline
+Subject: [DRBD-announce] drbd-reactor v0.9.0
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -27,95 +27,101 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-This is a multi-part message in MIME format.
---------------70Fw1nlIcUI4X06xEH0TX0Ec
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-Dear DRBD and WinDRBD users,
+--E/cg+kjCE/cfxvCO
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-This is another release canidate for the WinDRBD 1.1 branch. It
-fixes a rare BSOD where there is still I/O in flight when drbdadm
-secondary / drbdadm down is run. This bug was discovered by
-a user from India and shows how important your feedback about
-WinDRBD usage is.
+Dear DRBD users,
 
-Other than that, starting with this release running drbdsetup
-(including drbdsetup events2) processes are terminated by
-the installer (this required a driver change, so you won't see
-that feature until you install the next release). This makes
-install failures less common.
+this is drbd-reactor version 0.9.0. No changes since the last RC, the
+original announcement for convenience:
 
-As far as I am concerned this is the last release canidate
-before the final 1.1.0 release. In tradition to Phil's request
-to the community for DRBD ("This is a release canidate,
-please help testing it") I would kindly ask to test this
-version and report errors if you find some. If there is
-no show-stopper within a week found I will tag and
-release 1.1.0 next week.
+The main new feature is that the promoter plugin can now freeze the
+services of the currently active node when it loses quorum and then thaw
+them when the node gains quorum again. This might be an advantage when
+starting services takes a long time (e.g., huge databases). Freezing and
+thawing is instant and uses the according cgroup features via systemctl
+freeze/thaw.
 
-As always, you can download the installer from:
+Copying from the documentation [1]:
+The default behavior when a DRBD Primary looses quorum is to immediately
+stop the generated target unit and hope that other nodes still having
+quorum will successfully start the service. This works well if services
+can be failed over/started on another node in reasonable time.
+Unfortunately there are services that take a very long time to start,
+for example huge data bases.
 
-https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#drbd-windows
+When a DRBD Primary looses its quorum we basically have two possibilities:
 
- From the WHATSNEW.md file:
+- the rest of the nodes, or at least parts of it still have quorum: Then
+  these have to start the service, they are the only ones with quorum,
+  but still we could keep the old Primary in a frozen state. And then,
+  when the nodes with quorum come into contact with the old Primary,
+  then it should stop the service and its storage should become in sync
+  with the other nodes.
+- the rest of the nodes are not able to form a partition with quorum. In
+  such a scenario there are no alternatives anyways, we would need to
+  keep the Primary frozen. But if the nodes eventually join the old
+  Primary again, and quorum would be restored, we could just
+  unfreeze/thaw the old Primary (which is also the new Primary).
 
-Quit drbdsetup events2 processes on upgrading.
+There are several requirements for this to work properly:
 
-Fixed a BSOD on I/O while removing the Windows Disk device.
-(there was an issue with remove locks).
+- A system with unified cgroups. If the file
+  /sys/fs/cgroup/cgroup.controllers exists you should be fine. That
+  requires a relatively "new" kernel. Note that "even" RHEL8 for example
+  needs the addition of systemd.unified_cgroup_hierarchy on the kernel
+  command line.
+- a service that can tolerate to be frozen
+- DRBD option on-suspended-primary-outdated set to force-secondary
+- DRBD option on-quorum-loss set to suspend-io
+- DRBD net option rr-conflict set to retry-connect
 
-Best regards,
+If these requirements are fulfilled, then one can set the promoter
+option "on-quorum-loss" to "freeze".
 
-- Johannes
---------------70Fw1nlIcUI4X06xEH0TX0Ec
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+It is a feature that might be handy in specific situations, the more
+classic behavior of stopping the services might be the better default
+for most users.
 
-<html>
-  <head>
+Also, and that is important in general, check the output of "systemctl
+status drbd-reactor.service", it runs all kinds of DRBD option checks on
+your DRBD resources and tells you which options are missing/wrong.
+Follow these suggestions!
 
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    Dear DRBD and WinDRBD users,<br>
-    <br>
-    This is another release canidate for the WinDRBD 1.1 branch. It<br>
-    fixes a rare BSOD where there is still I/O in flight when drbdadm<br>
-    secondary / drbdadm down is run. This bug was discovered by<br>
-    a user from India and shows how important your feedback about<br>
-    WinDRBD usage is.<br>
-    <br>
-    Other than that, starting with this release running drbdsetup<br>
-    (including drbdsetup events2) processes are terminated by<br>
-    the installer (this required a driver change, so you won't see<br>
-    that feature until you install the next release). This makes<br>
-    install failures less common.<br>
-    <br>
-    As far as I am concerned this is the last release canidate<br>
-    before the final 1.1.0 release. In tradition to Phil's request<br>
-    to the community for DRBD ("This is a release canidate,<br>
-    please help testing it") I would kindly ask to test this<br>
-    version and report errors if you find some. If there is<br>
-    no show-stopper within a week found I will tag and<br>
-    release 1.1.0 next week.<br>
-    <br>
-    As always, you can download the installer from:<br>
-    <br>
-<a class="moz-txt-link-freetext" href="https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#drbd-windows">https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#drbd-windows</a><br>
-    <br>
-    From the WHATSNEW.md file:<br>
-    <font face="monospace"><br>
-      Quit drbdsetup events2 processes on upgrading.<br>
-      <br>
-      Fixed a BSOD on I/O while removing the Windows Disk device.<br>
-      (there was an issue with remove locks).<br>
-    </font><br>
-    Best regards,<br>
-    <br>
-    - Johannes<font face="monospace"><br>
-    </font>
-  </body>
-</html>
+Regards, rck
 
---------------70Fw1nlIcUI4X06xEH0TX0Ec--
+GIT: https://github.com/LINBIT/drbd-reactor/commit/b9639b431f6d6e0fcc53a2a17d85717acb29d43e
+TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-reactor-0.9.0.tar.gz
+PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+
+Changelog:
+[ Roland Kammerer ]
+* doc: make man pages o+r
+* docs,promoter: hint to use provided packages
+* promoter: warn if mount unit is topmost unit
+* promoter: implement on-quorum-loss policy
+* promoter: relax ocf parser
+* ctl: add resource filter
+* ctl: fix status without res filter
+* promoter: call systemctl freeze/thaw for every unit
+
+[1] https://github.com/LINBIT/drbd-reactor/blob/master/doc/promoter.md#freezing-resources
+
+--E/cg+kjCE/cfxvCO
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmM6zQwACgkQRgmezyI6
+myLE0wgAnLswiZphckrxCh1qAIlELXamJGMFOZPEUK/8uySJ4s+E14IExEf8DQnp
+Z2cmrCSXMOZnYLMtjm/S8cryjQTl1nYOH7w9xG1EC4+bvJz7mEz2HxaMnBY5UWJA
+lv+92pOC/RGDEeAkI/4buZ8/N8r/ACv71/1CmxWcIGhkx1GsMpeVcXRzWbGKrO/j
+G97umZizODDgUTj1FjM2aXKLLcpbnTBVPJEDsvmx5iRjJoza9wSL8v1mRiFZoKL6
+tQn63vgBDWTl10Oqjk3Ltcqo1XU4OfeoGGK9TILnjBByJNjaLgWYMFm6+KniDICP
+Vq9lYOkSFYEUiEQevNkKCMG/D6K73w==
+=sT2P
+-----END PGP SIGNATURE-----
+
+--E/cg+kjCE/cfxvCO--
