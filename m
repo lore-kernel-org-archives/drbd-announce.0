@@ -1,21 +1,21 @@
-Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com
-	[209.85.221.41])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 16E8E4201D4
+Return-Path: <philipp.reisner@linbit.com>
+Received: from mail-oa1-f52.google.com (mail-oa1-f52.google.com
+	[209.85.160.52])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id D93704204B5
 	for <drbd-announce@lists.linbit.com>;
-	Tue,  4 Oct 2022 14:36:37 +0200 (CEST)
-Received: by mail-wr1-f41.google.com with SMTP id f11so18459774wrm.6
+	Mon, 10 Oct 2022 15:51:09 +0200 (CEST)
+Received: by mail-oa1-f52.google.com with SMTP id
+	586e51a60fabf-134072c15c1so9294550fac.2
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 04 Oct 2022 05:36:37 -0700 (PDT)
-Date: Tue, 4 Oct 2022 14:36:35 +0200
-From: Roland Kammerer <roland.kammerer@linbit.com>
-To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Message-ID: <Yzwo0wzytJHDIuDU@rck.sh>
+	Mon, 10 Oct 2022 06:51:09 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ZC3DZa/4IhApFczK"
-Content-Disposition: inline
-Subject: [DRBD-announce] linstor-proxmox v6.1.0-rc.1
+From: Philipp Reisner <philipp.reisner@linbit.com>
+Date: Mon, 10 Oct 2022 15:50:56 +0200
+Message-ID: <CADGDV=Vhux4VE2oRDMbwrMf-gmxFCWQMPjTfcF1=ydOeXvTW1w@mail.gmail.com>
+To: drbd-announce@lists.linbit.com
+Content-Type: multipart/alternative; boundary="0000000000009080ca05eaae736d"
+Cc: drbd-user@lists.linbit.com
+Subject: [DRBD-announce] drbd-9.2.0
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -27,44 +27,87 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
+--0000000000009080ca05eaae736d
+Content-Type: text/plain; charset="UTF-8"
 
---ZC3DZa/4IhApFczK
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Hello,
 
-Dear DRBD on PVE users,
+I am proud and glad to announce drbd-9.2.0. It is a new feature release,
+bringing:
 
-this is RC1 of the upcoming version 6.1.0.
+1) Lower latency for mirrored write requests
+Every mirrored write request gets completed one scheduler context switch
+earlier. This is a result of better integration with the networking stack.
 
-The main feature is that LINSTOR resource groups can now have multiple
-storage pools, which then allows to implement [1].
+2) Lower contention between application IO and resync IO
+While a resync runs, DRBD used to "lock out" all application IO in areas of
+128MB while the resync was active within such 128MByte resync-extents. We
+got rid of the resync-extents, the IO lock-out is not as small as the actual
+requests are.
 
-Please test. Note that if you test by overwriting files, you need to
-overwrite the following files and restart the pvedaemon
-- LINSTORPlugin.pm
-- LINBIT/PluginHelper.pm
-- LINBIT/Linstor.pm
+3) Much better resync performance on thinly provisioned backends
+We coalesce trim/discard operations originating from a resync operation on
+thinly provisioned backend devices. As trim/discard can be costly (compared
+to regular writes), this can speed up resync one to two orders of magnitude.
 
-Regards, rck
+4) Support for network namespaces
+By binding DRBD's connections to the namespace they get created from, we
+enable the Project Piraeus (LINSTOR/DRBD to Kubernetes integration) to put
+the replication network traffic into the overlay/container network, instead
+the host network.
 
-GIT: https://github.com/LINBIT/linstor-proxmox/commit/fb52a446c5a1df28d9c5047380b22b44183a5dc2
-TGZ: https://pkg.linbit.com//downloads/connectors/linstor-proxmox-6.1.0-rc.1.tar.gz
+5) A native RDMA/verbs/Infiniband/RoCE transport
+The transport_rdma module allows you to use Infiniband/RoCE instead of
+TCP-IP over Ethernet for DRBD. It brings zero-copy receive, lower CPU usage,
+and lower latency.
 
-[1] https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-a_storage_pool_per_backend_device
+Apart from these features, it is compatible with existing drbd-9.0 or
+drbd-9.1 in configuration, meta-data, and network protocol.
 
---ZC3DZa/4IhApFczK
-Content-Type: application/pgp-signature; name="signature.asc"
+Attention might be necessary regarding resource naming. drbd-9.2 accepts
+only [0-9A-Za-z.+_-]* as resource names. If you depend on the old behaviour,
+it can be brought back with `echo 0 >
+/sys/module/drbd/parameters/strict_names`.
 
------BEGIN PGP SIGNATURE-----
+We will continue to maintain drbd-9.1 until the end of September 2023.
 
-iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmM8KM8ACgkQRgmezyI6
-myJ+nAgAkz4B5g2fTds5CfgRzzz42Enb94OidGLEqfM0lz5EBhL2CXhkqmsyJlrg
-+t32Nz0bQLkyQEBxc7dV/rL3t591Mr1mLQocYxkyni7P5enhKSa8rGkMYdLdyFgi
-P46XV39M3GjJqVe4qaPwEWMrzA3mocp48A6mwMzhvr5p5v1JATHcy+u1kfqhGN49
-YbmtxwaRcePTNKALURcCpkC3cAiHlswYMiyDMmxbq2gUuCJb++G//qnhX4mWYCLG
-cXWIUXRbbdoc/qh+4WEtDVGB5HkH7pHZQTJjhyEo/z9ahCz9ExcOZVtFh1YnaGtS
-1dLzn34/PHaaj6mEb3/d45/o4QXZzQ==
-=5weZ
------END PGP SIGNATURE-----
+https://pkg.linbit.com//downloads/drbd/9/drbd-9.2.0.tar.gz
+https://github.com/LINBIT/drbd/commit/71e60591f3d7ea05034bccef8ae362c17e6aa4d1
 
---ZC3DZa/4IhApFczK--
+--0000000000009080ca05eaae736d
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">Hello,<br><br>I am proud and glad to announce drbd-9.2.0. =
+It is a new feature release,<br>bringing:<br><br>1) Lower latency for mirro=
+red write requests<br>Every mirrored write request gets completed one sched=
+uler context switch<br>earlier. This is a result of better integration with=
+ the networking stack.<br><br>2) Lower contention between application IO an=
+d resync IO<br>While a resync runs, DRBD used to &quot;lock out&quot; all a=
+pplication IO in areas of<br>128MB while the resync was active within such =
+128MByte resync-extents. We<br>got rid of the resync-extents, the IO lock-o=
+ut is not as small as the actual<br>requests are.<br><br>3) Much better res=
+ync performance on thinly provisioned backends<br>We coalesce trim/discard =
+operations originating from a resync operation on<br>thinly provisioned bac=
+kend devices. As trim/discard can be costly (compared<br>to regular writes)=
+, this can speed up resync one to two orders of magnitude.<br><br>4) Suppor=
+t for network namespaces<br>By binding DRBD&#39;s connections to the namesp=
+ace they get created from, we<br>enable the Project Piraeus (LINSTOR/DRBD t=
+o Kubernetes integration) to put<br>the replication network traffic into th=
+e=C2=A0overlay/container network, instead<div>the host network.<br><br>5) A=
+ native RDMA/verbs/Infiniband/RoCE transport<br>The transport_rdma module a=
+llows you to use Infiniband/RoCE instead of<br>TCP-IP over Ethernet for DRB=
+D. It brings zero-copy receive, lower CPU usage,<br>and lower latency.<br><=
+br>Apart from these features, it is compatible with existing drbd-9.0 or<br=
+>drbd-9.1 in configuration, meta-data, and network protocol.<br><br>Attenti=
+on might be necessary regarding resource naming. drbd-9.2 accepts<br>only [=
+0-9A-Za-z.+_-]* as resource names. If you depend on the old behaviour,<br>i=
+t can be brought back with `echo 0 &gt; /sys/module/drbd/parameters/strict_=
+names`.<br><br>We will continue to maintain drbd-9.1 until the end of Septe=
+mber 2023.<br><br><a href=3D"https://pkg.linbit.com//downloads/drbd/9/drbd-=
+9.2.0.tar.gz">https://pkg.linbit.com//downloads/drbd/9/drbd-9.2.0.tar.gz</a=
+><br><a href=3D"https://github.com/LINBIT/drbd/commit/71e60591f3d7ea05034bc=
+cef8ae362c17e6aa4d1">https://github.com/LINBIT/drbd/commit/71e60591f3d7ea05=
+034bccef8ae362c17e6aa4d1</a><br><div><br></div></div></div>
+
+--0000000000009080ca05eaae736d--
