@@ -1,21 +1,21 @@
 Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com
-	[209.85.221.48])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 2B0E44202F5
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com
+	[209.85.221.50])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 50F7B420962
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 11 Oct 2022 12:57:52 +0200 (CEST)
-Received: by mail-wr1-f48.google.com with SMTP id bu30so20987073wrb.8
+	Tue, 11 Oct 2022 13:23:55 +0200 (CEST)
+Received: by mail-wr1-f50.google.com with SMTP id n12so21075812wrp.10
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 11 Oct 2022 03:57:52 -0700 (PDT)
-Date: Tue, 11 Oct 2022 12:57:50 +0200
+	Tue, 11 Oct 2022 04:23:55 -0700 (PDT)
+Date: Tue, 11 Oct 2022 13:23:53 +0200
 From: Roland Kammerer <roland.kammerer@linbit.com>
 To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Message-ID: <Y0VMLoUdzBd/khHC@rck.sh>
+Message-ID: <Y0VSSbsHsOFdJOeH@rck.sh>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="TNfCFebVW51fRgAj"
+	protocol="application/pgp-signature"; boundary="8WkzjessCh+zT4UF"
 Content-Disposition: inline
-Subject: [DRBD-announce] PVE public repo URL change
+Subject: [DRBD-announce] linstor-proxmox v6.1.0
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -28,41 +28,37 @@ List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
 
---TNfCFebVW51fRgAj
+--8WkzjessCh+zT4UF
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-Dear PVE users,
+Dear DRBD on PVE users,
 
-we are currently cleaning up our public repository structures and we
-will deprecate the one used so far for the public PVE repos. If you use
-proxmox-7 for example, please update your linbit.list
+this is version 6.1.0 of the LINSTOR Proxmox plugin.
 
-=66rom
-deb http://packages.linbit.com/proxmox/ proxmox-7 drbd-9
-
-to
-deb http://packages.linbit.com/public/ proxmox-7 drbd-9
-
-We will turn off the old repo in a few weeks, so please change your URLs
-now.
+The main feature is that LINSTOR resource groups can now have multiple
+storage pools, which then allows to implement [1].
 
 Regards, rck
 
---TNfCFebVW51fRgAj
+GIT: https://github.com/LINBIT/linstor-proxmox/commit/897f8668a71d4705ffab8a931d34bff111d6d715
+TGZ: https://pkg.linbit.com//downloads/connectors/linstor-proxmox-6.1.0.tar.gz
+
+[1] https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-a_storage_pool_per_backend_device
+
+--8WkzjessCh+zT4UF
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmNFTCoACgkQRgmezyI6
-myK1BwgAmLLkmPnAaNKq2WG+zwZhOqJK1joOdCzbbwld/vVhfpFnfTJJZjBkWb9F
-sh/2t5OGidyAU5svi2FHvR53aSNyW57EZBUkKjxDPW3hwd43muiWd+6rk8NV0uAa
-mVVrq6Pn8MFVd8IawI1GkZbL6QdDj1hwtwy1m9WJMVzx7nBlPLPxMpdZ6ERSUlNa
-+rF1HO7zPI7xghWINU0fUV2FrmhRE/8iv3uxE7gx1nhx1ykcnjQO23FNTd5ztDfx
-TKkebsoiNpqpqeEHxuSqOpJmhi9nAEAZGXHgpbf6IkdZ3ln8j32Aj/xqE+/npO8i
-WSiPW7FDzHyIZg1fGVRFU4eNbFDRkQ==
-=szvU
+iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmNFUkEACgkQRgmezyI6
+myI5fAf9HP2TaN07ApLuWjkUi6EkzwMnIlAZshoIYvXOBAKthfEkUJ+ileV2POth
+7iYCui8cD6I81EJhlxaDgvj7zMjc/yLx3FwN/FsCk9N0tQ5RHYwT984VOTLIR8pv
+f5Ij5Dpmys/XODSUJrbaCIIPDd9jCuzPc9/eyLLNCqeJ1JwlXnTUCs3RXPV4RfwS
+7aPD4klPNSS7WLR19lOxCfGgJlEEIcHjiIbTsXODD9IyhovZj0lAbuQHTb3DDjlg
+JX13uppZSEa6ovfdOgHaaPTsOwYy3GGn6k5RDU/JOv/hgnZpKbpltsw+XgO3Fery
+Ngn8BaW6Yr7Lq1mJJBM/6KI0fB//RQ==
+=Tvnt
 -----END PGP SIGNATURE-----
 
---TNfCFebVW51fRgAj--
+--8WkzjessCh+zT4UF--
