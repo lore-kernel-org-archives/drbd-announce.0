@@ -1,19 +1,22 @@
-Return-Path: <rene.peinthor@linbit.com>
-Received: from mail-yb1-f180.google.com (mail-yb1-f180.google.com
-	[209.85.219.180])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 64CA1420963
+Return-Path: <johannes.thoma@linbit.com>
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com
+	[209.85.128.51])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id B077A421742
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 18 Oct 2022 15:04:47 +0200 (CEST)
-Received: by mail-yb1-f180.google.com with SMTP id 126so16885016ybw.3
+	Fri, 21 Oct 2022 12:19:51 +0200 (CEST)
+Received: by mail-wm1-f51.google.com with SMTP id
+	186-20020a1c02c3000000b003c6c154d528so4650696wmc.4
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 18 Oct 2022 06:04:47 -0700 (PDT)
+	Fri, 21 Oct 2022 03:19:51 -0700 (PDT)
+Message-ID: <37bd4408-3c3f-2f9c-2ac6-d5b56af3a665@linbit.com>
+Date: Fri, 21 Oct 2022 12:19:48 +0200
 MIME-Version: 1.0
-From: Rene Peinthor <rene.peinthor@linbit.com>
-Date: Tue, 18 Oct 2022 15:04:35 +0200
-Message-ID: <CAHmn2DNSgRs0EChj5G54fOQt5xOzCf1vrcxPzndw8xpN9Xhikw@mail.gmail.com>
-To: drbd-announce@lists.linbit.com, drbd-user <drbd-user@lists.linbit.com>
-Content-Type: multipart/alternative; boundary="00000000000085c55b05eb4ebc8e"
-Subject: [DRBD-announce] linstor-server 1.20.0 final release
+To: "drbd-user@lists.linbit.com" <drbd-user@lists.linbit.com>,
+	drbd-announce@lists.linbit.com
+From: Johannes Thoma <johannes.thoma@linbit.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: [DRBD-announce] WinDRBD 1.1.0-rc5
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -25,96 +28,19 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
---00000000000085c55b05eb4ebc8e
-Content-Type: text/plain; charset="UTF-8"
+Dear DRBD and WinDRBD users,
 
-Hi!
+This is another release canidate which fixes two minor issues: from the WHATSNEW.md:
 
-Here is the final release, which adds support for Amazon EBS backed storage
-and several fixes to backup-shipping.
+Fixed drbdadm adjust: Don't always detach / attach
 
-Also additional notes for the final release:
+Fixed drbdsetup hang: there is a timeout in stable_state_change now
 
-Changed property Cluster/LocalId:
-We had to re-randomize this property (on controller level) for k8s/CRD
-setups. This does NOT affect SQL or ETCD setups.
-The Cluster/LocalId is currently only used for linstor-to-linstor backup
-shipping. If you have already setup linstor
-remotes, you have to update the specified ClusterIds using:
-  linstor remote modify linstor <remote_name> --cluster-id
-<new_cluster_id_of_remote_cluster>
-Please make sure to grab the ClusterId from the remote, not the local
-cluster.
-If you forget to update the ClusterId you will get an "Unknown cluster"
-error on the next "backup ship" attempt.
+Again, please help testing this release canidate, you can download it from:
 
-Deprecation of the OpenFlex layer:
-With this release we are deprecating the OpenFlex layer. This has no effect
-on the NVMe layer. Complete removal of the OpenFlex layer will be done
-through one of the releases in the summer 2023.
+https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/
 
-Here are the changes since rc1:
+Best regards,
 
-## linstor-server
-### Added
-- Added SnapshotVolumeNode as part of SnapshotNode to include a snapshot
-state
-- Status of EBS volumes and snapshots are now queried periodically
-- Added property DrbdOptions/ForceInitialSync that forces thin resources to
-do an initial full sync
+- Johannes
 
-### Fixed
-- Snapshots and SnapshotVolumes now properly delete their properties +
-cleanup migration existing DB entries
-- Randomized Cluster/LocalId for CRD setups since all installations had the
-same ID
-- Backup restore now creates new DRBD metadata and forces the initial sync
-to be a full sync
-
-https://pkg.linbit.com//downloads/linstor/linstor-server-1.20.0.tar.gz
-
-
-Linstor PPA:
-https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
-
-Cheers,
-Rene
-
---00000000000085c55b05eb4ebc8e
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div>Hi!</div><div><br></div><div>Here is the final releas=
-e, which adds support for Amazon EBS backed storage and several fixes to ba=
-ckup-shipping.</div><div><br></div><div>Also additional notes for the final=
- release:</div><div><br></div><div>Changed property Cluster/LocalId:<br>We =
-had to re-randomize this property (on controller level) for k8s/CRD setups.=
- This does NOT affect SQL or ETCD setups.<br>The Cluster/LocalId is current=
-ly only used for linstor-to-linstor backup shipping. If you have already se=
-tup linstor<br>remotes, you have to update the specified ClusterIds using:<=
-br>=C2=A0 linstor remote modify linstor &lt;remote_name&gt; --cluster-id &l=
-t;new_cluster_id_of_remote_cluster&gt;<br>Please make sure to grab the Clus=
-terId from the remote, not the local cluster.<br>If you forget to update th=
-e ClusterId you will get an &quot;Unknown cluster&quot; error on the next &=
-quot;backup ship&quot; attempt.</div><div><br>Deprecation of the OpenFlex l=
-ayer:<br>With this release we are deprecating the OpenFlex layer. This has =
-no effect on the NVMe layer. Complete removal of the OpenFlex layer will be=
- done through one of the releases in the summer 2023.<br></div><div><br></d=
-iv><div>Here are the changes since rc1:</div><div><br></div><div>## linstor=
--server</div><div>### Added<br>- Added SnapshotVolumeNode as part of Snapsh=
-otNode to include a snapshot state<br>- Status of EBS volumes and snapshots=
- are now queried periodically<br>- Added property DrbdOptions/ForceInitialS=
-ync that forces thin resources to do an initial full sync<br><br>### Fixed<=
-br>- Snapshots and SnapshotVolumes now properly delete their properties + c=
-leanup migration existing DB entries<br>- Randomized Cluster/LocalId for CR=
-D setups since all installations had the same ID<br>- Backup restore now cr=
-eates new DRBD metadata and forces the initial sync to be a full sync<br></=
-div><div><br></div><div><a href=3D"https://pkg.linbit.com//downloads/linsto=
-r/linstor-server-1.20.0.tar.gz">https://pkg.linbit.com//downloads/linstor/l=
-instor-server-1.20.0.tar.gz</a><br></div><div><br></div><div><br></div><div=
-><div><div><div>Linstor PPA:<br><a href=3D"https://launchpad.net/~linbit/+a=
-rchive/ubuntu/linbit-drbd9-stack" rel=3D"noreferrer" target=3D"_blank">http=
-s://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack</a></div></div=
-><div><br></div><div>Cheers,<br></div><div>Rene</div></div></div></div>
-
---00000000000085c55b05eb4ebc8e--
