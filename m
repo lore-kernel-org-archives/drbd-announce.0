@@ -1,19 +1,21 @@
-Return-Path: <moritz.wanzenboeck@linbit.com>
-Received: from mail-vk1-f182.google.com (mail-vk1-f182.google.com
-	[209.85.221.182])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 642C6420321
+Return-Path: <johannes.thoma@linbit.com>
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com
+	[209.85.218.42])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 9C8D44203C5
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 24 Oct 2022 11:29:18 +0200 (CEST)
-Received: by mail-vk1-f182.google.com with SMTP id e16so1934102vkm.9
+	Tue, 25 Oct 2022 15:57:13 +0200 (CEST)
+Received: by mail-ej1-f42.google.com with SMTP id k2so12743190ejr.2
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 24 Oct 2022 02:29:17 -0700 (PDT)
+	Tue, 25 Oct 2022 06:57:13 -0700 (PDT)
+Message-ID: <568b4d56-83b9-a57e-0ebb-d617bcba6c8c@linbit.com>
+Date: Tue, 25 Oct 2022 15:57:08 +0200
 MIME-Version: 1.0
-From: =?UTF-8?Q?Moritz_Wanzenb=C3=B6ck?= <moritz.wanzenboeck@linbit.com>
-Date: Mon, 24 Oct 2022 11:29:06 +0200
-Message-ID: <CAKnz9xLfcq08RS60homzMqWRr3LhHDerYVeJDA-Wx5_9XzSHBw@mail.gmail.com>
-To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Content-Type: text/plain; charset="UTF-8"
-Subject: [DRBD-announce] LINSTOR Operator v1.10.0
+To: "drbd-user@lists.linbit.com" <drbd-user@lists.linbit.com>,
+	drbd-announce@lists.linbit.com
+From: Johannes Thoma <johannes.thoma@linbit.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: [DRBD-announce] WinDRBD 1.1.0 released
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -25,71 +27,32 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Dear LINBIT SDS on Kubernetes users,
+Dear DRBD and WinDRBD user community,
 
-We've recently released version 1.10.0 of our Operator.
+We proudly announce the first version of the new 1.1 stable branch,
+WinDRBD 1.1.0. The main new feature is support for SecureBoot systems,
+by doing so we had to fix many smaller issues discovered by the
+Microsoft Driver Verifier, various static code analyzer tools and
+the Hardware Lab Kit tests. Since we are working behind the scenes
+on LINSTOR For Windows we also fixed many issues that we found
+while working with LINSTOR (which makes it far more easy to create
+WinDRBD resources, therefore uncovering more issues than manual
+tests).
 
-This release contains small improvements to the Operator, a new option
-to share the DRBD configuration directory between containers and
-hosts, and the usual updates to the container images.
+As always an installer can be downloaded from the LINBIT website:
 
-The updated LINSTOR 1.20.0 release contains some improvements to the
-k8s database backend. These improvements drastically improve
-performance when the cluster contains a moderate to high number of
-resources.
+https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/
 
-In related news, if you have been following the DRBD 9.2.0 release,
-you will have noticed mention of DRBD now supporting running in the
-container network. This requires some deeper changes to the way we
-deploy LINBIT SDS on Kubernetes. To get a preview of how these changes
-will look like, you can check out the work-in-progress "v2" Piraeus
-Operator. [1]
+Unless you are targeting SecureBoot systems there is no urgent need
+to upgrade from 1.0.X but you should consider this in the near future.
+Just like DRBD a WinDRBD cluster can be upgraded without service
+interruption. Also note that a reboot should not be neccessary.
 
-This new Operator version will be developed in parallel with the
-existing "v1.X" versions, until feature parity is reached and we have
-an acceptable migration story. Until then, feel free to leave feedback
-or feature requests on github. [2]
-
-The new chart is available from https://charts.linstor.io. New images
-are available from drbd.io. The usual upgrade procedure applies:
-
-$ helm repo update
-$ helm upgrade linstor-op linstor/linstor -f orig.yaml
-
-An updated User's Guide with detailed instructions is available. For
-more information, please take a look at the upgrade guide. [3]
-
-Source code is, as always, available upstream. [4]
+We would love to hear your feedback via the mailing list or directly
+at the LINBIT site.
 
 Best regards,
-Moritz
 
-[1]: https://github.com/piraeusdatastore/piraeus-operator/tree/v2
-[2]: https://github.com/piraeusdatastore/piraeus-operator/issues/334
-[3]: https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-upgrade
-[4]: https://github.com/piraeusdatastore/piraeus-operator
+- Johannes Thoma
 
-Full Changes
-------------
-### Added
 
-- Can set the variable `mountDrbdResourceDirectoriesFromHost` in the
-Helm chart to create hostPath Volumes for DRBD and LINSTOR
-configuration directories for the satellite set.
-
-### Changed
-
-- Change default bind address for satellite monitoring to use IPv6
-anylocal `[::]`. This will still work on IPv4 only systems with IPv6
-disabled via sysctl.
-- Default images:
-  * LINSTOR 1.20.0
-  * DRBD 9.1.11
-  * DRBD Reactor 0.9.0
-  * external CSI images upgraded to latest versions
-
-### Fixed
-
-- Comparing IP addresses for registered components uses golang
-built-in net.IP type.
-- Restoring satellites after eviction only happens if the node is ready.
