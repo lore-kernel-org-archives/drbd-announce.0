@@ -1,21 +1,21 @@
 Return-Path: <johannes.thoma@linbit.com>
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com
-	[209.85.218.42])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 9C8D44203C5
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com
+	[209.85.218.49])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id B31F7420671
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 25 Oct 2022 15:57:13 +0200 (CEST)
-Received: by mail-ej1-f42.google.com with SMTP id k2so12743190ejr.2
+	Fri, 28 Oct 2022 16:30:21 +0200 (CEST)
+Received: by mail-ej1-f49.google.com with SMTP id q9so13454896ejd.0
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 25 Oct 2022 06:57:13 -0700 (PDT)
-Message-ID: <568b4d56-83b9-a57e-0ebb-d617bcba6c8c@linbit.com>
-Date: Tue, 25 Oct 2022 15:57:08 +0200
+	Fri, 28 Oct 2022 07:30:21 -0700 (PDT)
+Message-ID: <ecd31373-b902-c821-8884-02abf5a3085a@linbit.com>
+Date: Fri, 28 Oct 2022 16:30:16 +0200
 MIME-Version: 1.0
 To: "drbd-user@lists.linbit.com" <drbd-user@lists.linbit.com>,
 	drbd-announce@lists.linbit.com
 From: Johannes Thoma <johannes.thoma@linbit.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: [DRBD-announce] WinDRBD 1.1.0 released
+Content-Transfer-Encoding: 8bit
+Subject: [DRBD-announce] WinDRBD 1.1.0 installer issue
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -27,32 +27,32 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Dear DRBD and WinDRBD user community,
+Dear WinDRBD users,
 
-We proudly announce the first version of the new 1.1 stable branch,
-WinDRBD 1.1.0. The main new feature is support for SecureBoot systems,
-by doing so we had to fix many smaller issues discovered by the
-Microsoft Driver Verifier, various static code analyzer tools and
-the Hardware Lab Kit tests. Since we are working behind the scenes
-on LINSTOR For Windows we also fixed many issues that we found
-while working with LINSTOR (which makes it far more easy to create
-WinDRBD resources, therefore uncovering more issues than manual
-tests).
+We became aware of an issue in the installer install-windrbd-1.1.0.exe,
+published on Oct 25. It won't install unless you have testsigning enabled
+(which you should not enable).
 
-As always an installer can be downloaded from the LINBIT website:
+We updated the installer on the WebSite (it should show October 28 as date)
+as a hotfix and will publish a 1.1.1 version soon. The reason for the hotfix
+is that even we just change the version number we have to run all HLK tests
+once more which takes a whole day.
 
-https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/
+If you installed the 1.1.0 from Oct 25 already you have to:
 
-Unless you are targeting SecureBoot systems there is no urgent need
-to upgrade from 1.0.X but you should consider this in the near future.
-Just like DRBD a WinDRBD cluster can be upgraded without service
-interruption. Also note that a reboot should not be neccessary.
+.) uninstall WinDRBD
+.) delete the WinDRBD Virtual Bus Device manually (and check delete driver)
+    from Control Panel / Hardware / Device Manager.
 
-We would love to hear your feedback via the mailing list or directly
-at the LINBIT site.
+Alternatively you wait until Monday when we will release 1.1.1.
+
+I would like to apologize for the inconvenience I tested the installer but with
+machines that we use for development with test signing on. Therefore we
+didn't see the issue before.
+
+If you have any questions or need help to upgrade, please let me know via
+EMail.
 
 Best regards,
 
-- Johannes Thoma
-
-
+- Johannes
