@@ -1,21 +1,21 @@
 Return-Path: <johannes.thoma@linbit.com>
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com
-	[209.85.218.43])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 0D0B4421742
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com
+	[209.85.218.53])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 1A6034201E3
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 31 Oct 2022 15:54:41 +0100 (CET)
-Received: by mail-ej1-f43.google.com with SMTP id y14so30043756ejd.9
+	Fri,  4 Nov 2022 14:16:23 +0100 (CET)
+Received: by mail-ej1-f53.google.com with SMTP id kt23so13158579ejc.7
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 31 Oct 2022 07:54:41 -0700 (PDT)
-Message-ID: <1e97e18a-4834-c22f-cb96-fff00151314e@linbit.com>
-Date: Mon, 31 Oct 2022 15:54:37 +0100
+	Fri, 04 Nov 2022 06:16:23 -0700 (PDT)
+Message-ID: <ba2d535c-b07a-0240-f459-2bbd354dba5c@linbit.com>
+Date: Fri, 4 Nov 2022 14:16:19 +0100
 MIME-Version: 1.0
 To: "drbd-user@lists.linbit.com" <drbd-user@lists.linbit.com>,
 	drbd-announce@lists.linbit.com
 From: Johannes Thoma <johannes.thoma@linbit.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Subject: [DRBD-announce] WinDRBD 1.1.1 released
+Subject: [DRBD-announce] WinDRBD 1.1.2 released
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -29,20 +29,22 @@ List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Dear WinDRBD users,
 
-We just released WinDRBD 1.1.1 - it is the same source as 1.1.0 but the
-version number has changed. It is released as a convenience for those
-who installed WinDRBD 1.1.0 before Oct 28 (which had a signature bug).
-Upgrading from those 1.1.0 versions to 1.1.1 should work without having
-to manually uninstall WinDRBD and manually remove the Virtual Bus Device.
+This is a point release that fixes a blue screen of death (BSOD) that
+may happen when resources that were Primary are brought down and
+immediately brought up again. It is recommended for users who are
+already on the 1.1.X branch to upgrade to this 1.1.2 version. You can
+do so by first upgrading the Secondary (by running the installer) then
+perform a switchover (primary becomes secondary, secondary becomes
+primary, you also need to migrate your services such as databases and
+so on) and then finally upgrade the former primary. If you wish you can
+switch back now, but this is not required.
 
-This release can be downloaded at:
+As always the installer can be downloaded from:
 
-https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#drbd-windows
-
-And again, no need to upgrade unless you installed 1.1.0 before Oct 28 (the
-current 1.1.0 on the web site does not have the signature bug and should install
-normally).
+https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver
 
 Best regards,
 
 - Johannes
+
+
