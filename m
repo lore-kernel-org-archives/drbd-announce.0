@@ -1,21 +1,22 @@
-Return-Path: <philipp.reisner@linbit.com>
-Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com
-	[209.85.128.177])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 073BE4204B5
+Return-Path: <roland.kammerer@linbit.com>
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com
+	[209.85.128.45])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 271DC420964
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 14 Nov 2022 15:30:07 +0100 (CET)
-Received: by mail-yw1-f177.google.com with SMTP id
-	00721157ae682-3704852322fso107588057b3.8
+	Mon, 21 Nov 2022 13:23:12 +0100 (CET)
+Received: by mail-wm1-f45.google.com with SMTP id
+	t25-20020a1c7719000000b003cfa34ea516so10266956wmi.1
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 14 Nov 2022 06:30:07 -0800 (PST)
+	Mon, 21 Nov 2022 04:23:12 -0800 (PST)
+Date: Mon, 21 Nov 2022 13:23:10 +0100
+From: Roland Kammerer <roland.kammerer@linbit.com>
+To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
+Message-ID: <Y3ttroeWuESrqNUO@rck.sh>
 MIME-Version: 1.0
-From: Philipp Reisner <philipp.reisner@linbit.com>
-Date: Mon, 14 Nov 2022 15:29:56 +0100
-Message-ID: <CADGDV=WHxhP0WHBjiP34qBJbJtFVJWgH6TnHv9rLqYrY74zN=Q@mail.gmail.com>
-To: drbd-announce@lists.linbit.com
-Content-Type: text/plain; charset="UTF-8"
-Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-9.1.12 & drbd-9.2.1
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="6osD6E/7Khhy4DZ0"
+Content-Disposition: inline
+Subject: [DRBD-announce] drbd-reactor v0.10.0
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -27,64 +28,78 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Hello,
 
-During the last week no showstopper came up. Here are the final releases.
+--6osD6E/7Khhy4DZ0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-The most outstanding improvement is supporting thinly provisioned backing
-devices with discard granularities larger than 128MiB. Here I mean with
-supporting, that during a resync we make sure not to cause unnecessary
-allocations in the backing block device, and merging the discard requests
-for good resync performance.
-Previously DRBD was only dealing with discard granularities of up to 1MiB.
+Dear DRBD users,
 
-The LVM tools create big chunksizes in thinpools for large pools. The
-chunksize is then what determines the discard granularity. ZFS on the other
-hand always stays with 8k, and it consumes too much space for its metadata
-on large pools. The middle ground would be optimal. We will write an article
-on these chunksize considerations. Also mentioning how to set these settings
-with LVM-thin and ZFS.
+this is version 0.10.0 of drbd-reactor. The main changes should be under
+the hood and not really noticeable by users.
 
-On top of that, we have a bunch of fixes and lots of progress with upstream
-kernel compatibility.
+Because the Python toml parser library every distribution ships is
+broken and this is a Rust project anyways, I rewrote drbd-reactorctl in
+Rust. This should contain all the functionality you know and fixes some
+bugs on the way like actually never unmasking masked services on
+"drbd-reactorctl evict" and some minor issues like that.
 
-9.2.1 (api:genl2/proto:110-121/transport:18)
---------
-* fix spurious PingAck timeout, a regression of ack-processing in bottom
-  half (introduced with 9.2.0)
-* support merging of discards during resync even if the discard granularity
-  of the backing device is larger than 128MiB
-* merged changes from the drbd-9.1 branch, including
- - fix a race that could result in connection attempts getting aborted
-   with the message "sock_recvmsg returned -11"
- - rate limit messages in case the peer can not write the backing storage
-   and it does not finish the necessary state transitions
- - reduced the receive timeout during connecting to the intended 5 seconds
-   (ten times ping-ack timeout)
- - losing the connection at a specific point in time during establishing
-   a connection could cause a transition to StandAlone; fixed that, so
-   that it keeps trying to connect
- - fix a race that could lead to a fence-peer handler being called
-   unexpectedly when the fencing policy is changed at the moment before
-   promoting
+A user visible change is the output of "drbd-reactorctl status" for
+promoter plugins. So far we just called "systemctl list-dependencies"
+for the generated systemd target, which printed the service tree in
+"random" (alphabetical?) order. While that has no consequences, it
+confused users as one would expect the order to correspond to the
+start=3D[] list configured for the plugin. Printing that tree ourselves
+gave us the opportunity to also annotate the output. This now contains
+information about the systemd/cgroup freezer state of a service.
 
-9.1.12 (api:genl2/proto:110-121/transport:17)
---------
-* fix a race that could result in connection attempts getting aborted
-  with the message "sock_recvmsg returned -11"
-* rate limit messages in case the peer can not write the backing storage
-  and it does not finish the necessary state transitions
-* reduced the receive timeout during connecting to the intended 5 seconds
-  (ten times ping-ack timeout)
-* losing the connection at a specific point in time during establishing
-  a connection could cause a transition to StandAlone; fixed that, so
-  that it keeps trying to connect
-* fix a race that could lead to a fence-peer handler being called
-  unexpectedly when the fencing policy is changed at the moment before
-  promoting
+Regards, rck
 
-https://pkg.linbit.com//downloads/drbd/9/drbd-9.2.1.tar.gz
-https://pkg.linbit.com//downloads/drbd/9/drbd-9.1.12.tar.gz
+GIT:
+https://github.com/LINBIT/drbd-reactor/commit/7932d466fb6e504a035d496158b92=
+c6b361c1fce
+TGZ: https://pkg.linbit.com/downloads/drbd/utils/drbd-reactor-0.10.0.tar.gz
+PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
-https://github.com/LINBIT/drbd/commit/86ec2326fef3aede9f4d46f52bfd35aac4d5eb7e
-https://github.com/LINBIT/drbd/commit/bfc1691453a36de688e013239ce5c586263933fa
+Changelog:
+[ Roland Kammerer ]
+* promoter: check on-no-data-accessible
+* doc: fix quorum settings
+* ctl: fix enable help text
+* completion: trigger make tabcompletion
+* ctl: rewrite in Rust
+* ctl: improve status for promoter
+* prepare v0.10.0-rc.1
+* ctl: use libc signal defs
+* ctl,prometheus: fix template
+* clt,prometheus: try ipv4 in case of anylocal
+* rm .flake8
+* clt,evict: only print name if promoter
+
+[ Moritz "WanzenBug" Wanzenb=F6ck ]
+* prometheus: use IPv6 anylocal address by default
+
+[ Lars Ellenberg ]
+* spelling fix for losing quorum
+* add systemd dependencies on dbus and polkit
+
+[ Amir ]
+* Update README.md
+
+--6osD6E/7Khhy4DZ0
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmN7basACgkQRgmezyI6
+myIdDgf/Su0QulVbI8I5ahz7tDbDNJJrsRwBa0BMa5d9Ktlvz3k+sGWsDRHyuFG7
+Zm4eApiLhp0X2Hva5TtkxExbxhScoWSQaB+TCRS0LYW1/k8R5twMeFN+/IgApdKT
+ypXFXTcIRSdmdh0OnU6H6AE0iZMKs6AfQALJCxyQ6euhjDn7DSIIttZpdEwR0YxF
+2rXmALFWwAOmEZqYLPLONEBZkhr9ZJRd0rw4Dw0DRbmd6jc/5wVADLp2AtNPHAWP
+UbY43nvrKnSMElZZCACqAggGvurEXfjnfJjR24Uu/loD17qLhJXbYM+7LwAFWMZl
+lQqDah4SIbH+ZQ2QzYntR+0mLovQIw==
+=HLlk
+-----END PGP SIGNATURE-----
+
+--6osD6E/7Khhy4DZ0--
