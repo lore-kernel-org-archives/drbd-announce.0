@@ -1,21 +1,21 @@
-Return-Path: <christoph.boehmwalder@linbit.com>
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com
-	[209.85.208.47])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id D7AF14203D5
+Return-Path: <roland.kammerer@linbit.com>
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com
+	[209.85.221.52])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id A25EB4252BE
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 21 Nov 2022 13:41:21 +0100 (CET)
-Received: by mail-ed1-f47.google.com with SMTP id b8so5258651edf.11
+	Wed, 23 Nov 2022 13:20:23 +0100 (CET)
+Received: by mail-wr1-f52.google.com with SMTP id n3so12556948wrp.5
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 21 Nov 2022 04:41:21 -0800 (PST)
-Message-ID: <ebc71913-a99b-5b54-9ebd-5c37f74f2dea@linbit.com>
-Date: Mon, 21 Nov 2022 13:41:20 +0100
+	Wed, 23 Nov 2022 04:20:23 -0800 (PST)
+Date: Wed, 23 Nov 2022 13:20:21 +0100
+From: Roland Kammerer <roland.kammerer@linbit.com>
+To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
+Message-ID: <Y34QBb93c8L0C3Dj@rck.sh>
 MIME-Version: 1.0
-Content-Language: en-US
-To: drbd-user@lists.linbit.com, drbd-announce@lists.linbit.com
-From: =?UTF-8?Q?Christoph_B=c3=b6hmwalder?= <christoph.boehmwalder@linbit.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [DRBD-announce] linstor-gateway v1.0.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="TIs/n7zjcLWwXtgR"
+Content-Disposition: inline
+Subject: [DRBD-announce] drbd-reactor v0.10.1
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -27,24 +27,42 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Hello,
 
-a new version of LINSTOR Gateway, v1.0.0, has just been released.
+--TIs/n7zjcLWwXtgR
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-https://github.com/LINBIT/linstor-gateway/releases/tag/v1.0.0
+Dear DRBD users,
 
-As can be read in the rc1 announcement[0], probably the most noteworthy
-feature is the `upgrade` command, which can be used to migrate existing
-targets to new versions of LINSTOR Gateway.
+this is version 0.10.1 of drbd-reactor. There was a minor bug in
+"drbd-reactorctl status" that triggered an error when executed on
+"older" distributions that don't support cgroup freezing/have a too old
+systemd to report "systemctl show --property=FreezerState" (e.g., Ubuntu
+Focal).
 
-As always, we would appreciate your help in testing this tool and
-submitting bugs for it on this mailing list or via GitHub.
+Regards, rck
 
-Thanks!
+GIT: https://github.com/LINBIT/drbd-reactor/commit/c448e06fbaddf1a6af1c54d8e75adf777b5e24a8
+TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-reactor-0.10.1.tar.gz
+PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
-[0] https://lists.linbit.com/pipermail/drbd-user/2022-November/026331.html
+Changelog:
+* ctl,status: fix freezer state on old systemd
+* clt: fix typo in systemd states
 
--- 
-Christoph Böhmwalder
-LINBIT | Keeping the Digital World Running
-DRBD HA —  Disaster Recovery — Software defined Storage
+--TIs/n7zjcLWwXtgR
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmN+EAIACgkQRgmezyI6
+myK+4gf/ZVgdR06Uo1GYjdEM5p4ZHsqJv6AZd9rs7cNT/KkwBBX70QHymfjWdFT/
+RofEIcTB/tsYXtcsNUNKQ0AaCkIZln+mnV+upV2ZyC78JJaOj+yh7+a5JoMdLgxU
+iHr0iLhWwVItSIyGz1amaoVVJ1i2X9weh06jyLKKSa71Mv0mXOkPDMDmry2Oo+Ji
+5ZXFRT3S3nIKE2jbtCjbTBhxcTWs4C6Co/YskMgufG6Z0g/feJFSeIsiocVmUyUR
+CjtZ1xV/dXj+NU2G3rMuJIHvZo/6fTirttWG929tWyCOjxrZBDzixvGRcnd76G0l
+Rdsl1V/F5fftUvgASIMZOeUsTJkAZQ==
+=6eTV
+-----END PGP SIGNATURE-----
+
+--TIs/n7zjcLWwXtgR--
