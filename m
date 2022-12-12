@@ -1,21 +1,21 @@
 Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com
-	[209.85.221.52])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id A25EB4252BE
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com
+	[209.85.221.42])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 6A9044202FA
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 23 Nov 2022 13:20:23 +0100 (CET)
-Received: by mail-wr1-f52.google.com with SMTP id n3so12556948wrp.5
+	Mon, 12 Dec 2022 16:23:24 +0100 (CET)
+Received: by mail-wr1-f42.google.com with SMTP id co23so12461330wrb.4
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 23 Nov 2022 04:20:23 -0800 (PST)
-Date: Wed, 23 Nov 2022 13:20:21 +0100
+	Mon, 12 Dec 2022 07:23:24 -0800 (PST)
+Date: Mon, 12 Dec 2022 16:23:22 +0100
 From: Roland Kammerer <roland.kammerer@linbit.com>
 To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Message-ID: <Y34QBb93c8L0C3Dj@rck.sh>
+Message-ID: <Y5dHapLmpYyYKK4a@rck.sh>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="TIs/n7zjcLWwXtgR"
+	protocol="application/pgp-signature"; boundary="BE8ImdHPmIqiIQbC"
 Content-Disposition: inline
-Subject: [DRBD-announce] drbd-reactor v0.10.1
+Subject: [DRBD-announce] drbd-reactor v0.10.2
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -28,41 +28,61 @@ List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
 
---TIs/n7zjcLWwXtgR
-Content-Type: text/plain; charset=us-ascii
+--BE8ImdHPmIqiIQbC
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
 Dear DRBD users,
 
-this is version 0.10.1 of drbd-reactor. There was a minor bug in
-"drbd-reactorctl status" that triggered an error when executed on
-"older" distributions that don't support cgroup freezing/have a too old
-systemd to report "systemctl show --property=FreezerState" (e.g., Ubuntu
-Focal).
+this is drbd-reactor v0.10.2. This fixes logging errors if said errors
+happen very early in the startup of the daemon which have been skipped
+as of now. The second fix is that we only run DRBD kernel module and
+drbd-utils version checks if we really need them. For example our k8s
+containers use drbd-reactor::prometheus to export DRBD metrics. Here we
+don't actually need very recent DRBD kernel versions with the latest
+features. On the other hand we want and need these features for
+drbd-reactor::promoter. Now we check if there are any promoter plugins
+configured and only run the DRBD checks if that is the case. If the
+requirements are not fulfilled on startup the daemon fails to start. If
+later a plugin is added and the check fails this snipped is skipped.
+
+This version also brings a small feature: "drbd-reactorctl edit" now
+works like you might know it from "kubectl edit". If there are any
+syntax errors the editor will respawn and show what was wrong in the
+header section of the temporary config file.
 
 Regards, rck
 
-GIT: https://github.com/LINBIT/drbd-reactor/commit/c448e06fbaddf1a6af1c54d8e75adf777b5e24a8
-TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-reactor-0.10.1.tar.gz
+GIT: https://github.com/LINBIT/drbd-reactor/commit/920b01e79b63b746a02c9828=
+b55767a680ffc1b5
+TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-reactor-0.10.2.tar.gz
 PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
 Changelog:
-* ctl,status: fix freezer state on old systemd
-* clt: fix typo in systemd states
+[ Moritz "WanzenBug" Wanzenb=F6ck ]
+* ci: test compatibility with different rust version
+* daemon: ensure logging is available early
+* events: do not panic on missing drbdsetup
 
---TIs/n7zjcLWwXtgR
+[ Roland Kammerer ]
+* fix rest of unknow -> unknown typos
+* ctl,edit: add k8s style editor reopen
+* core: drbd checks only if we have promoters
+
+--BE8ImdHPmIqiIQbC
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmN+EAIACgkQRgmezyI6
-myK+4gf/ZVgdR06Uo1GYjdEM5p4ZHsqJv6AZd9rs7cNT/KkwBBX70QHymfjWdFT/
-RofEIcTB/tsYXtcsNUNKQ0AaCkIZln+mnV+upV2ZyC78JJaOj+yh7+a5JoMdLgxU
-iHr0iLhWwVItSIyGz1amaoVVJ1i2X9weh06jyLKKSa71Mv0mXOkPDMDmry2Oo+Ji
-5ZXFRT3S3nIKE2jbtCjbTBhxcTWs4C6Co/YskMgufG6Z0g/feJFSeIsiocVmUyUR
-CjtZ1xV/dXj+NU2G3rMuJIHvZo/6fTirttWG929tWyCOjxrZBDzixvGRcnd76G0l
-Rdsl1V/F5fftUvgASIMZOeUsTJkAZQ==
-=6eTV
+iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmOXR2UACgkQRgmezyI6
+myJvXgf9H1wFIq2XmNR9Uj2yuaJ/P3OXOuSUIMRylz51WJDiwHEsSSlSlViBDd39
+Wx4P1xlLvGT/IBTMLFEh0pfJoTgjGCzXgkXttbHTqY4nG6bpRg3TpA6qKZoLHJe5
+oF0/jRpGukM+bbkXEcjeii+giyMhX38mXdg5XRjUEYhaVKZJbKfBZm1npmQi+AAz
+R93NORT0805bTTwQuiybdSjMRbhQzoGnsv6AgAvFIO32P6IiXS2xuTwnI/1OBra2
+L9tHSRLd8W0ZMe4rMj486aKjCMbdWYvKNurjJ2RjGWgXetXqilpgmWkdUODYuByJ
+yPAovYewGMcg1O86nOmrVCr7laBfXQ==
+=rt9L
 -----END PGP SIGNATURE-----
 
---TIs/n7zjcLWwXtgR--
+--BE8ImdHPmIqiIQbC--
