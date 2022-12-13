@@ -1,21 +1,20 @@
-Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com
-	[209.85.221.42])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 6A9044202FA
+Return-Path: <rene.peinthor@linbit.com>
+Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com
+	[209.85.128.175])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 0BC744210DE
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 12 Dec 2022 16:23:24 +0100 (CET)
-Received: by mail-wr1-f42.google.com with SMTP id co23so12461330wrb.4
+	Tue, 13 Dec 2022 15:41:07 +0100 (CET)
+Received: by mail-yw1-f175.google.com with SMTP id
+	00721157ae682-3f15a6f72d0so194500057b3.1
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 12 Dec 2022 07:23:24 -0800 (PST)
-Date: Mon, 12 Dec 2022 16:23:22 +0100
-From: Roland Kammerer <roland.kammerer@linbit.com>
-To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Message-ID: <Y5dHapLmpYyYKK4a@rck.sh>
+	Tue, 13 Dec 2022 06:41:07 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="BE8ImdHPmIqiIQbC"
-Content-Disposition: inline
-Subject: [DRBD-announce] drbd-reactor v0.10.2
+From: Rene Peinthor <rene.peinthor@linbit.com>
+Date: Tue, 13 Dec 2022 15:40:55 +0100
+Message-ID: <CAHmn2DM+UGHSrEYGab51-WurDiz6zYiWNO1mpGXrQyJOGHQSvw@mail.gmail.com>
+To: drbd-announce@lists.linbit.com, drbd-user <drbd-user@lists.linbit.com>
+Content-Type: multipart/alternative; boundary="0000000000002aa08d05efb69cff"
+Subject: [DRBD-announce] linstor-server 1.20.1 release
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -27,62 +26,71 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
+--0000000000002aa08d05efb69cff
+Content-Type: text/plain; charset="UTF-8"
 
---BE8ImdHPmIqiIQbC
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+Hi!
+
+A new patch release for linstor-server that only has one tiny addition, and
+that is the
+possibility to create node drbd connections (similar to resource
+connections).
+
+Here are the other changes:
+
+### Added
+- Added NodeConnection API. Currently only used for path settings (similar
+to rscCon, but on node level)
+
+### Changed
+- MKFS: always skip discard on ZFS backed volumes
+- Client resource DRBD ready state as soon as 2 nodes are connected (before
+it waited for all)
+- ResourceGroup-Spawn: Always assume partial mode if resource group doesn't
+have any volume groups
+- Upgraded okhttp 3rd party library, to fix a IPv6 TLS bug
+- Satellite now only deletes old .res files after controller established
+connection (instead of after startup)
+
+### Fixed
+- Orphan StorPooDfn, KeyValueStores and SnapDfn are now deleted with all
+their child objects
+- ErrorReports delete ignored since parameter if no other was specified
+
+https://pkg.linbit.com//downloads/linstor/linstor-server-1.20.1.tar.gz
+
+
+Linstor PPA:
+https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+
+Cheers,
+Rene
+
+--0000000000002aa08d05efb69cff
+Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Dear DRBD users,
+<div dir=3D"ltr"><div>Hi!</div><div><br></div><div>A new patch release for =
+linstor-server that only has one tiny addition, and that is the</div><div>p=
+ossibility to create node drbd connections (similar to resource connections=
+).</div><div><br></div><div>Here are the other changes:</div><div><br></div=
+><div>### Added<br>- Added NodeConnection API. Currently only used for path=
+ settings (similar to rscCon, but on node level)<br><br>### Changed<br>- MK=
+FS: always skip discard on ZFS backed volumes<br>- Client resource DRBD rea=
+dy state as soon as 2 nodes are connected (before it waited for all)<br>- R=
+esourceGroup-Spawn: Always assume partial mode if resource group doesn&#39;=
+t have any volume groups<br>- Upgraded okhttp 3rd party library, to fix a I=
+Pv6 TLS bug<br>- Satellite now only deletes old .res files after controller=
+ established connection (instead of after startup)<br><br>### Fixed<br>- Or=
+phan StorPooDfn, KeyValueStores and SnapDfn are now deleted with all their =
+child objects<br>- ErrorReports delete ignored since parameter if no other =
+was specified<br></div><div><br></div><div><a href=3D"https://pkg.linbit.co=
+m//downloads/linstor/linstor-server-1.20.1.tar.gz">https://pkg.linbit.com//=
+downloads/linstor/linstor-server-1.20.1.tar.gz</a><br></div><div><br></div>=
+<div><br></div><div><div><div><div>Linstor PPA:<br><a href=3D"https://launc=
+hpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack" rel=3D"noreferrer" tar=
+get=3D"_blank">https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-s=
+tack</a></div></div><div><br></div><div>Cheers,<br></div><div>Rene</div></d=
+iv></div></div>
 
-this is drbd-reactor v0.10.2. This fixes logging errors if said errors
-happen very early in the startup of the daemon which have been skipped
-as of now. The second fix is that we only run DRBD kernel module and
-drbd-utils version checks if we really need them. For example our k8s
-containers use drbd-reactor::prometheus to export DRBD metrics. Here we
-don't actually need very recent DRBD kernel versions with the latest
-features. On the other hand we want and need these features for
-drbd-reactor::promoter. Now we check if there are any promoter plugins
-configured and only run the DRBD checks if that is the case. If the
-requirements are not fulfilled on startup the daemon fails to start. If
-later a plugin is added and the check fails this snipped is skipped.
-
-This version also brings a small feature: "drbd-reactorctl edit" now
-works like you might know it from "kubectl edit". If there are any
-syntax errors the editor will respawn and show what was wrong in the
-header section of the temporary config file.
-
-Regards, rck
-
-GIT: https://github.com/LINBIT/drbd-reactor/commit/920b01e79b63b746a02c9828=
-b55767a680ffc1b5
-TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-reactor-0.10.2.tar.gz
-PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
-
-Changelog:
-[ Moritz "WanzenBug" Wanzenb=F6ck ]
-* ci: test compatibility with different rust version
-* daemon: ensure logging is available early
-* events: do not panic on missing drbdsetup
-
-[ Roland Kammerer ]
-* fix rest of unknow -> unknown typos
-* ctl,edit: add k8s style editor reopen
-* core: drbd checks only if we have promoters
-
---BE8ImdHPmIqiIQbC
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmOXR2UACgkQRgmezyI6
-myJvXgf9H1wFIq2XmNR9Uj2yuaJ/P3OXOuSUIMRylz51WJDiwHEsSSlSlViBDd39
-Wx4P1xlLvGT/IBTMLFEh0pfJoTgjGCzXgkXttbHTqY4nG6bpRg3TpA6qKZoLHJe5
-oF0/jRpGukM+bbkXEcjeii+giyMhX38mXdg5XRjUEYhaVKZJbKfBZm1npmQi+AAz
-R93NORT0805bTTwQuiybdSjMRbhQzoGnsv6AgAvFIO32P6IiXS2xuTwnI/1OBra2
-L9tHSRLd8W0ZMe4rMj486aKjCMbdWYvKNurjJ2RjGWgXetXqilpgmWkdUODYuByJ
-yPAovYewGMcg1O86nOmrVCr7laBfXQ==
-=rt9L
------END PGP SIGNATURE-----
-
---BE8ImdHPmIqiIQbC--
+--0000000000002aa08d05efb69cff--
