@@ -1,20 +1,20 @@
 Return-Path: <rene.peinthor@linbit.com>
-Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com
-	[209.85.128.180])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 0918A4252BE
+Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com
+	[209.85.128.172])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 19073422111
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 13 Dec 2022 15:43:16 +0100 (CET)
-Received: by mail-yw1-f180.google.com with SMTP id
-	00721157ae682-3e45d25de97so194357927b3.6
+	Thu, 15 Dec 2022 07:33:51 +0100 (CET)
+Received: by mail-yw1-f172.google.com with SMTP id
+	00721157ae682-3b5d9050e48so29117037b3.2
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 13 Dec 2022 06:43:16 -0800 (PST)
+	Wed, 14 Dec 2022 22:33:51 -0800 (PST)
 MIME-Version: 1.0
 From: Rene Peinthor <rene.peinthor@linbit.com>
-Date: Tue, 13 Dec 2022 15:43:05 +0100
-Message-ID: <CAHmn2DNao-v8nLQRLA=tDws-8boAx=eqd4ag97gZ-RdpwH4U=A@mail.gmail.com>
+Date: Thu, 15 Dec 2022 07:33:40 +0100
+Message-ID: <CAHmn2DMPvU7QUsueWDxBLt=ZHcUX2+qvxyi69RPa7aqdfQkzBA@mail.gmail.com>
 To: drbd-announce@lists.linbit.com, drbd-user <drbd-user@lists.linbit.com>
-Content-Type: multipart/alternative; boundary="000000000000ddd1ec05efb6a37e"
-Subject: [DRBD-announce] python-linstor/linstor-client 1.16.0 release
+Content-Type: multipart/alternative; boundary="00000000000043431c05efd809b0"
+Subject: [DRBD-announce] linstor-server 1.20.2 release
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,51 +26,47 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
---000000000000ddd1ec05efb6a37e
+--00000000000043431c05efd809b0
 Content-Type: text/plain; charset="UTF-8"
 
-Hi,
+Hi!
 
-This python-linstor/client release brings command for the new node
-connection functionality.
+There was a bug with the orphan objects removal, which prevented the
+controller from starting,
+so here is a quick hotfix release, with this issue fixed.
 
-## linstor-client
-### Added
+Here are the changes:
 
-- Added node connection commands
+### Fixed
 
-https://pkg.linbit.com//downloads/linstor/linstor-client-1.16.0.tar.gz
+- Can now use snapshot restore on a snapshot created by a backup create
+- Fixed migration of orphan objects
 
-## python-linstor
-### Added
+https://pkg.linbit.com//downloads/linstor/linstor-server-1.20.2.tar.gz
 
-- Add node-connection methods
-
-https://pkg.linbit.com//downloads/linstor/python-linstor-1.16.0.tar.gz
 
 Linstor PPA:
 https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
-Best regards,
+Cheers,
 Rene
 
---000000000000ddd1ec05efb6a37e
+--00000000000043431c05efd809b0
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr"><div>Hi,</div><div><br></div><div>This python-linstor/clie=
-nt release brings command for the new node connection functionality.</div><=
-div><br></div><div>## linstor-client</div><div>### Added<br><br>- Added nod=
-e connection commands<br></div><div><br></div><div><a href=3D"https://pkg.l=
-inbit.com//downloads/linstor/linstor-client-1.16.0.tar.gz">https://pkg.linb=
-it.com//downloads/linstor/linstor-client-1.16.0.tar.gz</a><br></div><br><di=
-v>## python-linstor</div><div>### Added<br><br>- Add node-connection method=
-s<br></div><div><br></div><div><a href=3D"https://pkg.linbit.com//downloads=
-/linstor/python-linstor-1.16.0.tar.gz">https://pkg.linbit.com//downloads/li=
-nstor/python-linstor-1.16.0.tar.gz</a><br></div><div><br></div><div><div>Li=
-nstor PPA:<br></div><div><div><a href=3D"https://launchpad.net/~linbit/+arc=
-hive/ubuntu/linbit-drbd9-stack" rel=3D"noreferrer" target=3D"_blank">https:=
-//launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack</a><br></div><di=
-v><br></div><div>Best regards,</div><div>Rene</div></div></div></div>
+<div dir=3D"ltr"><div>Hi!</div><div><br></div><div>There was a bug with the=
+ orphan objects removal, which prevented the controller from starting,</div=
+><div>so here is a quick hotfix release, with this issue fixed.</div><div><=
+br></div><div>Here are the changes:</div><div><br></div><div>### Fixed<br><=
+br>- Can now use snapshot restore on a snapshot created by a backup create<=
+br>- Fixed migration of orphan objects<br></div><div><br></div><div><a href=
+=3D"https://pkg.linbit.com//downloads/linstor/linstor-server-1.20.2.tar.gz"=
+>https://pkg.linbit.com//downloads/linstor/linstor-server-1.20.2.tar.gz</a>=
+<br></div><div><br></div><div><br></div><div><div><div><div>Linstor PPA:<br=
+><a href=3D"https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stac=
+k" rel=3D"noreferrer" target=3D"_blank">https://launchpad.net/~linbit/+arch=
+ive/ubuntu/linbit-drbd9-stack</a></div></div><div><br></div><div>Cheers,<br=
+></div><div>Rene</div></div></div></div>
 
---000000000000ddd1ec05efb6a37e--
+--00000000000043431c05efd809b0--
