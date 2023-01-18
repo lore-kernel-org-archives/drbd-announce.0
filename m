@@ -1,22 +1,21 @@
-Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com
-	[209.85.128.42])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id AA3514202D0
+Return-Path: <johannes.thoma@linbit.com>
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com
+	[209.85.218.51])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 898324204BE
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 16 Jan 2023 10:12:50 +0100 (CET)
-Received: by mail-wm1-f42.google.com with SMTP id
-	f12-20020a7bc8cc000000b003daf6b2f9b9so2127330wml.3
+	Wed, 18 Jan 2023 16:03:48 +0100 (CET)
+Received: by mail-ej1-f51.google.com with SMTP id vm8so83885777ejc.2
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 16 Jan 2023 01:12:50 -0800 (PST)
-Date: Mon, 16 Jan 2023 10:12:48 +0100
-From: Roland Kammerer <roland.kammerer@linbit.com>
-To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Message-ID: <Y8UVED1SJfY9R3AU@rck.sh>
+	Wed, 18 Jan 2023 07:03:48 -0800 (PST)
+Message-ID: <60f95e78-ffaa-0508-3f55-5e9855f6d8e9@linbit.com>
+Date: Wed, 18 Jan 2023 16:03:44 +0100
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="v8bqR0r8jkg2Hya9"
-Content-Disposition: inline
-Subject: [DRBD-announce] drbd-utils v9.23.0-rc.1
+To: "drbd-user@lists.linbit.com" <drbd-user@lists.linbit.com>,
+	drbd-announce@lists.linbit.com
+From: Johannes Thoma <johannes.thoma@linbit.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: [DRBD-announce] WinDRBD 1.1.4-rc1 released: Virtual partition tables
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -28,52 +27,28 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
+Dear WinDRBD users,
 
---v8bqR0r8jkg2Hya9
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This is a WinDRBD release with a new feature that was requested by
+several users in the community: proper reuse of data on existing
+(NTFS-) file systems.
 
-Dear DRBD users,
+Since proper Windows "block" devices are Disks for the Windows
+system and Disks are expected to be partitioned, we emulate a
+virtual GPT partition table at the "upper" interface (where the
+SCSI requests are handled). This causes Windows to stack
+the PARTMGR and DISK drivers (and probably others) over the
+disks such that applications such as MS SQL server run without
+issues.
 
-this is the first RC for version 9.23.0. There are no big changes,
-mainly smaller features and fixes that accumulated and would be good to
-get out because some users and customers wait for it, please see the
-short Changelog here for details or the git commit messages for more
-details.
+Since there are some, lets say, hairy changes in the interface I
+decided to insert a release canidate with the request to the community
+to test it before I release the final 1.1.4 release.
 
-If we don't find any bugs, the final release will be in about a week
-=66rom now.
+As always an installer with a signed driver can be downloaded from:
 
-Regards, rck
+https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#drbd-windows
 
-GIT: https://github.com/LINBIT/drbd-utils/commit/b787a48884d0da27d9285a4777=
-0b31c62c8198f4=20
-TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-utils-9.23.0-rc.1.ta=
-r.gz
-PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack/
+Best regards and happy new year :)
 
-Changelog:
-
- 9.23.0-rc.1
------------
- * drbdadm,v9,floating: fixup fake uname for 9.2.x strict_names=3D1
- * drbdadm,v9,parser: fixup globs, also rm GNU libc specific extensions
- * drbdadm,v9,parser: allow via outside-address for NATed peers
-
---v8bqR0r8jkg2Hya9
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmPFFQ0ACgkQRgmezyI6
-myKBwggAsbGX0YvpwkTKEpv6T9GeVEAwS+xrKJCz3V2nDbYpAkZto5vuvEHpr03P
-5Fq3cONeB7GVK2tunNYjIQWm4QWnYVRKl155DXIRfXitZmR/TK6zCWHuMOfpKsbF
-mZtPusk5YpQBCzkeAM1Rm5Re1AsodgUXNTYBr8VEcPKgdgsuAYiFJslTdUh+TzE4
-72PUjZe8DAK9uoQSJ0CqhDLLq0Mm0AtIJYFLfNKbUFLRNnQYVv3dwfFpORnOJnyn
-4w5eno69fFcDgjSMhjLBRHdmb8RlsIhtx1f5W6Da9i65c/ll7wLy+97G4gl9tZVa
-GEDLYFnQ1Hs7RRJdU7xAMye8imzNcA==
-=ZEzv
------END PGP SIGNATURE-----
-
---v8bqR0r8jkg2Hya9--
+- Johannes
