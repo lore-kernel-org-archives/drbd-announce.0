@@ -1,21 +1,21 @@
-Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com
-	[209.85.128.43])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id CA6624201C3
+Return-Path: <johannes.thoma@linbit.com>
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com
+	[209.85.208.51])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id BD4F24201C3
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 24 Jan 2023 13:11:42 +0100 (CET)
-Received: by mail-wm1-f43.google.com with SMTP id l8so11274876wms.3
+	Tue, 24 Jan 2023 14:22:32 +0100 (CET)
+Received: by mail-ed1-f51.google.com with SMTP id z11so18298152ede.1
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 24 Jan 2023 04:11:42 -0800 (PST)
-Date: Tue, 24 Jan 2023 13:11:41 +0100
-From: Roland Kammerer <roland.kammerer@linbit.com>
-To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Message-ID: <Y8/K/R8EA9x3PQz2@rck.sh>
+	Tue, 24 Jan 2023 05:22:32 -0800 (PST)
+Content-Type: multipart/alternative;
+	boundary="------------AOAhiiL3AdQMTFUlf4orhZhp"
+Message-ID: <03aa13bc-0a17-f5d7-86d8-38603e62db9e@linbit.com>
+Date: Tue, 24 Jan 2023 14:22:29 +0100
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="Sa38LhsuZEwHGLJl"
-Content-Disposition: inline
-Subject: [DRBD-announce] drbd-utils v9.23.0
+To: "drbd-user@lists.linbit.com" <drbd-user@lists.linbit.com>,
+	drbd-announce@lists.linbit.com
+From: Johannes Thoma <johannes.thoma@linbit.com>
+Subject: [DRBD-announce] WinDRBD 1.1.4 released
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -27,49 +27,105 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
+This is a multi-part message in MIME format.
+--------------AOAhiiL3AdQMTFUlf4orhZhp
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
---Sa38LhsuZEwHGLJl
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Dear WinDRBD users,
 
-Dear DRBD users,
+This is the 'stable' release with the new virtual partition table
+feature, which allows one to reuse existing NTFS data partitions
+as WinDRBD backing devices. There were only two minor changes,
+compared to the 1.1.4-rc1 version: one affects the use of drive
+letters: they should not be specified in the WinDRBD config and
+are ignored from now on (a warning is printed). The other change
+is a fix for a memory leak introduced in the 1.1.4-rc1 release.
 
-this is the final version of drbd-utils 9.23.0. There are no big
-changes, mainly smaller features and fixes that accumulated and would be
-good to get out because some users and customers wait for it, please see
-the short Changelog here for details or the git commit messages for more
-details.
+ From the 1.1.4-rc1 announcement:
 
-The only change between RC and final was some cosmetic type changes that
-help building on Alpine/musl libc.
+Since proper Windows "block" devices are Disks for the Windows
+system and Disks are expected to be partitioned, we emulate a
+virtual GPT partition table at the "upper" interface (where the
+SCSI requests are handled). This causes Windows to stack
+the PARTMGR and DISK drivers (and probably others) over the
+disks such that applications such as MS SQL server run without
+issues.
 
-Regards, rck
+As always an installer with a signed driver can be downloaded from:
 
-GIT: https://github.com/LINBIT/drbd-utils/commit/4f7d26a69e20e826bc8eb70822a61fb476c020aa
-TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-utils-9.23.0.tar.gz
-PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack/
+https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#drbd-windows
 
-Changelog:
+Best regards and as always your feedback is highly apreciated,
 
- 9.23.0
------------
- * drbdadm,v9,floating: fixup fake uname for 9.2.x strict_names=1
- * drbdadm,v9,parser: fixup globs, also rm GNU libc specific extensions
- * drbdadm,v9,parser: allow via outside-address for NATed peers
+- Johannes
+_______________________________________________
+drbd-announce mailing list
+drbd-announce@lists.linbit.com
+https://lists.linbit.com/mailman/listinfo/drbd-announce
 
---Sa38LhsuZEwHGLJl
-Content-Type: application/pgp-signature; name="signature.asc"
+--------------AOAhiiL3AdQMTFUlf4orhZhp
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
------BEGIN PGP SIGNATURE-----
+<html>
+  <head>
 
-iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmPPyvkACgkQRgmezyI6
-myLkXAf7BMaZGzyUkPRmoYtULcA9Z6Tu8dQRS0oHRW9h7xhHR+gFkb8UWQcFjQLg
-yW8X929oe97GUTvlAQN5KsTCPbZ8Eqy8QCmadcfU/0NlspnbTPepL/SIPmq5ztXn
-fZGJK9SiDG8tISmkUPM/BrAuM2CUEIwHpFltllyJB5q3rw6IzXKE/lfl5UFFSc9g
-8dCIHiQBDlbputU2jR7DxsR2s1f75KIoT3QIGqcKX0wWyBLpsv762VpaM+z7BA8X
-yCMFYRbRWaXQsN+qea4CCaifmdO9novUCgEldr9JQxoQr0dT3h76GkSNc699g0eE
-lZ5IaRdIGKP1/8l9H2Dp8m8XQBVzRQ==
-=1FlI
------END PGP SIGNATURE-----
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <div class="moz-text-flowed" style="font-family: -moz-fixed;
+      font-size: 12px;" lang="x-western">Dear WinDRBD users,
+      <br>
+      <br>
+      This is the 'stable' release with the new virtual partition table<br>
+      feature, which allows one to reuse existing NTFS data partitions<br>
+      as WinDRBD backing devices. There were only two minor changes,<br>
+      compared to the 1.1.4-rc1 version: one affects the use of drive<br>
+      letters: they should not be specified in the WinDRBD config and<br>
+      are ignored from now on (a warning is printed). The other change<br>
+      is a fix for a memory leak introduced in the 1.1.4-rc1 release. <br>
+      <br>
+      From the 1.1.4-rc1 announcement:<br>
+      <br>
+      Since proper Windows "block" devices are Disks for the Windows
+      <br>
+      system and Disks are expected to be partitioned, we emulate a
+      <br>
+      virtual GPT partition table at the "upper" interface (where the
+      <br>
+      SCSI requests are handled). This causes Windows to stack
+      <br>
+      the PARTMGR and DISK drivers (and probably others) over the
+      <br>
+      disks such that applications such as MS SQL server run without
+      <br>
+      issues.
+      <br>
+      <br>
+As always an installer with a signed driver can be downloaded from:
+      <br>
+      <br>
+      <a class="moz-txt-link-freetext"
+href="https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#drbd-windows">https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#drbd-windows</a>
+      <br>
+      <br>
+      Best regards and as always your feedback is highly apreciated,<br>
+      <br>
+      - Johannes<br>
+      _______________________________________________
+      <br>
+      drbd-announce mailing list
+      <br>
+      <a class="moz-txt-link-abbreviated moz-txt-link-freetext"
+        href="mailto:drbd-announce@lists.linbit.com">drbd-announce@lists.linbit.com</a>
+      <br>
+      <a class="moz-txt-link-freetext"
+        href="https://lists.linbit.com/mailman/listinfo/drbd-announce">https://lists.linbit.com/mailman/listinfo/drbd-announce</a>
+      <br>
+    </div>
+    <br>
+  </body>
+</html>
 
---Sa38LhsuZEwHGLJl--
+--------------AOAhiiL3AdQMTFUlf4orhZhp--
