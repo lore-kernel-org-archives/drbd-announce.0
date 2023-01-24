@@ -1,20 +1,21 @@
-Return-Path: <philipp.reisner@linbit.com>
-Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com
-	[209.85.208.175])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 0EFEF4201A2
+Return-Path: <roland.kammerer@linbit.com>
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com
+	[209.85.128.43])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id CA6624201C3
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 23 Jan 2023 17:25:06 +0100 (CET)
-Received: by mail-lj1-f175.google.com with SMTP id e16so13707249ljn.3
+	Tue, 24 Jan 2023 13:11:42 +0100 (CET)
+Received: by mail-wm1-f43.google.com with SMTP id l8so11274876wms.3
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 23 Jan 2023 08:25:06 -0800 (PST)
+	Tue, 24 Jan 2023 04:11:42 -0800 (PST)
+Date: Tue, 24 Jan 2023 13:11:41 +0100
+From: Roland Kammerer <roland.kammerer@linbit.com>
+To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
+Message-ID: <Y8/K/R8EA9x3PQz2@rck.sh>
 MIME-Version: 1.0
-From: Philipp Reisner <philipp.reisner@linbit.com>
-Date: Mon, 23 Jan 2023 17:24:54 +0100
-Message-ID: <CADGDV=WWAOK-ux31Ektp79xgdN-O4c0KbDXUu4B9EHRNoffRkA@mail.gmail.com>
-To: drbd-announce@lists.linbit.com
-Content-Type: text/plain; charset="UTF-8"
-Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] (no subject)
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="Sa38LhsuZEwHGLJl"
+Content-Disposition: inline
+Subject: [DRBD-announce] drbd-utils v9.23.0
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,82 +27,49 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Dear DRBD-users,
 
-This is release candidate one of drbd-9.1.13 and drbd-9.2.2. In the
-number of changed lines, the work on improving quorum is the most
-significant change in this upcoming release. Here is a minor example
-that highlights the improvement.
+--Sa38LhsuZEwHGLJl
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Consider nodes A, B, and C with ascending node IDs.
+Dear DRBD users,
 
-        C       | C is diskless
-       / \      | A is Secondary and has a backing disk
-      A---B     | B is Secondary, having a backing disk
+this is the final version of drbd-utils 9.23.0. There are no big
+changes, mainly smaller features and fixes that accumulated and would be
+good to get out because some users and customers wait for it, please see
+the short Changelog here for details or the git commit messages for more
+details.
 
-Step 1: A does a graceful disconnect from B
+The only change between RC and final was some cosmetic type changes that
+help building on Alpine/musl libc.
 
-        C       | C is diskless and has quorum
-       / \      | A is Secondary with disk and has quorum
-      A   B     | B is Secondary with disk and has quorum
+Regards, rck
 
-Step 2: A disconnects unexpectedly from C (with --force or crash)
+GIT: https://github.com/LINBIT/drbd-utils/commit/4f7d26a69e20e826bc8eb70822a61fb476c020aa
+TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-utils-9.23.0.tar.gz
+PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack/
 
-        C       | C is with quorum since it is part of 2 out of 3
-         \      | A is **without** quorum
-      A   B     | B is with quorum since it is part of 2 out of 3
+Changelog:
 
-Step 3: C disconnects unexpectedly from B (with --force or crash)
+ 9.23.0
+-----------
+ * drbdadm,v9,floating: fixup fake uname for 9.2.x strict_names=1
+ * drbdadm,v9,parser: fixup globs, also rm GNU libc specific extensions
+ * drbdadm,v9,parser: allow via outside-address for NATed peers
 
-        C       | C is without quorum
-                | A is without quorum
-      A   B     | B is ...
+--Sa38LhsuZEwHGLJl
+Content-Type: application/pgp-signature; name="signature.asc"
 
-With earlier versions of DRBD B had lost quorum as well. Starting
-with drbd-9.1.13 (drbd drbd-9.2.2) DRBD keeps quorum in this situation.
-It can do that because it knows that A can not have quorum.
+-----BEGIN PGP SIGNATURE-----
 
+iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmPPyvkACgkQRgmezyI6
+myLkXAf7BMaZGzyUkPRmoYtULcA9Z6Tu8dQRS0oHRW9h7xhHR+gFkb8UWQcFjQLg
+yW8X929oe97GUTvlAQN5KsTCPbZ8Eqy8QCmadcfU/0NlspnbTPepL/SIPmq5ztXn
+fZGJK9SiDG8tISmkUPM/BrAuM2CUEIwHpFltllyJB5q3rw6IzXKE/lfl5UFFSc9g
+8dCIHiQBDlbputU2jR7DxsR2s1f75KIoT3QIGqcKX0wWyBLpsv762VpaM+z7BA8X
+yCMFYRbRWaXQsN+qea4CCaifmdO9novUCgEldr9JQxoQr0dT3h76GkSNc699g0eE
+lZ5IaRdIGKP1/8l9H2Dp8m8XQBVzRQ==
+=1FlI
+-----END PGP SIGNATURE-----
 
-**Important news regarding drbd-9.2:**
-
-We fixed all known regressions of drbd-9.2.0. drbd-9.2 has heavily
-improved resync behavior when coordinating between application I/O and
-resync I/O, and handling resyncs of thinly provisioned backing
-storage. It has improved latency for all write requests.
-
-Please help test the release candidates.
-
-9.1.13-rc.1 (api:genl2/proto:110-121/transport:17)
---------
- * when calculating if a partition has quorum, take into account if
-   the missing nodes might have a quorum
- * fix forget-peer for diskless peers
- * clear the resync_again counter upon disconnect
- * also call the unfence handler when no resync happens
- * do not set bitmap bits when attaching to an up-to-date disk (late)
- * work on bringing the out-of-tree DRBD9 closer to DRBD in the upstream
-   kernel; Use lru_cahche.ko from the installed kernel whenever possible
-
-9.2.2-rc.1 (api:genl2/proto:110-121/transport:18)
---------
- * fix spurious PingAck timeout a second time; we need to use a drbd
-   owned workqueue to guarantee the required low-latency replies
- * Fix connection abort during resync with log message
-   "Unexpected resync write ack at ..." a regression of drbd-9.2
- * merged changes from drbd-9.1.13
-  - when calculating if a partition has quorum, take into account if
-    the missing nodes might have a quorum
-  - fix forget-peer for diskless peers
-  - clear the resync_again counter upon disconnect
-  - also call the unfence handler when no resync happens
-  - do not set bitmap bits when attaching to an up-to-date disk (late)
-  - work on bringing the out-of-tree DRBD9 closer to DRBD in the upstream
-    kernel; Use lru_cahche.ko from the installed kernel whenever possible
-
-https://pkg.linbit.com//downloads/drbd/9/drbd-9.1.13-rc.1.tar.gz
-https://pkg.linbit.com//downloads/drbd/9/drbd-9.2.2-rc.1.tar.gz
-
-https://github.com/LINBIT/drbd/commit/4b882c56cfe8095bff585605c227356562ef8e44
-https://github.com/LINBIT/drbd/commit/66e12539362b98d7d0b7bfb9f3b36af846457363
-
--Phil
+--Sa38LhsuZEwHGLJl--
