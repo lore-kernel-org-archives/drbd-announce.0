@@ -1,21 +1,20 @@
-Return-Path: <johannes.thoma@linbit.com>
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com
-	[209.85.208.51])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id BD4F24201C3
+Return-Path: <rene.peinthor@linbit.com>
+Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com
+	[209.85.128.169])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 7D845420966
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 24 Jan 2023 14:22:32 +0100 (CET)
-Received: by mail-ed1-f51.google.com with SMTP id z11so18298152ede.1
+	Thu, 26 Jan 2023 11:25:22 +0100 (CET)
+Received: by mail-yw1-f169.google.com with SMTP id
+	00721157ae682-4c131bede4bso17043457b3.5
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 24 Jan 2023 05:22:32 -0800 (PST)
-Content-Type: multipart/alternative;
-	boundary="------------AOAhiiL3AdQMTFUlf4orhZhp"
-Message-ID: <03aa13bc-0a17-f5d7-86d8-38603e62db9e@linbit.com>
-Date: Tue, 24 Jan 2023 14:22:29 +0100
+	Thu, 26 Jan 2023 02:25:22 -0800 (PST)
 MIME-Version: 1.0
-To: "drbd-user@lists.linbit.com" <drbd-user@lists.linbit.com>,
-	drbd-announce@lists.linbit.com
-From: Johannes Thoma <johannes.thoma@linbit.com>
-Subject: [DRBD-announce] WinDRBD 1.1.4 released
+From: Rene Peinthor <rene.peinthor@linbit.com>
+Date: Thu, 26 Jan 2023 11:25:10 +0100
+Message-ID: <CAHmn2DMXePw3Quf_vVFzC2cSV-WKK53obw_VYfq4Odt=VUGNVQ@mail.gmail.com>
+To: drbd-announce@lists.linbit.com, drbd-user <drbd-user@lists.linbit.com>
+Content-Type: multipart/alternative; boundary="00000000000087c1e305f3282a72"
+Subject: [DRBD-announce] linstor-server 1.20.3 release
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -27,105 +26,62 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-This is a multi-part message in MIME format.
---------------AOAhiiL3AdQMTFUlf4orhZhp
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+--00000000000087c1e305f3282a72
+Content-Type: text/plain; charset="UTF-8"
 
-Dear WinDRBD users,
+Hi!
 
-This is the 'stable' release with the new virtual partition table
-feature, which allows one to reuse existing NTFS data partitions
-as WinDRBD backing devices. There were only two minor changes,
-compared to the 1.1.4-rc1 version: one affects the use of drive
-letters: they should not be specified in the WinDRBD config and
-are ignored from now on (a warning is printed). The other change
-is a fix for a memory leak introduced in the 1.1.4-rc1 release.
+We fixed a few more minor bugs since the last patch release and thought it
+is
+worth it to release them before the next minor release.
 
- From the 1.1.4-rc1 announcement:
+Here are the changes:
 
-Since proper Windows "block" devices are Disks for the Windows
-system and Disks are expected to be partitioned, we emulate a
-virtual GPT partition table at the "upper" interface (where the
-SCSI requests are handled). This causes Windows to stack
-the PARTMGR and DISK drivers (and probably others) over the
-disks such that applications such as MS SQL server run without
-issues.
+### Changed
 
-As always an installer with a signed driver can be downloaded from:
+- pvdisplay now ignores drbd devices(lvm filter)
+- Volume definition setSize checks now for out of bounds sizes
 
-https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#drbd-windows
+### Fixed
 
-Best regards and as always your feedback is highly apreciated,
+- Fixed typo in VDO slab size commandline argument
+- Fixed peerslot check also counting diskless resources
+- Fixed storage pool definition delete not checking if there are still
+other storage pools
+- Fixed resource definition create showing real exception because of a
+followup exception
+- Fixed resetting resource flags to now incompatible drbd resource flags
 
-- Johannes
-_______________________________________________
-drbd-announce mailing list
-drbd-announce@lists.linbit.com
-https://lists.linbit.com/mailman/listinfo/drbd-announce
+https://pkg.linbit.com//downloads/linstor/linstor-server-1.20.3.tar.gz
 
---------------AOAhiiL3AdQMTFUlf4orhZhp
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 
-<html>
-  <head>
+Linstor PPA:
+https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    <div class="moz-text-flowed" style="font-family: -moz-fixed;
-      font-size: 12px;" lang="x-western">Dear WinDRBD users,
-      <br>
-      <br>
-      This is the 'stable' release with the new virtual partition table<br>
-      feature, which allows one to reuse existing NTFS data partitions<br>
-      as WinDRBD backing devices. There were only two minor changes,<br>
-      compared to the 1.1.4-rc1 version: one affects the use of drive<br>
-      letters: they should not be specified in the WinDRBD config and<br>
-      are ignored from now on (a warning is printed). The other change<br>
-      is a fix for a memory leak introduced in the 1.1.4-rc1 release. <br>
-      <br>
-      From the 1.1.4-rc1 announcement:<br>
-      <br>
-      Since proper Windows "block" devices are Disks for the Windows
-      <br>
-      system and Disks are expected to be partitioned, we emulate a
-      <br>
-      virtual GPT partition table at the "upper" interface (where the
-      <br>
-      SCSI requests are handled). This causes Windows to stack
-      <br>
-      the PARTMGR and DISK drivers (and probably others) over the
-      <br>
-      disks such that applications such as MS SQL server run without
-      <br>
-      issues.
-      <br>
-      <br>
-As always an installer with a signed driver can be downloaded from:
-      <br>
-      <br>
-      <a class="moz-txt-link-freetext"
-href="https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#drbd-windows">https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/#drbd-windows</a>
-      <br>
-      <br>
-      Best regards and as always your feedback is highly apreciated,<br>
-      <br>
-      - Johannes<br>
-      _______________________________________________
-      <br>
-      drbd-announce mailing list
-      <br>
-      <a class="moz-txt-link-abbreviated moz-txt-link-freetext"
-        href="mailto:drbd-announce@lists.linbit.com">drbd-announce@lists.linbit.com</a>
-      <br>
-      <a class="moz-txt-link-freetext"
-        href="https://lists.linbit.com/mailman/listinfo/drbd-announce">https://lists.linbit.com/mailman/listinfo/drbd-announce</a>
-      <br>
-    </div>
-    <br>
-  </body>
-</html>
+Cheers,
+Rene
 
---------------AOAhiiL3AdQMTFUlf4orhZhp--
+--00000000000087c1e305f3282a72
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div>Hi!</div><div><br></div><div>We fixed a few more mino=
+r bugs since the last patch release and thought it is</div><div>worth it to=
+ release them before the next minor release.</div><div><br></div><div>Here =
+are the changes:</div><div><br></div><div>### Changed<br><br>- pvdisplay no=
+w ignores drbd devices(lvm filter)<br>- Volume definition setSize checks no=
+w for out of bounds sizes<br><br>### Fixed<br><br>- Fixed typo in VDO slab =
+size commandline argument<br>- Fixed peerslot check also counting diskless =
+resources<br>- Fixed storage pool definition delete not checking if there a=
+re still other storage pools<br>- Fixed resource definition create showing =
+real exception because of a followup exception<br>- Fixed resetting resourc=
+e flags to now incompatible drbd resource flags<br></div><div><br></div><di=
+v><a href=3D"https://pkg.linbit.com//downloads/linstor/linstor-server-1.20.=
+3.tar.gz">https://pkg.linbit.com//downloads/linstor/linstor-server-1.20.3.t=
+ar.gz</a><br></div><div><br></div><div><br></div><div><div><div><div>Linsto=
+r PPA:<br><a href=3D"https://launchpad.net/~linbit/+archive/ubuntu/linbit-d=
+rbd9-stack" rel=3D"noreferrer" target=3D"_blank">https://launchpad.net/~lin=
+bit/+archive/ubuntu/linbit-drbd9-stack</a></div></div><div><br></div><div>C=
+heers,<br></div><div>Rene</div></div></div></div>
+
+--00000000000087c1e305f3282a72--
