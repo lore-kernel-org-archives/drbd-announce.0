@@ -1,20 +1,20 @@
-Return-Path: <rene.peinthor@linbit.com>
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com
-	[209.85.128.169])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 7D845420966
+Return-Path: <philipp.reisner@linbit.com>
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com
+	[209.85.167.54])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 7F9694202E9
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 26 Jan 2023 11:25:22 +0100 (CET)
-Received: by mail-yw1-f169.google.com with SMTP id
-	00721157ae682-4c131bede4bso17043457b3.5
+	Mon, 30 Jan 2023 16:35:06 +0100 (CET)
+Received: by mail-lf1-f54.google.com with SMTP id w11so19531708lfu.11
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 26 Jan 2023 02:25:22 -0800 (PST)
+	Mon, 30 Jan 2023 07:35:06 -0800 (PST)
 MIME-Version: 1.0
-From: Rene Peinthor <rene.peinthor@linbit.com>
-Date: Thu, 26 Jan 2023 11:25:10 +0100
-Message-ID: <CAHmn2DMXePw3Quf_vVFzC2cSV-WKK53obw_VYfq4Odt=VUGNVQ@mail.gmail.com>
-To: drbd-announce@lists.linbit.com, drbd-user <drbd-user@lists.linbit.com>
-Content-Type: multipart/alternative; boundary="00000000000087c1e305f3282a72"
-Subject: [DRBD-announce] linstor-server 1.20.3 release
+From: Philipp Reisner <philipp.reisner@linbit.com>
+Date: Mon, 30 Jan 2023 16:34:53 +0100
+Message-ID: <CADGDV=VxigNHfpmVR1LCx-1AQuHXDtzBgKojs1=X-N3kGWmFbQ@mail.gmail.com>
+To: drbd-announce@lists.linbit.com
+Content-Type: text/plain; charset="UTF-8"
+Cc: drbd-user@lists.linbit.com
+Subject: [DRBD-announce] drbd-9.1.13 and drbd-9.2.2
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,62 +26,87 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
---00000000000087c1e305f3282a72
-Content-Type: text/plain; charset="UTF-8"
+Hi,
 
-Hi!
+This is the final release of drbd-9.1.13 and drbd-9.2.2. In the number
+of changed lines, the work on improving quorum is the most significant
+change in this release. Here is a minor example that highlights the
+improvement.
 
-We fixed a few more minor bugs since the last patch release and thought it
-is
-worth it to release them before the next minor release.
+Consider nodes A, B, and C with ascending node IDs.
 
-Here are the changes:
+        C       | C is diskless
+       / \      | A is Secondary and has a backing disk
+      A---B     | B is Secondary, having a backing disk
 
-### Changed
+Step 1: A does a graceful disconnect from B
 
-- pvdisplay now ignores drbd devices(lvm filter)
-- Volume definition setSize checks now for out of bounds sizes
+        C       | C is diskless and has quorum
+       / \      | A is Secondary with disk and has quorum
+      A   B     | B is Secondary with disk and has quorum
 
-### Fixed
+Step 2: A disconnects unexpectedly from C (with --force or crash)
 
-- Fixed typo in VDO slab size commandline argument
-- Fixed peerslot check also counting diskless resources
-- Fixed storage pool definition delete not checking if there are still
-other storage pools
-- Fixed resource definition create showing real exception because of a
-followup exception
-- Fixed resetting resource flags to now incompatible drbd resource flags
+        C       | C is with quorum since it is part of 2 out of 3
+         \      | A is **without** quorum
+      A   B     | B is with quorum since it is part of 2 out of 3
 
-https://pkg.linbit.com//downloads/linstor/linstor-server-1.20.3.tar.gz
+Step 3: C disconnects unexpectedly from B (with --force or crash)
+
+        C       | C is without quorum
+                | A is without quorum
+      A   B     | B is ...
+
+With earlier versions of DRBD B had lost quorum as well. Starting
+with drbd-9.1.13 (9.2.2) DRBD keeps quorum in this situation.
+It can do that because it knows that A can not have quorum.
 
 
-Linstor PPA:
-https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+**Important news regarding drbd-9.2:**
 
-Cheers,
-Rene
+We fixed all known regressions of drbd-9.2.0. drbd-9.2 has heavily
+improved resync behavior when coordinating between application I/O and
+resync I/O, and handling resyncs of thinly provisioned backing
+storage. It has improved latency for all write requests.
 
---00000000000087c1e305f3282a72
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr"><div>Hi!</div><div><br></div><div>We fixed a few more mino=
-r bugs since the last patch release and thought it is</div><div>worth it to=
- release them before the next minor release.</div><div><br></div><div>Here =
-are the changes:</div><div><br></div><div>### Changed<br><br>- pvdisplay no=
-w ignores drbd devices(lvm filter)<br>- Volume definition setSize checks no=
-w for out of bounds sizes<br><br>### Fixed<br><br>- Fixed typo in VDO slab =
-size commandline argument<br>- Fixed peerslot check also counting diskless =
-resources<br>- Fixed storage pool definition delete not checking if there a=
-re still other storage pools<br>- Fixed resource definition create showing =
-real exception because of a followup exception<br>- Fixed resetting resourc=
-e flags to now incompatible drbd resource flags<br></div><div><br></div><di=
-v><a href=3D"https://pkg.linbit.com//downloads/linstor/linstor-server-1.20.=
-3.tar.gz">https://pkg.linbit.com//downloads/linstor/linstor-server-1.20.3.t=
-ar.gz</a><br></div><div><br></div><div><br></div><div><div><div><div>Linsto=
-r PPA:<br><a href=3D"https://launchpad.net/~linbit/+archive/ubuntu/linbit-d=
-rbd9-stack" rel=3D"noreferrer" target=3D"_blank">https://launchpad.net/~lin=
-bit/+archive/ubuntu/linbit-drbd9-stack</a></div></div><div><br></div><div>C=
-heers,<br></div><div>Rene</div></div></div></div>
+I recommend all users of drbd-9.2.x upgrading to 9.2.2. In case you
+decided to run drbd-9.1.x, upgrade within the 9.1 branch only necessary,
+if you are likely to profit from something on the changelog.
 
---00000000000087c1e305f3282a72--
+
+9.1.13-rc.1 (api:genl2/proto:110-121/transport:17)
+--------
+ * when calculating if a partition has quorum, take into account if
+   the missing nodes might have a quorum
+ * fix forget-peer for diskless peers
+ * clear the resync_again counter upon disconnect
+ * also call the unfence handler when no resync happens
+ * do not set bitmap bits when attaching to an up-to-date disk (late)
+ * work on bringing the out-of-tree DRBD9 closer to DRBD in the upstream
+   kernel; Use lru_cahche.ko from the installed kernel whenever possible
+
+9.2.2-rc.1 (api:genl2/proto:110-121/transport:18)
+--------
+ * fix spurious PingAck timeout a second time; we need to use a drbd
+   owned workqueue to guarantee the required low-latency replies
+ * Fix connection abort during resync with log message
+   "Unexpected resync write ack at ..." a regression of drbd-9.2
+ * fix a race condition that can lead to NULL-ptr deref during resync
+ * merged changes from drbd-9.1.13
+  - when calculating if a partition has quorum, take into account if
+    the missing nodes might have a quorum
+  - fix forget-peer for diskless peers
+  - clear the resync_again counter upon disconnect
+  - also call the unfence handler when no resync happens
+  - do not set bitmap bits when attaching to an up-to-date disk (late)
+  - work on bringing the out-of-tree DRBD9 closer to DRBD in the upstream
+    kernel; Use lru_cahche.ko from the installed kernel whenever possible
+
+https://pkg.linbit.com//downloads/drbd/9/drbd-9.1.13.tar.gz
+https://pkg.linbit.com//downloads/drbd/9/drbd-9.2.2.tar.gz
+
+https://github.com/LINBIT/drbd/commit/834511a4957bba1a6aa4245a99ceebca5c42a4f2
+https://github.com/LINBIT/drbd/commit/8435da3ec2a0a70dee0fedf354276d6f1c6ba708
+
+-Phil
