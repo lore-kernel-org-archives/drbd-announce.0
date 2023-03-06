@@ -1,21 +1,21 @@
 Return-Path: <christoph.boehmwalder@linbit.com>
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com
-	[209.85.208.48])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 3A7E54202FA
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com
+	[209.85.221.54])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id DA51F42066E
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 28 Feb 2023 18:30:43 +0100 (CET)
-Received: by mail-ed1-f48.google.com with SMTP id i34so43154335eda.7
+	Mon,  6 Mar 2023 16:43:37 +0100 (CET)
+Received: by mail-wr1-f54.google.com with SMTP id v16so9345747wrn.0
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 28 Feb 2023 09:30:43 -0800 (PST)
-Message-ID: <b50c6fa5-2594-36db-755a-2a585ac32e76@linbit.com>
-Date: Tue, 28 Feb 2023 18:30:42 +0100
+	Mon, 06 Mar 2023 07:43:37 -0800 (PST)
+Message-ID: <2c974026-902d-d59b-a78e-5987ff165ae9@linbit.com>
+Date: Mon, 6 Mar 2023 16:43:35 +0100
 MIME-Version: 1.0
 Content-Language: en-US
 To: drbd-user@lists.linbit.com, drbd-announce@lists.linbit.com
 From: =?UTF-8?Q?Christoph_B=c3=b6hmwalder?= <christoph.boehmwalder@linbit.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [DRBD-announce] linstor-gateway v1.1.0
+Subject: [DRBD-announce] linstor-gateway v1.1.1
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -27,19 +27,21 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Hi all,
+Hi everyone,
 
-a new version of LINSTOR Gateway, v1.1.0, has just been released.
+a new bugfix release for LINSTOR Gateway is out.
 
-https://github.com/LINBIT/linstor-gateway/releases/tag/v1.1.0
+https://github.com/LINBIT/linstor-gateway/releases/tag/v1.1.1
 
-The most interesting change is that the health check now verifies that
-an NFS server is actually installed.
+It fixes three relatively rare bugs, mostly to improve usability in odd
+situations (broken LINSTOR states, etc). For more information, check the
+changelog.
 
-As always, we would appreciate it if you could test this new version and
-report bugs and feedback via GitHub or here on this mailing list.
+As always, your help in testing this release would be greatly
+appreciated. Please report any bugs and feedback via GitHub or here on
+this mailing list.
 
-Thanks.
+Thanks!
 
 -- 
 Christoph Böhmwalder
