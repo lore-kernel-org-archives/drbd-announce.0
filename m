@@ -1,22 +1,21 @@
-Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-oo1-f51.google.com (mail-oo1-f51.google.com
-	[209.85.161.51])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id E54E942066E
+Return-Path: <christoph.boehmwalder@linbit.com>
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com
+	[209.85.208.53])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 8B03A42066E
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 14 Mar 2023 14:11:59 +0100 (CET)
-Received: by mail-oo1-f51.google.com with SMTP id
-	h18-20020a4abb92000000b00525397f569fso2304505oop.3
+	Tue, 14 Mar 2023 16:03:21 +0100 (CET)
+Received: by mail-ed1-f53.google.com with SMTP id x13so15952598edd.1
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 14 Mar 2023 06:11:59 -0700 (PDT)
-Date: Tue, 14 Mar 2023 14:11:53 +0100
-From: Roland Kammerer <roland.kammerer@linbit.com>
-To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Message-ID: <ZBBymVo86gtvrgs8@rck.sh>
+	Tue, 14 Mar 2023 08:03:21 -0700 (PDT)
+Message-ID: <827f0a7f-6462-5da8-c082-06eece40a451@linbit.com>
+Date: Tue, 14 Mar 2023 16:03:19 +0100
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="5qZXdkgQ72n+8neX"
-Content-Disposition: inline
-Subject: [DRBD-announce] drbd-reactor v1.0.1
+Content-Language: en-US
+To: drbd-user@lists.linbit.com, drbd-announce@lists.linbit.com
+From: =?UTF-8?Q?Christoph_B=c3=b6hmwalder?= <christoph.boehmwalder@linbit.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [DRBD-announce] linstor-gateway v1.2.0
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -28,38 +27,21 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
+Hello,
 
---5qZXdkgQ72n+8neX
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+a new version of LINSTOR Gateway has just been released.
 
-Dear DRBD users,
+https://github.com/LINBIT/linstor-gateway/releases/tag/v1.2.0
 
-this is a minor bug-fix release for drbd-reactor. If you happened to use
-OCF agents it could have been that environment variables generated from
-OCF options have not been correctly escaped. We saw that on old versions
-of systemd (e.g., RHEL7-alike), but now we should have proper escaping
-on old an new systemd versions.
+It mainly includes "quality of life" improvements when using the command
+line client. For the full list of changes, see the CHANGELOG.md file.
 
-Regards, rck
+As usual, please help us improve LINSTOR Gateway by testing it and
+reporting any issues via GitHub or here on this mailing list.
 
-GIT: https://github.com/LINBIT/drbd-reactor/releases/tag/v1.0.1
-TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-reactor-1.0.1.tar.gz
-PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+Thanks!
 
---5qZXdkgQ72n+8neX
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmQQcpUACgkQRgmezyI6
-myK5eQf/c6fJsQ2IBO/T2KbMjGZoFT9i/B+Tm7wsDw53VHSMc/obdQoIUYXhuMlp
-RPXKmUEaUj3+4UM6yHkAHjy8is7IgipB8p2oNELnEaXiRNxfAQ8mYJXe1zxtldhg
-J44cgcePNt7VTJqAP6nwGI5z2ZW9KpXxjM9HQcKjwOUckB7f4MpggN82wp/Dufpl
-gocuNZ7/QEuIwubAomFqvL8C68IEsQXwpv9/KAI5x08pKnn40XxpAlT1qtmMuqEk
-7SYQg34PAYfBPCGhmSrx++RbRfENeGPu9qei2zd4x4YCpECT1EXmxGRcIAsQErcJ
-cshbW7K79Q1SD0zf5PZbJsRPap+Cmw==
-=u4Bp
------END PGP SIGNATURE-----
-
---5qZXdkgQ72n+8neX--
+-- 
+Christoph Böhmwalder
+LINBIT | Keeping the Digital World Running
+DRBD HA —  Disaster Recovery — Software defined Storage
