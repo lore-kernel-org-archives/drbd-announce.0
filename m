@@ -1,18 +1,18 @@
 Return-Path: <philipp.reisner@linbit.com>
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com
-	[209.85.208.50])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 2537642016E
+Received: from mail-yb1-f176.google.com (mail-yb1-f176.google.com
+	[209.85.219.176])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id E30A64204A7
 	for <drbd-announce@lists.linbit.com>;
-	Tue,  4 Apr 2023 15:36:02 +0200 (CEST)
-Received: by mail-ed1-f50.google.com with SMTP id eg48so130600104edb.13
+	Tue,  4 Apr 2023 17:45:16 +0200 (CEST)
+Received: by mail-yb1-f176.google.com with SMTP id f188so20761072ybb.3
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 04 Apr 2023 06:36:02 -0700 (PDT)
-From: Philipp Reisner <philipp.reisner@linbit.com>
-To: drbd-announce@lists.linbit.com
-Date: Tue, 04 Apr 2023 15:35:20 +0200
-Message-ID: <865yabbwiv.fsf@linbit.com>
+	Tue, 04 Apr 2023 08:45:16 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
+From: Philipp Reisner <philipp.reisner@linbit.com>
+Date: Tue, 4 Apr 2023 17:45:04 +0200
+Message-ID: <CADGDV=WHGLp33NgpAN7m+H5bkjO4qgJMVgJK1QwdeMeGoTSg_g@mail.gmail.com>
+To: drbd-announce@lists.linbit.com
+Content-Type: text/plain; charset="UTF-8"
 Cc: drbd-user@lists.linbit.com
 Subject: [DRBD-announce] drbd-9.1.14 and drbd-9.2.3
 Reply-To: drbd-user@lists.linbit.com
@@ -25,7 +25,6 @@ List-Post: <mailto:drbd-announce@lists.linbit.com>
 List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
-
 
 Hello DRBD-user,
 
