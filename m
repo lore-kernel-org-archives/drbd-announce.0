@@ -1,21 +1,20 @@
-Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com
-	[209.85.221.54])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 00FC4420151
+Return-Path: <rene.peinthor@linbit.com>
+Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com
+	[209.85.128.180])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 2478F4203DB
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 12 Apr 2023 11:45:42 +0200 (CEST)
-Received: by mail-wr1-f54.google.com with SMTP id s12so1767737wrb.1
+	Mon, 17 Apr 2023 15:57:43 +0200 (CEST)
+Received: by mail-yw1-f180.google.com with SMTP id
+	00721157ae682-54fa9da5e5bso217986867b3.1
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 12 Apr 2023 02:45:42 -0700 (PDT)
-Date: Wed, 12 Apr 2023 11:45:41 +0200
-From: Roland Kammerer <roland.kammerer@linbit.com>
-To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Message-ID: <ZDZ9xRJEN7ds5k+E@rck.sh>
+	Mon, 17 Apr 2023 06:57:43 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="nHin6yMOTIdhJH1r"
-Content-Disposition: inline
-Subject: [DRBD-announce] linstor-proxmox v7.0.0
+From: Rene Peinthor <rene.peinthor@linbit.com>
+Date: Mon, 17 Apr 2023 15:57:31 +0200
+Message-ID: <CAHmn2DOVzJgL6xZg+R8HqmKd56EzPEguAQRgKbfyGwMKaEDJdQ@mail.gmail.com>
+To: drbd-announce@lists.linbit.com, drbd-user <drbd-user@lists.linbit.com>
+Content-Type: multipart/alternative; boundary="000000000000173dee05f9889322"
+Subject: [DRBD-announce] linstor-server 1.22.0 release
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -27,63 +26,74 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
+--000000000000173dee05f9889322
+Content-Type: text/plain; charset="UTF-8"
 
---nHin6yMOTIdhJH1r
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Hi!
 
-Dear DRBD on PVE users,
+This is a smaller minor release, but I think this has more fixes than
+actual new features,
+see below for the details:
 
-This is version 7.0.0 of linstor-proxmox. First things first: This
-*requires* LINSTOR 1.21.1 (or newer).
+## [1.22.0] - 2023-04-17
 
-There have not been any substantial changes since RC1. The only change
-was that the Debian package now depends on linstor-satellite >= 1.21.1.
-This makes sense on its own, but also allows us to enforce a controller
-version of 1.21.1, which is required because of the API calls we use in
-the plugin.
+### Added
 
-The RC1 announcement:
+- "StorDriver/LvcreateSnapshotOptions" and "StorDriver/ZfsSnapshotOptions"
+properties
+- "FileSystem/User" and "FileSystem/Group" properties for root-owner of
+newly created FS
+- Support to do multiple snapshots within one device manager run
 
-So far we more or less (size reporting was always a mess) tried to show
-a node-local view of storage. For example we only showed pools that
-actually exist on a node. This was okay, but had two problems:
+### Changed
 
-- showing only the local storage in a distributed cluster does not make
-  too much sense. The actual data lands on nodes LINSTOR decides.
-- there are people that have the storage nodes pretty much separated
-  from the PVE nodes. For these we did not show any storage information
-  on such nodes (as they did not have the RG's SP deployed), which is
-  rather confusing.
+- Autoplacer now ignores occupied values from evicted or evacuating nodes
+- DrbdLayer skips processChildren when DRBD_DELETE flag is set
 
-Now we shifted the calculation of free/used storage to LINSTOR and that
-is what we show on all nodes.
+### Fixed
 
-tl;tr: we shifted from a node local view to a cluster view.
+- Backup list can now handle more than 1000 entries in bucket
+(truncation/continuation was handled wrong before)
+- NodeConnection path can now be deleted
+- NodeConnections no longer cause NPE on satellites
+- Database loading causing ClassCastException with drbd,luks,storage during
+toggle disk
+- Aborted snapshot now always should resume-io
 
-For PVE nodes we have the following assumption, which we already had:
-- linstor-satellite (and all that comes with it: drbd-utils,
-  drbd-dkms,...)
-- linstor-proxmox plugin installed
+https://pkg.linbit.com//downloads/linstor/linstor-server-1.22.0.tar.gz
 
-Regards, rck
 
-GIT: https://github.com/LINBIT/linstor-proxmox/commit/26123d9dd3eddccd3b053f618e6a79b4f2c824b6
-TGZ: https://pkg.linbit.com//downloads/connectors/linstor-proxmox-7.0.0.tar.gz
+Linstor PPA:
+https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
---nHin6yMOTIdhJH1r
-Content-Type: application/pgp-signature; name="signature.asc"
+Cheers,
+Rene
 
------BEGIN PGP SIGNATURE-----
+--000000000000173dee05f9889322
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmQ2fcEACgkQRgmezyI6
-myLezggAryGO0LJfTGagEdXW4bWsjWLUmsww4zDTj3C3BZGVdQuEBEIwJrLk8495
-At7Py0YV90RkISfSK4BxLIbM/TMnJ2gHhxyXIy05aIJuanw1nnl5unPIDW3OY/ju
-lRMEFRPeBCnJuBclYsQyxWLXShcg/3t7lNt5XSnaLEmTRxYqhjv+ZP1FTZiGesPS
-6aCl9PR+jq/PWPTKef82vHm7NOP7yhYLL+acSnLSXIjC1a8VS8TLsvJ4t8pDs9Cd
-bltSvFPPh6uJ6CE0maCfN1THzFD18A7PExKV0ZnAoL+F5jr2KY9crQsU2zH0WS+R
-vWzKPO255FP1+r8P+NlXYTYX8FQf2w==
-=cPVI
------END PGP SIGNATURE-----
+<div dir=3D"ltr">Hi!<div><br></div><div>This is a smaller minor release, bu=
+t I think this has more fixes than actual new features,</div><div>see below=
+ for the details:</div><div><br></div><div>## [1.22.0] - 2023-04-17<br><br>=
+### Added<br><br>- &quot;StorDriver/LvcreateSnapshotOptions&quot; and &quot=
+;StorDriver/ZfsSnapshotOptions&quot; properties<br>- &quot;FileSystem/User&=
+quot; and &quot;FileSystem/Group&quot; properties for root-owner of newly c=
+reated FS<br>- Support to do multiple snapshots within one device manager r=
+un<br><br>### Changed<br><br>- Autoplacer now ignores occupied values from =
+evicted or evacuating nodes<br>- DrbdLayer skips processChildren when DRBD_=
+DELETE flag is set<br><br>### Fixed<br><br>- Backup list can now handle mor=
+e than 1000 entries in bucket (truncation/continuation was handled wrong be=
+fore)<br>- NodeConnection path can now be deleted<br>- NodeConnections no l=
+onger cause NPE on satellites<br>- Database loading causing ClassCastExcept=
+ion with drbd,luks,storage during toggle disk<br>- Aborted snapshot now alw=
+ays should resume-io<br></div><div><br></div><div><div><a href=3D"https://p=
+kg.linbit.com//downloads/linstor/linstor-server-1.22.0.tar.gz">https://pkg.=
+linbit.com//downloads/linstor/linstor-server-1.22.0.tar.gz</a><br></div><di=
+v><br></div><div><br></div><div><div><div><div>Linstor PPA:<br><a href=3D"h=
+ttps://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack" rel=3D"nor=
+eferrer" target=3D"_blank">https://launchpad.net/~linbit/+archive/ubuntu/li=
+nbit-drbd9-stack</a></div></div><div><br></div><div>Cheers,<br></div><div>R=
+ene</div></div></div></div></div>
 
---nHin6yMOTIdhJH1r--
+--000000000000173dee05f9889322--
