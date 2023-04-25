@@ -1,20 +1,20 @@
-Return-Path: <rene.peinthor@linbit.com>
-Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com
-	[209.85.128.174])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 30A484203DB
+Return-Path: <moritz.wanzenboeck@linbit.com>
+Received: from mail-ua1-f47.google.com (mail-ua1-f47.google.com
+	[209.85.222.47])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 95AE24202E5
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 17 Apr 2023 16:14:29 +0200 (CEST)
-Received: by mail-yw1-f174.google.com with SMTP id
-	00721157ae682-54c0c86a436so538304347b3.6
+	Tue, 25 Apr 2023 14:33:42 +0200 (CEST)
+Received: by mail-ua1-f47.google.com with SMTP id
+	a1e0cc1a2514c-772661d22c2so1909149241.0
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 17 Apr 2023 07:14:29 -0700 (PDT)
+	Tue, 25 Apr 2023 05:33:42 -0700 (PDT)
 MIME-Version: 1.0
-From: Rene Peinthor <rene.peinthor@linbit.com>
-Date: Mon, 17 Apr 2023 16:14:17 +0200
-Message-ID: <CAHmn2DPABwygi78iwd+8Pzpzqh-_bX92Rr_6ioNpqUprhhZ7ow@mail.gmail.com>
-To: drbd-announce@lists.linbit.com, drbd-user <drbd-user@lists.linbit.com>
-Content-Type: multipart/alternative; boundary="0000000000000eef2805f988cf81"
-Subject: [DRBD-announce] python-linstor/linstor-client 1.18.0 release
+From: =?UTF-8?Q?Moritz_Wanzenb=C3=B6ck?= <moritz.wanzenboeck@linbit.com>
+Date: Tue, 25 Apr 2023 14:33:30 +0200
+Message-ID: <CAKnz9xLJRZLSt7JyL00hG7M5owKdoPLwhbAG9V35xNm2DSOVMg@mail.gmail.com>
+To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
+Content-Type: multipart/alternative; boundary="0000000000006269ae05fa2855fe"
+Subject: [DRBD-announce] LINSTOR Operator v2.1.0 and v1.10.3
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,74 +26,110 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
---0000000000000eef2805f988cf81
+--0000000000006269ae05fa2855fe
 Content-Type: text/plain; charset="UTF-8"
 
-Hi,
+Dear LINBIT SDS on Kubernetes users,
 
-as usual a accompanying linstor-client release to linstor-server 1.22.0.
+We've recently released updates for our Kubernetes Operator.
 
+First, there is version v2.1.0 for users of our next-generation Operator.
+Along with the common image updates, it's not possible to specify the URL
+for an existing LINSTOR installation. The Operator will then skip
+deployment of the LINSTOR Controller and will configure all other
+components to use the existing cluster.
 
-## linstor-client
-### Added
+For users of Operator v1, there is now version v1.10.3. Along with the
+common image updates, this version makes it possible to control the
+verbosity of the Operator pod itself.
 
-- Subcommand for snapshots create-multiple
+A reminder for users of Operator v1: We will maintain the existing Operator
+v1 with bug fixes and new software versions until the end of 2023. We will
+provide a dedicated upgrade path to Operator v2. We recommend all v1
+installations to continue to use v1. For all new clusters we recommend
+using v2.
 
-### Changed
+To get specific instructions to apply the update, check our users guide: [1]
 
-- drbd-options(opts) now correctly handle sector units
-
-### Fixed
-
-- RscDfn create do not ignore peerslots
-- NodeCon fixed issues with path list
-
-https://pkg.linbit.com//downloads/linstor/linstor-client-1.18.0.tar.gz
-
-## python-linstor
-### Added
-
-- Added snapshot_create_multi method to create snapshots of multiple
-resources
-
-### Changed
-
-- SizeCalc now supports sector units
-
-### Fixed
-
-- RscDfn create doesn't ignore peerslot
-
-https://pkg.linbit.com//downloads/linstor/python-linstor-1.18.0.tar.gz
-
-Linstor PPA:
-https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+Source code is, as always, available upstream. [2]
 
 Best regards,
-Rene
+Moritz
 
---0000000000000eef2805f988cf81
+[1]:
+https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-upgrade
+[2]: https://github.com/piraeusdatastore/piraeus-operator
+
+Operator v2.1.0 Changelog
+-------------------------
+
+### Added
+
+- Ability to skip deploying the LINSTOR Controller by setting
+`LinstorCluster.spec.externalController`.
+- Automatically reconcile changed image configuration.
+
+### Changed
+
+- Fix an issue where the CSI node driver would use the CSI socket not
+through the expected path in the container.
+- Updated images:
+  * LINSTOR 1.22.0
+  * LINSTOR CSI 1.0.1
+  * DRBD 9.2.3
+  * DRBD Reactor 1.1.0
+  * HA Controller 1.1.3
+  * external CSI images upgraded to latest versions
+
+Operator v1.10.3 Changelog
+--------------------------
+
+### Changed
+
+- Switch controller logging to be controlled by the `zap-log-level` flag.
+- Default images:
+  * LINSTOR 1.22.0
+  * LINSTOR CSI 1.0.1
+  * DRBD 9.1.14
+  * DRBD Reactor 1.1.0
+  * external CSI images upgraded to latest versions
+
+--0000000000006269ae05fa2855fe
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr"><div>Hi,</div><div><br></div><div>as usual a accompanying=
-=C2=A0linstor-client release to linstor-server 1.22.0.</div><div><br></div>=
-<div><br></div><div>## linstor-client</div><div>### Added<br><br>- Subcomma=
-nd for snapshots create-multiple<br><br>### Changed<br><br>- drbd-options(o=
-pts) now correctly handle sector units<br><br>### Fixed<br><br>- RscDfn cre=
-ate do not ignore peerslots<br>- NodeCon fixed issues with path list<br></d=
-iv><div><br></div><div><a href=3D"https://pkg.linbit.com//downloads/linstor=
-/linstor-client-1.18.0.tar.gz">https://pkg.linbit.com//downloads/linstor/li=
-nstor-client-1.18.0.tar.gz</a><br></div><br><div>## python-linstor</div><di=
-v>### Added<br><br>- Added snapshot_create_multi method to create snapshots=
- of multiple resources<br><br>### Changed<br><br>- SizeCalc now supports se=
-ctor units<br><br>### Fixed<br><br>- RscDfn create doesn&#39;t ignore peers=
-lot<br></div><div><br></div><div><a href=3D"https://pkg.linbit.com//downloa=
-ds/linstor/python-linstor-1.18.0.tar.gz">https://pkg.linbit.com//downloads/=
-linstor/python-linstor-1.18.0.tar.gz</a><br></div><div><br></div><div><div>=
-Linstor PPA:<br></div><div><div><a href=3D"https://launchpad.net/~linbit/+a=
-rchive/ubuntu/linbit-drbd9-stack" rel=3D"noreferrer" target=3D"_blank">http=
-s://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack</a><br></div><=
-div><br></div><div>Best regards,</div><div>Rene</div></div></div></div>
+<div dir=3D"ltr">Dear LINBIT SDS on Kubernetes users,<br><br>We&#39;ve rece=
+ntly released updates for our Kubernetes Operator.<br><br>First, there is v=
+ersion v2.1.0 for users of our next-generation Operator. Along with the com=
+mon image updates, it&#39;s not possible to specify the URL for an existing=
+ LINSTOR installation. The Operator will then skip deployment of the LINSTO=
+R Controller and will configure all other components to use the existing cl=
+uster.<br><br>For users of Operator v1, there is now version v1.10.3. Along=
+ with the common image updates, this version makes it possible to control t=
+he verbosity of the Operator pod itself.<br><br>A reminder for users of Ope=
+rator v1: We will maintain the existing Operator v1 with bug fixes and new =
+software versions until the end of 2023. We will provide a dedicated upgrad=
+e path to Operator v2. We recommend all v1 installations to continue to use=
+ v1. For all new clusters we recommend using v2.<br><br>To get specific ins=
+tructions to apply the update, check our users guide: [1]<br><br>Source cod=
+e is, as always, available upstream. [2]<br><br>Best regards,<br>Moritz<br>=
+<br>[1]: <a href=3D"https://linbit.com/drbd-user-guide/linstor-guide-1_0-en=
+/#s-kubernetes-upgrade">https://linbit.com/drbd-user-guide/linstor-guide-1_=
+0-en/#s-kubernetes-upgrade</a><br>[2]: <a href=3D"https://github.com/piraeu=
+sdatastore/piraeus-operator">https://github.com/piraeusdatastore/piraeus-op=
+erator</a><br><br>Operator v2.1.0 Changelog<br>-------------------------<br=
+><br>### Added<br><br>- Ability to skip deploying the LINSTOR Controller by=
+ setting `LinstorCluster.spec.externalController`.<br>- Automatically recon=
+cile changed image configuration.<br><br>### Changed<br><br>- Fix an issue =
+where the CSI node driver would use the CSI socket not through the expected=
+ path in the container.<br>- Updated images:<br>=C2=A0 * LINSTOR 1.22.0<br>=
+=C2=A0 * LINSTOR CSI 1.0.1<br>=C2=A0 * DRBD 9.2.3<br>=C2=A0 * DRBD Reactor =
+1.1.0<br>=C2=A0 * HA Controller 1.1.3<br>=C2=A0 * external CSI images upgra=
+ded to latest versions<br><br>Operator v1.10.3 Changelog<br>---------------=
+-----------<br><br>### Changed<br><br>- Switch controller logging to be con=
+trolled by the `zap-log-level` flag.<br>- Default images:<br>=C2=A0 * LINST=
+OR 1.22.0<br>=C2=A0 * LINSTOR CSI 1.0.1<br>=C2=A0 * DRBD 9.1.14<br>=C2=A0 *=
+ DRBD Reactor 1.1.0<br>=C2=A0 * external CSI images upgraded to latest vers=
+ions<br></div>
 
---0000000000000eef2805f988cf81--
+--0000000000006269ae05fa2855fe--
