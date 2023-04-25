@@ -1,20 +1,22 @@
-Return-Path: <moritz.wanzenboeck@linbit.com>
-Received: from mail-ua1-f47.google.com (mail-ua1-f47.google.com
-	[209.85.222.47])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 95AE24202E5
+Return-Path: <roland.kammerer@linbit.com>
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com
+	[209.85.128.53])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 2C1F64202E5
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 25 Apr 2023 14:33:42 +0200 (CEST)
-Received: by mail-ua1-f47.google.com with SMTP id
-	a1e0cc1a2514c-772661d22c2so1909149241.0
+	Tue, 25 Apr 2023 16:34:32 +0200 (CEST)
+Received: by mail-wm1-f53.google.com with SMTP id
+	5b1f17b1804b1-3f19c473b9eso84876015e9.0
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 25 Apr 2023 05:33:42 -0700 (PDT)
-MIME-Version: 1.0
-From: =?UTF-8?Q?Moritz_Wanzenb=C3=B6ck?= <moritz.wanzenboeck@linbit.com>
-Date: Tue, 25 Apr 2023 14:33:30 +0200
-Message-ID: <CAKnz9xLJRZLSt7JyL00hG7M5owKdoPLwhbAG9V35xNm2DSOVMg@mail.gmail.com>
+	Tue, 25 Apr 2023 07:34:32 -0700 (PDT)
+Date: Tue, 25 Apr 2023 16:34:30 +0200
+From: Roland Kammerer <roland.kammerer@linbit.com>
 To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Content-Type: multipart/alternative; boundary="0000000000006269ae05fa2855fe"
-Subject: [DRBD-announce] LINSTOR Operator v2.1.0 and v1.10.3
+Message-ID: <ZEfk9jvTgibwM0xE@rck.sh>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="l0G3WDyaUlGzAHYG"
+Content-Disposition: inline
+Subject: [DRBD-announce] drbd-reactor v1.2.0-rc.1
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,110 +28,78 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
---0000000000006269ae05fa2855fe
-Content-Type: text/plain; charset="UTF-8"
 
-Dear LINBIT SDS on Kubernetes users,
-
-We've recently released updates for our Kubernetes Operator.
-
-First, there is version v2.1.0 for users of our next-generation Operator.
-Along with the common image updates, it's not possible to specify the URL
-for an existing LINSTOR installation. The Operator will then skip
-deployment of the LINSTOR Controller and will configure all other
-components to use the existing cluster.
-
-For users of Operator v1, there is now version v1.10.3. Along with the
-common image updates, this version makes it possible to control the
-verbosity of the Operator pod itself.
-
-A reminder for users of Operator v1: We will maintain the existing Operator
-v1 with bug fixes and new software versions until the end of 2023. We will
-provide a dedicated upgrade path to Operator v2. We recommend all v1
-installations to continue to use v1. For all new clusters we recommend
-using v2.
-
-To get specific instructions to apply the update, check our users guide: [1]
-
-Source code is, as always, available upstream. [2]
-
-Best regards,
-Moritz
-
-[1]:
-https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-upgrade
-[2]: https://github.com/piraeusdatastore/piraeus-operator
-
-Operator v2.1.0 Changelog
--------------------------
-
-### Added
-
-- Ability to skip deploying the LINSTOR Controller by setting
-`LinstorCluster.spec.externalController`.
-- Automatically reconcile changed image configuration.
-
-### Changed
-
-- Fix an issue where the CSI node driver would use the CSI socket not
-through the expected path in the container.
-- Updated images:
-  * LINSTOR 1.22.0
-  * LINSTOR CSI 1.0.1
-  * DRBD 9.2.3
-  * DRBD Reactor 1.1.0
-  * HA Controller 1.1.3
-  * external CSI images upgraded to latest versions
-
-Operator v1.10.3 Changelog
---------------------------
-
-### Changed
-
-- Switch controller logging to be controlled by the `zap-log-level` flag.
-- Default images:
-  * LINSTOR 1.22.0
-  * LINSTOR CSI 1.0.1
-  * DRBD 9.1.14
-  * DRBD Reactor 1.1.0
-  * external CSI images upgraded to latest versions
-
---0000000000006269ae05fa2855fe
-Content-Type: text/html; charset="UTF-8"
+--l0G3WDyaUlGzAHYG
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr">Dear LINBIT SDS on Kubernetes users,<br><br>We&#39;ve rece=
-ntly released updates for our Kubernetes Operator.<br><br>First, there is v=
-ersion v2.1.0 for users of our next-generation Operator. Along with the com=
-mon image updates, it&#39;s not possible to specify the URL for an existing=
- LINSTOR installation. The Operator will then skip deployment of the LINSTO=
-R Controller and will configure all other components to use the existing cl=
-uster.<br><br>For users of Operator v1, there is now version v1.10.3. Along=
- with the common image updates, this version makes it possible to control t=
-he verbosity of the Operator pod itself.<br><br>A reminder for users of Ope=
-rator v1: We will maintain the existing Operator v1 with bug fixes and new =
-software versions until the end of 2023. We will provide a dedicated upgrad=
-e path to Operator v2. We recommend all v1 installations to continue to use=
- v1. For all new clusters we recommend using v2.<br><br>To get specific ins=
-tructions to apply the update, check our users guide: [1]<br><br>Source cod=
-e is, as always, available upstream. [2]<br><br>Best regards,<br>Moritz<br>=
-<br>[1]: <a href=3D"https://linbit.com/drbd-user-guide/linstor-guide-1_0-en=
-/#s-kubernetes-upgrade">https://linbit.com/drbd-user-guide/linstor-guide-1_=
-0-en/#s-kubernetes-upgrade</a><br>[2]: <a href=3D"https://github.com/piraeu=
-sdatastore/piraeus-operator">https://github.com/piraeusdatastore/piraeus-op=
-erator</a><br><br>Operator v2.1.0 Changelog<br>-------------------------<br=
-><br>### Added<br><br>- Ability to skip deploying the LINSTOR Controller by=
- setting `LinstorCluster.spec.externalController`.<br>- Automatically recon=
-cile changed image configuration.<br><br>### Changed<br><br>- Fix an issue =
-where the CSI node driver would use the CSI socket not through the expected=
- path in the container.<br>- Updated images:<br>=C2=A0 * LINSTOR 1.22.0<br>=
-=C2=A0 * LINSTOR CSI 1.0.1<br>=C2=A0 * DRBD 9.2.3<br>=C2=A0 * DRBD Reactor =
-1.1.0<br>=C2=A0 * HA Controller 1.1.3<br>=C2=A0 * external CSI images upgra=
-ded to latest versions<br><br>Operator v1.10.3 Changelog<br>---------------=
------------<br><br>### Changed<br><br>- Switch controller logging to be con=
-trolled by the `zap-log-level` flag.<br>- Default images:<br>=C2=A0 * LINST=
-OR 1.22.0<br>=C2=A0 * LINSTOR CSI 1.0.1<br>=C2=A0 * DRBD 9.1.14<br>=C2=A0 *=
- DRBD Reactor 1.1.0<br>=C2=A0 * external CSI images upgraded to latest vers=
-ions<br></div>
+Dear DRBD users,
 
---0000000000006269ae05fa2855fe--
+this is first RC1 of the upcoming drbd-reactor version 1.2.0.
+
+There are two noteworthy changes in this release:
+
+- The promoter plugin used a shell wrapper script shipped in drbd-utils
+  to handle OCF agents. This wrapper was replaced by a proper Rust
+  binary. The advantage is that we can (re)use that in our Windows port.
+  Every shell script re-written in a proper programming language is a
+  benefit on its own.
+
+- So far it was possible to specify an "id" for plugins in their
+  configuration snippet and that was the handle to decide which plugin
+  instances got stopped, kept alive, or started on drbd-reactor reloads
+  (systemctl reload/kill -HUP). Now we keep hashes of the configuration
+  structs (i.e., they are trait Hash) and reloading changed plugins just
+  behaves like expect: No weird "id"s, changed plugins restart, new get
+  started, unchanged ones stay, the ones now without a config get
+  stopped. The "id" fields in configs are now marked as deprecated
+  (i.e., specifying them prints a warning in the log) and don't have any
+  special meaning anymore. Note that they still contribute to the hash
+  of config struct. In order to make the config structs trait Hash we
+  had to change the 'sleep-before-promote-factor' from a f32 to a u32. I
+  guess this setting is that unknown and rarely used that we can do
+  that.
+
+In the best case you don't even notice the changes, but get an improved
+behavior on reactor reloads.
+
+If there are not reported issues, the final release will follow in about
+a week from now.
+
+GIT: https://github.com/LINBIT/drbd-reactor/commit/b9f104e55e4550865b059571=
+e64615c92d0c4c18
+TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-reactor-1.2.0-rc.1.t=
+ar.gz
+PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+
+Regards, rck
+
+Changelog:
+[ Moritz "WanzenBug" Wanzenb=F6ck ]
+* prometheus: start server in plugin constructor
+* ctl: ignore already unmasked targets
+* plugin: unify starting of plugins
+
+[ Roland Kammerer ]
+* prometheus: rm unused import
+* ocf-wrapper: rewrite in Rust
+* core,plugins: auto generate IDs
+* core,plugins,ctl: deprecate IDs
+
+--l0G3WDyaUlGzAHYG
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmRH5PAACgkQRgmezyI6
+myL2Pgf8CKStOhhrmnmBifgg6UH2ElSZSxrNw6rlx7lTIKkL6kFvm55/ZCxj6gXi
+Yv2qIMgBJhnK8XwkbkR9ZIpQSt7d1q1t+bjTj1HNL/WufSXxPDzYXRC+zz7UJ/Vj
+J1Ypf2cmVeJqjkVpjfuU/xm3RmeihP7MLhPEVzxu39FQtqX7tU/jC3fN57wDe+5A
+ipIgeCxUg6Dci4mt/N6ndahJq4VHynXwqCvELEMpsj2jH/dsaDJqWh5pVz714OlI
+dmzeNWiETlT6tfdwXYimGjzMCbwxUDF08VmurbJX6WuwZJ2m3Y4HmmpBUW/q75PE
+DK8Xk8gmCPl7rV2MQR7oJ1aEvew7KQ==
+=Q9+q
+-----END PGP SIGNATURE-----
+
+--l0G3WDyaUlGzAHYG--
