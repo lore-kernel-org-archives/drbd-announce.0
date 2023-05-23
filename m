@@ -1,22 +1,20 @@
-Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com
-	[209.85.221.50])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 9E88F4202E5
+Return-Path: <rene.peinthor@linbit.com>
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com
+	[209.85.216.50])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 0BBE9420620
 	for <drbd-announce@lists.linbit.com>;
-	Tue,  9 May 2023 09:28:54 +0200 (CEST)
-Received: by mail-wr1-f50.google.com with SMTP id
-	ffacd0b85a97d-3077d134028so2731991f8f.3
+	Tue, 23 May 2023 10:22:21 +0200 (CEST)
+Received: by mail-pj1-f50.google.com with SMTP id
+	98e67ed59e1d1-25374bda99dso610493a91.0
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 09 May 2023 00:28:54 -0700 (PDT)
-Date: Tue, 9 May 2023 09:28:52 +0200
-From: Roland Kammerer <roland.kammerer@linbit.com>
-To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Message-ID: <ZFn2NPWa76w2zBlS@rck.sh>
+	Tue, 23 May 2023 01:22:21 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ZycA6/KaCOMge+nT"
-Content-Disposition: inline
-Subject: [DRBD-announce] drbd-reactor v1.2.0
+From: Rene Peinthor <rene.peinthor@linbit.com>
+Date: Tue, 23 May 2023 10:22:09 +0200
+Message-ID: <CAHmn2DPkxF8oMDt6=Y2faNrOJ+yZaKwxRoDCG_hCgcfgncLGZw@mail.gmail.com>
+To: drbd-announce@lists.linbit.com, drbd-user <drbd-user@lists.linbit.com>
+Content-Type: multipart/alternative; boundary="00000000000004d46105fc581605"
+Subject: [DRBD-announce] linstor-server 1.23.0 release
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -28,87 +26,68 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
+--00000000000004d46105fc581605
+Content-Type: text/plain; charset="UTF-8"
 
---ZycA6/KaCOMge+nT
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+Hi!
+
+This release has a lot more bug fixes than new features, but we try to stick
+to semantic versioning and so it is a new minor release.
+
+## [1.23.0] - 2023-05-23
+
+### Added
+
+- query-all-size-info API to query-size-info for all currently available
+resource groups
+
+### Changed
+
+- SOS-Report has now a parent directory in the tgz file
+- SharedSPName have now a less strict name checking
+- Improved error handling with broken storage pools
+
+### Fixed
+
+- MakeAvailable: Fix incorrect deletion of TIE_BREAKER flag
+- SOS-Report missing some rolling .log.zip files
+- Offline satellite: Fixed handling of offline satellites
+- Rsc,Delete,Takeover: Fix possible double tiebreaker scenarios
+- Fixed DRBD config for nodes with purely numerical host names
+- Remove/ignore auto-verify-algo property if disabled on controller
+
+https://pkg.linbit.com//downloads/linstor/linstor-server-1.23.0.tar.gz
+
+
+Linstor PPA:
+https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+
+Cheers,
+Rene
+
+--00000000000004d46105fc581605
+Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Dear DRBD users,
+<div dir=3D"ltr">Hi!<div><br></div><div>This release has a lot more bug fix=
+es than new features, but we try to stick</div><div>to semantic versioning =
+and so it is a new minor release.</div><div><br></div><div>## [1.23.0] - 20=
+23-05-23<br><br>### Added<br><br>- query-all-size-info API to query-size-in=
+fo for all currently available resource groups<br><br>### Changed<br><br>- =
+SOS-Report has now a parent directory in the tgz file<br>- SharedSPName hav=
+e now a less strict name checking<br>- Improved error handling with broken =
+storage pools<br><br>### Fixed<br><br>- MakeAvailable: Fix incorrect deleti=
+on of TIE_BREAKER flag<br>- SOS-Report missing some rolling .log.zip files<=
+br>- Offline satellite: Fixed handling of offline satellites<br>- Rsc,Delet=
+e,Takeover: Fix possible double tiebreaker scenarios<br>- Fixed DRBD config=
+ for nodes with purely numerical host names<br>- Remove/ignore auto-verify-=
+algo property if disabled on controller<br></div><div><br></div><div><div><=
+a href=3D"https://pkg.linbit.com//downloads/linstor/linstor-server-1.23.0.t=
+ar.gz">https://pkg.linbit.com//downloads/linstor/linstor-server-1.23.0.tar.=
+gz</a><br></div><div><br></div><div><br></div><div><div><div><div>Linstor P=
+PA:<br><a href=3D"https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd=
+9-stack" rel=3D"noreferrer" target=3D"_blank">https://launchpad.net/~linbit=
+/+archive/ubuntu/linbit-drbd9-stack</a></div></div><div><br></div><div>Chee=
+rs,<br></div><div>Rene</div></div></div></div></div>
 
-this is version 1.2.0 of drbd-reactor. There have not been any reported
-issues in RC1. With some public holidays and not wanting to do a Fri
-release it just took a bit longer. For your convenience the original
-announcement (and some upgrade hint):
-
-There are two noteworthy changes in this release:
-
-- The promoter plugin used a shell wrapper script shipped in drbd-utils
-  to handle OCF agents. This wrapper was replaced by a proper Rust
-  binary. The advantage is that we can (re)use that in our Windows port.
-  Every shell script re-written in a proper programming language is a
-  benefit on its own.
-
-- So far it was possible to specify an "id" for plugins in their
-  configuration snippet and that was the handle to decide which plugin
-  instances got stopped, kept alive, or started on drbd-reactor reloads
-  (systemctl reload/kill -HUP). Now we keep hashes of the configuration
-  structs (i.e., they are trait Hash) and reloading changed plugins just
-  behaves like expect: No weird "id"s, changed plugins restart, new get
-  started, unchanged ones stay, the ones now without a config get
-  stopped. The "id" fields in configs are now marked as deprecated
-  (i.e., specifying them prints a warning in the log) and don't have any
-  special meaning anymore. Note that they still contribute to the hash
-  of config struct. In order to make the config structs trait Hash we
-  had to change the 'sleep-before-promote-factor' from a f32 to a u32. I
-  guess this setting is that unknown and rarely used that we can do
-  that.
-
-In the best case you don't even notice the changes, but get an improved
-behavior on reactor reloads.
-
-Upgrade: if you have promoter resources using ocf agents I'd suggest you
-upgrade all cluster nodes without active promoter resources, then you
-'systemctl restart drbd-reactor.service', then 'drbd-reactorctl evict'
-the active ones to another - now upgraded - node, upgrade that last node
-and restart the service there as well.
-
-GIT: https://github.com/LINBIT/drbd-reactor/commit/39c82c1c324bf1011f34d4ac=
-aaf82201cef61727
-TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-reactor-1.2.0.tar.gz
-PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
-
-Regards, rck
-
-Changelog:
-[ Moritz "WanzenBug" Wanzenb=F6ck ]
-* prometheus: start server in plugin constructor
-* ctl: ignore already unmasked targets
-* plugin: unify starting of plugins
-
-[ Roland Kammerer ]
-* prometheus: rm unused import
-* ocf-wrapper: rewrite in Rust
-* core,plugins: auto generate IDs
-* core,plugins,ctl: deprecate IDs
-* ocf-rs-wrapper: rm random sleep
-
-[ Joel Colledge ]
-* ci: remove -l from lbbuildctl invocation
-
---ZycA6/KaCOMge+nT
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmRZ9i0ACgkQRgmezyI6
-myIuUwf+IzPO5Gf/36PSXmt/OFBsNpoAOJ9sfmwZNBOtYtJ4UP2ydDZtaoCzsgFr
-y61FaTqiuX4Zd5Re9DM9E8w4PcMLKS21veMzm028kyWfUzdZ6etxhzPGdDkDEt/m
-AyH2Nc6Y+7jAm9Klz4OBAtInV225ie/WplZnIj6b5RaqD5lTdK9eATfZUnkOUm86
-wmHMKIcrfil+FZXrLOBcVwS/8WciWriBnkOnL3SuX9ghU+KcjlJ/yXRnJ2ErPcWF
-5kDGEcDANXibWnnTwyyzapTzsJgi6GAsxIo2Lg5L1SXi2GGWQ7AHALgp0hjt28Tr
-9V5QTfHWY/sZmEQ7Bq107OazbtGS8g==
-=LJfF
------END PGP SIGNATURE-----
-
---ZycA6/KaCOMge+nT--
+--00000000000004d46105fc581605--
