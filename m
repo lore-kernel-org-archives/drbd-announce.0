@@ -1,23 +1,21 @@
-Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com
-	[209.85.128.45])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 814A5420AFF
+Return-Path: <philipp.reisner@linbit.com>
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com
+	[209.85.208.52])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id D55084252FB
 	for <drbd-announce@lists.linbit.com>;
-	Fri, 26 May 2023 10:55:19 +0200 (CEST)
-Received: by mail-wm1-f45.google.com with SMTP id
-	5b1f17b1804b1-3f6dfc4e01fso5529095e9.0
+	Fri, 26 May 2023 12:51:36 +0200 (CEST)
+Received: by mail-ed1-f52.google.com with SMTP id
+	4fb4d7f45d1cf-510b4e488e4so948394a12.3
 	for <drbd-announce@lists.linbit.com>;
-	Fri, 26 May 2023 01:55:19 -0700 (PDT)
-Date: Fri, 26 May 2023 10:55:17 +0200
-From: Roland Kammerer <roland.kammerer@linbit.com>
-To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Message-ID: <ZHBz9avBlWPWrTzG@rck.sh>
-References: <ZG9Da0sMZ5VMJgUQ@rck.sh>
+	Fri, 26 May 2023 03:51:36 -0700 (PDT)
+From: Philipp Reisner <philipp.reisner@linbit.com>
+To: drbd-announce@lists.linbit.com
+Date: Fri, 26 May 2023 12:49:31 +0200
+Message-ID: <86edn31i6c.fsf@linbit.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZG9Da0sMZ5VMJgUQ@rck.sh>
-Subject: Re: [DRBD-announce] linstor-proxmox v7.0.1-rc.1
+Content-Type: text/plain
+Cc: drbd-user@lists.linbit.com
+Subject: [DRBD-announce] drbd-9.1.15-rc.1 and drbd-9.2.4-rc.1
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -29,10 +27,61 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-On Thu, May 25, 2023 at 01:15:55PM +0200, Roland Kammerer wrote:
-> DEB: https://packages.linbit.com/staging/public/dists/proxmox-7/drbd-9/pool/linstor-proxmox_7.0.1~rc.1-1_all.deb
+Hi DRBD users,
 
-please use this link (note the switched "staging" and "public"):
-https://packages.linbit.com/public/staging/dists/proxmox-7/drbd-9/pool/linstor-proxmox_7.0.1~rc.1-1_all.deb
+I am glad to announce yet another release cycle, drbd-9.1.15-rc.1 and
+drbd-9.2.4-rc.1.
 
-Regards, rck
+I know that users of recent kernels are eagerly waiting for this
+release. Even if a previous DRBD release was compile-time compatible
+with Linux-6.2 and later, the resulting module crashed your
+system. This got fixed.
+
+You find bug fixes at the top of the changelog with bitter
+consequences, like locking up a resource or causing an OOPS. What they
+have in common is that they are about very rare edge cases. The bugs
+have been in the code for a very long time.
+
+As usual, when fixing these bugs, we improved the test-suite as well,
+which runs 82 tests on every commit by now. Recently I learned that by
+running these tests, we cover 92.1% of all functions of the DRBD
+kernel code and 78.6% of all code lines. It might be that the real
+number is even higher since that first coverage analysis did not
+include the test runs, where we test protocol compatibility with older
+DRBD releases.
+
+Here is only the 9.2 changelog since it has the 9.1 changelog
+embedded.
+
+I will do the final release on Monday 5th of June, if you fail to
+report regressions in this release candidate.
+
+9.2.4-rc.1 (api:genl2/proto:110-122/transport:18)
+--------
+ * fix a possible deadlock when disconnecting during a resync
+ * changes merged from drbd-9.1.15
+  - fix how flush requests are marked when submitted to the Linux IO
+    stack on the secondary node
+  - when establishing a connection failed with a two-pc timeout, a
+    receiver thread deadlocked, causing drbdsetup calls to block on
+    that resource (difficult to trigger)
+  - fixed a NULL-ptr deref (a OOPS) caused by a rare race condition
+    while taking a resource down
+  - updated kernel compatibility to at least Linux head and also fixed
+    a bug in the compat checks/rules that caused OOPSes of the previous
+    drbd releases when compiled with Linux-6.2 (or on RHEL 9.2 kernel).
+  - fix an aspect of the data-generation (UUID) handling where DRBD
+    failed to do a resync when a diskless node in the remaining
+    partition promotes and demotes while a diskful node is isolated
+  - fix an aspect of the data-generation (UUID) handling where DRBD
+    considered a node to have unrelated data; this bug was triggered by
+    a sequence involving removing two nodes from a cluster and readding
+    one with the "day-0" UUIDs.
+  - do not block specific state changes (promote, demote, attach, and
+    detach) when only some nodes add a new minor
+
+https://pkg.linbit.com//downloads/drbd/9/drbd-9.1.15-rc.1.tar.gz
+https://github.com/LINBIT/drbd/commit/e219b3f170eb646526f2958578ef6eb06d3d88df
+
+https://pkg.linbit.com//downloads/drbd/9/drbd-9.2.4-rc.1.tar.gz
+https://github.com/LINBIT/drbd/commit/23538d282f0dc32597a57c79abd94df10cddd704
