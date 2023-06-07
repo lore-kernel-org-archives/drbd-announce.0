@@ -1,21 +1,22 @@
-Return-Path: <philipp.reisner@linbit.com>
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com
-	[209.85.208.43])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 00DFA4202BE
+Return-Path: <roland.kammerer@linbit.com>
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com
+	[209.85.221.45])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 07499420233
 	for <drbd-announce@lists.linbit.com>;
-	Mon,  5 Jun 2023 11:20:26 +0200 (CEST)
-Received: by mail-ed1-f43.google.com with SMTP id
-	4fb4d7f45d1cf-5147f7d045bso6737889a12.2
+	Wed,  7 Jun 2023 12:23:25 +0200 (CEST)
+Received: by mail-wr1-f45.google.com with SMTP id
+	ffacd0b85a97d-30b023b0068so346384f8f.0
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 05 Jun 2023 02:20:26 -0700 (PDT)
-From: Philipp Reisner <philipp.reisner@linbit.com>
-To: drbd-announce@lists.linbit.com
-Date: Mon, 05 Jun 2023 11:20:24 +0200
-Message-ID: <86bkhu1d0n.fsf@linbit.com>
+	Wed, 07 Jun 2023 03:23:25 -0700 (PDT)
+Date: Wed, 7 Jun 2023 12:23:24 +0200
+From: Roland Kammerer <roland.kammerer@linbit.com>
+To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
+Message-ID: <ZIBanF1XA1WN9K2m@rck.sh>
 MIME-Version: 1.0
-Content-Type: text/plain
-Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-9.1.15 and drbd-9.2.4
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="HRR0S+ZkRqMkypcK"
+Content-Disposition: inline
+Subject: [DRBD-announce] drbd-utils v9.24.0-rc.1
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -27,88 +28,55 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Hello DRBD users,
 
-I am glad to announce yet another release, drbd-9.1.15 and drbd-9.2.4.
+--HRR0S+ZkRqMkypcK
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Our 'eat your own dog food' policy led to another bug we were able to
-fix shortly before the release (during the rc.1 phase). It reproduces on
-drbd-9.2. On drbd-9.1 it reproduces only with a non-default CPU mask
-configured.
+Dear DRBD users,
 
-I know that users of recent kernels are eagerly waiting for this
-release. Even if a previous DRBD release was compile-time compatible
-with Linux-6.2 and later, the resulting module crashed your
-system. This got fixed.
+this is the first RC for the upcoming version 9.24.0 of drbd-utils. We
+accumulated a lot of minor improvements (updating the windrbd bits, lots of
+documentation updates, user defined block sizes,...). The main reason to
+finally get this out is that we added a new sub-command named "repair-md". This
+currently contains 1 fixup where DRBD left meta-data in an unexpected state.
+This command is executed automatically before an "attach", so there is no need
+to do it manually.
 
-You find bug fixes at the top of the changelog with bitter
-consequences, like locking up a resource or causing an OOPS. What they
-have in common is that they are about very rare edge cases. The bugs
-have been in the code for a very long time.
+Please check the individual commit messages for more details.
 
-As usual, when fixing these bugs, we improved the test-suite as well,
-which runs 82 tests on every commit by now. Recently I learned that by
-running these tests, we cover 92.1% of all functions of the DRBD
-kernel code and 78.6% of all code lines. It might be that the real
-number is even higher since that first coverage analysis did not
-include the test runs, where we test protocol compatibility with older
-DRBD releases.
+If there are no reported bugs I will release the final version in about a week from now.
 
-Due to the number of fixes of bugs that have severe consequences,
-I recommend upgrading.
+Regards, rck
 
-9.1.15 (api:genl2/proto:110-121/transport:17)
---------
- * fix how flush requests are marked when submitted to the Linux IO
-   stack on the secondary node
- * when establishing a connection failed with a two-pc timeout, a
-   receiver thread deadlocked, causing drbdsetup calls to block on
-   that resource (difficult to trigger)
- * fixed a NULL-ptr deref (a OOPS) caused by a rare race condition
-   while taking a resource down
- * fix a possible hard kernel-lockup, can only be triggerd when a
-   CPU-mask is configured
- * updated kernel compatibility to at least Linux head and also fixed
-   a bug in the compat checks/rules that caused OOPSes of the previous
-   drbd releases when compiled with Linux-6.2 (or on RHEL 9.2 kernel).
- * fix an aspect of the data-generation (UUID) handling where DRBD
-   failed to do a resync when a diskless node in the remaining
-   partition promotes and demotes while a diskful node is isolated
- * fix an aspect of the data-generation (UUID) handling where DRBD
-   considered a node to have unrelated data; this bug was triggered by
-   a sequence involving removing two nodes from a cluster and readding
-   one with the "day-0" UUIDs.
- * do not block specific state changes (promote, demote, attach, and
-   detach) when only some nodes add a new minor
+GIT: https://github.com/LINBIT/drbd-utils/commit/19e9dcd98f0060c7651af8d3d76ca4780e7d4570
+TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-utils-9.24.0-rc.1.tar.gz
+PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
-9.2.4 (api:genl2/proto:110-122/transport:18)
---------
- * fix a possible deadlock when disconnecting during a resync
- * fix a possible hard kernel-lockup
- * changes merged from drbd-9.1.15
-  - fix how flush requests are marked when submitted to the Linux IO
-    stack on the secondary node
-  - when establishing a connection failed with a two-pc timeout, a
-    receiver thread deadlocked, causing drbdsetup calls to block on
-    that resource (difficult to trigger)
-  - fixed a NULL-ptr deref (a OOPS) caused by a rare race condition
-    while taking a resource down
-  - updated kernel compatibility to at least Linux head and also fixed
-    a bug in the compat checks/rules that caused OOPSes of the previous
-    drbd releases when compiled with Linux-6.2 (or on RHEL 9.2 kernel).
-  - fix an aspect of the data-generation (UUID) handling where DRBD
-    failed to do a resync when a diskless node in the remaining
-    partition promotes and demotes while a diskful node is isolated
-  - fix an aspect of the data-generation (UUID) handling where DRBD
-    considered a node to have unrelated data; this bug was triggered by
-    a sequence involving removing two nodes from a cluster and readding
-    one with the "day-0" UUIDs.
-  - do not block specific state changes (promote, demote, attach, and
-    detach) when only some nodes add a new minor
+Changelog:
 
+9.24.0-rc.1
+-----------
+ * windrbd: various fixes
+ * v9: Support user-defined block-size
+ * doc,v9: improvements all over the place
+ * drbdadm,v9: implement drbdadm role <res:peer>
+ * drbdadm,v9: pass --verbose/--statistics to drbdsetup status
+ * drbd{adm,meta}: add repair-md subcommand
 
-https://pkg.linbit.com//downloads/drbd/9/drbd-9.1.15.tar.gz
-https://github.com/LINBIT/drbd/commit/b6d225583f833dc02d3e13cd92864b30f2fd442a
+--HRR0S+ZkRqMkypcK
+Content-Type: application/pgp-signature; name="signature.asc"
 
-https://pkg.linbit.com//downloads/drbd/9/drbd-9.2.4.tar.gz
-https://github.com/LINBIT/drbd/commit/460cfc1025ba5abb63ac9ed2895d6cec178bb39c
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmSAWpgACgkQRgmezyI6
+myLqGAf/e/ZGtSnNUbt9gTAnx6km3U38vjv3j5dsv5qEUZAVnBG0h3KwAHKndICH
+9iNpzWNM22Ul2QXi+X9pVrDkQbJYiQEh34EGojXMRnuFV8BzT8vuHC/3UREQ5ANU
+x7JDyZ2DQ9xWl76JYnHxnT8fC9CYYxTDv6Yr0xOxNSA6pMRw5YQ4lbWrJGU1Ts8e
+sujXhXHuhIIfnaS+JSO/XbWJVBSkbiosQ6Qb6eVBtzlgbA2aG5EjuWxMYhtMeH9A
+7q9st8iptVbaLgRV8kRj50j128Su7TpFQK4CxheAjnLI0VsHX+r5lkTvCDXtWLWc
+WXYsVDNdbAyOqZwJ9C9Bv2Xwsp3KeQ==
+=cTge
+-----END PGP SIGNATURE-----
+
+--HRR0S+ZkRqMkypcK--
