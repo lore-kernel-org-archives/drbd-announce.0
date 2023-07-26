@@ -1,20 +1,22 @@
-Return-Path: <rene.peinthor@linbit.com>
-Received: from mail-oi1-f176.google.com (mail-oi1-f176.google.com
-	[209.85.167.176])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id EDD204201CC
+Return-Path: <roland.kammerer@linbit.com>
+Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com
+	[209.85.208.169])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 2303F420370
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 24 Jul 2023 10:32:02 +0200 (CEST)
-Received: by mail-oi1-f176.google.com with SMTP id
-	5614622812f47-3a3e7376f38so375571b6e.1
+	Wed, 26 Jul 2023 10:01:45 +0200 (CEST)
+Received: by mail-lj1-f169.google.com with SMTP id
+	38308e7fff4ca-2b701e41cd3so93857001fa.3
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 24 Jul 2023 01:32:02 -0700 (PDT)
+	Wed, 26 Jul 2023 01:01:45 -0700 (PDT)
+Date: Wed, 26 Jul 2023 10:01:43 +0200
+From: Roland Kammerer <roland.kammerer@linbit.com>
+To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
+Message-ID: <ZMDS5x13AQeIvm0k@rck.sh>
 MIME-Version: 1.0
-From: Rene Peinthor <rene.peinthor@linbit.com>
-Date: Mon, 24 Jul 2023 10:31:51 +0200
-Message-ID: <CAHmn2DPiSGx24GewJ13iih-cM5ZoOsTLRfJR4iw57zvvgPG1FQ@mail.gmail.com>
-To: drbd-user <drbd-user@lists.linbit.com>, drbd-announce@lists.linbit.com
-Content-Type: multipart/alternative; boundary="000000000000dad871060137722e"
-Subject: [DRBD-announce] linstor-server 1.24.0-rc.2 release
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="KI5+pZ0yKanaMI4Z"
+Content-Disposition: inline
+Subject: [DRBD-announce] drbd-utils v9.25.0
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,138 +28,68 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
---000000000000dad871060137722e
-Content-Type: text/plain; charset="UTF-8"
 
-Hi!
+--KI5+pZ0yKanaMI4Z
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-1.24.0 will be a huge release with a lot of changes and therefore comes
-first as RCs.
-I'll explain the highlights of this release:
+Dear DRBD users,
 
-* Java-11 requirement and java-17 support
-We moved forward and now require at least java-11 for running LINSTOR, with
-this
-change we also made sure java-17 is supported. As this is the default jre
-in debian bookworm now. With this change also a lot of 3rd party libraries
-needed to be upgraded.
+this is version 9.25.0 of drbd-utils. There is no too urgent need to
+upgrade if the latest stable release works for you. For your convenience
+the summaries of the two RCs:
 
-* linstor-database tool
-A new tool was added that enables you to convert/migrate from/to different
-LINSTOR database types.
-Most interesting case is probably migrating from etcd to the crd backend.
-See linstor-database command line help on how to export/import the
-database, for this
-release we require the LINSTOR-controller to be offline while doing the
-export/import.
+The most important new feature is a major update of drbdmon that is now
+able to interact with resources (i.e., run drbd-utils commands on them).
+The rest are improvements like putting lock files to a separate
+directory and some SELinux improvements. drbdmeta got some new
+subcommands to dump/hexdump the superblock which will be needed in the
+future for LINSTOR.
 
-* LINSTOR for Windows
-LINSTOR has now basic support for Microsoft Windows and their storage
-spaces as storage backend. Installers for that will be provided for our
-WinDrbd customers.
+There was one "breaking" change between RC1 and RC2: The format of
+"drbdsetup show --json" for meta-data information changed. For indexed
+external meta data which basically nobody uses anyways we generated a
+key/value pair like: '"/path/to/dev/": 3'. This certainly was not on
+purpose and we now generate:
+"meta-disk": "/path/to/dev",
+"meta-disk-index": 3
 
-* Backupshipping queue
-There is now a property "BackupShipping/MaxConcurrentBackupsPerNode" (on
-controller or node) which limits how many concurrent backup shipments a
-node is allowed to have.
-This can be used to decrease network load during scheduled backups for
-example.
+Note that "show --json" (in contrast to "status --json") always only was
+as good as we needed it for our internal CI pipelines. Given the
+basically "unparsable" key I really assume nobody uses the old broken
+format.
 
+Regards, rck
 
-## [1.24.0-rc.2] - 2023-07-24
+GIT: https://github.com/LINBIT/drbd-utils/commit/bb297231c27690a31bf527e8bf77dca1fc2ce268
+TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-utils-9.25.0.tar.gz
+PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
-### Fixed
+Changelog:
+9.25.0
+-----------
+ * drbdmeta: {hex,}dump superblock
+ * drbdmon: major rewrite
+ * build: gcc v12 cleanups
+ * misc: put locks into separate dir
+ * selinux: add fowner fsetsid, they dropped a global noaudit rule
+ * drbdsetup,v9,show: fix meta disk format for json
+ * drbdmon: various updates
+ * build: fix RHEL6 spec builds
 
-- Force all database DATA objects to be comparable
+--KI5+pZ0yKanaMI4Z
+Content-Type: application/pgp-signature; name="signature.asc"
 
-## [1.24.0-rc.1] - 2023-07-20
+-----BEGIN PGP SIGNATURE-----
 
-### Added
+iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmTA0uAACgkQRgmezyI6
+myLgtQf9Gy+9r5rYchD2MfevOM75/WSR4maQxnnWSZvjle5EnrkC1GgMGYM2l4K4
+PQKvCMF2JX8Ejl9EOI5OYqTy9PVjcRb7s7E7RXKxXMsyveWGdq1qoUI4I3jrYkOt
+DqLqQa1exsqXIJAJrZMTNbmeUMU7j1Flrjukqr8qetebhzevBKb7n6wKwfw6l/CK
+84u9aUdyMI4zVE74kEytgWCclDteUWGxadMjoy0t3A4fbzgoQwmz4Urfimc7MR/7
+7NE4JJotP11CG44WcntepFmAJUCEjgsfzv61kYtq2x8NHthi7KPq/OMcCqER8cCz
+4q6rasSSU7fSASbpMO14uSIWvqWNTw==
+=yZJr
+-----END PGP SIGNATURE-----
 
-- Added support for Microsoft Windows (storagespaces)
-- Added queues for backup shipping
-- Added linstor-database tool to migrate from/to different database types
-- Allow drbd-option properties for node-connections
-- Added support for java-17
-
-### Changed
-
-- Update of nearly all 3rd party libraries
-- Minimal required java version is now java-11
-- Improved suspend-io "downtime" for snapshots
-- Improved default INFO logging level
-
-### Fixed
-
-- Fixed UID-mismatch when creating rollback entries in K8s/CRD
-- Resync-After: Update entries after vlm definition delete
-- Resync-After: Ignore diskless resources
-- Enforce s3-remotes for backup create and linstor-remotes for backup ship
-- Allow node-connection drbd options
-- Several fixes in backup-shipping
-- Storpools can only be deleted without snapshots in addition to without
-volumes
-- Evacuating nodes no longer create snapshots
-- Resources can not be created within a resource-definition that is
-currently restoring a backup
-
-https://pkg.linbit.com//downloads/linstor/linstor-server-1.24.0-rc.2.tar.gz
-
-
-Linstor PPA:
-https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
-
-Cheers,
-Rene
-
---000000000000dad871060137722e
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr">Hi!<div><br></div><div>1.24.0 will be a huge release with =
-a lot of changes and therefore comes first as RCs.</div><div>I&#39;ll expla=
-in the highlights of this release:</div><div><br></div><div>* Java-11 requi=
-rement and java-17 support<br>We moved forward and now require at least jav=
-a-11 for running LINSTOR, with this</div><div>change we also made sure java=
--17 is supported. As this is the default jre in debian bookworm now. With t=
-his change also a lot of 3rd party libraries needed to be upgraded.</div><d=
-iv><br></div><div>* linstor-database tool</div><div>A new tool was added th=
-at enables you to convert/migrate from/to different LINSTOR database types.=
-</div><div>Most interesting case is probably migrating from etcd to the crd=
- backend.</div><div>See linstor-database command line=C2=A0help on how to e=
-xport/import the database, for this</div><div>release we require the LINSTO=
-R-controller to be offline while doing the export/import.</div><div><br></d=
-iv><div>* LINSTOR for Windows</div><div>LINSTOR has now basic support for M=
-icrosoft Windows and their=C2=A0storage spaces as storage backend. Installe=
-rs for that will be provided for our WinDrbd customers.</div><div><br></div=
-><div>* Backupshipping queue<br>There is now a property &quot;BackupShippin=
-g/MaxConcurrentBackupsPerNode&quot; (on controller or node) which limits ho=
-w many concurrent backup shipments a node is allowed to have. <br>This can =
-be used to decrease network load during scheduled backups for example.<br><=
-/div><div><br></div><div><br></div><div>## [1.24.0-rc.2] - 2023-07-24<br><b=
-r>### Fixed<br><br>- Force all database DATA objects to be comparable<br><b=
-r>## [1.24.0-rc.1] - 2023-07-20<br><br>### Added<br><br>- Added support for=
- Microsoft Windows (storagespaces)<br>- Added queues for backup shipping<br=
->- Added linstor-database tool to migrate from/to different database types<=
-br>- Allow drbd-option properties for node-connections<br>- Added support f=
-or java-17<br><br>### Changed<br><br>- Update of nearly all 3rd party libra=
-ries<br>- Minimal required java version is now java-11<br>- Improved suspen=
-d-io &quot;downtime&quot; for snapshots <br>- Improved default INFO logging=
- level<br><br>### Fixed<br><br>- Fixed UID-mismatch when creating rollback =
-entries in K8s/CRD<br>- Resync-After: Update entries after vlm definition d=
-elete<br>- Resync-After: Ignore diskless resources<br>- Enforce s3-remotes =
-for backup create and linstor-remotes for backup ship<br>- Allow node-conne=
-ction drbd options<br>- Several fixes in backup-shipping<br>- Storpools can=
- only be deleted without snapshots in addition to without volumes<br>- Evac=
-uating nodes no longer create snapshots<br>- Resources can not be created w=
-ithin a resource-definition that is currently restoring a backup<br></div><=
-div><br></div><div><div><a href=3D"https://pkg.linbit.com//downloads/linsto=
-r/linstor-server-1.24.0-rc.2.tar.gz">https://pkg.linbit.com//downloads/lins=
-tor/linstor-server-1.24.0-rc.2.tar.gz</a><br></div><div><br></div><div><br>=
-</div><div><div><div><div>Linstor PPA:<br><a href=3D"https://launchpad.net/=
-~linbit/+archive/ubuntu/linbit-drbd9-stack" rel=3D"noreferrer" target=3D"_b=
-lank">https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack</a><=
-/div></div><div><br></div><div>Cheers,<br></div><div>Rene</div></div></div>=
-</div></div>
-
---000000000000dad871060137722e--
+--KI5+pZ0yKanaMI4Z--
