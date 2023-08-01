@@ -1,22 +1,20 @@
-Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com
-	[209.85.208.169])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 2303F420370
+Return-Path: <moritz.wanzenboeck@linbit.com>
+Received: from mail-vk1-f170.google.com (mail-vk1-f170.google.com
+	[209.85.221.170])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 498984203B3
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 26 Jul 2023 10:01:45 +0200 (CEST)
-Received: by mail-lj1-f169.google.com with SMTP id
-	38308e7fff4ca-2b701e41cd3so93857001fa.3
+	Tue,  1 Aug 2023 16:54:50 +0200 (CEST)
+Received: by mail-vk1-f170.google.com with SMTP id
+	71dfb90a1353d-486556dea4dso2361514e0c.1
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 26 Jul 2023 01:01:45 -0700 (PDT)
-Date: Wed, 26 Jul 2023 10:01:43 +0200
-From: Roland Kammerer <roland.kammerer@linbit.com>
-To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Message-ID: <ZMDS5x13AQeIvm0k@rck.sh>
+	Tue, 01 Aug 2023 07:54:50 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="KI5+pZ0yKanaMI4Z"
-Content-Disposition: inline
-Subject: [DRBD-announce] drbd-utils v9.25.0
+From: =?UTF-8?Q?Moritz_Wanzenb=C3=B6ck?= <moritz.wanzenboeck@linbit.com>
+Date: Tue, 1 Aug 2023 16:54:38 +0200
+Message-ID: <CAKnz9xKjqZbmdEOvv+bWaojjhanLp-fDiu6tbxq27avfS4xmrA@mail.gmail.com>
+To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
+Content-Type: text/plain; charset="UTF-8"
+Subject: [DRBD-announce] LINSTOR Operator v1.10.6
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -28,68 +26,66 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
+Dear LINBIT SDS on Kubernetes users,
 
---KI5+pZ0yKanaMI4Z
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+We've recently released an update for our Kubernetes Operator v1.
 
-Dear DRBD users,
+Release v1.10.6 brings the usual round of image updates, as well as
+two small improvements:
 
-this is version 9.25.0 of drbd-utils. There is no too urgent need to
-upgrade if the latest stable release works for you. For your convenience
-the summaries of the two RCs:
+First, in the (unannounced) v1.10.5, we added the option to set the
+DNS policy for Satellite containers. This is useful if you use S3
+Backups on remotes that are not publicly announced in DNS.
 
-The most important new feature is a major update of drbdmon that is now
-able to interact with resources (i.e., run drbd-utils commands on them).
-The rest are improvements like putting lock files to a separate
-directory and some SELinux improvements. drbdmeta got some new
-subcommands to dump/hexdump the superblock which will be needed in the
-future for LINSTOR.
+The second feature concerns monitoring: the CSI Driver uses a number
+of sidecar containers, which are now also configured to export
+prometheus metrics. This is enabled by default if a running prometheus
+operator instance is detected.
 
-There was one "breaking" change between RC1 and RC2: The format of
-"drbdsetup show --json" for meta-data information changed. For indexed
-external meta data which basically nobody uses anyways we generated a
-key/value pair like: '"/path/to/dev/": 3'. This certainly was not on
-purpose and we now generate:
-"meta-disk": "/path/to/dev",
-"meta-disk-index": 3
+A reminder for users of Operator v1: We will maintain the existing
+Operator v1 with bug fixes and new software versions until the end of
+2023. We will provide a dedicated upgrade path to Operator v2. We
+recommend all v1 installations to continue to use v1. For all new
+clusters we recommend using v2.
 
-Note that "show --json" (in contrast to "status --json") always only was
-as good as we needed it for our internal CI pipelines. Given the
-basically "unparsable" key I really assume nobody uses the old broken
-format.
+To get specific instructions to apply the update, check our users guide: [1]
 
-Regards, rck
+Source code is, as always, available upstream. [2]
 
-GIT: https://github.com/LINBIT/drbd-utils/commit/bb297231c27690a31bf527e8bf77dca1fc2ce268
-TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-utils-9.25.0.tar.gz
-PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+Best regards,
+Moritz
 
-Changelog:
-9.25.0
------------
- * drbdmeta: {hex,}dump superblock
- * drbdmon: major rewrite
- * build: gcc v12 cleanups
- * misc: put locks into separate dir
- * selinux: add fowner fsetsid, they dropped a global noaudit rule
- * drbdsetup,v9,show: fix meta disk format for json
- * drbdmon: various updates
- * build: fix RHEL6 spec builds
+[1]: https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-upgrade
+[2]: https://github.com/piraeusdatastore/piraeus-operator
 
---KI5+pZ0yKanaMI4Z
-Content-Type: application/pgp-signature; name="signature.asc"
+Operator v1.10.6 Changelog
+--------------------------
 
------BEGIN PGP SIGNATURE-----
+### Added
 
-iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmTA0uAACgkQRgmezyI6
-myLgtQf9Gy+9r5rYchD2MfevOM75/WSR4maQxnnWSZvjle5EnrkC1GgMGYM2l4K4
-PQKvCMF2JX8Ejl9EOI5OYqTy9PVjcRb7s7E7RXKxXMsyveWGdq1qoUI4I3jrYkOt
-DqLqQa1exsqXIJAJrZMTNbmeUMU7j1Flrjukqr8qetebhzevBKb7n6wKwfw6l/CK
-84u9aUdyMI4zVE74kEytgWCclDteUWGxadMjoy0t3A4fbzgoQwmz4Urfimc7MR/7
-7NE4JJotP11CG44WcntepFmAJUCEjgsfzv61kYtq2x8NHthi7KPq/OMcCqER8cCz
-4q6rasSSU7fSASbpMO14uSIWvqWNTw==
-=yZJr
------END PGP SIGNATURE-----
+- Configure Monitoring for CSI Components if monitoring is enabled.
 
---KI5+pZ0yKanaMI4Z--
+### Fixed
+
+- A crash caused by insufficient permissions on the LINSTOR Controller.
+- Invalid use of "HTTP" protocol specification for prometheus
+monitoring, use "http" instead.
+
+### Updated
+
+- Default images:
+  * LINSTOR CSI 1.2.2
+
+Operator v1.10.5 Changelog
+--------------------------
+
+### Added
+
+- Option to set the dns policy used for satellites.
+
+### Changed
+
+- Default images:
+  * LINSTOR CSI 1.2.0
+  * DRBD 9.1.15
+  * external CSI images upgraded to latest
