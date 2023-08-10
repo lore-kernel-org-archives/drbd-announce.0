@@ -1,21 +1,20 @@
-Return-Path: <philipp.reisner@linbit.com>
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com
-	[209.85.218.49])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 6AA8D42018E
+Return-Path: <rene.peinthor@linbit.com>
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com
+	[209.85.216.49])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id AC32A4252A4
 	for <drbd-announce@lists.linbit.com>;
-	Wed,  9 Aug 2023 16:50:25 +0200 (CEST)
-Received: by mail-ej1-f49.google.com with SMTP id
-	a640c23a62f3a-99cce6f7de2so562562766b.3
+	Thu, 10 Aug 2023 11:50:11 +0200 (CEST)
+Received: by mail-pj1-f49.google.com with SMTP id
+	98e67ed59e1d1-267f32e89a5so100445a91.0
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 09 Aug 2023 07:50:25 -0700 (PDT)
-From: Philipp Reisner <philipp.reisner@linbit.com>
-To: drbd-announce@lists.linbit.com
-Date: Wed, 09 Aug 2023 16:50:23 +0200
-Message-ID: <86ttt8e0cw.fsf@linbit.com>
+	Thu, 10 Aug 2023 02:50:11 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-9.1.16 and drbd-9.2.5
+From: Rene Peinthor <rene.peinthor@linbit.com>
+Date: Thu, 10 Aug 2023 11:49:59 +0200
+Message-ID: <CAHmn2DMHHOwoSAE8FXA7CN_KVHKgOmsFbHQeZu98XMMA9rQUzQ@mail.gmail.com>
+To: drbd-announce@lists.linbit.com, drbd-user <drbd-user@lists.linbit.com>
+Content-Type: multipart/alternative; boundary="0000000000009d03ad06028e859a"
+Subject: [DRBD-announce] linstor-server 1.24.1 release
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -27,48 +26,50 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Hello DRBD users,
+--0000000000009d03ad06028e859a
+Content-Type: text/plain; charset="UTF-8"
 
-Here are the final drbd-9.1.16 and drbd-9.2.5 releases. No regression
-was found during the release candidate week.
+Hi!
 
-This is a boring release because we fixed no exceptional bugs. All the
-addressed bugs need very particular conditions to trigger. Nearly all of
-them have consequences that you can work around easily.
+One of our k8s/crd backend users hit a bug if he had too many objects in
+the rollback
+transaction, we fixed this with this release and another problem with etcd
+importing.
 
-Of course, they consume the attention of the operations teams when they
-trigger, so we need to fix them. That becomes increasingly important as
-our customers use DRBD and DRBD controlled by LINSTOR or other
-orchestration tools on larger and larger scales.
+## [1.24.1] - 2023-08-10
 
-An outstanding fact is that we had not a single bug fix specific to
-drbd-9.2 in this cycle.
+### Fixed
 
-9.1.16 (api:genl2/proto:86-121/transport:18)
-9.2.5 (api:genl2/proto:86-122/transport:18)
---------
- * shorten times DRBD keeps IRQs on one CPU disabled. Could lead
-   to connection interruption under specific conditions
- * fix a corner case where resync did not start after resync-pause
-   state flapped
- * fix online adding of volumes/minors to an already connected resource
- * fix a possible split-brain situation with quorum enabled with
-   ping-timeout set to (unusual) high value
- * fix a locking problem that could lead to kernel OOPS
- * ensure resync can continue (bitmap-based) after interruption
-   also when it started as a full-resync first
- * correctly handle meta-data when forgetting diskless peers
- * fix a possibility of getting a split-brain although quorum enabled
- * correctly propagate UUIDs after resync following a resize operation.
-   Consequence could be a full resync instead of a bitmap-based one
- * fix a rare race condition that can cause a drbd device to end up
-   with WFBitMapS/Established replication states
+- K8s,Crd: limit number of entries in rollback resource
+- gradle: on rhel based systems force to use java-11 jre
+- ETCD,import: Convert Date to long
 
-https://pkg.linbit.com//downloads/drbd/9/drbd-9.1.16.tar.gz
-https://github.com/LINBIT/drbd/commit/288abda1fb8c93e385960af01ab28729fefdaa38
+https://pkg.linbit.com//downloads/linstor/linstor-server-1.24.1.tar.gz
 
-https://pkg.linbit.com//downloads/drbd/9/drbd-9.2.5.tar.gz
-https://github.com/LINBIT/drbd/commit/b44520271e63d4b6f359a6642eb4d475b7cc04e0
 
-cheers,
- Philipp
+Linstor PPA:
+https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+
+Cheers,
+Rene
+
+--0000000000009d03ad06028e859a
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">Hi!<div><br></div><div>One of our k8s/crd backend users hi=
+t a bug if he had too many objects in the rollback</div><div>transaction, w=
+e fixed this with this release and another problem with etcd importing.</di=
+v><div><br></div><div>## [1.24.1] - 2023-08-10<br><br>### Fixed<br><br>- K8=
+s,Crd: limit number of entries in rollback resource<br>- gradle: on rhel ba=
+sed systems force to use java-11 jre<br>- ETCD,import: Convert Date to long=
+<br></div><div><br></div><div><div><a href=3D"https://pkg.linbit.com//downl=
+oads/linstor/linstor-server-1.24.1.tar.gz">https://pkg.linbit.com//download=
+s/linstor/linstor-server-1.24.1.tar.gz</a><br></div><div><br></div><div><br=
+></div><div><div><div><div>Linstor PPA:<br><a href=3D"https://launchpad.net=
+/~linbit/+archive/ubuntu/linbit-drbd9-stack" rel=3D"noreferrer" target=3D"_=
+blank">https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack</a>=
+</div></div><div><br></div><div>Cheers,<br></div><div>Rene</div></div></div=
+></div></div>
+
+--0000000000009d03ad06028e859a--
