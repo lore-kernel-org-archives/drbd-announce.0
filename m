@@ -1,20 +1,20 @@
 Return-Path: <rene.peinthor@linbit.com>
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com
-	[209.85.216.49])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id AC32A4252A4
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com
+	[209.85.210.170])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 7AA46420225
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 10 Aug 2023 11:50:11 +0200 (CEST)
-Received: by mail-pj1-f49.google.com with SMTP id
-	98e67ed59e1d1-267f32e89a5so100445a91.0
+	Wed, 30 Aug 2023 09:10:18 +0200 (CEST)
+Received: by mail-pf1-f170.google.com with SMTP id
+	d2e1a72fcca58-68a3d2ff211so600532b3a.0
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 10 Aug 2023 02:50:11 -0700 (PDT)
+	Wed, 30 Aug 2023 00:10:18 -0700 (PDT)
 MIME-Version: 1.0
 From: Rene Peinthor <rene.peinthor@linbit.com>
-Date: Thu, 10 Aug 2023 11:49:59 +0200
-Message-ID: <CAHmn2DMHHOwoSAE8FXA7CN_KVHKgOmsFbHQeZu98XMMA9rQUzQ@mail.gmail.com>
-To: drbd-announce@lists.linbit.com, drbd-user <drbd-user@lists.linbit.com>
-Content-Type: multipart/alternative; boundary="0000000000009d03ad06028e859a"
-Subject: [DRBD-announce] linstor-server 1.24.1 release
+Date: Wed, 30 Aug 2023 09:10:05 +0200
+Message-ID: <CAHmn2DNda2y9dWAt-giyNvwaPwWu-nehoRqfu4hPZiVeic12MQ@mail.gmail.com>
+To: drbd-user <drbd-user@lists.linbit.com>, drbd-announce@lists.linbit.com
+Content-Type: multipart/alternative; boundary="0000000000009d628706041e9ea3"
+Subject: [DRBD-announce] linstor-server 1.24.2 release
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,25 +26,37 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
---0000000000009d03ad06028e859a
+--0000000000009d628706041e9ea3
 Content-Type: text/plain; charset="UTF-8"
 
-Hi!
+Hi All!
 
-One of our k8s/crd backend users hit a bug if he had too many objects in
-the rollback
-transaction, we fixed this with this release and another problem with etcd
-importing.
+Another bug fix release, to name probably the most prominent of fix is,
+fixing the controller hanging on multiple parallel snapshot shippings.
 
-## [1.24.1] - 2023-08-10
+## [1.24.2] - 2023-08-30
+
+### Changed
+
+- Improve wrapped DelayedApiException error reporting
+- Improve logging on deleting for volumes/snapshots
+- Increase timeout for sos create tar command
 
 ### Fixed
 
-- K8s,Crd: limit number of entries in rollback resource
-- gradle: on rhel based systems force to use java-11 jre
-- ETCD,import: Convert Date to long
+- Fix "attempt to replace active transMgr" due to unclean core-maps
+- Reassigning resource-definition to new resource-group had no effect on
+satellite
+- Use correct java-11 on sles based systems
+- Fixed node reconnect scope already entered bug
+- Do not create error reports for no connection to satellite errors
+- Use timeout 0, to workaround missing setsid -w on old systems
+- Backup: Fix possible NPE on non-DRBD resources
+- AutoEvict only warn about offline node
+- Fix hanging controller on multiple parallel snapshots
+- ETCD: fixed exporting empty tables
 
-https://pkg.linbit.com//downloads/linstor/linstor-server-1.24.1.tar.gz
+https://pkg.linbit.com//downloads/linstor/linstor-server-1.24.2.tar.gz
 
 
 Linstor PPA:
@@ -53,23 +65,31 @@ https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 Cheers,
 Rene
 
---0000000000009d03ad06028e859a
+--0000000000009d628706041e9ea3
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr">Hi!<div><br></div><div>One of our k8s/crd backend users hi=
-t a bug if he had too many objects in the rollback</div><div>transaction, w=
-e fixed this with this release and another problem with etcd importing.</di=
-v><div><br></div><div>## [1.24.1] - 2023-08-10<br><br>### Fixed<br><br>- K8=
-s,Crd: limit number of entries in rollback resource<br>- gradle: on rhel ba=
-sed systems force to use java-11 jre<br>- ETCD,import: Convert Date to long=
-<br></div><div><br></div><div><div><a href=3D"https://pkg.linbit.com//downl=
-oads/linstor/linstor-server-1.24.1.tar.gz">https://pkg.linbit.com//download=
-s/linstor/linstor-server-1.24.1.tar.gz</a><br></div><div><br></div><div><br=
-></div><div><div><div><div>Linstor PPA:<br><a href=3D"https://launchpad.net=
-/~linbit/+archive/ubuntu/linbit-drbd9-stack" rel=3D"noreferrer" target=3D"_=
-blank">https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack</a>=
-</div></div><div><br></div><div>Cheers,<br></div><div>Rene</div></div></div=
+<div dir=3D"ltr">Hi All!<div><br></div><div>Another bug fix release, to nam=
+e probably the most prominent of fix is,</div><div>fixing the controller ha=
+nging on multiple parallel snapshot shippings.</div><div><br><div>## [1.24.=
+2] - 2023-08-30<br><br>### Changed<br><br>- Improve wrapped DelayedApiExcep=
+tion error reporting<br>- Improve logging on deleting for volumes/snapshots=
+<br>- Increase timeout for sos create tar command<br><br>### Fixed<br><br>-=
+ Fix &quot;attempt to replace active transMgr&quot; due to unclean core-map=
+s<br>- Reassigning resource-definition to new resource-group had no effect =
+on satellite<br>- Use correct java-11 on sles based systems<br>- Fixed node=
+ reconnect scope already entered bug<br>- Do not create error reports for n=
+o connection to satellite errors<br>- Use timeout 0, to workaround missing =
+setsid -w on old systems<br>- Backup: Fix possible NPE on non-DRBD resource=
+s<br>- AutoEvict only warn about offline node<br>- Fix hanging controller o=
+n multiple parallel snapshots<br>- ETCD: fixed exporting empty tables<br></=
+div><div><br></div><div><div><a href=3D"https://pkg.linbit.com//downloads/l=
+instor/linstor-server-1.24.2.tar.gz">https://pkg.linbit.com//downloads/lins=
+tor/linstor-server-1.24.2.tar.gz</a><br></div><div><br></div><div><br></div=
+><div><div><div><div>Linstor PPA:<br><a href=3D"https://launchpad.net/~linb=
+it/+archive/ubuntu/linbit-drbd9-stack" rel=3D"noreferrer" target=3D"_blank"=
+>https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack</a></div>=
+</div><div><br></div><div>Cheers,<br></div><div>Rene</div></div></div></div=
 ></div></div>
 
---0000000000009d03ad06028e859a--
+--0000000000009d628706041e9ea3--
