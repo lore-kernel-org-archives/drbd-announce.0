@@ -1,20 +1,22 @@
-Return-Path: <moritz.wanzenboeck@linbit.com>
-Received: from mail-ua1-f51.google.com (mail-ua1-f51.google.com
-	[209.85.222.51])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 39CD6420225
+Return-Path: <roland.kammerer@linbit.com>
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com
+	[209.85.128.47])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 3B95842039E
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 31 Aug 2023 16:34:40 +0200 (CEST)
-Received: by mail-ua1-f51.google.com with SMTP id
-	a1e0cc1a2514c-7a2785e34b6so395609241.1
+	Tue, 26 Sep 2023 10:59:00 +0200 (CEST)
+Received: by mail-wm1-f47.google.com with SMTP id
+	5b1f17b1804b1-4053d53a1bfso71328115e9.1
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 31 Aug 2023 07:34:40 -0700 (PDT)
-MIME-Version: 1.0
-From: =?UTF-8?Q?Moritz_Wanzenb=C3=B6ck?= <moritz.wanzenboeck@linbit.com>
-Date: Thu, 31 Aug 2023 16:34:28 +0200
-Message-ID: <CAKnz9xKzNF-VLp4hwwKBwr3OoXsiLvpM0Dfeg7eM4VESe_b9jw@mail.gmail.com>
+	Tue, 26 Sep 2023 01:59:00 -0700 (PDT)
+Date: Tue, 26 Sep 2023 10:58:58 +0200
+From: Roland Kammerer <roland.kammerer@linbit.com>
 To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Content-Type: text/plain; charset="UTF-8"
-Subject: [DRBD-announce] LINSTOR Operator v2.2.0 and v1.10.7
+Message-ID: <ZRKdUi8KUaMi7P7M@rck.sh>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="m4fBbBd0G2A1d8+v"
+Content-Disposition: inline
+Subject: [DRBD-announce] drbd-reactor v1.3.0-rc.1 (SNMP monitoring for DRBD)
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,81 +28,92 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Dear LINBIT SDS on Kubernetes users,
 
-We've recently released updates for our Kubernetes Operator.
+--m4fBbBd0G2A1d8+v
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-First, there is version v2.2.0 for users of our next-generation
-Operator. Along with the common image updates, we've ditched the
-dependency on cert-manager for the initial deployment, making LINBIT
-SDS easier to install than ever.
+Dear DRBD users,
 
-We have also improved the way images are selected for all deployed
-components, making it easier to source images from alternative
-registries. This can be useful in air-gapped clusters.
+this RC might be interesting not only for the current drbd-reactor
+users, but also for the ones that were looking for DRBD device
+monitoring via SNMP.
 
-For users of Operator v1, there is now version v1.10.7. This also
-comes with the usual image updates, as well as inclusion of the HA
-Controller as optional dependency.
+Supporting SNMP with its different versions and capabilities (2c vs. 3)
+is not that trivial as the Rust library support (for all versions in a
+single crate) was not that great. But there is AgentX, a protocol that
+is standardized and which can be used between the snmpd and a subagent
+such as ours. While still being a horrible binary protocol from the
+early 2000s, it is ways easier to write a subagent talking AgentX than
+using SNMP directly.
 
-A reminder for users of Operator v1: We will maintain the existing
-Operator v1 with bug fixes and new software versions until the end of
-2023. With recent improvements to LINSTOR, we are now ready for having
-an assisted upgrade path to Operator v2. Watch out for further
-announcements!
+This resulted in a AgentX library for Rust - there has not been one so
+far - that supports all the PDU types and encodings the standard
+defines, so if you ever need that for one of your projects on the daemon
+or client side, this is the place to go [1].
 
-To get specific instructions to apply the update, check our users guide: [1]
+With the new library we could write an AgentX/SNMP plugin for reactor
+that exposes the usual DRBD metrics. These metrics are defined in a MIB
+as usual [2], a user friendlier "snmptranslate" representation can be
+found here [3].
 
-Source code is, as always, available upstream. [2]
+Users should copy the MIB to a place where their tools can find them,
+like ~/.snmp/mibs/ . Older LINBIT MIBs should be deleted. Then you need
+to configure snmpd to allow AgentX connections and allow access to the
+LINBIT tree. This is actually the most complicated part. It is always
+snmpd configuration/permissions, almost never drbd-reactor if things
+look correct but the tree is not accessible... A config snippet for
+net-snmpd as shipped in RHEL is given in [3]. Don't forget to systemctl
+reload/restart the snmp daemon.
 
-Best regards,
-Moritz
+Adding/enabling the plugin on the host is trivial, just do a:
+$ drbd-reactorctl edit -t agentx agentx
+and save the config, there are not too many options.
 
-[1]: https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-upgrade
-[2]: https://github.com/piraeusdatastore/piraeus-operator
+After that you should be able to display the tree with the usual tools:
+$ snmptable -m ALL -v 2c -c public $host enterprises.linbit.1.2 | less -S
 
-Operator v2.2.0 Changelog
--------------------------
+I guess there will be an unusually long RC phase (like 2 or 3 weeks?) to
+collect input from users and our customers, especially on how we
+represent the exposed data (see the MIB [2] and snmptranslate [3]).
 
-### Added
+Please test and provide feedback!
 
-- A new `LinstorNodeConnection` resource, used to configure the
-LINSTOR Node Connection feature in a Kubernetes way.
-- Allow image configuration to be customized by adding additional
-items to the config map. Items using a "greater" key
-  take precedence when referencing the same images.
-- Add image configuration for CSI sidecars.
-- Check kernel module parameters for DRBD on load.
-- Automatically set SELinux labels when loading kernel modules.
+Thanks to Lars for all the snmp talk and Moritz for input/review on the
+agentx library and the plugin.
 
-### Changed
+Regards, rck
 
-- Upgrade to operator-sdk 1.29
-- Upgrade to kubebuilder v4 layout
-- Updated images:
-  * LINSTOR 1.24.2
-  * LINSTOR CSI 1.2.3
-  * DRBD 9.2.5
+Changelog:
+[ Roland Kammerer ]
+* core,events2: fix str_to_bool
+* core,daemon: don't start if tty
+* agentx: implement plugin
 
-### Removed
+[ Joel Colledge ]
+* ci: upgrade virter and vmshed versions
 
-- Disable operator metrics by default. This removes a dependency on an
-external container.
-- Dependency on cert-manager for initial deployment.
+GIT: https://github.com/LINBIT/drbd-reactor/commit/430e2eedbb339212a6e7a18a1e0b231c1480c5d3
+TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-reactor-1.3.0-rc.1.tar.gz
+PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
-### Fixed
+[1] https://docs.rs/agentx/latest/agentx/index.html
+[2] https://github.com/LINBIT/drbd-reactor/blob/master/example/LINBIT-DRBD-MIB.mib
+[3] https://github.com/LINBIT/drbd-reactor/blob/master/doc/agentx.md
 
-- A crash caused by insufficient permissions on the LINSTOR Controller.
-- Satellite will now restart if the Pods terminate for unexpected reasons.
+--m4fBbBd0G2A1d8+v
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
 
-Operator v1.10.7 Changelog
---------------------------
+iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmUSnUwACgkQRgmezyI6
+myKB2Qf/WzO1hskLdOlXIkqIB85ncUnO0q2Hwzx5gN43/Fi5Ku771uHuaXroEZw3
+uUfFglv/GUul6mQABiLoPKlefeNaP7J1GkYiXB78bw9Hq30VFgpnmzrqs5TyoU/z
+M2UuRfDvCJLCLpmh6DaiePVei27YN/5dEyA6cSXop2yApiKG3ZNF39eGNi/RB88b
+WWOsBICZk9EuV3/Y4bORngLYFOwPN5kk9HRdCyI4SIANFDAKwpfVMN8HM+cnt8U2
+VShv4P7hAuZ5iSp5rrjai+Cir6S6XHlbFvL3iUroxoC/rRZ+WubQCSDDM3TiIxDg
+AgfYtL2V9eEtzz+KRFwfSWEwTiAxYg==
+=1cDy
+-----END PGP SIGNATURE-----
 
-### Changed
-
-- Package ha-controller chart from upstream.
-- Default images:
-  * LINSTOR 1.24.2
-  * LINSTOR CSI 1.2.3
-  * DRBD 9.1.16
+--m4fBbBd0G2A1d8+v--
