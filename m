@@ -1,22 +1,20 @@
-Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com
-	[209.85.221.43])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 67AB542016E
+Return-Path: <rene.peinthor@linbit.com>
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com
+	[209.85.210.170])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 5AD4D42016E
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 11 Oct 2023 10:44:57 +0200 (CEST)
-Received: by mail-wr1-f43.google.com with SMTP id
-	ffacd0b85a97d-3248ac76acbso5780851f8f.1
+	Wed, 11 Oct 2023 12:15:30 +0200 (CEST)
+Received: by mail-pf1-f170.google.com with SMTP id
+	d2e1a72fcca58-69361132a60so1542445b3a.1
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 11 Oct 2023 01:44:57 -0700 (PDT)
-Date: Wed, 11 Oct 2023 10:44:54 +0200
-From: Roland Kammerer <roland.kammerer@linbit.com>
-To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Message-ID: <ZSZghpD3poTRfgyM@rck.sh>
+	Wed, 11 Oct 2023 03:15:30 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="OkvPBW5h/01VJhBz"
-Content-Disposition: inline
-Subject: [DRBD-announce] drbd-reactor v1.3.0 (SNMP monitoring for DRBD)
+From: Rene Peinthor <rene.peinthor@linbit.com>
+Date: Wed, 11 Oct 2023 12:15:18 +0200
+Message-ID: <CAHmn2DO0Oi53B=hrxwKLvG3GBaztEBZ=Cn+qNdLDJ6LqeC3LPQ@mail.gmail.com>
+To: drbd-announce@lists.linbit.com, drbd-user <drbd-user@lists.linbit.com>
+Content-Type: multipart/alternative; boundary="0000000000005335f606076e1a0d"
+Subject: [DRBD-announce] python-linstor/linstor-client 1.20.0 release
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -28,88 +26,70 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
+--0000000000005335f606076e1a0d
+Content-Type: text/plain; charset="UTF-8"
 
---OkvPBW5h/01VJhBz
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Hi,
 
-Dear DRBD users,
+Here is the python-linstor and linstor-client release, bringing small
+features for the upcoming linstor-server 1.25.0 release
 
-version 1.3.0 of drbd-reactor might be interesting not only for the
-current drbd-reactor users, but also for the ones that were looking for
-DRBD device monitoring via SNMP.
+## linstor-client
+### Added
 
-Supporting SNMP with its different versions and capabilities (2c vs. 3)
-is not that trivial as the Rust library support (for all versions in a
-single crate) was not that great. But there is AgentX, a protocol that
-is standardized and which can be used between the snmpd and a subagent
-such as ours. While still being a horrible binary protocol from the
-early 2000s, it is ways easier to write a subagent talking AgentX than
-using SNMP directly.
+- Show skip-disk property and level resource list
 
-This resulted in a AgentX library for Rust - there has not been one so
-far - that supports all the PDU types and encodings the standard
-defines, so if you ever need that for one of your projects on the daemon
-or client side, this is the place to go [1].
+### Changed
 
-With the new library we could write an AgentX/SNMP plugin for reactor
-that exposes the usual DRBD metrics. These metrics are defined in a MIB
-as usual [2], a user friendlier "snmptranslate" representation can be
-found here [3].
+- Typo in remote command argument --availability-zone
 
-Users should copy the MIB to a place where their tools can find them,
-like ~/.snmp/mibs/ . Older LINBIT MIBs should be deleted. Then you need
-to configure snmpd to allow AgentX connections and allow access to the
-LINBIT tree. This is actually the most complicated part. It is always
-snmpd configuration/permissions, almost never drbd-reactor if things
-look correct but the tree is not accessible... A config snippet for
-net-snmpd as shipped in RHEL is given in [3]. Don't forget to systemctl
-reload/restart the snmp daemon.
+### Fixed
 
-Adding/enabling the plugin on the host is trivial, just do a:
-$ drbd-reactorctl edit -t agentx agentx
-and save the config, there are not too many options.
+- Fixed exos help message
+- Show deleting state for DRBD_DELETE flag
+- Fixed resource involved command AttributeError
 
-After that you should be able to display the tree with the usual tools:
-$ snmptable -m ALL -v 2c -c public $host enterprises.linbit.1.2 | less -S
+https://pkg.linbit.com//downloads/linstor/linstor-client-1.20.0.tar.gz
 
-For further information see the MIB [2] and snmptranslate [3].
+## python-linstor
+### Added
 
-Thanks to Lars for all the snmp talk and Moritz for input/review on the
-agentx library and the plugin.
+- Add EffectiveProps structure
 
-Regards, rck
+### Changed
 
-Changelog:
-[ Roland Kammerer ]
-* core,events2: fix str_to_bool
-* core,daemon: don't start if tty
-* agentx: implement plugin
+- Updated linstor-common code
 
-[ Joel Colledge ]
-* ci: upgrade virter and vmshed versions
+https://pkg.linbit.com//downloads/linstor/python-linstor-1.20.0.tar.gz
 
-GIT: https://github.com/LINBIT/drbd-reactor/commit/88a2350c101e8c2c75ebd7811d87ec154b7189ee
-TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-reactor-1.3.0.tar.gz
-PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+Linstor PPA:
+https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
-[1] https://docs.rs/agentx/latest/agentx/index.html
-[2] https://github.com/LINBIT/drbd-reactor/blob/master/example/LINBIT-DRBD-MIB.mib
-[3] https://github.com/LINBIT/drbd-reactor/blob/master/doc/agentx.md
+Best regards,
+Rene
 
---OkvPBW5h/01VJhBz
-Content-Type: application/pgp-signature; name="signature.asc"
+--0000000000005335f606076e1a0d
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
------BEGIN PGP SIGNATURE-----
+<div dir=3D"ltr"><div>Hi,</div><div><br></div><div>Here is the python-linst=
+or and linstor-client release, bringing small</div><div>features for the up=
+coming linstor-server 1.25.0 release</div><div><br></div><div>## linstor-cl=
+ient</div><div>### Added<br><br>- Show skip-disk property and level resourc=
+e list<br><br>### Changed<br><br>- Typo in remote command argument --availa=
+bility-zone<br><br>### Fixed<br><br>- Fixed exos help message<br>- Show del=
+eting state for DRBD_DELETE flag<br>- Fixed resource involved command Attri=
+buteError<br></div><div><br></div><div><a href=3D"https://pkg.linbit.com//d=
+ownloads/linstor/linstor-client-1.20.0.tar.gz">https://pkg.linbit.com//down=
+loads/linstor/linstor-client-1.20.0.tar.gz</a><br></div><br><div>## python-=
+linstor</div><div>### Added<br><br>- Add EffectiveProps structure<br><br>##=
+# Changed<br><br>- Updated linstor-common code<br></div><div><br></div><div=
+><a href=3D"https://pkg.linbit.com//downloads/linstor/python-linstor-1.20.0=
+.tar.gz">https://pkg.linbit.com//downloads/linstor/python-linstor-1.20.0.ta=
+r.gz</a><br></div><div><br></div><div><div>Linstor PPA:<br></div><div><div>=
+<a href=3D"https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack=
+" rel=3D"noreferrer" target=3D"_blank">https://launchpad.net/~linbit/+archi=
+ve/ubuntu/linbit-drbd9-stack</a><br></div><div><br></div><div>Best regards,=
+</div><div>Rene</div></div></div></div>
 
-iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmUmYH4ACgkQRgmezyI6
-myKa0wgAr+dS8ZkJ7rk9H84YxG5SNm9TAycvpGVY53F27JbnP7aeKL/O8QylxgrK
-a1hAwsdrUfSW7Ii5dRbqHZIKZhKdWXQc0GJsHuiqW9aVrkDsofGiULeKAvQPcj/u
-qrrqjQb645FovmEO7xtpFIyOW2MEEn2LQuLdbo7dNKA5VK/DNiEpL0v3hhQoPyeS
-rh2Ed2FvjO0ryT7MNMB1zWhcHcnzBMG4VqN+kdfXc8AypM5KcjIK2SwzgUphcQa7
-PeE58e3AqAEZ4nXdBDS+NnwhUMWQsIAy480FTmYRI8R74tW90YaAHIBouQsR2fCy
-N9zXfqyQw6rMepZ1n5AFb2h/8E9nKA==
-=AQPq
------END PGP SIGNATURE-----
-
---OkvPBW5h/01VJhBz--
+--0000000000005335f606076e1a0d--
