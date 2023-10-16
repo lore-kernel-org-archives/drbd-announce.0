@@ -1,22 +1,21 @@
-Return-Path: <christoph.boehmwalder@linbit.com>
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com
-	[209.85.128.50])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id AF0374201C8
+Return-Path: <philipp.reisner@linbit.com>
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com
+	[209.85.218.50])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id ADE9D420194
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 16 Oct 2023 15:09:21 +0200 (CEST)
-Received: by mail-wm1-f50.google.com with SMTP id
-	5b1f17b1804b1-40684f53d11so51601275e9.1
+	Mon, 16 Oct 2023 22:19:05 +0200 (CEST)
+Received: by mail-ej1-f50.google.com with SMTP id
+	a640c23a62f3a-9be1ee3dc86so436455966b.1
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 16 Oct 2023 06:09:21 -0700 (PDT)
-Message-ID: <5c3bf052-be88-e609-2e85-457d45f1052a@linbit.com>
-Date: Mon, 16 Oct 2023 15:09:19 +0200
+	Mon, 16 Oct 2023 13:19:05 -0700 (PDT)
+From: Philipp Reisner <philipp.reisner@linbit.com>
+To: drbd-announce@lists.linbit.com
+Date: Mon, 16 Oct 2023 22:19:03 +0200
+Message-ID: <861qdumibs.fsf@linbit.com>
 MIME-Version: 1.0
-Content-Language: en-US
-To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-From: =?UTF-8?Q?Christoph_B=c3=b6hmwalder?= <christoph.boehmwalder@linbit.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [DRBD-announce] linstor-gateway v1.3.0-rc.1
+Content-Type: text/plain
+Cc: drbd-user@lists.linbit.com
+Subject: [DRBD-announce] drbd-9.1.17-rc.1 and drbd-9.2.6-rc.1
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -28,29 +27,77 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Hi everyone,
 
-I am pleased to announce a new release candidate of LINSTOR Gateway,
-v1.3.0-rc.1.
+Hello,
 
-https://github.com/LINBIT/linstor-gateway/releases/tag/v1.3.0-rc.1
+This time, it took a bit longer, around ten weeks. For me, this was a
+fascinating development cycle.
 
-This release contains a few new features. The most prominent changes are:
+We got important fixes to the RDMA transport, which now works with the
+more recent Mellanox cards and drivers. However, there is still room for
+improvement in the performance of DRBD's RDMA transport module.
 
-* Various quality-of-life improvements to the CLI interface
-* Separate health checks for "agent", "server" and "client" nodes
-* The ability to choose the underlying target implementation when
-creating an iSCSI target
+From now on, the TCP transport can use TLS encryption. The kernel does
+the data encryption/decryption with kTLS, an additional daemon in
+userspace performs the TLS handshakes.
 
-For the full list of changes, see the changelog:
-https://github.com/LINBIT/linstor-gateway/blob/v1.3.0-rc.1/CHANGELOG.md
+Last but not least, we got a completely new, additional TCP
+implementation named 'lb-tcp'. It enables establishing DRBD connections
+over multiple paths in parallel and distributing the load between
+them. It is important to note that 'lb-tcp' is not "wire protocol"
+compatible with the traditional TCP transport.
 
-As always, your help in testing this release candidate is much
-appreciated. Please report any issues you may encounter via GitHub.
+With all these big changes, we have some unfinished edges. TLS is
+available for the TCP transport, and we also need to bring it to LB-TCP.
 
-Thanks!
+LB-TCP will get a configuration option for enabling the
+load-balancing. When that is disabled, it will be wire-compatible with
+the traditional TCP transport again. That will allow us to remove the
+old TCP transport in the future.
 
--- 
-Christoph Böhmwalder
-LINBIT | Keeping the Digital World Running
-DRBD HA —  Disaster Recovery — Software defined Storage
+For now (rc.1 phase), one has to select the lb-tcp module explicitly
+using the "transport" keyword in the configuration.
+
+On the drbd-9.1 side, things are as they should be. Fixes for exotic
+corner cases.
+
+Please help test the release candidates.
+
+
+9.2.6-rc.1 (api:genl2/proto:86-122/transport:19)
+--------
+ * a series of fixes to the RDMA transport, making it compatible with
+   more recent Mellanox cards and fixes in general to the RDMA code
+ * optional TLS encryption for the TCP transport, based on kTLS with
+   TLS handshakes in userspace
+ * a new load-balancing TCP transport "lb-tcp" that establishes all
+   configured paths in parallel and distributes the packet load over
+   them
+ * changes merged from drbd-9.1.17
+  - fix a potential crash when configuring drbd to bind to a
+    non-existent local IP address (this is a regression of drbd-9.1.8)
+  - Cure a very seldom triggering race condition bug during
+    establishing connections; when you triggered it, you got an OOPS
+    hinting to list corruption
+  - Fix handling of unexpected (on a resource in secondary role) write
+    requests
+  - Fix a corner case that can cause a process to hang when closing the
+    DRBD device, while a connection gets re-established
+  - Correctly block signal delivery during auto-demote
+  - Improve the reliability of establishing connections
+  - Do not clear the transport with `net-options --set-defaults`. This
+    fix avoids unexpected disconnect/connect cycles upon an `adjust`
+    when using the 'lb-tcp' or 'rdma' transports in drbd-9.2.
+  - New netlink packet to report path status to drbdsetup
+  - Improvements to the content and rate-limiting of many log messages
+  - Update compatibility code and follow Linux upstream development
+    until Linux 6.5
+
+https://pkg.linbit.com/downloads/drbd/9/drbd-9.2.6-rc.1.tar.gz
+https://github.com/LINBIT/drbd/commit/0ea8cf3cec494f9388ad75b7d433fb6d9097a03d
+
+https://pkg.linbit.com/downloads/drbd/9/drbd-9.1.17-rc.1.tar.gz
+https://github.com/LINBIT/drbd/commit/b9caee7779dfd43ef1fbfd686d8fbb273d7b5cb4
+
+cheers,
+ Phil
