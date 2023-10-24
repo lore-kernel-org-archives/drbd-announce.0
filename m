@@ -1,22 +1,21 @@
-Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com
-	[209.85.218.43])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 974F8420023
+Return-Path: <philipp.reisner@linbit.com>
+Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com
+	[209.85.208.172])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 13D4B420201
 	for <drbd-announce@lists.linbit.com>;
-	Fri, 20 Oct 2023 13:18:11 +0200 (CEST)
-Received: by mail-ej1-f43.google.com with SMTP id
-	a640c23a62f3a-9b1ebc80d0aso108000666b.0
+	Tue, 24 Oct 2023 22:56:07 +0200 (CEST)
+Received: by mail-lj1-f172.google.com with SMTP id
+	38308e7fff4ca-2c5028e5b88so71704461fa.3
 	for <drbd-announce@lists.linbit.com>;
-	Fri, 20 Oct 2023 04:18:11 -0700 (PDT)
-Date: Fri, 20 Oct 2023 13:18:09 +0200
-From: Roland Kammerer <roland.kammerer@linbit.com>
-To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Message-ID: <ZTJh8eXaqtYmy4Zg@rck.sh>
+	Tue, 24 Oct 2023 13:56:06 -0700 (PDT)
+From: Philipp Reisner <philipp.reisner@linbit.com>
+To: drbd-announce@lists.linbit.com
+Date: Tue, 24 Oct 2023 15:46:27 +0200
+Message-ID: <86y1fskua4.fsf@linbit.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="wYD570fb77kWdDX/"
-Content-Disposition: inline
-Subject: [DRBD-announce] drbd-utils v9.26.0-rc.2
+Content-Type: text/plain
+Cc: drbd-user@lists.linbit.com
+Subject: [DRBD-announce] drbd-9.1.17-rc.2 and drbd-9.2.6-rc.2
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -29,47 +28,56 @@ List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
 
---wYD570fb77kWdDX/
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Here are drbd-9.1.17-rc.2 and drbd-9.2.6-rc.2. Only a few changes on the
+9.1 branch. After we had this UBSAN warning in rc.1 I want to give it
+one more RC week.
 
-Dear DRBD users,
+The 9.2 branch saw way more changes than what is healthy for a release
+candidate week.
 
-this is the second release candidate for the upcoming 9.26.0 release. We
-did not find any problems in rc.1, but we wanted to squeeze in some new
-configuration options.
+I want to maintain only one TCP transport implementation in the long
+run. I briefly mentioned this in the rc.1 announcement. So, for that, we
+introduced a new config option for the net section: load-balance-paths.
+When enabled, it selects the 'lb-tcp' implementation now. In a few
+months, we will probably rename 'tcp' to 'tcp-legacy' and 'lb-tcp' to
+just 'tcp'. Then the new 'tcp' implementation will be compatible with
+both load-balanced multiple-path connections and older DRBD releases,
+depending on the new load-balance-paths setting.
 
-Please see the rc.1 announcement for details, and the individual commits
-for the new RDMA and (load balancing) TCP transport options.
+Building with the OFED kernels (RDMA) should be much easier with this rc.
+Two new config options to fine tune RDMA performance.
+Fixes to key handling in the new TLS code.
 
-Please test, if we don't find any bugs I will tag the final version in about a
-week from now.
+Known issues: As of rc.2 we know that disabling load-balance-paths and
+forcing it to use lb-tcp results in an unstable system.
+Do not use the transport keyword; use only the load-balance-paths
+keyword to be on the save side.
 
-Regards, rck
+Please help test the release candidates.
 
-GIT: https://github.com/LINBIT/drbd-utils/commit/03932e3edf6a996b14efd6176172c4998af48cc2
-TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-utils-9.26.0-rc.2.tar.gz
-PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
-Changelog:
-9.26.0-rc.2
------------
- * config,v9: new config option load-balance-paths
- * config,v9: new config options rdma-ctrls-(snd|rcv)buf-size
+9.2.6-rc.2 (api:genl2/proto:86-122/transport:19)
+--------
+ * a new config net option 'load-balance-paths' that easens
+   the steps of renaming the transports tcp to tcp-legacy and
+   lb-tcp to tcp; and the final removal of the older tcp
+   implementation
+ * Build fixes for xenial and similar distros
+ * Tuning parameter rdma-ctrl-(snd|rcv)buf-size for fine tuning
+ * TLS key handling fixes
+ * Makefile updates for compiling with OFED
+ * dkms updates to include the compat handshake module
+ * changes merged from drbd-9.1.17-rc.2
+  - fix a UBSAN warning introduced in rc.1
+  - fix a race condition regarding operations on the bitmap while
+    forgetting a bitmap slot and a pointless warning
 
---wYD570fb77kWdDX/
-Content-Type: application/pgp-signature; name="signature.asc"
 
------BEGIN PGP SIGNATURE-----
+https://pkg.linbit.com//downloads/drbd/9/drbd-9.1.17-rc.2.tar.gz
+https://github.com/LINBIT/drbd/commit/2941f6f6a2942cf6f4c81269ceea471d8d18bb6b
 
-iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmUyYe0ACgkQRgmezyI6
-myLxAQf+JWzLSrSLSHxkMexFy+p3OJwP4DJQ/ziYj+36CS1WqhZCQfGSqKuayhnX
-aX6ZlTjyGdC5MMnhuSgAsqFMcMrh+e/WAgxWg8zvjV0PsLgn5G937N4IISNaBOrL
-BN97QjMOjQGyU3advoOTiG5lFBvN494RwAldPsOk2H9neG9RPSGNKBOKGGn6+0DO
-gl4gFAZP4y1QgoSIe12H16seqn/4fi5ED72w1h3+qdXU0KjR4ia6ml8ho469Zf1a
-MGCqhjhuTS3GsN+mvDUzVRmu8bQAcAyqTEmFaP5qq3oWc4TvUYh+R5E3hDTItN0Z
-hVeExVLQ19nGQo0zoS66sOODNzHqGw==
-=SU0E
------END PGP SIGNATURE-----
+https://pkg.linbit.com//downloads/drbd/9/drbd-9.2.6-rc.2.tar.gz
+https://github.com/LINBIT/drbd/commit/cd5ed11da19b2885c0ccb5de862ce3e9c64b57fb
 
---wYD570fb77kWdDX/--
+best regards,
+ Philipp
