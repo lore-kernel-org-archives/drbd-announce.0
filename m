@@ -1,21 +1,20 @@
-Return-Path: <philipp.reisner@linbit.com>
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com
-	[209.85.208.172])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 13D4B420201
+Return-Path: <rene.peinthor@linbit.com>
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com
+	[209.85.216.51])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 276D14201FE
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 24 Oct 2023 22:56:07 +0200 (CEST)
-Received: by mail-lj1-f172.google.com with SMTP id
-	38308e7fff4ca-2c5028e5b88so71704461fa.3
+	Wed, 25 Oct 2023 08:20:22 +0200 (CEST)
+Received: by mail-pj1-f51.google.com with SMTP id
+	98e67ed59e1d1-2739c8862d2so1314772a91.1
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 24 Oct 2023 13:56:06 -0700 (PDT)
-From: Philipp Reisner <philipp.reisner@linbit.com>
-To: drbd-announce@lists.linbit.com
-Date: Tue, 24 Oct 2023 15:46:27 +0200
-Message-ID: <86y1fskua4.fsf@linbit.com>
+	Tue, 24 Oct 2023 23:20:22 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-9.1.17-rc.2 and drbd-9.2.6-rc.2
+From: Rene Peinthor <rene.peinthor@linbit.com>
+Date: Wed, 25 Oct 2023 08:20:09 +0200
+Message-ID: <CAHmn2DOasXKFE0aZHLCpLRXtOh-uRi2+VtxpxBfCpKiq3Vg23Q@mail.gmail.com>
+To: drbd-announce@lists.linbit.com, drbd-user <drbd-user@lists.linbit.com>
+Content-Type: multipart/alternative; boundary="00000000000024dc88060884736e"
+Subject: [DRBD-announce] python-linstor/linstor-client 1.20.1 release
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -27,57 +26,54 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
+--00000000000024dc88060884736e
+Content-Type: text/plain; charset="UTF-8"
 
-Here are drbd-9.1.17-rc.2 and drbd-9.2.6-rc.2. Only a few changes on the
-9.1 branch. After we had this UBSAN warning in rc.1 I want to give it
-one more RC week.
+Hi,
 
-The 9.2 branch saw way more changes than what is healthy for a release
-candidate week.
+a small addition to the client, it can now set the controller/satellite log
+level and
+it is now no longer necessary to use raw curl calls.
 
-I want to maintain only one TCP transport implementation in the long
-run. I briefly mentioned this in the rc.1 announcement. So, for that, we
-introduced a new config option for the net section: load-balance-paths.
-When enabled, it selects the 'lb-tcp' implementation now. In a few
-months, we will probably rename 'tcp' to 'tcp-legacy' and 'lb-tcp' to
-just 'tcp'. Then the new 'tcp' implementation will be compatible with
-both load-balanced multiple-path connections and older DRBD releases,
-depending on the new load-balance-paths setting.
+## linstor-client
+### Added
 
-Building with the OFED kernels (RDMA) should be much easier with this rc.
-Two new config options to fine tune RDMA performance.
-Fixes to key handling in the new TLS code.
+- Add "set-log-level" subcommand for controller and node
 
-Known issues: As of rc.2 we know that disabling load-balance-paths and
-forcing it to use lb-tcp results in an unstable system.
-Do not use the transport keyword; use only the load-balance-paths
-keyword to be on the save side.
+https://pkg.linbit.com//downloads/linstor/linstor-client-1.20.1.tar.gz
 
-Please help test the release candidates.
+## python-linstor
+### Added
 
+- Add set_log_level for controller and node
 
-9.2.6-rc.2 (api:genl2/proto:86-122/transport:19)
---------
- * a new config net option 'load-balance-paths' that easens
-   the steps of renaming the transports tcp to tcp-legacy and
-   lb-tcp to tcp; and the final removal of the older tcp
-   implementation
- * Build fixes for xenial and similar distros
- * Tuning parameter rdma-ctrl-(snd|rcv)buf-size for fine tuning
- * TLS key handling fixes
- * Makefile updates for compiling with OFED
- * dkms updates to include the compat handshake module
- * changes merged from drbd-9.1.17-rc.2
-  - fix a UBSAN warning introduced in rc.1
-  - fix a race condition regarding operations on the bitmap while
-    forgetting a bitmap slot and a pointless warning
+https://pkg.linbit.com//downloads/linstor/python-linstor-1.20.1.tar.gz
 
+Linstor PPA:
+https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
-https://pkg.linbit.com//downloads/drbd/9/drbd-9.1.17-rc.2.tar.gz
-https://github.com/LINBIT/drbd/commit/2941f6f6a2942cf6f4c81269ceea471d8d18bb6b
+Best regards,
+Rene
 
-https://pkg.linbit.com//downloads/drbd/9/drbd-9.2.6-rc.2.tar.gz
-https://github.com/LINBIT/drbd/commit/cd5ed11da19b2885c0ccb5de862ce3e9c64b57fb
+--00000000000024dc88060884736e
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-best regards,
- Philipp
+<div dir=3D"ltr"><div>Hi,</div><div><br></div><div>a small addition to the =
+client, it can now set the controller/satellite log level and</div><div>it =
+is now no longer necessary=C2=A0to use raw curl calls.</div><div><br></div>=
+<div>## linstor-client</div><div>### Added<br><br>- Add &quot;set-log-level=
+&quot; subcommand for controller and node<br></div><div><br></div><div><a h=
+ref=3D"https://pkg.linbit.com//downloads/linstor/linstor-client-1.20.1.tar.=
+gz">https://pkg.linbit.com//downloads/linstor/linstor-client-1.20.1.tar.gz<=
+/a><br></div><br><div>## python-linstor</div><div>### Added<br><br>- Add se=
+t_log_level for controller and node<br></div><div><br></div><div><a href=3D=
+"https://pkg.linbit.com//downloads/linstor/python-linstor-1.20.1.tar.gz">ht=
+tps://pkg.linbit.com//downloads/linstor/python-linstor-1.20.1.tar.gz</a><br=
+></div><div><br></div><div><div>Linstor PPA:<br></div><div><div><a href=3D"=
+https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack" rel=3D"no=
+referrer" target=3D"_blank">https://launchpad.net/~linbit/+archive/ubuntu/l=
+inbit-drbd9-stack</a><br></div><div><br></div><div>Best regards,</div><div>=
+Rene</div></div></div></div>
+
+--00000000000024dc88060884736e--
