@@ -1,21 +1,22 @@
-Return-Path: <philipp.reisner@linbit.com>
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com
-	[209.85.208.54])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 7644E420195
+Return-Path: <roland.kammerer@linbit.com>
+Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com
+	[209.85.208.170])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 0441042019F
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 31 Oct 2023 17:07:21 +0100 (CET)
-Received: by mail-ed1-f54.google.com with SMTP id
-	4fb4d7f45d1cf-53e2308198eso9685418a12.1
+	Wed,  8 Nov 2023 13:30:46 +0100 (CET)
+Received: by mail-lj1-f170.google.com with SMTP id
+	38308e7fff4ca-2c7369df9d6so13928221fa.1
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 31 Oct 2023 09:07:21 -0700 (PDT)
-From: Philipp Reisner <philipp.reisner@linbit.com>
-To: drbd-announce@lists.linbit.com
-Date: Tue, 31 Oct 2023 17:07:18 +0100
-Message-ID: <86v8amlqrt.fsf@linbit.com>
+	Wed, 08 Nov 2023 04:30:46 -0800 (PST)
+Date: Wed, 8 Nov 2023 13:30:43 +0100
+From: Roland Kammerer <roland.kammerer@linbit.com>
+To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
+Message-ID: <ZUt/c1tApTJVeqMW@rck.sh>
 MIME-Version: 1.0
-Content-Type: text/plain
-Cc: drbd-user@lists.linbit.com
-Subject: [DRBD-announce] drbd-9.1.17 and drbd-9.2.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="uDV61aFNT2O6By+2"
+Content-Disposition: inline
+Subject: [DRBD-announce] drbd-reactor v1.4.0-rc.1
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -28,93 +29,55 @@ List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
 
-Happy Halloween our spooky friends
-Our latest release shows we've made some mends
+--uDV61aFNT2O6By+2
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-To make sure your data processing has little delay
-We have brought back our RDMA from decay
+Dear DRBD users,
 
-Our new DRBD encryption is meant to be scary
-It will definitely make any unauthorized parties be wary
+this is RC1 of the upcoming version 1.4.0. The main feature is improved
+DRBD events tracking that now survives kernel upgrades. There has also
+been an improvement for the prometheus plugin that it works with any IP
+family even if "ipv6.disabled=3D1" is set on the kernel command line.
 
-Our last update is meant to be seen
-Our new TCP transport is so fast you'll scream
+Note that this requires the latest drbd-utils.
 
-Hopefully, some of our enhancements save you from fright,
-And please, have a great Halloween tonight!
+Please test, if we don't find any bugs I will release the final version
+in about a week from now.
 
+Regards, rck
 
+GIT: https://github.com/LINBIT/drbd-reactor/commit/c0b0102332064ddec89d3248=
+bf26621406a2a560
+TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-reactor-1.4.0-rc.1.t=
+ar.gz
+PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
-In the second week in release-candidate status, we got minor fixes on
-the 9.2 branch and nothing on the 9.1 branch. It feels ready now.
+Changelog:
+[ Roland Kammerer ]
+* build: add MIB to examples
+* core,events2: allow events2 reloading
+* filter_map(..).next() -> find_map(..)
+* build: bump drbd-utils to 9.26.0
 
-I just read over my announcements of rc.1 and rc.2 and wondered why I
-described the news in such a confusing way. Trying it again:
+[ Moritz Wanzenb=F6ck ]
+* prometheus: ensure default works with any IP family
+* ci: fix coverage instrumentation
 
-TLS: If you want to enable TLS put this into your config
+--uDV61aFNT2O6By+2
+Content-Type: application/pgp-signature; name="signature.asc"
 
-net {
-  tls yes;
-}
+-----BEGIN PGP SIGNATURE-----
 
-More details, here:
-https://linbit.com/drbd-user-guide/drbd-guide-9_0-en/#s-tcp_ip-tls
+iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmVLf3AACgkQRgmezyI6
+myLS0gf8C9Ugkni7iuiitAqjLY9dgmeSapwD5bRwo0SxxQKuqxeYcNpagAjjcRCA
+qPHmU1Spo794s4GG8se3M9eBQ6raMXoa1jtIBI2Z1a/zBzCIE941RxQ9yjQwdwiw
+PqRIuHgXxcLoiVYnsG6VrPsaqUy0mjx40gE2wn5rhBpJ/T2r1N+gQgCIMjTvmsJX
+BrJ2TGWo1fIqcpkMfHRwrG1ApJxLqh3r9onEqfv3+jc34tVQ3qS8uZ+McI8HZwD4
+JW8pDS6nBNnkEg7F90gJEtdAaxpMAKJAVsmlOwufFR2/njzo+tjMMRKGL5CpZRvr
+luxfldaYTHxILv34aL8JblZJq9OC2A==
+=+6VZ
+-----END PGP SIGNATURE-----
 
-
-Load-balancing over multiple TCP connections:
-
-net {
-  load-balance-paths yes;
-}
-
-For that to do something useful, you need to have multiple paths for a
-connection in your config. See here for more:
-https://linbit.com/drbd-user-guide/drbd-guide-9_0-en/#s-configuring-multiple-paths
-
-As of this release, you can not use 'tls' and 'load-balance-paths' together.
-
-The RDMA transport got several fixes and two new configuration options.
-
-
-9.2.6 (api:genl2/proto:86-122/transport:19)
---------
- * a series of fixes to the RDMA transport, making it compatible with
-   more recent Mellanox cards and fixes in general to the RDMA code
- * Tuning parameter rdma-ctrl-(snd|rcv)buf-size for fine tuning
- * Makefile updates for compiling with OFED
- * optional TLS encryption for the TCP transport, based on kTLS with
-   TLS handshakes in userspace
- * a new load-balancing TCP transport "lb-tcp" that establises all
-   configured paths in paralle and distributes the packet load
-   over them
- * a new config net option 'load-balance-paths' that easens
-   the steps of renaming the transports tcp to tcp-legacy and
-   lb-tcp to tcp and the final removal of the older tcp
-   implementation
- * changes merged from drbd-9.1.17
-  - fix a potential crash when configuring drbd to bind to a
-    non-existent local IP address (this is a regression of drbd-9.1.8)
-  - Cure a very seldom triggering race condition bug during
-    establishing connections; when you triggered it, you got an OOPS
-    hinting to list corruption
-  - fix a race condition regarding operations on the bitmap while
-    forgetting a bitmap slot and a pointless warning
-  - Fix handling of unexpected (on a resource in secondary role) write
-    requests
-  - Fix a corner case that can cause a process to hang when closing the
-    DRBD device, while a connection gets re-established
-  - Correctly block signal delivery during auto-demote
-  - Improve the reliability of establishing connections
-  - Do not clear the transport with `net-options --set-defaults`. This
-    fix avoids unexpected disconnect/connect cycles upon an `adjust`
-    when using the 'lb-tcp' or 'rdma' transports in drbd-9.2.
-  - New netlink packet to report path status to drbdsetup
-  - Improvements to the content and rate-limiting of many log messages
-  - Update compatibility code and follow Linux upstream development
-    until Linux 6.5
-
-https://github.com/LINBIT/drbd/commit/36c922e6b26d558e256ed490a5e859afbbed08c3
-https://pkg.linbit.com//downloads/drbd/9/drbd-9.1.17.tar.gz
-
-https://github.com/LINBIT/drbd/commit/52144c0f90a0fb00df6a7d6714ec9034c7af7a28
-https://pkg.linbit.com//downloads/drbd/9/drbd-9.2.6.tar.gz
+--uDV61aFNT2O6By+2--
