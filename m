@@ -1,20 +1,22 @@
-Return-Path: <rene.peinthor@linbit.com>
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com
-	[209.85.216.41])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 07CA14202AD
+Return-Path: <roland.kammerer@linbit.com>
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com
+	[209.85.128.54])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id D259B42036B
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 20 Nov 2023 12:58:19 +0100 (CET)
-Received: by mail-pj1-f41.google.com with SMTP id
-	98e67ed59e1d1-280b06206f7so789596a91.1
+	Tue, 21 Nov 2023 13:28:41 +0100 (CET)
+Received: by mail-wm1-f54.google.com with SMTP id
+	5b1f17b1804b1-4094301d505so22748035e9.2
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 20 Nov 2023 03:58:19 -0800 (PST)
+	Tue, 21 Nov 2023 04:28:41 -0800 (PST)
+Date: Tue, 21 Nov 2023 13:28:38 +0100
+From: Roland Kammerer <roland.kammerer@linbit.com>
+To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
+Message-ID: <ZVyidrdCcS/9sGU9@rck.sh>
 MIME-Version: 1.0
-From: Rene Peinthor <rene.peinthor@linbit.com>
-Date: Mon, 20 Nov 2023 12:58:07 +0100
-Message-ID: <CAHmn2DN8mL+yAfLFKa7RhMtMgHA2unt_OXW_-Y=ZGtMuS7WfyA@mail.gmail.com>
-To: drbd-announce@lists.linbit.com, drbd-user <drbd-user@lists.linbit.com>
-Content-Type: multipart/alternative; boundary="000000000000a895b2060a943385"
-Subject: [DRBD-announce] linstor-server 1.25.1 release
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="CAeVYk83TLeIF1oK"
+Content-Disposition: inline
+Subject: [DRBD-announce] drbd-reactor v1.4.0
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,67 +28,53 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
---000000000000a895b2060a943385
-Content-Type: text/plain; charset="UTF-8"
 
-Hi All!
+--CAeVYk83TLeIF1oK
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Bugfix release, which mainly fixes 2 annoying bugs, one that linstor shows
-a warning in the
-storage pool list for offline nodes and another that should show old
-satellites as VERSION_MISMATCH.
-More bug fixes see below:
+Dear DRBD users,
 
-## [1.25.1] - 2023-11-20
+this is drbd-reactor version 1.4.0. We did not find any problems in RC1,
+for your convenience the RC1 announce below:
 
-### Fixed
+The main feature is improved DRBD events tracking that now survives
+kernel upgrades. There has also been an improvement for the prometheus
+plugin that it works with any IP family even if "ipv6.disabled=1" is set
+on the kernel command line.
 
-- Fixed version mismatch check between new satellites and a pre v1.25.0
-controller
-- Fixed "node restore" to try to (re-) create tiebreaker resources if needed
-- Fixed "node evacuate" no longer keeps diskless resource as a tiebreaker
-(in evacuating, but never deleting state)
-- Fixed "sp l" showing spurious warning that a diskless SP is offline (due
-to caching bug)
-- Fixed potential null pointer exception in AutoDiskfulTask
-- Fixed "r c --drbd-diskless" falsely requiring free peer-slot
-- Fixed bug where FILE/-THIN provider did not properly find existing
-snapshots (thus also not deleting them properly)
+Note that this requires the latest drbd-utils (9.26.0).
 
-https://pkg.linbit.com//downloads/linstor/linstor-server-1.25.1.tar.gz
+Regards, rck
 
+GIT: https://github.com/LINBIT/drbd-reactor/commit/9e76084cc06116331ad4a0210aa480ab649cd5c0
+TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-reactor-1.4.0.tar.gz
+PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
-Linstor PPA:
-https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+Changelog:
+[ Roland Kammerer ]
+* build: add MIB to examples
+* core,events2: allow events2 reloading
+* filter_map(..).next() -> find_map(..)
+* build: bump drbd-utils to 9.26.0
 
-Cheers,
-Rene
+[ Moritz Wanzenb=F6ck ]
+* prometheus: ensure default works with any IP family
+* ci: fix coverage instrumentation
 
---000000000000a895b2060a943385
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+--CAeVYk83TLeIF1oK
+Content-Type: application/pgp-signature; name="signature.asc"
 
-<div dir=3D"ltr">Hi All!<div><br></div><div>Bugfix release, which mainly fi=
-xes 2 annoying=C2=A0bugs, one that linstor shows a warning in the</div><div=
->storage pool list for offline nodes and another that should show old satel=
-lites as VERSION_MISMATCH.</div><div>More bug fixes see below:</div><div><b=
-r></div><div><div>## [1.25.1] - 2023-11-20<br><br>### Fixed<br><br>- Fixed =
-version mismatch check between new satellites and a pre v1.25.0 controller<=
-br>- Fixed &quot;node restore&quot; to try to (re-) create tiebreaker resou=
-rces if needed<br>- Fixed &quot;node evacuate&quot; no longer keeps diskles=
-s resource as a tiebreaker (in evacuating, but never deleting state)<br>- F=
-ixed &quot;sp l&quot; showing spurious warning that a diskless SP is offlin=
-e (due to caching bug)<br>- Fixed potential null pointer exception in AutoD=
-iskfulTask<br>- Fixed &quot;r c --drbd-diskless&quot; falsely requiring fre=
-e peer-slot<br>- Fixed bug where FILE/-THIN provider did not properly find =
-existing snapshots (thus also not deleting them properly)<br></div><div><br=
-></div><div><div><a href=3D"https://pkg.linbit.com//downloads/linstor/linst=
-or-server-1.25.1.tar.gz">https://pkg.linbit.com//downloads/linstor/linstor-=
-server-1.25.1.tar.gz</a><br></div><div><br></div><div><br></div><div><div><=
-div><div>Linstor PPA:<br><a href=3D"https://launchpad.net/~linbit/+archive/=
-ubuntu/linbit-drbd9-stack" rel=3D"noreferrer" target=3D"_blank">https://lau=
-nchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack</a></div></div><div><=
-br></div><div>Cheers,<br></div><div>Rene</div></div></div></div></div></div=
->
+-----BEGIN PGP SIGNATURE-----
 
---000000000000a895b2060a943385--
+iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmVconMACgkQRgmezyI6
+myJcTAf8DIJHBphhjXw9830/vikoXIprjD3RZDPJo/zRVGnDq0jRBgA49zqabPL9
+dBPtWzaM4expun94EOPIx7GoOZTwnBtSGYPJ7CZolNvfKmAJQ4LJZlzONXtYDEwY
+ivb012yFA/XMe4cvc3bigQontFx+1Yq4A+UuFr77oJtEmTRQmsWaxSdGhrQu4I0D
+/MXUSSINia87+hYDYfhCV5Xto3kq37ReRC0qYk1JyF/Ee15C0rlaojG1BnAAewbf
+RwO0OAz3QKaaz3sIlzflSe4m6+p3dUKJ47HMhb3Ip5O7PCZrmG8tIR04jRFdZmIx
+XdEdCGBakcjWrkSh9LBJE/2WnsEn4w==
+=zGCh
+-----END PGP SIGNATURE-----
+
+--CAeVYk83TLeIF1oK--
