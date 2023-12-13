@@ -1,20 +1,21 @@
-Return-Path: <moritz.wanzenboeck@linbit.com>
-Received: from mail-vk1-f177.google.com (mail-vk1-f177.google.com
-	[209.85.221.177])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 636E242035E
+Return-Path: <philipp.reisner@linbit.com>
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com
+	[209.85.218.46])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 2DA8C4201C5
 	for <drbd-announce@lists.linbit.com>;
-	Wed,  6 Dec 2023 16:17:15 +0100 (CET)
-Received: by mail-vk1-f177.google.com with SMTP id
-	71dfb90a1353d-4b2f3539089so603450e0c.0
+	Wed, 13 Dec 2023 21:42:20 +0100 (CET)
+Received: by mail-ej1-f46.google.com with SMTP id
+	a640c23a62f3a-9fa2714e828so961770266b.1
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 06 Dec 2023 07:17:14 -0800 (PST)
+	Wed, 13 Dec 2023 12:42:20 -0800 (PST)
+From: Philipp Reisner <philipp.reisner@linbit.com>
+To: drbd-announce@lists.linbit.com
+Date: Wed, 13 Dec 2023 21:42:18 +0100
+Message-ID: <86r0jphm1h.fsf@linbit.com>
 MIME-Version: 1.0
-From: =?UTF-8?Q?Moritz_Wanzenb=C3=B6ck?= <moritz.wanzenboeck@linbit.com>
-Date: Wed, 6 Dec 2023 16:17:02 +0100
-Message-ID: <CAKnz9xJPVz7ZUS65cCNqxiv+4uiobZpju8=FSNQbR2cTUc1X_w@mail.gmail.com>
-To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Content-Type: text/plain; charset="UTF-8"
-Subject: [DRBD-announce] LINSTOR Operator v2.3.0 and v1.10.8
+Content-Type: text/plain
+Cc: drbd-user@lists.linbit.com
+Subject: [DRBD-announce] drbd-9.1.18-rc.1 and drbd-9.2.7-rc.1
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,99 +27,52 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Dear LINBIT SDS on Kubernetes users,
 
-We've recently released updates for our Kubernetes Operator.
+Hello,
 
-In version v2.3.0 of our next-generation Operator we've added a lot of
-usability improvements. There are now shortcuts for editing most
-operator-controlled containers. So instead of having to write a patch,
-you can provide a "podTemplate" for the container.
+Here comes the DRBD December release. drbd-9.1.18-rc.1 and drbd-9.2.7-rc.1.
+We have two updates that are worth mentioning.
 
-There are also now toggles for specific components, such as the High
-Availability Controller, so you can disable the deployment if you
-really need to.
+One, the RDMA transport finally reaches general usability. As usual, I
+have plans to improve it further, it never stops.
 
-There is also now the option to use TLS with DRBD: if LINSTOR is
-configured to user internal TLS, you can in addition set
-.spec.internalTLS.tlsHandshakeDaemon=true in the Satellite
-Configuration, which automatically deploys the needed user space
-component. If you then set "DrbdOptions/Net/tls: yes" in LINSTOR, you
-automatically get encrypted DRBD replication.
+The other improvement is in the area of the quorum code. For a cluster
+containing two nodes with backing disks and a diskless tiebreaker node,
+our quorum implementation can preserve quorum on a single storage node
+with the help of the tiebreaker node.
 
-In order to ease deployment, we have removed the default NetworkPolicy
-as it proved to be troublesome with some CNI plugins. We have also
-made sure that all resources work on older Kubernetes versions, so
-LINBIT SDS works out of the box with Kubernetes 1.20 and newer.
+Up to now, it has lost quorum when that remaining storage node restarts.
 
-There is also now a new helm chart to deploy the LINSTOR Operator,
-along with the workloads. They are packaged as two separate charts to
-work around some Helm limitations regarding CRDs. To install LINSTOR
-Operator v2 with helm, run:
+Now we are improving that, it will restore quorum from the meta-data in
+case it reboots.
 
-  helm repo add linstor https://charts.linstor.io
-  helm install linstor-operator linstor/linstor-operator \
-    --set imageCredentials.username=$MY_LINBIT_USER \
-    --set imageCredentials.password=$MY_LINBIT_PASSWORD \
-    --wait
-  helm install linbit-sds linstor/linbit-sds
+Please help test the release candidates.
 
-Most configuration is handled by the linbit-sds chart, so check out
-"helm show values linstor/linbit-sds" to see the available options.
 
-For Operator v1, there are only the updated component images, which
-are shared with Operator v2.
+9.2.7-rc.1 (api:genl2/proto:86-122/transport:19)
+--------
+ * Fixed wrong tx-timeouts in the RDMA transport
+ * Recreate buffers promptly for the RDMA transport, improving
+   performance a lot
+ * changes merged from drbd-9.1.18
+  - Fixed connecting nodes with differently sized backing disks,
+    specifically when the smaller node is primary, before establishing
+    the connections
+  - Fixed thawing a device that has I/O frozen after loss of quorum
+    when a configuration change eases its quorum requirements
+  - Properly fail TLS if requested (only available in drbd-9.2)
+  - Fixed a race condition that can cause auto-demote to trigger right
+    after an explicit promote
+  - Preserve "tiebreaker quorum" over a reboot of the last node (3-node
+    clusters only)
+  - Update compatibility code for Linux 6.6
 
-Also, watch out for the Upgrade Guide for Operator v1 deployment,
-which will be announced separately soon.
 
-To get specific instructions to apply the update, check our users guide: [1]
+https://pkg.linbit.com//downloads/drbd/9/drbd-9.2.7-rc.1.tar.gz
+https://github.com/LINBIT/drbd/commit/7f22671f5e852604d0383c499b96e1c2fe87901c
 
-Source code is, as always, available upstream. [2]
+https://pkg.linbit.com//downloads/drbd/9/drbd-9.1.18-rc.1.tar.gz
+https://github.com/LINBIT/drbd/commit/aaba2a8236b623538aa1c54b46b8ea48c782a03b
 
-Best regards,
-Moritz
-
-[1]: https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-upgrade
-[2]: https://github.com/piraeusdatastore/piraeus-operator
-
-Operator v2.3.0 Changelog
--------------------------
-
-### Added
-
-- Add a new option `.spec.internalTLS.tlsHandshakeDaemon` to enable
-deployment of `tlshd` alongside the LINSTOR Satellite.
-- Shortcuts to configure specific components. Components can be
-disabled by setting `enabled: false`, and the deployed workload can be
-influenced using the `podTemplate` value. Available components:
-  - `LinstorCluster.spec.controller`
-  - `LinstorCluster.spec.csiController`
-  - `LinstorCluster.spec.csiNode`
-  - `LinstorCluster.spec.highAvailabilityController`
-- Shortcut to modify the pod of a satellite by adding a
-`LinstorSatelliteConfiguration.spec.podTemplate`, which is a shortcut
-for creating a `.spec.patches` patch.
-
-### Changed
-
-- Fixed service resources relying on the default protocol version.
-- Moved NetworkPolicy for DRBD out of default deployed resources.
-- Updated images:
-  * LINSTOR 1.25.1
-  * LINSTOR CSI 1.3.0
-  * DRBD Reactor 1.4.0
-  * Latest CSI sidecars
-- Add a default toleration for the HA Controller taints to the operator.
-
-Operator v1.10.8 Changelog
---------------------------
-
-### Changed
-
-- Default images:
-  * LINSTOR 1.25.1
-  * LINSTOR CSI 1.3.0
-  * DRBD 9.1.17
-  * DRBD Reactor 1.4.0
-  * Latest CSI sidecars
+cheers,
+ Phil
