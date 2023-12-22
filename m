@@ -1,22 +1,21 @@
-Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com
-	[209.85.128.47])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 1339E4202C2
+Return-Path: <philipp.reisner@linbit.com>
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com
+	[209.85.208.45])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id D585F4202C2
 	for <drbd-announce@lists.linbit.com>;
-	Fri, 22 Dec 2023 13:37:35 +0100 (CET)
-Received: by mail-wm1-f47.google.com with SMTP id
-	5b1f17b1804b1-40d4a7f0c4dso1276855e9.1
+	Fri, 22 Dec 2023 15:26:02 +0100 (CET)
+Received: by mail-ed1-f45.google.com with SMTP id
+	4fb4d7f45d1cf-548ce39b101so2322729a12.2
 	for <drbd-announce@lists.linbit.com>;
-	Fri, 22 Dec 2023 04:37:35 -0800 (PST)
-Date: Fri, 22 Dec 2023 13:37:32 +0100
-From: Roland Kammerer <roland.kammerer@linbit.com>
-To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Message-ID: <ZYWDDPTI+ZFjhcCg@rck.sh>
+	Fri, 22 Dec 2023 06:26:02 -0800 (PST)
+From: Philipp Reisner <philipp.reisner@linbit.com>
+To: drbd-announce@lists.linbit.com
+Date: Fri, 22 Dec 2023 15:26:00 +0100
+Message-ID: <86o7eigvpj.fsf@linbit.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="2kfQp48/5Rdg0yCa"
-Content-Disposition: inline
-Subject: [DRBD-announce] drbd-utils v9.27.0
+Content-Type: text/plain
+Cc: drbd-user@lists.linbit.com
+Subject: [DRBD-announce] drbd-9.1.18 and drbd-9.2.7
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -28,63 +27,53 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
+Hello,
 
---2kfQp48/5Rdg0yCa
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Here comes the DRBD December release. drbd-9.1.18 and drbd-9.2.7.
+The updates that are worth mentioning are...
 
-Dear DRBD users,
+The RDMA transport finally reaches general usability. As usual, I have
+plans to improve it further, it never stops.
 
-this is drbd-utils version 9.27.0. There have not been any changes since
-RC1. For your convenience the announce mail for RC1:
+Regarding quorum, for a cluster containing two nodes with backing disks
+and a diskless tiebreaker node, our quorum implementation can preserve
+quorum on a single storage node with the help of the tiebreaker node.
+Up to now, it has lost quorum when that remaining storage node restarts.
+Now we are improving that, it will restore quorum from the meta-data in
+case it reboots.
 
-There is no too urgent reason to upgrade if things work for you, but
-this release contains some bug fixes and features:
+We failed to notice that DRBD had issues establishing all connections
+when a fresh cluster initializes three or more nodes with
+differently-sized backing disks. We modernized some code from the
+DRBD-8.4 times, and now that works.
 
-"adjust" got improved for diskless Primaries. So far if the
-configuration changed in a way that for example the (only) connection to
-a diskful node would be deleted and another connection to another
-diskful would have been established, the change failed because the old
-connection was removed first. But this can be a valid change and now the
-first failure removing the connection is retried after the other
-connection is established.
 
-Our tests (i.e., the script that executed them) did not sanitize its
-environment, which was responsible for test failures if the user running
-the tests was for example in an area with a '-' time offset. This should
-now be fixed.
+9.2.7 (api:genl2/proto:86-122/transport:19)
+--------
+ * Fixed wrong tx-timeouts in the RDMA transport
+ * Recreate buffers promptly for the RDMA transport, improving
+   performance a lot
+ * changes merged from drbd-9.1.18
+  - Fixed connecting nodes with differently sized backing disks,
+    specifically when the smaller node is primary, before establishing
+    the connections
+  - Fixed thawing a device that has I/O frozen after loss of quorum
+    when a configuration change eases its quorum requirements
+  - Properly fail TLS if requested (only available in drbd-9.2)
+  - Fixed a race condition that can cause auto-demote to trigger right
+    after an explicit promote
+  - Fixed a rare race condition that could mess up the handshake result
+    before it is committed to the replication state.
+  - Preserve "tiebreaker quorum" over a reboot of the last node (3-node
+    clusters only)
+  - Update compatibility code for Linux 6.6
 
-The third change are the bits needed for the improved quorum handling in
-the upcoming DRBD release as announced here[1].
 
-Regards, rck
+https://pkg.linbit.com/downloads/drbd/9/drbd-9.2.7.tar.gz
+https://github.com/LINBIT/drbd/commit/194036f7c69c45ab65549c6504c17523cb7d6644
 
-Changelog:
-9.27.0
------------
- * adjust,v9: retry for diskless primaries
- * tests: sanitize env (e.g., TZ)
- * drbdmeta: dump and restore the members field
+https://pkg.linbit.com/downloads/drbd/9/drbd-9.1.18.tar.gz
+https://github.com/LINBIT/drbd/commit/08711cce35480897f6a26f4251caf597f8114203
 
-GIT: https://github.com/LINBIT/drbd-utils/commit/fdd9a4d603a9dc99d110d8bd0e288d7c0b6f586e
-TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-utils-9.27.0.tar.gz
-PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
-
-[1] https://lists.linbit.com/pipermail/drbd-announce/2023-December/000693.html
-
---2kfQp48/5Rdg0yCa
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmWFgwcACgkQRgmezyI6
-myL4FAgAkPig0guyoBXOL8xwWzqAUJeCpztHHau7rMSJr0ft97GuZwZnVqPfrHNa
-liXh6GSH2/0BZ5kr0rFC3cpI2DvFKnw+JLSfIDpubmV38Wzyx6NfPa8WT36RpneI
-aGkZIw/V26uzwbyKk0zwHakjBNUOyrHkrj04as2gM8DuFqAACTF3i9AL4MbzvtQ7
-ZrthNbTJ81MnnwnufYl5w9SMq4m7EEJWQPitpe7vTxQIlnZ2xDQJSsUYb9Ym7CUc
-jxRmMSd7JxWC5JtOnHJ1KTLFuzq08e3kBWQarEEdjXyAvbO+IZtMR8vHBxTvAJsW
-WtXQ/p78z3LFQ92cRXPfJAgpQaA9QQ==
-=U0z6
------END PGP SIGNATURE-----
-
---2kfQp48/5Rdg0yCa--
+Merry Christmans,
+  Philipp
