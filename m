@@ -1,20 +1,20 @@
-Return-Path: <rene.peinthor@linbit.com>
-Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com
-	[209.85.215.181])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id AA4E54205C9
+Return-Path: <moritz.wanzenboeck@linbit.com>
+Received: from mail-ot1-f48.google.com (mail-ot1-f48.google.com
+	[209.85.210.48])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id A3D574205C7
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 22 Feb 2024 09:01:30 +0100 (CET)
-Received: by mail-pg1-f181.google.com with SMTP id
-	41be03b00d2f7-58962bf3f89so2259240a12.0
+	Thu, 22 Feb 2024 13:37:19 +0100 (CET)
+Received: by mail-ot1-f48.google.com with SMTP id
+	46e09a7af769-6e47a0fad63so58989a34.1
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 22 Feb 2024 00:01:30 -0800 (PST)
+	Thu, 22 Feb 2024 04:37:19 -0800 (PST)
 MIME-Version: 1.0
-From: Rene Peinthor <rene.peinthor@linbit.com>
-Date: Thu, 22 Feb 2024 09:01:18 +0100
-Message-ID: <CAHmn2DOB8xWx7nj=2+wSamHOV2j=wMx3gYz8bEvR086uRmyr=w@mail.gmail.com>
-Subject: python-linstor/linstor-client 1.21.1 release
-To: drbd-announce@lists.linbit.com, drbd-user <drbd-user@lists.linbit.com>
-Content-Type: multipart/alternative; boundary="000000000000ccf1700611f3d9f4"
+From: =?UTF-8?Q?Moritz_Wanzenb=C3=B6ck?= <moritz.wanzenboeck@linbit.com>
+Date: Thu, 22 Feb 2024 13:37:07 +0100
+Message-ID: <CAKnz9xJFfCvgVfbWvW7HhgF9hbDA2Bbbh0Y7=Y+iDKxVsr-zMw@mail.gmail.com>
+Subject: LINSTOR Operator v2.4.0
+To: drbd-user@lists.linbit.com, drbd-announce@lists.linbit.com
+Content-Type: text/plain; charset="UTF-8"
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,62 +26,74 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
---000000000000ccf1700611f3d9f4
-Content-Type: text/plain; charset="UTF-8"
+Dear LINBIT SDS on Kubernetes users,
 
-Hi!
+We've recently released version 2.4.0 for our Kubernetes Operator.
 
-This release actually just has a few client fixes/changes.
+The two major improvements in this new release are additional
+validation for LINSTOR CSI StorageClass resources and an update to the
+way we deploy LINSTOR Satellites.
 
-## linstor-client
-### Added
+The LINSTOR Operator deployment now also creates a ValidatingWebhook
+targeting StorageClasses. In particular, it will look for any
+StorageClasses using the "linstor.csi.linbit.com" provisioner and
+validate the parameters. This is particularly useful when using late
+volume binding, as invalid parameters are not directly visible to
+users there. With this change, invalid parameters will be rejected
+immediately when creating the StorageClass.
 
-- PhysicalStorageCreate: Allow zfsthin as provider kind
-- Added node connectionstatus MISSING_EXT_TOOLS handler
+The LINSTOR Operator will now also use DaemonSets to manage LINSTOR
+Satellites. This improves integration with Kubernetes maintenance
+commands like "kubectl drain". It also means that all satellite names
+now start with "linstor-satellite". This change should be completely
+transparent, any changes made to the satellite Pods in previous
+versions are converted to the equivalent changes on the DaemonSet.
 
-### Fixed
+To upgrade, either point your kustomization.yaml at the new manifest:
 
-- Do not hide evicted resources in volume list
+  https://charts.linstor.io/static/v2.4.0.yaml
 
-### Removed
+Or, if using helm, upgrade the linstor-operator chart:
 
-- OpenFlex commands removed
+  helm repo update
+  helm upgrade linstor-operator linstor/linstor-operator --wait
 
-https://pkg.linbit.com//downloads/linstor/linstor-client-1.21.1.tar.gz
+To get specific instructions to apply the update, check our users guide[1].
 
-## python-linstor
-### Changed
+If you need to upgrade from Operator v1, check out our recently
+released upgrade guide[2].
 
-- Updated linstor-common reference
-
-https://pkg.linbit.com//downloads/linstor/python-linstor-1.21.1.tar.gz
-
-Linstor PPA:
-https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+Source code is, as always, available upstream[3].
 
 Best regards,
-Rene
+Moritz
 
---000000000000ccf1700611f3d9f4
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+[1]: https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-upgrade
+[2]: https://charts.linstor.io/migration/
+[3]: https://github.com/piraeusdatastore/piraeus-operator
 
-<div dir=3D"ltr"><div>Hi!</div><div><br></div><div>This release actually ju=
-st has a few client fixes/changes.</div><div><br></div><div>##=C2=A0linstor=
--client</div><div>### Added<br><br>- PhysicalStorageCreate: Allow zfsthin a=
-s provider kind<br>- Added node connectionstatus MISSING_EXT_TOOLS handler<=
-br><br>### Fixed<br><br>- Do not hide evicted resources in volume list<br><=
-br>### Removed<br><br>- OpenFlex commands removed<br></div><div><br></div><=
-div><a href=3D"https://pkg.linbit.com//downloads/linstor/linstor-client-1.2=
-1.1.tar.gz">https://pkg.linbit.com//downloads/linstor/linstor-client-1.21.1=
-.tar.gz</a><br></div><br><div>## python-linstor</div><div>### Changed<br><b=
-r>- Updated linstor-common reference<br></div><div><br></div><div><a href=
-=3D"https://pkg.linbit.com//downloads/linstor/python-linstor-1.21.1.tar.gz"=
->https://pkg.linbit.com//downloads/linstor/python-linstor-1.21.1.tar.gz</a>=
-<br></div><div><br></div><div><div>Linstor=C2=A0PPA:<br></div><div><div><a =
-href=3D"https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack" r=
-el=3D"noreferrer" target=3D"_blank">https://launchpad.net/~linbit/+archive/=
-ubuntu/linbit-drbd9-stack</a><br></div><div><br></div><div>Best regards,</d=
-iv><div>Rene</div></div></div></div>
+Operator v2.4.0 Changelog
+-------------------------
+### Added
 
---000000000000ccf1700611f3d9f4--
+- Validating Webhook for LINBIT SDS StorageClasses.
+
+### Breaking
+
+- Use DaemonSet to manage Satellite resources instead of bare Pods.
+This enables better integration with
+  common administrative tasks such as node draining. This change
+should be transparent for users, any patches
+  applied on the satellite Pods are internally converted to work on
+the new DaemonSet instead.
+
+### Changed
+
+- Change default monitoring address for DRBD Reactor to support
+systems with IPv6 completely disabled.
+- Updated images:
+  * LINSTOR 1.26.1
+  * LINSTOR CSI 1.4.0
+  * DRBD 9.2.7
+  * High Availability Controller 1.2.0
+  * Latest CSI sidecars
