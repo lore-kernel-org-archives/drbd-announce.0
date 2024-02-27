@@ -1,20 +1,21 @@
-Return-Path: <moritz.wanzenboeck@linbit.com>
-Received: from mail-ot1-f48.google.com (mail-ot1-f48.google.com
-	[209.85.210.48])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id A3D574205C7
+Return-Path: <philipp.reisner@linbit.com>
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com
+	[209.85.221.48])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 1AF4C42021F
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 22 Feb 2024 13:37:19 +0100 (CET)
-Received: by mail-ot1-f48.google.com with SMTP id
-	46e09a7af769-6e47a0fad63so58989a34.1
+	Tue, 27 Feb 2024 22:46:49 +0100 (CET)
+Received: by mail-wr1-f48.google.com with SMTP id
+	ffacd0b85a97d-33de64c91abso1145496f8f.1
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 22 Feb 2024 04:37:19 -0800 (PST)
+	Tue, 27 Feb 2024 13:46:49 -0800 (PST)
+From: Philipp Reisner <philipp.reisner@linbit.com>
+To: drbd-announce@lists.linbit.com
+Subject: drbd-9.1.19-rc.1 and drbd-9.2.8-rc.1
+Date: Tue, 27 Feb 2024 22:46:47 +0100
+Message-ID: <86wmqp4m2g.fsf@linbit.com>
 MIME-Version: 1.0
-From: =?UTF-8?Q?Moritz_Wanzenb=C3=B6ck?= <moritz.wanzenboeck@linbit.com>
-Date: Thu, 22 Feb 2024 13:37:07 +0100
-Message-ID: <CAKnz9xJFfCvgVfbWvW7HhgF9hbDA2Bbbh0Y7=Y+iDKxVsr-zMw@mail.gmail.com>
-Subject: LINSTOR Operator v2.4.0
-To: drbd-user@lists.linbit.com, drbd-announce@lists.linbit.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+Cc: drbd-user@lists.linbit.com
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,74 +27,52 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Dear LINBIT SDS on Kubernetes users,
 
-We've recently released version 2.4.0 for our Kubernetes Operator.
+Hello,
 
-The two major improvements in this new release are additional
-validation for LINSTOR CSI StorageClass resources and an update to the
-way we deploy LINSTOR Satellites.
+As always, this release brings several fixes. For many of those fixes,
+we created new test cases or extended existing test cases to verify the
+bug's existence and the patch's effectiveness.
 
-The LINSTOR Operator deployment now also creates a ValidatingWebhook
-targeting StorageClasses. In particular, it will look for any
-StorageClasses using the "linstor.csi.linbit.com" provisioner and
-validate the parameters. This is particularly useful when using late
-volume binding, as invalid parameters are not directly visible to
-users there. With this change, invalid parameters will be rejected
-immediately when creating the StorageClass.
+What we learned was that we needed more testing in the area of the
+checksum-based resync. We have that now.
 
-The LINSTOR Operator will now also use DaemonSets to manage LINSTOR
-Satellites. This improves integration with Kubernetes maintenance
-commands like "kubectl drain". It also means that all satellite names
-now start with "linstor-satellite". This change should be completely
-transparent, any changes made to the satellite Pods in previous
-versions are converted to the equivalent changes on the DaemonSet.
+In December, I wrote that the RDMA transport was ready; well, it turned
+out that it still had an issue under heavy I/O load. Although that is
+fixed now, other bugs might be waiting to be discovered in the RDMA
+transport.
 
-To upgrade, either point your kustomization.yaml at the new manifest:
+This is the release candidate. Please help test it.
 
-  https://charts.linstor.io/static/v2.4.0.yaml
+9.2.8-rc.1 (api:genl2/proto:86-122/transport:19)
+--------
+ * Fix the not-terminating-resync phenomenon between two nodes with
+   backing disk in the presence of a diskless primary node under
+   heavy I/O
+ * Fix a rare race condition aborting connections claiming wrong
+   protocol magic
+ * Fix various problems of the checksum-based resync, including kernel
+   crashes
+ * Fix soft lockup messages in the RDMA transport under heavy I/O
+ * changes merged from drbd-9.1.19
+  - Fix a resync decision case where drbd wrongly decided to do a full
+    resync, where a partial resync was sufficient; that happened in a
+    specific connect order when all nodes were on the same data
+    generation (UUID)
+  - Fix the online resize code to obey cached size information about
+    temporal unreachable nodes
+  - Fix a rare corner case in which DRBD on a diskless primary node
+    failed to re-issue a read request to another node with a backing
+    disk upon connection loss on the connection where it shipped the
+    read request initially
+  - Make timeout during promotion attempts interruptible
+  - No longer write activity-log updates on the secondary node in a
+    cluster with precisely two nodes with backing disk; this is a
+    performance optimization
+  - Reduce CPU usage of acknowledgment processing
 
-Or, if using helm, upgrade the linstor-operator chart:
+https://pkg.linbit.com//downloads/drbd/9/drbd-9.2.8-rc.1.tar.gz
+https://github.com/LINBIT/drbd/commit/c2823c629623594bd6f916b7bc7e55629a790d4d
 
-  helm repo update
-  helm upgrade linstor-operator linstor/linstor-operator --wait
-
-To get specific instructions to apply the update, check our users guide[1].
-
-If you need to upgrade from Operator v1, check out our recently
-released upgrade guide[2].
-
-Source code is, as always, available upstream[3].
-
-Best regards,
-Moritz
-
-[1]: https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-upgrade
-[2]: https://charts.linstor.io/migration/
-[3]: https://github.com/piraeusdatastore/piraeus-operator
-
-Operator v2.4.0 Changelog
--------------------------
-### Added
-
-- Validating Webhook for LINBIT SDS StorageClasses.
-
-### Breaking
-
-- Use DaemonSet to manage Satellite resources instead of bare Pods.
-This enables better integration with
-  common administrative tasks such as node draining. This change
-should be transparent for users, any patches
-  applied on the satellite Pods are internally converted to work on
-the new DaemonSet instead.
-
-### Changed
-
-- Change default monitoring address for DRBD Reactor to support
-systems with IPv6 completely disabled.
-- Updated images:
-  * LINSTOR 1.26.1
-  * LINSTOR CSI 1.4.0
-  * DRBD 9.2.7
-  * High Availability Controller 1.2.0
-  * Latest CSI sidecars
+https://pkg.linbit.com//downloads/drbd/9/drbd-9.1.19-rc.1.tar.gz
+https://github.com/LINBIT/drbd/commit/b33129351562fde9407c21a96d5bba01d4cf6ed3
