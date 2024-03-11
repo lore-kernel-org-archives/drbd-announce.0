@@ -1,22 +1,20 @@
-Return-Path: <johannes.thoma@linbit.com>
-Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com
-	[209.85.208.176])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 595A8420202
+Return-Path: <moritz.wanzenboeck@linbit.com>
+Received: from mail-oo1-f52.google.com (mail-oo1-f52.google.com
+	[209.85.161.52])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id EAC9B4202BF
 	for <drbd-announce@lists.linbit.com>;
-	Fri,  8 Mar 2024 15:05:16 +0100 (CET)
-Received: by mail-lj1-f176.google.com with SMTP id
-	38308e7fff4ca-2d228a132acso26185881fa.0
+	Mon, 11 Mar 2024 08:00:46 +0100 (CET)
+Received: by mail-oo1-f52.google.com with SMTP id
+	006d021491bc7-5a1cd796813so864467eaf.0
 	for <drbd-announce@lists.linbit.com>;
-	Fri, 08 Mar 2024 06:05:16 -0800 (PST)
-Message-ID: <b3d6e608-7b87-40f0-9835-933ed34a1746@linbit.com>
-Date: Fri, 8 Mar 2024 15:05:14 +0100
+	Mon, 11 Mar 2024 00:00:46 -0700 (PDT)
 MIME-Version: 1.0
-To: "drbd-user@lists.linbit.com" <drbd-user@lists.linbit.com>,
-	drbd-announce@lists.linbit.com
-From: Johannes Thoma <johannes.thoma@linbit.com>
-Subject: WinDRBD 1.1.10 released
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+From: =?UTF-8?Q?Moritz_Wanzenb=C3=B6ck?= <moritz.wanzenboeck@linbit.com>
+Date: Mon, 11 Mar 2024 08:00:00 +0100
+Message-ID: <CAKnz9x+EmHUh+GSbo7-9kKw=02_kv9CNx9tjb7b+qvahZAaFew@mail.gmail.com>
+Subject: LINSTOR Operator v2.4.1 and v1.10.9
+To: drbd-user@lists.linbit.com, drbd-announce@lists.linbit.com
+Content-Type: text/plain; charset="UTF-8"
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -28,35 +26,70 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Dear WinDRBD users,
+Dear LINBIT SDS on Kubernetes users,
 
-In this release of WinDRBD where we put lots of efforts to make
-WinDRBD behave more stable under memory pressure. The older
-WinDRBD releases gave up without retrying when (for example)
-kmalloc() could not allocate memory. The new version contains
-a retry loop in the memory allocation code which is also the behaviour
-of the Linux kernel. So (for example) resources suddenly becoming
-Diskless on memory pressure should not happen any more.
+We've recently released versions 2.4.1 and 1.10.9 for our Kubernetes Operator.
 
-Also a drbdadm hang on becoming Primary introduced with 1.1.8
-has been fixed.
+These contain updated LINSTOR and DRBD versions, as well as a few
+improvements for the v2 release regarding SELinux support.
 
-I also updated the stable branch of WinDRBD with this release so
-for new deployments please use this 1.1.10 release. Old deployments
-should be upgraded if you are affected by memory pressure issues
-but otherwise there is no urgent need to upgrade now.
+There is currently a known issue affecting LINSTOR Controllers using
+the default "k8s" database. The issue causes the space tracking
+service to shutdown when trying to prune old entries, which then
+causes the Controller to restart. Affected are LINSTOR Controllers
+which have been in use for more than 15 months. As a work around, you
+can manually delete the "space history" entries that are older than a
+year. To list these resources, you can use the following command:
 
-For more details (as always) see:
+  kubectl get spacehistory.internal.linstor.linbit.com
+--sort-by='{.metadata.creationTimestamp}'
 
-https://github.com/LINBIT/windrbd/blob/windrbd-1.1/WHATSNEW.md
+A fix is scheduled to be released with the next LINSTOR version.
 
-An evaluation installer (self signed driver) can be downloaded from
-the LINBIT Website: to use this driver you have to put your Windows
-machine into test mode (bcdedit /set TESTSIGNING YES and reboot).
-It can be downloaded from:
+To upgrade, either point your kustomization.yaml at the new manifest:
 
-https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/
+  https://charts.linstor.io/static/v2.4.1.yaml
+
+Or, if using helm, upgrade the linstor-operator chart:
+
+  helm repo update
+  helm upgrade linstor-operator linstor/linstor-operator --wait
+
+To get specific instructions to apply the update, check our users guide[1].
+
+If you need to upgrade from Operator v1, check out our upgrade guide[2].
+
+Source code is, as always, available upstream[3].
 
 Best regards,
+Moritz
 
-- Johannes
+[1]: https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-upgrade
+[2]: https://charts.linstor.io/migration/
+[3]: https://github.com/piraeusdatastore/piraeus-operator
+
+Operator v2.4.1 Changelog
+-------------------------
+### Added
+
+- New DRBD loader detection for:
+  * Rocky Linux 8 & 9
+- Report `seLinuxMount` capability for the CSI Driver, speeding up
+volume mounts with SELinux relabelling enabled.
+- Alerts for offline LINSTOR Controller and Satellites.
+
+### Changed
+
+- Use node label instead of pod name for Prometheus alerting descriptions.
+- Updated images:
+  * LINSTOR 1.26.2
+  * DRBD 9.2.8
+
+Operator v1.10.9 Changelog
+--------------------------
+### Changed
+- Default images:
+  * LINSTOR 1.26.2
+  * LINSTOR CSI 1.4.0
+  * DRBD 9.1.19
+  * Latest CSI sidecars
