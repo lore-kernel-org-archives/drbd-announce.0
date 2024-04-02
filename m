@@ -1,20 +1,20 @@
-Return-Path: <moritz.wanzenboeck@linbit.com>
-Received: from mail-oo1-f52.google.com (mail-oo1-f52.google.com
-	[209.85.161.52])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id EAC9B4202BF
+Return-Path: <rene.peinthor@linbit.com>
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com
+	[209.85.214.169])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 02F9642060E
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 11 Mar 2024 08:00:46 +0100 (CET)
-Received: by mail-oo1-f52.google.com with SMTP id
-	006d021491bc7-5a1cd796813so864467eaf.0
+	Tue,  2 Apr 2024 13:01:35 +0200 (CEST)
+Received: by mail-pl1-f169.google.com with SMTP id
+	d9443c01a7336-1dd3c6c8dbbso4773735ad.1
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 11 Mar 2024 00:00:46 -0700 (PDT)
+	Tue, 02 Apr 2024 04:01:35 -0700 (PDT)
 MIME-Version: 1.0
-From: =?UTF-8?Q?Moritz_Wanzenb=C3=B6ck?= <moritz.wanzenboeck@linbit.com>
-Date: Mon, 11 Mar 2024 08:00:00 +0100
-Message-ID: <CAKnz9x+EmHUh+GSbo7-9kKw=02_kv9CNx9tjb7b+qvahZAaFew@mail.gmail.com>
-Subject: LINSTOR Operator v2.4.1 and v1.10.9
-To: drbd-user@lists.linbit.com, drbd-announce@lists.linbit.com
-Content-Type: text/plain; charset="UTF-8"
+From: Rene Peinthor <rene.peinthor@linbit.com>
+Date: Tue, 2 Apr 2024 13:01:23 +0200
+Message-ID: <CAHmn2DMzL1pPS3Pu+xH441+j76xcsf7R7rQ-8C+XVOx4mhjyaA@mail.gmail.com>
+Subject: python-linstor/linstor-client 1.22.0 release
+To: drbd-announce@lists.linbit.com, drbd-user <drbd-user@lists.linbit.com>
+Content-Type: multipart/alternative; boundary="00000000000082787c06151b07a6"
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,70 +26,72 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Dear LINBIT SDS on Kubernetes users,
+--00000000000082787c06151b07a6
+Content-Type: text/plain; charset="UTF-8"
 
-We've recently released versions 2.4.1 and 1.10.9 for our Kubernetes Operator.
+Hi,
 
-These contain updated LINSTOR and DRBD versions, as well as a few
-improvements for the v2 release regarding SELinux support.
+New python-linstor and linstor client release, that has changes fitting to
+the linstor-server 1.27.0 release.
 
-There is currently a known issue affecting LINSTOR Controllers using
-the default "k8s" database. The issue causes the space tracking
-service to shutdown when trying to prune old entries, which then
-causes the Controller to restart. Affected are LINSTOR Controllers
-which have been in use for more than 15 months. As a work around, you
-can manually delete the "space history" entries that are older than a
-year. To list these resources, you can use the following command:
+## linstor-client
+### Added
+- Allow to specify options for list commands in the client config file
+- Added --from-file to most list commands to read input data from a file
+- Added --volume-passphrase and modify-passphrase options/commands
+- Backups added --force-restore option
 
-  kubectl get spacehistory.internal.linstor.linbit.com
---sort-by='{.metadata.creationTimestamp}'
+### Changed
+- Default machine-readable output-version is now v1
+- Improved command help descriptions
 
-A fix is scheduled to be released with the next LINSTOR version.
+### Removed
+- Unused vg l -R option
 
-To upgrade, either point your kustomization.yaml at the new manifest:
+https://pkg.linbit.com//downloads/linstor/linstor-client-1.22.0.tar.gz
 
-  https://charts.linstor.io/static/v2.4.1.yaml
+## python-linstor
+### Changed
+- LinstorApi is now parsing .conf files in /etc/linstor/linstor-client.d
+and merging with other client conf
 
-Or, if using helm, upgrade the linstor-operator chart:
+### Fixed
+- resource-group list throwing error in curl mode
+- volume-group list throwing error in curl mode
 
-  helm repo update
-  helm upgrade linstor-operator linstor/linstor-operator --wait
+https://pkg.linbit.com//downloads/linstor/python-linstor-1.22.0.tar.gz
 
-To get specific instructions to apply the update, check our users guide[1].
-
-If you need to upgrade from Operator v1, check out our upgrade guide[2].
-
-Source code is, as always, available upstream[3].
+Linstor PPA:
+https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
 Best regards,
-Moritz
+Rene
 
-[1]: https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-upgrade
-[2]: https://charts.linstor.io/migration/
-[3]: https://github.com/piraeusdatastore/piraeus-operator
+--00000000000082787c06151b07a6
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Operator v2.4.1 Changelog
--------------------------
-### Added
+<div dir=3D"ltr"><div>Hi,</div><div><br></div><div>New python-linstor and l=
+instor client release, that has changes fitting to the linstor-server 1.27.=
+0 release.</div><div><br></div><div>##=C2=A0linstor-client</div><div>### Ad=
+ded<br>- Allow to specify options for list commands in the client config fi=
+le<br>- Added --from-file to most list commands to read input data from a f=
+ile<br>- Added --volume-passphrase and modify-passphrase options/commands<b=
+r>- Backups added --force-restore option<br><br>### Changed<br>- Default ma=
+chine-readable output-version is now v1<br>- Improved command help descript=
+ions<br><br>### Removed<br>- Unused vg l -R option<br></div><div><br></div>=
+<div><a href=3D"https://pkg.linbit.com//downloads/linstor/linstor-client-1.=
+22.0.tar.gz">https://pkg.linbit.com//downloads/linstor/linstor-client-1.22.=
+0.tar.gz</a><br></div><br><div>## python-linstor</div><div>### Changed<br>-=
+ LinstorApi is now parsing .conf files in /etc/linstor/linstor-client.d and=
+ merging with other client conf<br><br>### Fixed<br>- resource-group list t=
+hrowing error in curl mode<br>- volume-group list throwing error in curl mo=
+de<br></div><div><br></div><div><a href=3D"https://pkg.linbit.com//download=
+s/linstor/python-linstor-1.22.0.tar.gz">https://pkg.linbit.com//downloads/l=
+instor/python-linstor-1.22.0.tar.gz</a><br></div><div><br></div><div><div>L=
+instor=C2=A0PPA:<br></div><div><div><a href=3D"https://launchpad.net/~linbi=
+t/+archive/ubuntu/linbit-drbd9-stack" rel=3D"noreferrer" target=3D"_blank">=
+https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack</a><br></d=
+iv><div><br></div><div>Best regards,</div><div>Rene</div></div></div></div>
 
-- New DRBD loader detection for:
-  * Rocky Linux 8 & 9
-- Report `seLinuxMount` capability for the CSI Driver, speeding up
-volume mounts with SELinux relabelling enabled.
-- Alerts for offline LINSTOR Controller and Satellites.
-
-### Changed
-
-- Use node label instead of pod name for Prometheus alerting descriptions.
-- Updated images:
-  * LINSTOR 1.26.2
-  * DRBD 9.2.8
-
-Operator v1.10.9 Changelog
---------------------------
-### Changed
-- Default images:
-  * LINSTOR 1.26.2
-  * LINSTOR CSI 1.4.0
-  * DRBD 9.1.19
-  * Latest CSI sidecars
+--00000000000082787c06151b07a6--
