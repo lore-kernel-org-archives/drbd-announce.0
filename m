@@ -1,20 +1,20 @@
 Return-Path: <rene.peinthor@linbit.com>
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com
-	[209.85.214.169])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 02F9642060E
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com
+	[209.85.214.171])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id D2769420650
 	for <drbd-announce@lists.linbit.com>;
-	Tue,  2 Apr 2024 13:01:35 +0200 (CEST)
-Received: by mail-pl1-f169.google.com with SMTP id
-	d9443c01a7336-1dd3c6c8dbbso4773735ad.1
+	Tue,  2 Apr 2024 13:01:46 +0200 (CEST)
+Received: by mail-pl1-f171.google.com with SMTP id
+	d9443c01a7336-1e26dc2b7ceso1301505ad.1
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 02 Apr 2024 04:01:35 -0700 (PDT)
+	Tue, 02 Apr 2024 04:01:46 -0700 (PDT)
 MIME-Version: 1.0
 From: Rene Peinthor <rene.peinthor@linbit.com>
-Date: Tue, 2 Apr 2024 13:01:23 +0200
-Message-ID: <CAHmn2DMzL1pPS3Pu+xH441+j76xcsf7R7rQ-8C+XVOx4mhjyaA@mail.gmail.com>
-Subject: python-linstor/linstor-client 1.22.0 release
+Date: Tue, 2 Apr 2024 13:01:34 +0200
+Message-ID: <CAHmn2DN9sppQtLOB3Ffk4Jin1XwBaDKDTOdO_tzrTi4nY5-1fA@mail.gmail.com>
+Subject: linstor-server 1.27.0 release
 To: drbd-announce@lists.linbit.com, drbd-user <drbd-user@lists.linbit.com>
-Content-Type: multipart/alternative; boundary="00000000000082787c06151b07a6"
+Content-Type: multipart/alternative; boundary="00000000000022aa4106151b08e3"
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,72 +26,104 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
---00000000000082787c06151b07a6
+--00000000000022aa4106151b08e3
 Content-Type: text/plain; charset="UTF-8"
 
-Hi,
+Hi!
 
-New python-linstor and linstor client release, that has changes fitting to
-the linstor-server 1.27.0 release.
+This new minor release introduces the ability to specify your own
+passphrases
+for encryption volumes and also modify them.
+Other additions are a force-restore option for backup shipping and finally
+better(more)
+INFO logging for Linstor.
+But the release is still more bug fixing related than introducing new
+features.
 
-## linstor-client
+## [1.27.0] - 2024-04-02
+
 ### Added
-- Allow to specify options for list commands in the client config file
-- Added --from-file to most list commands to read input data from a file
-- Added --volume-passphrase and modify-passphrase options/commands
-- Backups added --force-restore option
+
+- Allow users to provide their own encryption passphrase for volumes
+- Allow users to provide their own encryption passphrase after cloning
+- Allow users to change the passphrase for a luks volume definition
+- Backup ship, restore and scheduled backups now have a --force-restore
+option
+- Added more info logging
+- Added "DrbdOptions/ExactSize" for migration purposes
 
 ### Changed
-- Default machine-readable output-version is now v1
-- Improved command help descriptions
 
-### Removed
-- Unused vg l -R option
-
-https://pkg.linbit.com//downloads/linstor/linstor-client-1.22.0.tar.gz
-
-## python-linstor
-### Changed
-- LinstorApi is now parsing .conf files in /etc/linstor/linstor-client.d
-and merging with other client conf
+- Default configuration directory for linstor-database utility (export-db
+and import-db) is now "/etc/linstor"
+- Make-available will no longer return an error if an involved node is
+offline (warn instead)
 
 ### Fixed
-- resource-group list throwing error in curl mode
-- volume-group list throwing error in curl mode
 
-https://pkg.linbit.com//downloads/linstor/python-linstor-1.22.0.tar.gz
+- rscDfn-props are no longer reset through --download-only backup restore
+or if it has rscs deployed
+- Fixed snapshot-rollback more than once on a resource
+- Fixed re-/ordering issues within the AutoSnapshotTask
+- Fixed backup restore not working if one of the backup-parts already
+existed on the cluster
+- Fixed K8s migrations to use correct generated DB table instances
+- Deleted invalid SpaceHistory entries from K8s.
+- Fixed left-over tiebreaker after evacuation of single DRBD resource
+- Fixed negative result of an allocation granularity calculation
+- Fixed infinite loop and limited range of power-of-2 calculations
+- Workaround for connections where the attached peer object is missing
+- Only show warnings of missing cgroup (v1) if the user actually tries to
+use it
+- Fixed undelete resources (also remove volume DELETE and DRBD_DELETE flags)
+
+https://pkg.linbit.com//downloads/linstor/linstor-server-1.27.0.tar.gz
+
 
 Linstor PPA:
 https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
-Best regards,
+Cheers,
 Rene
 
---00000000000082787c06151b07a6
+--00000000000022aa4106151b08e3
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr"><div>Hi,</div><div><br></div><div>New python-linstor and l=
-instor client release, that has changes fitting to the linstor-server 1.27.=
-0 release.</div><div><br></div><div>##=C2=A0linstor-client</div><div>### Ad=
-ded<br>- Allow to specify options for list commands in the client config fi=
-le<br>- Added --from-file to most list commands to read input data from a f=
-ile<br>- Added --volume-passphrase and modify-passphrase options/commands<b=
-r>- Backups added --force-restore option<br><br>### Changed<br>- Default ma=
-chine-readable output-version is now v1<br>- Improved command help descript=
-ions<br><br>### Removed<br>- Unused vg l -R option<br></div><div><br></div>=
-<div><a href=3D"https://pkg.linbit.com//downloads/linstor/linstor-client-1.=
-22.0.tar.gz">https://pkg.linbit.com//downloads/linstor/linstor-client-1.22.=
-0.tar.gz</a><br></div><br><div>## python-linstor</div><div>### Changed<br>-=
- LinstorApi is now parsing .conf files in /etc/linstor/linstor-client.d and=
- merging with other client conf<br><br>### Fixed<br>- resource-group list t=
-hrowing error in curl mode<br>- volume-group list throwing error in curl mo=
-de<br></div><div><br></div><div><a href=3D"https://pkg.linbit.com//download=
-s/linstor/python-linstor-1.22.0.tar.gz">https://pkg.linbit.com//downloads/l=
-instor/python-linstor-1.22.0.tar.gz</a><br></div><div><br></div><div><div>L=
-instor=C2=A0PPA:<br></div><div><div><a href=3D"https://launchpad.net/~linbi=
-t/+archive/ubuntu/linbit-drbd9-stack" rel=3D"noreferrer" target=3D"_blank">=
-https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack</a><br></d=
-iv><div><br></div><div>Best regards,</div><div>Rene</div></div></div></div>
+<div dir=3D"ltr">Hi!<div><br></div><div>This new minor release introduces t=
+he ability to specify your own passphrases</div><div>for encryption volumes=
+ and also modify them.</div><div>Other additions are a force-restore option=
+ for backup shipping and finally better(more)</div><div>INFO logging for Li=
+nstor.</div><div>But the release is still more bug fixing related than=C2=
+=A0introducing=C2=A0new features.</div><div><br></div><div>## [1.27.0] - 20=
+24-04-02<br><br>### Added<br><br>- Allow users to provide their own encrypt=
+ion passphrase for volumes<br>- Allow users to provide their own encryption=
+ passphrase after cloning<br>- Allow users to change the passphrase for a l=
+uks volume definition<br>- Backup ship, restore and scheduled backups now h=
+ave a --force-restore option<br>- Added more info logging<br>- Added &quot;=
+DrbdOptions/ExactSize&quot; for migration purposes<br><br>### Changed<br><b=
+r>- Default configuration directory for linstor-database utility (export-db=
+ and import-db) is now &quot;/etc/linstor&quot;<br>- Make-available will no=
+ longer return an error if an involved node is offline (warn instead)<br><b=
+r>### Fixed<br><br>- rscDfn-props are no longer reset through --download-on=
+ly backup restore or if it has rscs deployed<br>- Fixed snapshot-rollback m=
+ore than once on a resource<br>- Fixed re-/ordering issues within the AutoS=
+napshotTask<br>- Fixed backup restore not working if one of the backup-part=
+s already existed on the cluster<br>- Fixed K8s migrations to use correct g=
+enerated DB table instances<br>- Deleted invalid SpaceHistory entries from =
+K8s.<br>- Fixed left-over tiebreaker after evacuation of single DRBD resour=
+ce<br>- Fixed negative result of an allocation granularity calculation<br>-=
+ Fixed infinite loop and limited range of power-of-2 calculations<br>- Work=
+around for connections where the attached peer object is missing<br>- Only =
+show warnings of missing cgroup (v1) if the user actually tries to use it<b=
+r>- Fixed undelete resources (also remove volume DELETE and DRBD_DELETE fla=
+gs)<br></div><div><br></div><div><div><a href=3D"https://pkg.linbit.com//do=
+wnloads/linstor/linstor-server-1.27.0.tar.gz">https://pkg.linbit.com//downl=
+oads/linstor/linstor-server-1.27.0.tar.gz</a><br></div><div><br></div><div>=
+<br></div><div><div><div><div>Linstor PPA:<br><a href=3D"https://launchpad.=
+net/~linbit/+archive/ubuntu/linbit-drbd9-stack" rel=3D"noreferrer" target=
+=3D"_blank">https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stac=
+k</a></div></div><div><br></div><div>Cheers,<br></div><div>Rene</div></div>=
+</div></div></div>
 
---00000000000082787c06151b07a6--
+--00000000000022aa4106151b08e3--
