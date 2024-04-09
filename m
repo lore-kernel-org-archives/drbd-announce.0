@@ -1,22 +1,20 @@
-Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com
-	[209.85.128.54])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 03E5F42019F
+Return-Path: <moritz.wanzenboeck@linbit.com>
+Received: from mail-oo1-f43.google.com (mail-oo1-f43.google.com
+	[209.85.161.43])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 15771420360
 	for <drbd-announce@lists.linbit.com>;
-	Fri,  5 Apr 2024 10:48:49 +0200 (CEST)
-Received: by mail-wm1-f54.google.com with SMTP id
-	5b1f17b1804b1-4162e19b663so3011185e9.2
+	Tue,  9 Apr 2024 08:31:59 +0200 (CEST)
+Received: by mail-oo1-f43.google.com with SMTP id
+	006d021491bc7-5aa2a74c238so1515566eaf.3
 	for <drbd-announce@lists.linbit.com>;
-	Fri, 05 Apr 2024 01:48:49 -0700 (PDT)
-Date: Fri, 5 Apr 2024 10:48:46 +0200
-From: Roland Kammerer <roland.kammerer@linbit.com>
-To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Subject: linstor-proxmox v8.0.0-rc.1
-Message-ID: <Zg-67sWeLaJjetnJ@rck.sh>
+	Mon, 08 Apr 2024 23:31:59 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="QMawYehS7POKL4HX"
-Content-Disposition: inline
+From: =?UTF-8?Q?Moritz_Wanzenb=C3=B6ck?= <moritz.wanzenboeck@linbit.com>
+Date: Tue, 9 Apr 2024 08:31:48 +0200
+Message-ID: <CAKnz9xJEy=jCkwWDPeN3YOcYRyoMRhzSn3faR9NM8Vf0Xh+sYw@mail.gmail.com>
+Subject: LINSTOR Operator v2.5.0
+To: drbd-user@lists.linbit.com, drbd-announce@lists.linbit.com
+Content-Type: text/plain; charset="UTF-8"
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -28,79 +26,50 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
+Dear LINBIT SDS on Kubernetes users,
 
---QMawYehS7POKL4HX
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+We've recently released version 2.5.0 of our Kubernetes Operator.
 
-Dear PVE on LINSTOR/DRBD users,
+This contains updated LINSTOR, CSI driver and HA COntroller versions,
+as well as support for ZFS storage pools configured directly with
+LinstorSatelliteConfiguration resources.
 
-after some calmer period I'm happy to announce an RC that includes two
-new features, but let me first notice that this version needs LINSTOR
-1.27.0 or later!
+The new LINSTOR version also fixes the issue affecting LINSTOR
+Controllers shutting down caused by an error in the space tracking
+service.
 
-- reassigning disks from one VM to another
-- online migration of external storage like LVM to LINSTOR/DRBD
+To upgrade, either point your kustomization.yaml at the new manifest:
 
-Reassining disks:
-In order to allow reassigning disks between VMs we had to change the
-naming scheme. New disks (also clones of old ones) will have names like
-"pm-12cf742a_101" on PVE level, and "pm-12cf742a" on LINSTOR/DRBD level.
-This is a static prefix ("pm-"), 8 characters of a UUID, and on PVE
-level the VMID separated by an underscore ("_101"). The new naming
-obsoletes the old "vm-101-disk-1" like names. Old VMs with legacy names
-still work with version 8 of the plugin. For the user this change should
-be completely transparent and should not require any changes besides
-getting accustomed to the new names.
+  https://charts.linstor.io/static/v2.5.0.yaml
 
-Online migration from external storage:
-So far it was only possible to migrate data from external storage like
-LVM to LINSTOR/DRBD if the data was migrated offline. If you want to
-migrate data online you can now *temporarily* set "exactsize yes" in
-your "storage.cfg" for a particular DRBD storage and then migrate disks
-to it. After you are done, remove the "exactsize" option from the
-"storage.cfg" again. The LINSTOR property that allowed temporary online
-migration is then deleted when the disk is activated again (but not if
-it is currently active). If you want to delete the property for all
-active disks after migration, or you want to be extra sure, you can run
-a command like this:
+Or, if using helm, upgrade the linstor-operator chart:
 
-# linstor -m --output-version v1 rd l | jq '.[][].name' | \
-  xargs -I {} linstor rd sp {} DrbdOptions/ExactSize False
+  helm repo update
+  helm upgrade linstor-operator linstor/linstor-operator --wait
 
-Please test, if we don't find any bugs we announce the final version in
-about a week from now.
+To get specific instructions to apply the update, check our users guide[1].
 
-Regards, rck
+If you need to upgrade from Operator v1, check out our upgrade guide[2].
 
-GIT: https://github.com/LINBIT/linstor-proxmox/commit/96acca6cb738633a13c71c34094e9640597bf9d0
-TGZ: https://pkg.linbit.com//downloads/connectors/linstor-proxmox-8.0.0-rc.1.tar.gz
-DEB: https://packages.linbit.com/public/staging/dists/proxmox-8/drbd-9/pool/linstor-proxmox_8.0.0~rc.1-1_all.deb
+Source code is, as always, available upstream[3].
 
-Changelog:
+Best regards,
+Moritz
 
-[Roland Kammerer]
- * show diskless disks in "VM Disks"
- * allow reassigning disks
- * test: add simple test script
- * api: also check for APIAGE
- * add online mv storage
- * fix spelling
- * set allow-two-primaries in RD creation
+[1]: https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-upgrade
+[2]: https://charts.linstor.io/migration/
+[3]: https://github.com/piraeusdatastore/piraeus-operator
 
---QMawYehS7POKL4HX
-Content-Type: application/pgp-signature; name="signature.asc"
+Operator v2.5.0 Changelog
+-------------------------
+### Added
 
------BEGIN PGP SIGNATURE-----
+- Support for managing ZFS Storage Pools using LinstorSatelliteConfiguration.
 
-iQEzBAABCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmYPuusACgkQRgmezyI6
-myKxhwf9FAnIf/kLyv0HaysNPN87yAQ7GpCKomt3cIj7riHJC8uYcc7GaUoneoOB
-1UZkm1BDFTd5ex1AZBXEU7SM9UUTCGAHX7BTdJ/k3GArhlAvIJIiw+yBYXC2lemg
-VrB2TJi5vrP7/okVd98cfeuRQZw+N+CSMBJWwNzM4ZHsCvfrw74//k6y88MLMds4
-Wrd/fB9cHAbEAhDSAKT7tgSYUDk5ZRpuYg+YFEYMwuUAXjI+ibgjoUXq67Js8H9h
-FXV9Awm6FFt1RoUlMp6kI5EOvcYW7PIKR5pUvKcIkMP0LLI+Cjg9kgVbC3pCslml
-mTM4iN1WNGmc3YQqaSOe/pUmUgg1sQ==
-=lY+5
------END PGP SIGNATURE-----
+### Changed
 
---QMawYehS7POKL4HX--
+- Updated images:
+  * LINSTOR 1.27.0
+  * LINSTOR CSI 1.5.0
+  * High Availability Controller 1.2.1
+  * Latest CSI sidecars
