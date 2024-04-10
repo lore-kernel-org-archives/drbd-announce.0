@@ -1,20 +1,22 @@
-Return-Path: <moritz.wanzenboeck@linbit.com>
-Received: from mail-oo1-f43.google.com (mail-oo1-f43.google.com
-	[209.85.161.43])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 15771420360
+Return-Path: <christoph.boehmwalder@linbit.com>
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com
+	[209.85.208.54])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id DFBC94202BF
 	for <drbd-announce@lists.linbit.com>;
-	Tue,  9 Apr 2024 08:31:59 +0200 (CEST)
-Received: by mail-oo1-f43.google.com with SMTP id
-	006d021491bc7-5aa2a74c238so1515566eaf.3
+	Wed, 10 Apr 2024 07:33:31 +0200 (CEST)
+Received: by mail-ed1-f54.google.com with SMTP id
+	4fb4d7f45d1cf-56e69a51a33so2294781a12.1
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 08 Apr 2024 23:31:59 -0700 (PDT)
+	Tue, 09 Apr 2024 22:33:31 -0700 (PDT)
+Message-ID: <6e23dd22-3754-42c6-b681-a46afa2e60ef@linbit.com>
+Date: Wed, 10 Apr 2024 07:33:27 +0200
 MIME-Version: 1.0
-From: =?UTF-8?Q?Moritz_Wanzenb=C3=B6ck?= <moritz.wanzenboeck@linbit.com>
-Date: Tue, 9 Apr 2024 08:31:48 +0200
-Message-ID: <CAKnz9xJEy=jCkwWDPeN3YOcYRyoMRhzSn3faR9NM8Vf0Xh+sYw@mail.gmail.com>
-Subject: LINSTOR Operator v2.5.0
+Content-Language: en-US
 To: drbd-user@lists.linbit.com, drbd-announce@lists.linbit.com
-Content-Type: text/plain; charset="UTF-8"
+From: =?UTF-8?Q?Christoph_B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>
+Subject: LINSTOR Gateway v1.5.0-rc.1
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,50 +28,31 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Dear LINBIT SDS on Kubernetes users,
+Hi everyone,
 
-We've recently released version 2.5.0 of our Kubernetes Operator.
+we just released a new release candidate for LINSTOR Gateway, v1.5.0-rc.1.
 
-This contains updated LINSTOR, CSI driver and HA COntroller versions,
-as well as support for ZFS storage pools configured directly with
-LinstorSatelliteConfiguration resources.
+https://github.com/LINBIT/linstor-gateway/releases/tag/v1.5.0-rc.1
 
-The new LINSTOR version also fixes the issue affecting LINSTOR
-Controllers shutting down caused by an error in the space tracking
-service.
+Probably the most interesting feature in this release is a behavior 
+change when creating a resource. LINSTOR Gateway will now monitor the 
+resource for a few seconds after creating it to make sure that the 
+underlying service actually stared.
+The heuristic is: if the resource becomes "InUse" on any node, and then 
+stays "InUse" on that same node for five seconds, we consider it running.
 
-To upgrade, either point your kustomization.yaml at the new manifest:
+This feature should vastly improve the user experience in case a 
+resource agent encounters an error while starting a service.
 
-  https://charts.linstor.io/static/v2.5.0.yaml
+For the full changelog, see the release notes on Github above.
 
-Or, if using helm, upgrade the linstor-operator chart:
+Please help us test this release candidate and report any issues you may 
+find via Github.
 
-  helm repo update
-  helm upgrade linstor-operator linstor/linstor-operator --wait
+Thanks,
+Christoph
 
-To get specific instructions to apply the update, check our users guide[1].
-
-If you need to upgrade from Operator v1, check out our upgrade guide[2].
-
-Source code is, as always, available upstream[3].
-
-Best regards,
-Moritz
-
-[1]: https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-upgrade
-[2]: https://charts.linstor.io/migration/
-[3]: https://github.com/piraeusdatastore/piraeus-operator
-
-Operator v2.5.0 Changelog
--------------------------
-### Added
-
-- Support for managing ZFS Storage Pools using LinstorSatelliteConfiguration.
-
-### Changed
-
-- Updated images:
-  * LINSTOR 1.27.0
-  * LINSTOR CSI 1.5.0
-  * High Availability Controller 1.2.1
-  * Latest CSI sidecars
+-- 
+Christoph Böhmwalder
+LINBIT | Keeping the Digital World Running
+DRBD HA —  Disaster Recovery — Software defined Storage
