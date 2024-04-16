@@ -1,22 +1,22 @@
-Return-Path: <christoph.boehmwalder@linbit.com>
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com
-	[209.85.208.54])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id DFBC94202BF
+Return-Path: <johannes.thoma@linbit.com>
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com
+	[209.85.218.49])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 47B0A4201D7
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 10 Apr 2024 07:33:31 +0200 (CEST)
-Received: by mail-ed1-f54.google.com with SMTP id
-	4fb4d7f45d1cf-56e69a51a33so2294781a12.1
+	Tue, 16 Apr 2024 16:10:55 +0200 (CEST)
+Received: by mail-ej1-f49.google.com with SMTP id
+	a640c23a62f3a-a51ddc783e3so556008366b.0
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 09 Apr 2024 22:33:31 -0700 (PDT)
-Message-ID: <6e23dd22-3754-42c6-b681-a46afa2e60ef@linbit.com>
-Date: Wed, 10 Apr 2024 07:33:27 +0200
+	Tue, 16 Apr 2024 07:10:55 -0700 (PDT)
+Message-ID: <52ca453d-b662-4020-ae15-00d3b99234e2@linbit.com>
+Date: Tue, 16 Apr 2024 16:10:53 +0200
 MIME-Version: 1.0
-Content-Language: en-US
-To: drbd-user@lists.linbit.com, drbd-announce@lists.linbit.com
-From: =?UTF-8?Q?Christoph_B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>
-Subject: LINSTOR Gateway v1.5.0-rc.1
+To: "drbd-user@lists.linbit.com" <drbd-user@lists.linbit.com>,
+	drbd-announce@lists.linbit.com
+From: Johannes Thoma <johannes.thoma@linbit.com>
+Subject: WinDRBD 1.1.12 released
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -28,31 +28,33 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Hi everyone,
+Dear WinDRBD users,
 
-we just released a new release candidate for LINSTOR Gateway, v1.5.0-rc.1.
+Today we released WinDRBD 1.1.12, a release mainly target at users that
+use fencing instead of quorum in order to avoid split brain. There are
+3 patches to DRBD included (one of which even made it into the
+upstream drbd-9.1 and drbd-9.2 branches of DRBD) as well as
+several small fixes in the WinDRBD code. If you are not using
+fencing there is no urgent need to upgrade.
 
-https://github.com/LINBIT/linstor-gateway/releases/tag/v1.5.0-rc.1
+The changelog, as always, are described in the WHATSNEW.md file
+of the WinDRBD repository:
 
-Probably the most interesting feature in this release is a behavior 
-change when creating a resource. LINSTOR Gateway will now monitor the 
-resource for a few seconds after creating it to make sure that the 
-underlying service actually stared.
-The heuristic is: if the resource becomes "InUse" on any node, and then 
-stays "InUse" on that same node for five seconds, we consider it running.
+https://github.com/LINBIT/windrbd/blob/windrbd-1.1/WHATSNEW.md
 
-This feature should vastly improve the user experience in case a 
-resource agent encounters an error while starting a service.
+An installer suitable for evaluating WinDRBD can be downloaded from
+the LINBIT homepage:
 
-For the full changelog, see the release notes on Github above.
+https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/
 
-Please help us test this release candidate and report any issues you may 
-find via Github.
+LINBIT clients can download an installer suitable for production usage
+from the packages.linbit.com repository:
 
-Thanks,
-Christoph
+https://packages.linbit.com/exe/windows/drbd-9/
 
--- 
-Christoph Böhmwalder
-LINBIT | Keeping the Digital World Running
-DRBD HA —  Disaster Recovery — Software defined Storage
+(an API key is required).
+
+As always, all the best and happy hacking :)
+
+- Johannes
+
