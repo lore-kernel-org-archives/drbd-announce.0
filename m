@@ -1,22 +1,21 @@
-Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com
-	[209.85.167.48])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 6388C4201BF
+Return-Path: <philipp.reisner@linbit.com>
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com
+	[209.85.167.53])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 0B5884202BF
 	for <drbd-announce@lists.linbit.com>;
-	Fri, 19 Apr 2024 08:34:51 +0200 (CEST)
-Received: by mail-lf1-f48.google.com with SMTP id
-	2adb3069b0e04-51967f75729so1893392e87.0
+	Tue, 23 Apr 2024 18:20:56 +0200 (CEST)
+Received: by mail-lf1-f53.google.com with SMTP id
+	2adb3069b0e04-51abf1a9332so5966044e87.3
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 18 Apr 2024 23:34:51 -0700 (PDT)
-Date: Fri, 19 Apr 2024 08:34:48 +0200
-From: Roland Kammerer <roland.kammerer@linbit.com>
-To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Subject: linstor-proxmox v8.0.1
-Message-ID: <ZiIQiFgcy5IhruxV@arm64>
+	Tue, 23 Apr 2024 09:20:56 -0700 (PDT)
+From: Philipp Reisner <philipp.reisner@linbit.com>
+To: drbd-announce@lists.linbit.com
+Subject: drbd-9.1.20-rc.1 and drbd-9.2.9-rc.1
+Date: Tue, 23 Apr 2024 18:20:36 +0200
+Message-ID: <86sezcdp9n.fsf@linbit.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="Zd8deaRCZvl5lV4W"
-Content-Disposition: inline
+Content-Type: text/plain
+Cc: drbd-user@lists.linbit.com
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -29,72 +28,66 @@ List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
 
---Zd8deaRCZvl5lV4W
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Hello DRBD-users,
 
-Dear DRBD on PVE users,
+In this development cycle, we had two bug reports worth mentioning. One
+was about a perplexing kernel crash stack trace. Fortunately, the
+customer, who runs a big fleet of DRBD nodes, could reproduce it and
+produce a kernel crash dump of this crash.
 
-this is version 8.0.1 of the LINSTOR Proxmox plugin. It is a small
-bugfix release that contains two changes, both related to cloud-init
-images.
+Joel and I took it as a challenge to decode the puzzle. With joint
+brains, we examined a "partly overwritten" malloc()'d object. We were
+able to reconstruct what happened and found the bug.
 
-The first is a fix for a regression introduced with 8.0.0: By being ways
-stricter with what names (usually VM disk names or snapshot names) are
-valid it was no longer possible to create cloud-init images on DRBD.
-That is now possible. A word on if that even makes sense later.
+After finding the bug, I looked at the git history to understand how we
+introduced that bug.
 
-Secondly, PVE behaves a bit different for cloud init images compared to
-VM disk images. Disk images are created once ("alloc") and then used
-after an "activate" and get a "deactivate" when they are not used
-anymore. In "alloc" we create the LINSTOR resource (which might get
-placed on a subset of PVE nodes), and when the VM is started
-("activate") we check if there is the necessary DRBD device on that node
-and if not we create a diskless assignment. On "deactivate" we delete
-such unnecessary diskless assignments. Cloud init images on the other
-hand have their configuration stored in PVE and if such an image does
-not exist it can be re-generated immediately, the config is just a few
-KB, the "iso" a few MB.
+These bugs increasingly stem from an unintended interaction of two
+developers' changes. Leaving us with the learning, utmost clarity of
+interfaces, naming of locks and data structures, and clear expression
+intention is key for avoiding such bugs in the future.
 
-So if a VM with it's cloud init image on DRBD starts on a node that
-currently does not have access to the DRBD device hosting the cloud init
-image this happens: PVE stat()s the device path and it does not exist,
-it does not send an "activate", but it just tries to recreate it
-("alloc"). And that is where we failed, because the LINSTOR resource
-already existed (and we errored out in "alloc"), but it just was not
-available yet on that node. If we detect that scenario now, we return
-=66rom "alloc", and wait for the "activate" to make the cloud init image
-available on that particular node.
+The Kubernetes CSI driver triggered the other crash in DRBD
+(sometimes). The reason was that it downed resources in an unusual way
+by deleting all minors first. Fixing that was, fortunately, a lot less
+effort than the other one.
 
-People insist on having everything on one storage, but my personal
-opinion: Don't put cloud init images on DRBD, I don't see any
-reason for that. The config (IP settings, DNS settings,...) is in PVE,
-they can be created on the fly, and that is what PVE does. Just put them
-on local LVM and be done with it. When you move a VM PVE will recreate
-the cloud init image on the destinations node's local LVM (and delete it
-=66rom the old node).
+It will be welcome news for Ubuntu users that we tested heavily with the
+upcoming Ubuntu-24.04 ("Noble") release. Besides updating the kernel
+compat for Linux-6.8, we have noticed that the newer kernel delivers
+netlink packets out-of-order more often. We use these netlink packets to
+deliver information for drbd-kernel-driver to user-space. If you use
+drbd-reactor or LINSTOR on Ubuntu Noble, you need to use drbd-utils
+9.28.0 (or newer) to get a drbdsetup that brings out-of-order netlink
+packets back into sequence.
 
-Regards, rck
+This is a release candidate. Please help test it.
 
-GIT: https://github.com/LINBIT/linstor-proxmox/commit/595c9f15ea72d99dd3f82=
-fb94cefa74aaf0b0770
-TGZ: https://pkg.linbit.com//downloads/connectors/linstor-proxmox-8.0.1.tar=
-=2Egz
+9.2.9-rc.1 (api:genl2/proto:86-122/transport:19)
+--------
+ * Allow resync operations between secondaries if the sync source is
+   not connected with the primary node
+ * Changes merged from 9.1.20
+  - Fix a kernel crash that is sometimes triggered when downing drbd
+    resources in a specific, unusual order (was triggered by the
+    Kubernetes CSI driver)
+  - Fix a rarely triggering kernel crash upon adding paths to a
+    connection by rehauling the path lists' locking
+  - Fix the continuation of an interrupted initial resync
+  - Fix the state engine so that an incapable primary does not outdate
+    indirectly reachable secondary nodes
+  - Fix a logic bug that caused drbd to pretend that a peer's disk is
+    outdated when doing a manual disconnect on a down connection; with
+    that cured impact on fencing and quorum.
+  - Fix forceful demotion of suspended devices
+  - Rehaul of the build system to apply compatibility patches out of
+    place that allows one to build for different target kernels from a
+    single drbd source tree
+  - Updated compability code for Linux 6.8
 
---Zd8deaRCZvl5lV4W
-Content-Type: application/pgp-signature; name="signature.asc"
+https://pkg.linbit.com//downloads/drbd/9/drbd-9.2.9-rc.1.tar.gz
+https://github.com/LINBIT/drbd/commit/c300e9c998d1b49475d0c797e8edab2f270448ab
 
------BEGIN PGP SIGNATURE-----
+https://pkg.linbit.com//downloads/drbd/9/drbd-9.1.20-rc.1.tar.gz
+https://github.com/LINBIT/drbd/commit/87069b782e991c08e06fe01e775d48ec26bca076
 
-iQEzBAEBCAAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmYiEIMACgkQRgmezyI6
-myKIvgf/UTj/mFZ1WV3siaxdcb3C76VAl+SESBf+h3KnufUdhKl9V1UZEHvcX+o2
-zusMA+80SyhsLjr7QDtwg6xRRenR+6djiIY1jCHeYPic7UFo2y3+GlpNGvT4uKqU
-u8+xsOIK9MhollmtmsdT6lRxwr9eBGGX40n+1lq6WVadex5jhZo69D5nfGN0Mpu0
-II1hUboDQlsMEX0sugLoqfVZ6IN4DGFBc+ygKMawWWbqxM2mddwVUMDn3PjI33l4
-YlMS7c4bEvmFXOzO61acK0aeyY0tYycMNmZd9YRjNZazquvSEgG4+0jF5TfyeOXv
-dq1rozjqbjQ4RgP2yb+P/VEMQaWgFg==
-=ovJ1
------END PGP SIGNATURE-----
-
---Zd8deaRCZvl5lV4W--
