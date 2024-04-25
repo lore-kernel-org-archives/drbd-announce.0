@@ -1,21 +1,22 @@
-Return-Path: <philipp.reisner@linbit.com>
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com
-	[209.85.167.53])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 0B5884202BF
+Return-Path: <roland.kammerer@linbit.com>
+Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com
+	[209.85.208.180])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 64C0A42016C
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 23 Apr 2024 18:20:56 +0200 (CEST)
-Received: by mail-lf1-f53.google.com with SMTP id
-	2adb3069b0e04-51abf1a9332so5966044e87.3
+	Thu, 25 Apr 2024 09:19:53 +0200 (CEST)
+Received: by mail-lj1-f180.google.com with SMTP id
+	38308e7fff4ca-2d88a869ce6so7952861fa.3
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 23 Apr 2024 09:20:56 -0700 (PDT)
-From: Philipp Reisner <philipp.reisner@linbit.com>
-To: drbd-announce@lists.linbit.com
-Subject: drbd-9.1.20-rc.1 and drbd-9.2.9-rc.1
-Date: Tue, 23 Apr 2024 18:20:36 +0200
-Message-ID: <86sezcdp9n.fsf@linbit.com>
+	Thu, 25 Apr 2024 00:19:53 -0700 (PDT)
+Date: Thu, 25 Apr 2024 09:19:49 +0200
+From: Roland Kammerer <roland.kammerer@linbit.com>
+To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
+Subject: drbd-utils v9.28.0-rc.1
+Message-ID: <ZioEFbCHo4HRU7qq@arm64>
 MIME-Version: 1.0
-Content-Type: text/plain
-Cc: drbd-user@lists.linbit.com
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="l/4e2NiClLhxu2xx"
+Content-Disposition: inline
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -28,66 +29,71 @@ List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
 
-Hello DRBD-users,
+--l/4e2NiClLhxu2xx
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-In this development cycle, we had two bug reports worth mentioning. One
-was about a perplexing kernel crash stack trace. Fortunately, the
-customer, who runs a big fleet of DRBD nodes, could reproduce it and
-produce a kernel crash dump of this crash.
+Dear DRBD users,
 
-Joel and I took it as a challenge to decode the puzzle. With joint
-brains, we examined a "partly overwritten" malloc()'d object. We were
-able to reconstruct what happened and found the bug.
+this is the first RC of the upcoming drbd-utils version 9.28.0. In
+contrast to the recent releases this one contains a bit more exciting
+news:
 
-After finding the bug, I looked at the git history to understand how we
-introduced that bug.
+- 8.3 code is gone
 
-These bugs increasingly stem from an unintended interaction of two
-developers' changes. Leaving us with the learning, utmost clarity of
-interfaces, naming of locks and data structures, and clear expression
-intention is key for avoiding such bugs in the future.
+- events2: netlink messages (used between utils in user space and the
+  kernel module) can be sent out of order. So far this was more
+  theoretical, but more modern kernels actually seem to actually make
+  use of it. We put code in place that reorders such messages if sent
+  out of order. This is particularly important for software that depends
+  on events2 processing. The actual impact might vary, but just to name
+  a few that make use of events2 processing: drbd-reactor, drbdmon,
+  LINSTOR.
 
-The Kubernetes CSI driver triggered the other crash in DRBD
-(sometimes). The reason was that it downed resources in an unusual way
-by deleting all minors first. Fixing that was, fortunately, a lot less
-effort than the other one.
+- udev: drbdsetup got a new "udev" subcommand that replaces drbdadm's
+  "sh-udev" command. This allows to have the actual (in kernel) state
+  reflect the udev state more closely compared to drbdadm which used res
+  file information. It avoids problems if the res file can not be parsed
+  or problems if the hostname is not set yet (e.g., systemd-udev starts
+  before the hostname is set). All in all we hope this solves udev
+  related issues we saw previously.
 
-It will be welcome news for Ubuntu users that we tested heavily with the
-upcoming Ubuntu-24.04 ("Noble") release. Besides updating the kernel
-compat for Linux-6.8, we have noticed that the newer kernel delivers
-netlink packets out-of-order more often. We use these netlink packets to
-deliver information for drbd-kernel-driver to user-space. If you use
-drbd-reactor or LINSTOR on Ubuntu Noble, you need to use drbd-utils
-9.28.0 (or newer) to get a drbdsetup that brings out-of-order netlink
-packets back into sequence.
+there are all kinds of fixes and improvements all over the place like
+improved Pacemaker support for 2.1.7, or tweaks for the promotion score
+if force-io-error is true, which will help drbd-reactor. More details
+can be found in the changelog or the git history.
 
-This is a release candidate. Please help test it.
+Please test, if we don't find any bugs the final version will get
+released in about a week from now.
 
-9.2.9-rc.1 (api:genl2/proto:86-122/transport:19)
---------
- * Allow resync operations between secondaries if the sync source is
-   not connected with the primary node
- * Changes merged from 9.1.20
-  - Fix a kernel crash that is sometimes triggered when downing drbd
-    resources in a specific, unusual order (was triggered by the
-    Kubernetes CSI driver)
-  - Fix a rarely triggering kernel crash upon adding paths to a
-    connection by rehauling the path lists' locking
-  - Fix the continuation of an interrupted initial resync
-  - Fix the state engine so that an incapable primary does not outdate
-    indirectly reachable secondary nodes
-  - Fix a logic bug that caused drbd to pretend that a peer's disk is
-    outdated when doing a manual disconnect on a down connection; with
-    that cured impact on fencing and quorum.
-  - Fix forceful demotion of suspended devices
-  - Rehaul of the build system to apply compatibility patches out of
-    place that allows one to build for different target kernels from a
-    single drbd source tree
-  - Updated compability code for Linux 6.8
+Regards, rck
 
-https://pkg.linbit.com//downloads/drbd/9/drbd-9.2.9-rc.1.tar.gz
-https://github.com/LINBIT/drbd/commit/c300e9c998d1b49475d0c797e8edab2f270448ab
+Changelog:
+ * events2: set may_promote:no promotion_score:0 while
+   force-io-failure:yes
+ * drbdsetup,v9: show TLS in connection status
+ * drbdsetup,v9: add udev command
+ * 8.3: remove
+ * crm-fence-peer.9.sh: fixes for pacemaker 2.1.7
+ * events2: improved out of order message handling
 
-https://pkg.linbit.com//downloads/drbd/9/drbd-9.1.20-rc.1.tar.gz
-https://github.com/LINBIT/drbd/commit/87069b782e991c08e06fe01e775d48ec26bca076
+GIT: https://github.com/LINBIT/drbd-utils/commit/5ddb29c18c0a539fb010f883ea4f88bd1d184391
+TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-utils-9.28.0-rc.1.tar.gz
+PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
+--l/4e2NiClLhxu2xx
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmYqBA4ACgkQRgmezyI6
+myKvCQgAoLMyPS7MNfzhlBrgqHabjSrPkKrPMdwt824vXfCw7TiMm8PafSdwdQL5
+GzcqZVFKOSp8DEfRFU/wRbwsiMiDPyeGuD6axsJSqwqlY1/2nrt3XHR522iU2M+O
+k7mlyn5rRDzX/ht5CcpKsW0/1CgS8R8zO2tYto0G9AEGn0LtqvMZtRFeGjUHWooA
+fHtT50tIF0EnBhyrImU9fEWOck9yJ7ljKW1epdwmnxecdYA5t4iRmgzteldjn/L+
+auseA9GjTMBfVWpwkhs1iWNl6Xt7k0FNdMCN6ltb9RC1P3bTd931DcjQillr8l51
+B/wT3boRxzMNU9efg8ebR3NGvWTFLw==
+=0Dw6
+-----END PGP SIGNATURE-----
+
+--l/4e2NiClLhxu2xx--
