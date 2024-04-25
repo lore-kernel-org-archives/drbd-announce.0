@@ -1,22 +1,20 @@
-Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com
-	[209.85.208.180])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 64C0A42016C
+Return-Path: <rene.peinthor@linbit.com>
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com
+	[209.85.216.48])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 03F464203BF
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 25 Apr 2024 09:19:53 +0200 (CEST)
-Received: by mail-lj1-f180.google.com with SMTP id
-	38308e7fff4ca-2d88a869ce6so7952861fa.3
+	Thu, 25 Apr 2024 20:07:46 +0200 (CEST)
+Received: by mail-pj1-f48.google.com with SMTP id
+	98e67ed59e1d1-2aa0f3625aeso318440a91.1
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 25 Apr 2024 00:19:53 -0700 (PDT)
-Date: Thu, 25 Apr 2024 09:19:49 +0200
-From: Roland Kammerer <roland.kammerer@linbit.com>
-To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Subject: drbd-utils v9.28.0-rc.1
-Message-ID: <ZioEFbCHo4HRU7qq@arm64>
+	Thu, 25 Apr 2024 11:07:46 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="l/4e2NiClLhxu2xx"
-Content-Disposition: inline
+From: Rene Peinthor <rene.peinthor@linbit.com>
+Date: Thu, 25 Apr 2024 20:07:33 +0200
+Message-ID: <CAHmn2DNms8nApBfTqFfVTv_ODWPCYQqnHO0DVNCWHGuv+Fmbsg@mail.gmail.com>
+Subject: linstor-server 1.27.1 release
+To: drbd-announce@lists.linbit.com, drbd-user <drbd-user@lists.linbit.com>
+Content-Type: multipart/alternative; boundary="000000000000ff60310616efa902"
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -28,72 +26,76 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
+--000000000000ff60310616efa902
+Content-Type: text/plain; charset="UTF-8"
 
---l/4e2NiClLhxu2xx
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Hi!
 
-Dear DRBD users,
+This release brings support for java-21, which is now default shipped with
+ubuntu-noble.
+Also some fixes for e.g. zfs 2.2 and user set drbd verify-algorithm.
 
-this is the first RC of the upcoming drbd-utils version 9.28.0. In
-contrast to the recent releases this one contains a bit more exciting
-news:
+## [1.27.1] - 2024-04-25
 
-- 8.3 code is gone
+### Added
 
-- events2: netlink messages (used between utils in user space and the
-  kernel module) can be sent out of order. So far this was more
-  theoretical, but more modern kernels actually seem to actually make
-  use of it. We put code in place that reorders such messages if sent
-  out of order. This is particularly important for software that depends
-  on events2 processing. The actual impact might vary, but just to name
-  a few that make use of events2 processing: drbd-reactor, drbdmon,
-  LINSTOR.
+- Support for java-21
 
-- udev: drbdsetup got a new "udev" subcommand that replaces drbdadm's
-  "sh-udev" command. This allows to have the actual (in kernel) state
-  reflect the udev state more closely compared to drbdadm which used res
-  file information. It avoids problems if the res file can not be parsed
-  or problems if the hostname is not set yet (e.g., systemd-udev starts
-  before the hostname is set). All in all we hope this solves udev
-  related issues we saw previously.
+### Changed
 
-there are all kinds of fixes and improvements all over the place like
-improved Pacemaker support for 2.1.7, or tweaks for the promotion score
-if force-io-error is true, which will help drbd-reactor. More details
-can be found in the changelog or the git history.
+- Freespace calc: Snapshots only reserve allocated size now instead of
+volume size
+- resource-definition modify now, only warns if a satellite is offline
+- AutoVerifyAlgo: allow to use algorithm name additionally to the specific
+implementation
+- ZFS: try to determine default volblocksize
 
-Please test, if we don't find any bugs the final version will get
-released in about a week from now.
+### Fixed
 
-Regards, rck
+- Deleting a remote can now be safely done even if there are active
+shippings to said remote
+- MakeAvail: trigger update satellite if only FLAGS changed
+- Resource delete: Don't check user set verify-algo if last resource
+deleted.
+- If mkfs failed, resources have not been demoted(secondary) and couldn't
+easily be deleted afterward
+- Fixed incorrect least common multiple call when calculating
+AllocationGranularity
 
-Changelog:
- * events2: set may_promote:no promotion_score:0 while
-   force-io-failure:yes
- * drbdsetup,v9: show TLS in connection status
- * drbdsetup,v9: add udev command
- * 8.3: remove
- * crm-fence-peer.9.sh: fixes for pacemaker 2.1.7
- * events2: improved out of order message handling
+https://pkg.linbit.com//downloads/linstor/linstor-server-1.27.1.tar.gz
 
-GIT: https://github.com/LINBIT/drbd-utils/commit/5ddb29c18c0a539fb010f883ea4f88bd1d184391
-TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-utils-9.28.0-rc.1.tar.gz
-PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
---l/4e2NiClLhxu2xx
-Content-Type: application/pgp-signature; name="signature.asc"
+Linstor PPA:
+https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
------BEGIN PGP SIGNATURE-----
+Cheers,
+Rene
 
-iQEzBAEBCAAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmYqBA4ACgkQRgmezyI6
-myKvCQgAoLMyPS7MNfzhlBrgqHabjSrPkKrPMdwt824vXfCw7TiMm8PafSdwdQL5
-GzcqZVFKOSp8DEfRFU/wRbwsiMiDPyeGuD6axsJSqwqlY1/2nrt3XHR522iU2M+O
-k7mlyn5rRDzX/ht5CcpKsW0/1CgS8R8zO2tYto0G9AEGn0LtqvMZtRFeGjUHWooA
-fHtT50tIF0EnBhyrImU9fEWOck9yJ7ljKW1epdwmnxecdYA5t4iRmgzteldjn/L+
-auseA9GjTMBfVWpwkhs1iWNl6Xt7k0FNdMCN6ltb9RC1P3bTd931DcjQillr8l51
-B/wT3boRxzMNU9efg8ebR3NGvWTFLw==
-=0Dw6
------END PGP SIGNATURE-----
+--000000000000ff60310616efa902
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
---l/4e2NiClLhxu2xx--
+<div dir=3D"ltr">Hi!<div><br></div><div>This release=C2=A0brings support fo=
+r java-21, which is now default shipped with ubuntu-noble.</div><div>Also s=
+ome fixes for e.g. zfs 2.2 and user set drbd verify-algorithm.</div><div><b=
+r></div><div>## [1.27.1] - 2024-04-25<br><br>### Added<br><br>- Support for=
+ java-21<br><br>### Changed<br><br>- Freespace calc: Snapshots only reserve=
+ allocated size now instead of volume size<br>- resource-definition modify =
+now, only warns if a satellite is offline<br>- AutoVerifyAlgo: allow to use=
+ algorithm name additionally to the specific implementation<br>- ZFS: try t=
+o determine default volblocksize<br><br>### Fixed<br><br>- Deleting a remot=
+e can now be safely done even if there are active shippings to said remote<=
+br>- MakeAvail: trigger update satellite if only FLAGS changed<br>- Resourc=
+e delete: Don&#39;t check user set verify-algo if last resource deleted.<br=
+>- If mkfs failed, resources have not been demoted(secondary) and couldn&#3=
+9;t easily be deleted afterward<br>- Fixed incorrect least common multiple =
+call when calculating AllocationGranularity<br></div><div><br></div><div><d=
+iv><a href=3D"https://pkg.linbit.com//downloads/linstor/linstor-server-1.27=
+.1.tar.gz" target=3D"_blank">https://pkg.linbit.com//downloads/linstor/lins=
+tor-server-1.27.1.tar.gz</a><br></div><div><br></div><div><br></div><div><d=
+iv><div><div>Linstor PPA:<br><a href=3D"https://launchpad.net/~linbit/+arch=
+ive/ubuntu/linbit-drbd9-stack" rel=3D"noreferrer" target=3D"_blank">https:/=
+/launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack</a></div></div><d=
+iv><br></div><div>Cheers,<br></div><div>Rene</div></div></div></div></div>
+
+--000000000000ff60310616efa902--
