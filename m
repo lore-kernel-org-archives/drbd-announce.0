@@ -1,20 +1,21 @@
-Return-Path: <rene.peinthor@linbit.com>
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com
-	[209.85.216.48])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 03F464203BF
+Return-Path: <philipp.reisner@linbit.com>
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com
+	[209.85.208.53])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id A8E40420228
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 25 Apr 2024 20:07:46 +0200 (CEST)
-Received: by mail-pj1-f48.google.com with SMTP id
-	98e67ed59e1d1-2aa0f3625aeso318440a91.1
+	Tue, 30 Apr 2024 15:20:41 +0200 (CEST)
+Received: by mail-ed1-f53.google.com with SMTP id
+	4fb4d7f45d1cf-56c5d05128dso5124643a12.0
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 25 Apr 2024 11:07:46 -0700 (PDT)
+	Tue, 30 Apr 2024 06:20:41 -0700 (PDT)
+From: Philipp Reisner <philipp.reisner@linbit.com>
+To: drbd-announce@lists.linbit.com
+Subject: drbd-9.1.20 and drbd-9.2.9
+Date: Tue, 30 Apr 2024 15:20:38 +0200
+Message-ID: <86plu7dm1l.fsf@linbit.com>
 MIME-Version: 1.0
-From: Rene Peinthor <rene.peinthor@linbit.com>
-Date: Thu, 25 Apr 2024 20:07:33 +0200
-Message-ID: <CAHmn2DNms8nApBfTqFfVTv_ODWPCYQqnHO0DVNCWHGuv+Fmbsg@mail.gmail.com>
-Subject: linstor-server 1.27.1 release
-To: drbd-announce@lists.linbit.com, drbd-user <drbd-user@lists.linbit.com>
-Content-Type: multipart/alternative; boundary="000000000000ff60310616efa902"
+Content-Type: text/plain
+Cc: drbd-user@lists.linbit.com
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,76 +27,76 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
---000000000000ff60310616efa902
-Content-Type: text/plain; charset="UTF-8"
 
-Hi!
+Hello DRBD-users,
 
-This release brings support for java-21, which is now default shipped with
-ubuntu-noble.
-Also some fixes for e.g. zfs 2.2 and user set drbd verify-algorithm.
+In the week of the release candidate, we saw one of the CI tests
+delivering more faults than previously. It turned out that the changed
+timing of the RC code triggered an independent bug more often. Fixed
+that bug. With that, the stability tests (running all CI tests in 50
+iterations and plotting the success rate over time) are looking
+good. Also, the changes to the build process did not bring a
+show-stopper.
+So, I am proud to present the final releases.
 
-## [1.27.1] - 2024-04-25
+In this development cycle, we had two bug reports worth mentioning. One
+was about a perplexing kernel crash stack trace. Fortunately, the
+customer, who runs a big fleet of DRBD nodes, could reproduce it and
+produce a kernel crash dump of this crash.
 
-### Added
+Joel and I took it as a challenge to decode the puzzle. With joint
+brains, we examined a "partly overwritten" malloc()'d object. We were
+able to reconstruct what happened and found the bug.
 
-- Support for java-21
+After finding the bug, I looked at the git history to understand how we
+introduced that bug.
 
-### Changed
+These bugs increasingly stem from an unintended interaction of two
+developers' changes. Leaving us with the learning, utmost clarity of
+interfaces, naming of locks and data structures, and clear expression
+intention is key for avoiding such bugs in the future.
 
-- Freespace calc: Snapshots only reserve allocated size now instead of
-volume size
-- resource-definition modify now, only warns if a satellite is offline
-- AutoVerifyAlgo: allow to use algorithm name additionally to the specific
-implementation
-- ZFS: try to determine default volblocksize
+The Kubernetes CSI driver triggered the other crash in DRBD
+(sometimes). The reason was that it downed resources in an unusual way
+by deleting all minors first. Fixing that was, fortunately, a lot less
+effort than the other one.
 
-### Fixed
-
-- Deleting a remote can now be safely done even if there are active
-shippings to said remote
-- MakeAvail: trigger update satellite if only FLAGS changed
-- Resource delete: Don't check user set verify-algo if last resource
-deleted.
-- If mkfs failed, resources have not been demoted(secondary) and couldn't
-easily be deleted afterward
-- Fixed incorrect least common multiple call when calculating
-AllocationGranularity
-
-https://pkg.linbit.com//downloads/linstor/linstor-server-1.27.1.tar.gz
+It will be welcome news for Ubuntu users that we tested heavily with the
+upcoming Ubuntu-24.04 ("Noble") release. Besides updating the kernel
+compat for Linux-6.8, we have noticed that the newer kernel delivers
+netlink packets out-of-order more often. We use these netlink packets to
+deliver information for drbd-kernel-driver to user-space. If you use
+drbd-reactor or LINSTOR on Ubuntu Noble, you need to use drbd-utils
+9.28.0 (or newer) to get a drbdsetup that brings out-of-order netlink
+packets back into sequence.
 
 
-Linstor PPA:
-https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+9.2.9 (api:genl2/proto:86-122/transport:19)
+--------
+ * Allow resync operations between secondaries if the sync source is
+   not connected with the primary node
+ * Changes merged from 9.1.20
+  - Fix a kernel crash that is sometimes triggered when downing drbd
+    resources in a specific, unusual order (was triggered by the
+    Kubernetes CSI driver)
+  - Fix a rarely triggering kernel crash upon adding paths to a
+    connection by rehauling the path lists' locking
+  - Fix the continuation of an interrupted initial resync
+  - Fix the state engine so that an incapable primary does not outdate
+    indirectly reachable secondary nodes
+  - Fix a logic bug that caused drbd to pretend that a peer's disk is
+    outdated when doing a manual disconnect on a down connection; with
+    that cured impact on fencing and quorum.
+  - Fix forceful demotion of suspended devices
+  - Rehaul of the build system to apply compatibility patches out of
+    place that allows one to build for different target kernels from a
+    single drbd source tree
+  - Updated compability code for Linux 6.8
 
-Cheers,
-Rene
 
---000000000000ff60310616efa902
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+https://pkg.linbit.com//downloads/drbd/9/drbd-9.2.9.tar.gz
+https://github.com/LINBIT/drbd/commit/e624a7fc7a48b1d1e26290fc6cf03ab5cf119570
 
-<div dir=3D"ltr">Hi!<div><br></div><div>This release=C2=A0brings support fo=
-r java-21, which is now default shipped with ubuntu-noble.</div><div>Also s=
-ome fixes for e.g. zfs 2.2 and user set drbd verify-algorithm.</div><div><b=
-r></div><div>## [1.27.1] - 2024-04-25<br><br>### Added<br><br>- Support for=
- java-21<br><br>### Changed<br><br>- Freespace calc: Snapshots only reserve=
- allocated size now instead of volume size<br>- resource-definition modify =
-now, only warns if a satellite is offline<br>- AutoVerifyAlgo: allow to use=
- algorithm name additionally to the specific implementation<br>- ZFS: try t=
-o determine default volblocksize<br><br>### Fixed<br><br>- Deleting a remot=
-e can now be safely done even if there are active shippings to said remote<=
-br>- MakeAvail: trigger update satellite if only FLAGS changed<br>- Resourc=
-e delete: Don&#39;t check user set verify-algo if last resource deleted.<br=
->- If mkfs failed, resources have not been demoted(secondary) and couldn&#3=
-9;t easily be deleted afterward<br>- Fixed incorrect least common multiple =
-call when calculating AllocationGranularity<br></div><div><br></div><div><d=
-iv><a href=3D"https://pkg.linbit.com//downloads/linstor/linstor-server-1.27=
-.1.tar.gz" target=3D"_blank">https://pkg.linbit.com//downloads/linstor/lins=
-tor-server-1.27.1.tar.gz</a><br></div><div><br></div><div><br></div><div><d=
-iv><div><div>Linstor PPA:<br><a href=3D"https://launchpad.net/~linbit/+arch=
-ive/ubuntu/linbit-drbd9-stack" rel=3D"noreferrer" target=3D"_blank">https:/=
-/launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack</a></div></div><d=
-iv><br></div><div>Cheers,<br></div><div>Rene</div></div></div></div></div>
+https://pkg.linbit.com//downloads/drbd/9/drbd-9.1.20.tar.gz
+https://github.com/LINBIT/drbd/commit/6257e00a26965e6af129ed37ee2db623c1664801
 
---000000000000ff60310616efa902--
