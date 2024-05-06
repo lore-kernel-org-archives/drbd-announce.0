@@ -1,20 +1,22 @@
-Return-Path: <moritz.wanzenboeck@linbit.com>
-Received: from mail-oa1-f47.google.com (mail-oa1-f47.google.com
-	[209.85.160.47])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id C707F420471
+Return-Path: <roland.kammerer@linbit.com>
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com
+	[209.85.167.53])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id E4704420310
 	for <drbd-announce@lists.linbit.com>;
-	Fri,  3 May 2024 12:16:09 +0200 (CEST)
-Received: by mail-oa1-f47.google.com with SMTP id
-	586e51a60fabf-23dd52c6176so1145575fac.1
+	Mon,  6 May 2024 11:02:57 +0200 (CEST)
+Received: by mail-lf1-f53.google.com with SMTP id
+	2adb3069b0e04-52006fbae67so2193505e87.0
 	for <drbd-announce@lists.linbit.com>;
-	Fri, 03 May 2024 03:16:09 -0700 (PDT)
-MIME-Version: 1.0
-From: =?UTF-8?Q?Moritz_Wanzenb=C3=B6ck?= <moritz.wanzenboeck@linbit.com>
-Date: Fri, 3 May 2024 12:15:57 +0200
-Message-ID: <CAKnz9xJ=KoiQhuoiaVQ4sqdijNBbR9Kh9cMde+FtpJxpAesZ_w@mail.gmail.com>
-Subject: LINSTOR Operator v2.5.1
+	Mon, 06 May 2024 02:02:57 -0700 (PDT)
+Date: Mon, 6 May 2024 11:02:54 +0200
+From: Roland Kammerer <roland.kammerer@linbit.com>
 To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Content-Type: text/plain; charset="UTF-8"
+Subject: drbd-utils v9.28.0
+Message-ID: <ZjicvnMR8nuq_4ym@arm64>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="2TWDuo1Oa6OUgAc2"
+Content-Disposition: inline
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,63 +28,71 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Dear LINBIT SDS on Kubernetes users,
 
-We've recently released version 2.5.1 of our Kubernetes Operator.
+--2TWDuo1Oa6OUgAc2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-This contains updated LINSTOR, CSI driver and DRBD versions, as well
-as default priority class settings for all components.
+Dear DRBD users,
 
-The LINSTOR 1.27.1 release fixes issues with new ZFS versions, along
-with other small bug fixes around storage pools with different
-allocation granularity.
+this is drbd-utils version 9.28.0. We did not find any bugs since the
+last RC, for your convenience the announce mail from the RC:
 
-The LINSTOR CSI driver enables the creation of LINSTOR-to-LINSTOR
-backups using regular VolumeSnapshot resources.
+In contrast to the recent releases this one contains a bit more exciting
+news:
 
-A recent release of the "thin-send-recv" tool turned out to not be
-fully backward compatible, which broke LINSTORs "Backup to S3"
-feature. We have temporarily rolled back to a previous version of this
-tool in our container images.
+- 8.3 code is gone
 
-The new DRBD 9.2.9 release fixes an issue that was triggered by the
-CSI drivers resource deletion procedure. If encountered, it could
-cause the node to crash. We have also added support for the newly
-released Ubuntu 24.04.
+- events2: netlink messages (used between utils in user space and the
+  kernel module) can be sent out of order. So far this was more
+  theoretical, but more modern kernels actually seem to actually make
+  use of it. We put code in place that reorders such messages if sent
+  out of order. This is particularly important for software that depends
+  on events2 processing. The actual impact might vary, but just to name
+  a few that make use of events2 processing: drbd-reactor, drbdmon,
+  LINSTOR.
 
-To upgrade, either point your kustomization.yaml at the new manifest:
+- udev: drbdsetup got a new "udev" subcommand that replaces drbdadm's
+  "sh-udev" command. This allows to have the actual (in kernel) state
+  reflect the udev state more closely compared to drbdadm which used res
+  file information. It avoids problems if the res file can not be parsed
+  or problems if the hostname is not set yet (e.g., systemd-udev starts
+  before the hostname is set). All in all we hope this solves udev
+  related issues we saw previously.
 
-  https://charts.linstor.io/static/v2.5.1.yaml
+there are all kinds of fixes and improvements all over the place like
+improved Pacemaker support for 2.1.7, or tweaks for the promotion score
+if force-io-error is true, which will help drbd-reactor. More details
+can be found in the changelog or the git history.
 
-Or, if using helm, upgrade the linstor-operator chart:
+Regards, rck
 
-  helm repo update
-  helm upgrade linstor-operator linstor/linstor-operator --wait
+Changelog:
+ * events2: set may_promote:no promotion_score:0 while
+   force-io-failure:yes
+ * drbdsetup,v9: show TLS in connection status
+ * drbdsetup,v9: add udev command
+ * 8.3: remove
+ * crm-fence-peer.9.sh: fixes for pacemaker 2.1.7
+ * events2: improved out of order message handling
 
-To get specific instructions to apply the update, check our users guide[1].
+GIT: https://github.com/LINBIT/drbd-utils/commit/ba2ce9037989b6141222c7901d1219cf852949f1
+TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-utils-9.28.0.tar.gz
+PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
-If you need to upgrade from Operator v1, check out our upgrade guide[2].
+--2TWDuo1Oa6OUgAc2
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Source code is, as always, available upstream[3].
+-----BEGIN PGP SIGNATURE-----
 
-Best regards,
-Moritz
+iQEzBAEBCAAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmY4nLoACgkQRgmezyI6
+myK0jgf/amg2fLhJ2v0A9b1ft9Vx1VBbRhX5ZN03qT7k/1GyGSElpNHUWhHiVSQx
+Dd9uVwqJGPU5LVIBEokv0TtUn5o+5CFMG2SbsE2PCnJlR1S7WFdL2eCmOWgLzwaJ
+xPaaTYC1UO7IXcGHA/1CUIZFoOY7e9UY3X38fP4ocXeyWFdMmkHB0GPpRLoL0GZS
+Bk5PY5g45E1OKTAfa538RIzWSyNS9FC507Yi1f1qdDf9Um1ziYw4+oZC82kZmwYi
+GRSBBMq+AIRbC/VQEVJ6JF2siFgSdZRQ7R46k93piI2pIz9FXtknQQNx1rX9BLp6
+lD1M1Q2XFl6cjzRPQCNfvbmO0nFINw==
+=QQvW
+-----END PGP SIGNATURE-----
 
-[1]: https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-upgrade
-[2]: https://charts.linstor.io/migration/
-[3]: https://github.com/piraeusdatastore/piraeus-operator
-
-Operator v2.5.1 Changelog
--------------------------
-### Added
-
-- Default PriorityClasses for all components
-
-### Changed
-
-- New DRBD loader detection for:
-  * Ubuntu Noble Numbat (24.04)
-- Updated images:
-  * LINSTOR 1.27.1
-  * LINSTOR CSI 1.6.0
-  * DRBD 9.2.9
+--2TWDuo1Oa6OUgAc2--
