@@ -1,21 +1,21 @@
 Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com
-	[209.85.208.173])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 4B51B4203AE
+Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com
+	[209.85.208.178])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id AB44C4201AF
 	for <drbd-announce@lists.linbit.com>;
-	Mon,  6 May 2024 13:44:27 +0200 (CEST)
-Received: by mail-lj1-f173.google.com with SMTP id
-	38308e7fff4ca-2dd6c14d000so23746611fa.0
+	Tue,  7 May 2024 10:33:28 +0200 (CEST)
+Received: by mail-lj1-f178.google.com with SMTP id
+	38308e7fff4ca-2e0a0cc5e83so28051601fa.1
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 06 May 2024 04:44:27 -0700 (PDT)
-Date: Mon, 6 May 2024 13:44:25 +0200
+	Tue, 07 May 2024 01:33:28 -0700 (PDT)
+Date: Tue, 7 May 2024 10:33:23 +0200
 From: Roland Kammerer <roland.kammerer@linbit.com>
 To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Subject: linstor-proxmox v8.0.2
-Message-ID: <ZjjCmU8O8YKcX5ol@arm64>
+Subject: drbd-reactor v1.4.1
+Message-ID: <ZjnnU94KQjF8Xa28@arm64>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="Yu4ZJBapG5/muvAp"
+	protocol="application/pgp-signature"; boundary="erOdAFGp4Yyfd2Uv"
 Content-Disposition: inline
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
@@ -29,37 +29,64 @@ List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
 
---Yu4ZJBapG5/muvAp
-Content-Type: text/plain; charset=us-ascii
+--erOdAFGp4Yyfd2Uv
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Dear DRBD on PVE users,
+Dear DRBD users,
 
-this is another small bugfix release for the version 8 series of the
-plugin. Again, the stricter name checks stroke back and the plugin
-refused to create RAM state disks if a VM was snapshotted while the
-"include RAM" box was checked (the default for running VMs). This
-creates disks like vm-VMID-state-SNAPNAME. These kind of names are now
-in the allow list.
+this is version 1.4.1 of drbd-reactor. There have been various smaller
+fixes all over the place, the main reason for the release is that
+reactor benefits from the changes that happened in drbd-utils (out of
+order netlink message handling). This release allow us to bump the
+dependency on drbd-utils to the latest version.
 
 Regards, rck
 
-GIT: https://github.com/LINBIT/linstor-proxmox/commit/11ac4040640ee69b5ee4a2665c46cb47dc1d6b6e
-TGZ: https://pkg.linbit.com//downloads/connectors/linstor-proxmox-8.0.2.tar.gz
+Changelog:
+[ Abhayraj Jain ]
+* Update README.md
 
---Yu4ZJBapG5/muvAp
+[ Moritz Wanzenb=F6ck ]
+* ci: report clippy lints
+* Apply suggestions from clippy "deny" configuration
+* run cargo clippy --fix
+* fix clippy fixes gone wrong
+* drbd-reactorctl: apply clippy lint suggestions
+* agentx: apply clippy lint suggestions
+* plugins: apply clippy lint suggestions
+* drbd-reactor-reload: Disable start limit
+* events2: wait for drbdsetup command on exit
+
+[ PhilippKolmann ]
+* prometheus: add metric name to HELP line
+
+[ Roland Kammerer ]
+* events2: exit reader thread on error
+* build: bump drbd-utils to 9.28.0
+
+[ Michael Troutman ]
+* example: fix warnings in Grafana dashboard
+
+GIT: https://github.com/LINBIT/drbd-reactor/commit/8bb95fe35694d1dfa76422e3=
+8fa85dc486d5fc56
+TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-reactor-1.4.1.tar.gz
+PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+
+--erOdAFGp4Yyfd2Uv
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCAAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmY4wpAACgkQRgmezyI6
-myJUBAf+NBQKNZUlVFeEx7uS1KHqvif109uX9057Q3XI6kWh6d+e82/iBZTC3rn1
-Ir8FybcQ+Cy4HqV8KEA3xkppTL4qNemwR9rOogkD+gM//v3Lqh9TwN0SYPtvDF9/
-YLF3cBJjz9rW3HD+OY6G0ob0jLzCe+8hCjttzj6+EQL/Tuqe416KZbg/OROhj5xN
-BTTv7VCLD3mdiOi6+NF7IVuWd9IBWhkNeRSt1HnHiOsrPXbg2n0p2IwPD2cPE0Kd
-4ejsf3Lk4U/bMO/E5KpLbMbbMdboncCKNwWKN8mazyrUgGYCSH/bJNSROA/s5Hx3
-l3LRZB1OKqPkDWXmQgonplcLN3Mg0Q==
-=ZDs4
+iQEzBAEBCAAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmY551AACgkQRgmezyI6
+myJAXgf/TCDlOINpMphJhxOH3rwBolQ5sWJrO6j2yctwDdrADajih8cSoLIAaLj8
+O14wpLntNzKUP1Sn02sNm696XDGha+rjp9pKBft7+8yKpwvVfgbqYJ44N6DXJFSo
+NHmW/nDD47SbMFb/mZeQB+UX9PHvIZGkfXikW6gIHvdohzRKk+POP/kKdw37vazd
+u24m1RYZPgkRXl1cUs/FMo86ZS8SmFb4k6BBudmErrjatYEa8l2m+/map4OxIToX
+3fDK/tY7f5lMZs8UH09Vgas6rirvV9AEjOsZjhxnYZh2IB2SBf01nEECBgNppihf
+8g9RyzL3CNBh5HCJVbv/R9wXDUpQsg==
+=z8Cz
 -----END PGP SIGNATURE-----
 
---Yu4ZJBapG5/muvAp--
+--erOdAFGp4Yyfd2Uv--
