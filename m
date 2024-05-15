@@ -1,22 +1,22 @@
-Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com
-	[209.85.208.178])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id AB44C4201AF
+Return-Path: <johannes.thoma@linbit.com>
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com
+	[209.85.218.49])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 88DF842015E
 	for <drbd-announce@lists.linbit.com>;
-	Tue,  7 May 2024 10:33:28 +0200 (CEST)
-Received: by mail-lj1-f178.google.com with SMTP id
-	38308e7fff4ca-2e0a0cc5e83so28051601fa.1
+	Wed, 15 May 2024 14:44:32 +0200 (CEST)
+Received: by mail-ej1-f49.google.com with SMTP id
+	a640c23a62f3a-a5a4bc9578cso149495266b.2
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 07 May 2024 01:33:28 -0700 (PDT)
-Date: Tue, 7 May 2024 10:33:23 +0200
-From: Roland Kammerer <roland.kammerer@linbit.com>
-To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Subject: drbd-reactor v1.4.1
-Message-ID: <ZjnnU94KQjF8Xa28@arm64>
+	Wed, 15 May 2024 05:44:32 -0700 (PDT)
+Content-Type: multipart/alternative;
+	boundary="------------0ioBagGqMqK403WCRyl62bWk"
+Message-ID: <66224f5b-3533-4369-a910-5d881eba97ae@linbit.com>
+Date: Wed, 15 May 2024 14:44:26 +0200
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="erOdAFGp4Yyfd2Uv"
-Content-Disposition: inline
+To: "drbd-user@lists.linbit.com" <drbd-user@lists.linbit.com>,
+	drbd-announce@lists.linbit.com
+From: Johannes Thoma <johannes.thoma@linbit.com>
+Subject: WinDRBD 1.1.14 released
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -28,65 +28,108 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
+This is a multi-part message in MIME format.
+--------------0ioBagGqMqK403WCRyl62bWk
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
---erOdAFGp4Yyfd2Uv
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Dear WinDRBD users,
 
-Dear DRBD users,
+Today we released WinDRBD 1.1.14 which contains a small bugfix
+of the drbdmeta utility. For external meta data drbdadm create-md
+now clears the whole block device thereby ensuring that there
+are no leftover bits set in the bitmaps.
 
-this is version 1.4.1 of drbd-reactor. There have been various smaller
-fixes all over the place, the main reason for the release is that
-reactor benefits from the changes that happened in drbd-utils (out of
-order netlink message handling). This release allow us to bump the
-dependency on drbd-utils to the latest version.
+The WinDRBD driver itself has not changed except for the version number.
 
-Regards, rck
+If you are not using external meta data there is no urgent need to upgrade.
 
-Changelog:
-[ Abhayraj Jain ]
-* Update README.md
+The changes, as always, are described in the WHATSNEW.md file
+of the WinDRBD repository:
 
-[ Moritz Wanzenb=F6ck ]
-* ci: report clippy lints
-* Apply suggestions from clippy "deny" configuration
-* run cargo clippy --fix
-* fix clippy fixes gone wrong
-* drbd-reactorctl: apply clippy lint suggestions
-* agentx: apply clippy lint suggestions
-* plugins: apply clippy lint suggestions
-* drbd-reactor-reload: Disable start limit
-* events2: wait for drbdsetup command on exit
+https://github.com/LINBIT/windrbd/blob/windrbd-1.1/WHATSNEW.md
 
-[ PhilippKolmann ]
-* prometheus: add metric name to HELP line
+An installer suitable for evaluating WinDRBD can be downloaded from
+the LINBIT homepage:
 
-[ Roland Kammerer ]
-* events2: exit reader thread on error
-* build: bump drbd-utils to 9.28.0
+https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/
 
-[ Michael Troutman ]
-* example: fix warnings in Grafana dashboard
+LINBIT clients can download an installer suitable for production usage
+from the packages.linbit.com repository:
 
-GIT: https://github.com/LINBIT/drbd-reactor/commit/8bb95fe35694d1dfa76422e3=
-8fa85dc486d5fc56
-TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-reactor-1.4.1.tar.gz
-PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+https://packages.linbit.com/exe/windows/drbd-9/
 
---erOdAFGp4Yyfd2Uv
-Content-Type: application/pgp-signature; name="signature.asc"
+(an API key is required, client will be notified in a separate mail).
 
------BEGIN PGP SIGNATURE-----
+As always, all the best and happy hacking 🙂
 
-iQEzBAEBCAAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmY551AACgkQRgmezyI6
-myJAXgf/TCDlOINpMphJhxOH3rwBolQ5sWJrO6j2yctwDdrADajih8cSoLIAaLj8
-O14wpLntNzKUP1Sn02sNm696XDGha+rjp9pKBft7+8yKpwvVfgbqYJ44N6DXJFSo
-NHmW/nDD47SbMFb/mZeQB+UX9PHvIZGkfXikW6gIHvdohzRKk+POP/kKdw37vazd
-u24m1RYZPgkRXl1cUs/FMo86ZS8SmFb4k6BBudmErrjatYEa8l2m+/map4OxIToX
-3fDK/tY7f5lMZs8UH09Vgas6rirvV9AEjOsZjhxnYZh2IB2SBf01nEECBgNppihf
-8g9RyzL3CNBh5HCJVbv/R9wXDUpQsg==
-=z8Cz
------END PGP SIGNATURE-----
+- Johannes
 
---erOdAFGp4Yyfd2Uv--
+--------------0ioBagGqMqK403WCRyl62bWk
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+<!DOCTYPE html>
+<html>
+  <head>
+
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <div class="moz-text-flowed"
+      style="font-family: -moz-fixed; font-size: 12px;" lang="x-unicode">Dear WinDRBD users,
+      <br>
+      <br>
+      Today we released WinDRBD 1.1.14 which contains a small bugfix<br>
+      of the drbdmeta utility. For external meta data drbdadm create-md<br>
+      now clears the whole block device thereby ensuring that there<br>
+      are no leftover bits set in the bitmaps.<br>
+      <br>
+      The WinDRBD driver itself has not changed except for the version
+      number.<br>
+      <br>
+      If you are not using
+      external meta data there is no urgent need to upgrade.
+      <br>
+      <br>
+      The changes, as always, are described in the WHATSNEW.md file
+      <br>
+      of the WinDRBD repository:
+      <br>
+      <br>
+      <a class="moz-txt-link-freetext"
+href="https://github.com/LINBIT/windrbd/blob/windrbd-1.1/WHATSNEW.md">https://github.com/LINBIT/windrbd/blob/windrbd-1.1/WHATSNEW.md</a><br>
+      <br>
+An installer suitable for evaluating WinDRBD can be downloaded from
+      <br>
+      the LINBIT homepage:
+      <br>
+      <br>
+      <a class="moz-txt-link-freetext"
+href="https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/">https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/</a>
+      <br>
+      <br>
+LINBIT clients can download an installer suitable for production usage
+      <br>
+      from the packages.linbit.com repository:
+      <br>
+      <br>
+      <a class="moz-txt-link-freetext"
+        href="https://packages.linbit.com/exe/windows/drbd-9/">https://packages.linbit.com/exe/windows/drbd-9/</a>
+      <br>
+      <br>
+      (an API key is required, client will be notified in a separate
+      mail).
+      <br>
+      <br>
+      As always, all the best and happy hacking 🙂
+      <br>
+      <br>
+      - Johannes
+      <br>
+      <br>
+    </div>
+  </body>
+</html>
+
+--------------0ioBagGqMqK403WCRyl62bWk--
