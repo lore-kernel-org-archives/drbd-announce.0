@@ -1,22 +1,21 @@
-Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com
-	[209.85.208.175])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 559A2420137
+Return-Path: <philipp.reisner@linbit.com>
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com
+	[209.85.128.46])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 938B942015E
 	for <drbd-announce@lists.linbit.com>;
-	Fri, 24 May 2024 08:37:38 +0200 (CEST)
-Received: by mail-lj1-f175.google.com with SMTP id
-	38308e7fff4ca-2e6f2534e41so70625591fa.0
+	Mon, 27 May 2024 18:18:06 +0200 (CEST)
+Received: by mail-wm1-f46.google.com with SMTP id
+	5b1f17b1804b1-420180b5898so80456595e9.2
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 23 May 2024 23:37:38 -0700 (PDT)
-Date: Fri, 24 May 2024 08:37:35 +0200
-From: Roland Kammerer <roland.kammerer@linbit.com>
-To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Subject: drbd-reactor v1.4.2
-Message-ID: <ZlA1r3dikJnWidKe@arm64>
+	Mon, 27 May 2024 09:18:06 -0700 (PDT)
+From: Philipp Reisner <philipp.reisner@linbit.com>
+To: drbd-announce@lists.linbit.com
+Subject: drbd-9.1.21-rc.1 and drbd-9.2.10-rc.1
+Date: Mon, 27 May 2024 18:18:04 +0200
+Message-ID: <86sey35iv7.fsf@linbit.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="1vkmQPIUDwmFOYPq"
-Content-Disposition: inline
+Content-Type: text/plain
+Cc: drbd-user@lists.linbit.com
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -29,45 +28,47 @@ List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
 
---1vkmQPIUDwmFOYPq
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Hi DRBD-users,
 
-Dear DRBD users,
+You might have noticed that this release comes about four weeks earlier
+than our usual pace. The reason is that we discovered two regressions we
+want to fix. Both regressions were introduced in the last cycle, into
+drbd-9.1.20 and drbd-9.2.9.
 
-this release contains build fixes/cleanups mainly for Ubuntu Noble,
-especially for the PPA, but no functional changes besides that. 1.4.2 is
-in the PPA, but I don't plan to move it to our customer or to our public
-repos. This is just announced so that people don't worry why there is
-some "strange version" in the PPA not matching the version in
-customer/public repos...
+One is that if the size of your backing device is a power of two, and
+you are using external meta-data, DRBD tries to read a 64-bit word,
+starting 32 bits before the end of the last page of the bitmap
+area. Yes, that is an out-of-bound access, leading to a crash. Due to
+the preconditions, it affects only a relatively small part of our user
+base.
 
-Regards, rck
+The other regression triggers when you delete a connection from a
+resource and another connection goes down simultaneously. It causes then
+a deadlock, rendering the affected resource stuck in that state. In
+deployments with LINSTOR this can happen, since when LINSTOR removes a
+resource it calls `drbdadm down <res>` on all the nodes
+concurrently. Kubernetes users with dynamic workloads are affected by
+this.
 
-GIT: https://github.com/LINBIT/drbd-reactor/commit/816c6cf0fa551419976b78e27e825aa25d87fd63
-TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-reactor-1.4.2.tar.gz
-PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+The good news is that both issues are understood and fixed.
 
-Changelog:
-[ Roland Kammerer ]
-* build: add shell.nix
-* build: allow version packaged in Ubuntu Noble
-* build: fix make vs. gnumake
-* build: updated dependencies
+Please help test the release candidates.
 
---1vkmQPIUDwmFOYPq
-Content-Type: application/pgp-signature; name="signature.asc"
 
------BEGIN PGP SIGNATURE-----
+9.2.10-rc.1 (api:genl2/proto:86-122/transport:19)
+--------
+ * Changes merged from 9.1.21
+  - fix a deadlock that can trigger when deleting a connection and
+    another connection going down in parallel. This is a regression of
+    9.1.20
+  - Fix an out-of-bounds access when scanning the bitmap. It leads to a
+    crash when the bitmap ends on a page boundary, and this is also a
+    regression in 9.1.20.
 
-iQEzBAEBCAAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmZQNagACgkQRgmezyI6
-myLUKgf/ZzDHgeyk078/CS2YKiOiV5iVnKq20hc4+g+tgKePY2mSljJwS5QaQ4WW
-pvBezV58bT1Kn0PD0DMGL3HTGAtUyg8D8ih/wjG+6ZtTR6eleGF0KacGRLPBRkBE
-AwPAst4FubSo0T49qMmENYogBieTsPt9cvv8l3bcam7rEvYOJrhOUOuhkiq7LQ+U
-PIzgWjQ3KxOn0U0FmgNSfmmjyDuYERtt94VbSGfFE7xzmo/IjErWKg2pzjvHnNyY
-PaIET7ZmbdF4LpTP5//0Rnp74s+pDGYiCDPcxkGhnkKG50iLX7iPch3buMGA9JFW
-oF++fcZKliPx54fBOgGzt9eZQDb0VA==
-=uuKY
------END PGP SIGNATURE-----
+https://pkg.linbit.com//downloads/drbd/9/drbd-9.2.10-rc.1.tar.gz
+https://github.com/LINBIT/drbd/commit/c546a6487acade23427200165a74a55acf1277ba
 
---1vkmQPIUDwmFOYPq--
+https://pkg.linbit.com//downloads/drbd/9/drbd-9.1.21-rc.1.tar.gz
+https://github.com/LINBIT/drbd/commit/2fd95c83d008f3bc498cb59778869f86528c47b5
+
+
