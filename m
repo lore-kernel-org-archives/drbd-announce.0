@@ -1,18 +1,18 @@
 Return-Path: <philipp.reisner@linbit.com>
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com
-	[209.85.128.46])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 938B942015E
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com
+	[209.85.221.46])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 843874205D7
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 27 May 2024 18:18:06 +0200 (CEST)
-Received: by mail-wm1-f46.google.com with SMTP id
-	5b1f17b1804b1-420180b5898so80456595e9.2
+	Mon,  3 Jun 2024 21:20:21 +0200 (CEST)
+Received: by mail-wr1-f46.google.com with SMTP id
+	ffacd0b85a97d-35e5c6600f0so1137423f8f.3
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 27 May 2024 09:18:06 -0700 (PDT)
+	Mon, 03 Jun 2024 12:20:21 -0700 (PDT)
 From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Subject: drbd-9.1.21-rc.1 and drbd-9.2.10-rc.1
-Date: Mon, 27 May 2024 18:18:04 +0200
-Message-ID: <86sey35iv7.fsf@linbit.com>
+Subject: drbd-9.1.21 and drbd-9.2.10
+Date: Mon, 03 Jun 2024 21:20:19 +0200
+Message-ID: <86plsx6dfw.fsf@linbit.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 Cc: drbd-user@lists.linbit.com
@@ -26,7 +26,6 @@ List-Post: <mailto:drbd-announce@lists.linbit.com>
 List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
-
 
 Hi DRBD-users,
 
@@ -52,7 +51,7 @@ this.
 
 The good news is that both issues are understood and fixed.
 
-Please help test the release candidates.
+No changes since rc.1.
 
 
 9.2.10-rc.1 (api:genl2/proto:86-122/transport:19)
@@ -65,10 +64,9 @@ Please help test the release candidates.
     crash when the bitmap ends on a page boundary, and this is also a
     regression in 9.1.20.
 
-https://pkg.linbit.com//downloads/drbd/9/drbd-9.2.10-rc.1.tar.gz
-https://github.com/LINBIT/drbd/commit/c546a6487acade23427200165a74a55acf1277ba
 
-https://pkg.linbit.com//downloads/drbd/9/drbd-9.1.21-rc.1.tar.gz
-https://github.com/LINBIT/drbd/commit/2fd95c83d008f3bc498cb59778869f86528c47b5
+https://pkg.linbit.com//downloads/drbd/9/drbd-9.2.10.tar.gz
+https://github.com/LINBIT/drbd/commit/b92a320cb72a0b85144e742da5930f2d3b6ce30c
 
-
+https://pkg.linbit.com//downloads/drbd/9/drbd-9.1.21.tar.gz
+https://github.com/LINBIT/drbd/commit/ca7d448047fc96929b684821a0edb104ad0fef91
