@@ -1,22 +1,22 @@
-Return-Path: <johannes.thoma@linbit.com>
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com
-	[209.85.218.49])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 581094202BA
+Return-Path: <christoph.boehmwalder@linbit.com>
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com
+	[209.85.208.49])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 7D96D4202E7
 	for <drbd-announce@lists.linbit.com>;
-	Fri, 28 Jun 2024 15:18:49 +0200 (CEST)
-Received: by mail-ej1-f49.google.com with SMTP id
-	a640c23a62f3a-a72517e6225so77184766b.0
+	Thu,  4 Jul 2024 11:34:19 +0200 (CEST)
+Received: by mail-ed1-f49.google.com with SMTP id
+	4fb4d7f45d1cf-58b0dddab8cso716935a12.0
 	for <drbd-announce@lists.linbit.com>;
-	Fri, 28 Jun 2024 06:18:49 -0700 (PDT)
-Message-ID: <c926a32e-d22b-470f-8d9c-0dc242fea5d0@linbit.com>
-Date: Fri, 28 Jun 2024 15:18:47 +0200
+	Thu, 04 Jul 2024 02:34:19 -0700 (PDT)
+Message-ID: <df398ead-bbda-4329-9f6e-b28a384c5345@linbit.com>
+Date: Thu, 4 Jul 2024 11:34:16 +0200
 MIME-Version: 1.0
-To: "drbd-user@lists.linbit.com" <drbd-user@lists.linbit.com>,
-	drbd-announce@lists.linbit.com
-From: Johannes Thoma <johannes.thoma@linbit.com>
-Subject: WinDRBD 1.1.16 released
+Content-Language: en-US
+To: drbd-user@lists.linbit.com, drbd-announce@lists.linbit.com
+From: =?UTF-8?Q?Christoph_B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>
+Subject: linstor-gateway v1.6.0-rc.1
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -28,21 +28,20 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Dear WinDRBD users,
+Hello,
 
-We just released WinDRBD 1.1.16 which fixes a reason for a BSOD
-(system crash) when there are 4 billion I/O requests submitted to
-WinDRBD. While this seems to be a large number it has already
-been triggered by an installation in the field. The fix corrects both
-the counter of the pending I/O requests and the missing  list
-initialization that lead to the system crash.
+there is a new release candidate of LINSTOR Gateway: v1.6.0-rc.1.
 
-Updating WinDRBD to 1.1.16 is recommended.
+https://github.com/LINBIT/linstor-gateway/releases/tag/v1.6.0-rc.1
 
-A precompiled evaluation copy can be downloaded from the LINBIT
-homepage, customers will receive their access key in a separate
-mail.
+The most interesting user-visible change in this version will be that it 
+is now possible to create NFS exports with XFS file systems.
+Note that this requires a LINSTOR version of 1.22.0 or above.
 
-Best regards and my apologies for this stupid defect,
+For the full Changelog, check out the release notes on Github.
 
-- Johannes
+Please help us by testing this release candidate and reporting any 
+issues you may find via Github.
+
+Thanks,
+Christoph
