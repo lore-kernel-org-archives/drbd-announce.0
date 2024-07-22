@@ -1,22 +1,20 @@
-Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com
-	[209.85.208.180])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 8493D4201D2
+Return-Path: <moritz.wanzenboeck@linbit.com>
+Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com
+	[209.85.210.41])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 395374202FB
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 16 Jul 2024 09:37:28 +0200 (CEST)
-Received: by mail-lj1-f180.google.com with SMTP id
-	38308e7fff4ca-2eedec7fbc4so33243701fa.0
+	Mon, 22 Jul 2024 08:57:51 +0200 (CEST)
+Received: by mail-ot1-f41.google.com with SMTP id
+	46e09a7af769-70445bb3811so1771599a34.1
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 16 Jul 2024 00:37:28 -0700 (PDT)
-Date: Tue, 16 Jul 2024 09:37:23 +0200
-From: Roland Kammerer <roland.kammerer@linbit.com>
-To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Subject: linstor-proxmox v8.0.4
-Message-ID: <ZpYjM7-NoFmFlXYs@arm64>
+	Sun, 21 Jul 2024 23:57:50 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="H7oAAGg97ZhjUD4b"
-Content-Disposition: inline
+From: =?UTF-8?Q?Moritz_Wanzenb=C3=B6ck?= <moritz.wanzenboeck@linbit.com>
+Date: Mon, 22 Jul 2024 08:57:39 +0200
+Message-ID: <CAKnz9x+02MiSXFCOr_oZtTBVofkWGu=MTp_m5suUHqosS9PXVg@mail.gmail.com>
+Subject: LINSTOR Operator v2.5.2
+To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
+Content-Type: text/plain; charset="UTF-8"
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -28,73 +26,60 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
+Dear LINBIT SDS on Kubernetes users,
 
---H7oAAGg97ZhjUD4b
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+We've recently released version 2.5.2 of our Kubernetes Operator.
 
-Dear DRBD/LINSTOR on PVE users,
+This contains updated LINSTOR, CSI driver and DRBD versions.
 
-this is version 8.0.4 of the linstor-proxmox plugin. It contains the
-following fixes and improvements:
+The LINSTOR CSI driver fixes some issues with the new caching
+strategy, as well as an issue when using both a custom
+"allowRemoteVolumeAccess" policy in combination with "diskless" worker
+nodes.
 
-# Fix sizes when VMs with EFI disks are restored
+DRBD 9.2.10 contains a fix for a potential deadlock that was triggered
+by the way the CSI driver handled removing of volumes.
 
-Here the problem was that restoring backups with EFI disks failed
-because the vzdump tool in PVE has certain assumptions. The tiny EFI
-disk gets created and if sizes are within 4MB it shuts up, if they are
-bigger it fails. The plugin had a minimal DRBD resource size of 5MB,
-which then got rounded up to 8MB (e.g., LVM, DRBD-meta data,...), which
-was no longer in the 4MB tolerance and restores failed. This is fixed
-and should then also allow restoring backups that previously failed.
+To upgrade, either point your kustomization.yaml at the new manifest:
 
-# Keep tie-breaker node
+  https://charts.linstor.io/static/v2.5.2.yaml
 
-When a diskless assignment gets deleted LINSTOR usually (depending on
-the number of nodes obviously) converts that assignment to a tie-breaker
-so that one still has for example 3 resources/nodes to keep quorum.
-Usually when a VM is then started on a tie-breaker that gets converted
-to a regular diskless and after use it gets downgraded to a tie-breaker
-again. But if LINSTOR sees a delete on a tie-breaker, it will really
-delete that (diskless) DRBD assignment, which perfectly makes sense and
-usually does not happen because of the described toggling between
-diskless and (diskless) tie-breaker. In certain scenarios sends 2
-deletes to the plugin, then the first switches from diskless to
-tie-breaker, but the second then actually deletes the tie-breaker. This
-got fixed, but requires LINSTOR 1.28.0 or later. The plugin can be used
-with older LINSTOR versions, but then the described behavior stays.
+Or, if using helm, upgrade the linstor-operator chart:
 
-# Allow names as used in backup fleecing
+  helm repo update
+  helm upgrade linstor-operator linstor/linstor-operator --wait
 
-We needed to relax our name filters once more for disk names as they are
-used for backup fleecing. That is done, but it has to be said that using
-a DRBD disk for backup fleecing is a very bad idea in general, don't do
-it, use fast local storage such as thinlvm for that.
+To get specific instructions to apply the update, check our users guide[1].
 
-Regards, rck
+If you need to upgrade from Operator v1, check out our upgrade guide[2].
 
-GIT: https://github.com/LINBIT/linstor-proxmox/commit/b55df5145e3ea5866bb177bdca2a75d60d69856d
-TGZ: https://pkg.linbit.com//downloads/connectors/linstor-proxmox-8.0.4.tar.gz
+Source code is, as always, available upstream[3].
 
-Changelog:
-[ Roland Kammerer ]
-* fix backups with EFI disks
-* keep tiebreaker
-* allow names as used by "backup fleecing"
+Best regards,
+Moritz
 
---H7oAAGg97ZhjUD4b
-Content-Type: application/pgp-signature; name="signature.asc"
+[1]: https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-upgrade
+[2]: https://charts.linstor.io/migration/
+[3]: https://github.com/piraeusdatastore/piraeus-operator
 
------BEGIN PGP SIGNATURE-----
+Operator v2.5.2 Changelog
+-------------------------
+### Added
 
-iQEzBAEBCAAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmaWIysACgkQRgmezyI6
-myLDFgf9Eh781C1qOsVZ4VonbrEV7dsJn3iGw/iUT+80aXTx5J+Rl6p1EVcFknnu
-JSXSmgXk2HNIgBP0SXD6EKLanNcw3Y6Em95Dp5FcZbHDnrTj+qgBH3zRQyEdJdBH
-OHJI0JURITzxtmArWOWOJVxAQyyUdiFy7I5nr/j1t5Ev+GAbjEJAOoVljDfAIpbN
-CQ5LUT2xhd14FRmb4B1U5oKtYWFwVrMnmzSLmiWX9muSv8AiNbL4tVxKM1CW61M2
-73F+NXFV0w7EIqL+CTYTFqzynsMkMGW0DYimsYATkIHx8p8Ccw1IlISBv9B7xpwi
-rJtS4cUGWgqOaGsUqiVUDQ4gNGdR2A==
-=Twid
------END PGP SIGNATURE-----
+- Option to specify custom CA certificate resources for TLS configuration.
+- Ensure all Certificate resources have `dnsNames` set.
 
---H7oAAGg97ZhjUD4b--
+### Changed
+
+- Updated images:
+  * LINSTOR 1.28.0
+  * LINSTOR CSI 1.6.3
+  * DRBD 9.2.10
+  * DRBD Reactor 1.4.1
+  * kTLS-utils 0.11
+  * Latest CSI sidecars
+
+### Fixed
+
+- The operator will no longer restart reconciliation on every change
+to `ServiceAccount` resources.
