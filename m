@@ -1,20 +1,22 @@
-Return-Path: <moritz.wanzenboeck@linbit.com>
-Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com
-	[209.85.210.41])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 395374202FB
+Return-Path: <johannes.thoma@linbit.com>
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com
+	[209.85.208.48])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id B1DE84202C2
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 22 Jul 2024 08:57:51 +0200 (CEST)
-Received: by mail-ot1-f41.google.com with SMTP id
-	46e09a7af769-70445bb3811so1771599a34.1
+	Thu, 25 Jul 2024 14:28:19 +0200 (CEST)
+Received: by mail-ed1-f48.google.com with SMTP id
+	4fb4d7f45d1cf-5a108354819so1170951a12.0
 	for <drbd-announce@lists.linbit.com>;
-	Sun, 21 Jul 2024 23:57:50 -0700 (PDT)
+	Thu, 25 Jul 2024 05:28:19 -0700 (PDT)
+Message-ID: <8b1f9b48-b23c-4854-a722-c6990722c8c8@linbit.com>
+Date: Thu, 25 Jul 2024 14:28:16 +0200
 MIME-Version: 1.0
-From: =?UTF-8?Q?Moritz_Wanzenb=C3=B6ck?= <moritz.wanzenboeck@linbit.com>
-Date: Mon, 22 Jul 2024 08:57:39 +0200
-Message-ID: <CAKnz9x+02MiSXFCOr_oZtTBVofkWGu=MTp_m5suUHqosS9PXVg@mail.gmail.com>
-Subject: LINSTOR Operator v2.5.2
-To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Content-Type: text/plain; charset="UTF-8"
+To: "drbd-user@lists.linbit.com" <drbd-user@lists.linbit.com>,
+	drbd-announce@lists.linbit.com
+From: Johannes Thoma <johannes.thoma@linbit.com>
+Subject: WinDRBD 1.1.17 released
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,60 +28,27 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Dear LINBIT SDS on Kubernetes users,
+Dear WinDRBD community,
 
-We've recently released version 2.5.2 of our Kubernetes Operator.
+We just released WinDRBD 1.1.17. It contains a refactored implementation of
+how WinDRBD handles disk timeouts. In this version WinDRBD has its own timer
+and if that timer elapses it compiletes all I/O requests pending with an error
+status. To DRBD it looks just like the disk has failed, so DRBD will detach the
+disk. An automation or cluster manager should react to that event, repair
+the disk and attach it again.
 
-This contains updated LINSTOR, CSI driver and DRBD versions.
+If you are using disk timeouts then please upgrade to this version. If not
+there is no urgent need to upgrade. An evaluation copy can be downloaded
+from:
 
-The LINSTOR CSI driver fixes some issues with the new caching
-strategy, as well as an issue when using both a custom
-"allowRemoteVolumeAccess" policy in combination with "diskless" worker
-nodes.
+https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/
 
-DRBD 9.2.10 contains a fix for a potential deadlock that was triggered
-by the way the CSI driver handled removing of volumes.
+To run this version on your system you have to put it into test mode by:
 
-To upgrade, either point your kustomization.yaml at the new manifest:
+bcdedit /set TESTSIGNING ON
 
-  https://charts.linstor.io/static/v2.5.2.yaml
-
-Or, if using helm, upgrade the linstor-operator chart:
-
-  helm repo update
-  helm upgrade linstor-operator linstor/linstor-operator --wait
-
-To get specific instructions to apply the update, check our users guide[1].
-
-If you need to upgrade from Operator v1, check out our upgrade guide[2].
-
-Source code is, as always, available upstream[3].
+and reboot the Windows machine.
 
 Best regards,
-Moritz
 
-[1]: https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-upgrade
-[2]: https://charts.linstor.io/migration/
-[3]: https://github.com/piraeusdatastore/piraeus-operator
-
-Operator v2.5.2 Changelog
--------------------------
-### Added
-
-- Option to specify custom CA certificate resources for TLS configuration.
-- Ensure all Certificate resources have `dnsNames` set.
-
-### Changed
-
-- Updated images:
-  * LINSTOR 1.28.0
-  * LINSTOR CSI 1.6.3
-  * DRBD 9.2.10
-  * DRBD Reactor 1.4.1
-  * kTLS-utils 0.11
-  * Latest CSI sidecars
-
-### Fixed
-
-- The operator will no longer restart reconciliation on every change
-to `ServiceAccount` resources.
+- Johannes
