@@ -1,21 +1,20 @@
-Return-Path: <philipp.reisner@linbit.com>
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com
-	[209.85.208.41])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id AC4AF42019F
+Return-Path: <moritz.wanzenboeck@linbit.com>
+Received: from mail-ot1-f52.google.com (mail-ot1-f52.google.com
+	[209.85.210.52])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id C3DF04201EE
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 12 Aug 2024 22:24:30 +0200 (CEST)
-Received: by mail-ed1-f41.google.com with SMTP id
-	4fb4d7f45d1cf-5af6a1afa7bso5662322a12.1
+	Mon,  9 Sep 2024 08:24:33 +0200 (CEST)
+Received: by mail-ot1-f52.google.com with SMTP id
+	46e09a7af769-7093ba310b0so2051012a34.2
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 12 Aug 2024 13:24:30 -0700 (PDT)
-From: Philipp Reisner <philipp.reisner@linbit.com>
-To: drbd-announce@lists.linbit.com
-Subject: drbd-9.1.22 and drbd-9.2.11
-Date: Mon, 12 Aug 2024 22:24:28 +0200
-Message-ID: <86plqdtrpf.fsf@linbit.com>
+	Sun, 08 Sep 2024 23:24:33 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-Cc: drbd-user@lists.linbit.com
+From: =?UTF-8?Q?Moritz_Wanzenb=C3=B6ck?= <moritz.wanzenboeck@linbit.com>
+Date: Mon, 9 Sep 2024 08:24:21 +0200
+Message-ID: <CAKnz9xKV5_0Od40OFgVxjyzSZ23HhuT7EMtib82o7PMPNSsyPA@mail.gmail.com>
+Subject: LINSTOR Operator v2.6.0
+To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
+Content-Type: text/plain; charset="UTF-8"
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -27,58 +26,52 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
+Dear LINBIT SDS on Kubernetes users,
 
-Hello DRBD-users,
+We've recently released version 2.6.0 of our Kubernetes Operator.
 
-A detail I never cared about is if a syscall gets restarted or returns
-EINTR after the arrival of a signal. What made me learn this detail is a
-customer whose system newly created processes get a signal. Often, a
-process open()s the resources it needs to work with first, and on this
-occasion, that was a drbd device.
+This release contains a new way to map Kubernetes Node labels and
+annotations to LINSTOR properties: It is now possible to use a
+wildcard pattern to map one or more labels to one or more properties
+at once. For example, you might want to assign the
+node-role.kubernetes.io/* labels to a single Aux/role property in
+LINSTOR.
 
-When auto-promote is enabled (which it is by default), DRBD will promote
-the drbd device to primary in the open() system call of a user space
-process. It needs to exchange some network packets, which can easily
-take milliseconds.
+Other than that, the release includes updates for LINSTOR and DRBD,
+matching the latest upstream release.
 
-Now, when a (non-fatal) signal arrived at just that moment, DRBD
-dutifully interrupted the promote operation and returned to user space,
-with an errno indicating that the device was not primary.
+To upgrade, either point your kustomization.yaml at the new manifest:
 
-And here is the problem for a random user-space process, it got an
-unexpected errno from open() and terminated.
+  https://charts.linstor.io/static/v2.6.0.yaml
 
-Then, I learned about EINTR and restartable syscalls. Starting with this
-release, DRBD will restart the open() syscall in such a scenario unless
-the user prepared to receive an EINTR from open() by calling sigaction()
-and omitting SA_RESTART before.
+Or, if using helm, upgrade the linstor-operator chart:
 
-Since the rc.1 the only change is a minor and straightforward fix to the
-RDMA transport, which is relevant when the RDMA stack is cleaning up its
-objects slowly (or not at all).
+  helm repo update
+  helm upgrade linstor-operator linstor/linstor-operator --wait
 
+To get specific instructions to apply the update, check our users guide[1].
 
-9.2.11 (api:genl2/proto:86-122/transport:19)
---------
- * Do not block del-minor or down operations if the RDMA/Infiniband
-   stack cleans up slowly.
- * Changes merged from 9.1.22
-  - Upgrade from partial resync to a full resync if necessary when the
-    user manually resolves a split-brain situation
-  - Fix a potential NULL deref when a disk fails while doing a
-    forget-peer operation.
-  - Fix a rcu_read_lock()/rcu_read_unlock() imbalance
-  - Restart the open() syscall when a process auto promoting a drbd device gets
-    interrupted by a signal
-  - Remove a deadlock that caused DRBD to connect sometimes
-    exceptionally slow
-  - Make detach operations interruptible
-  - Added dev_is_open to events2 status information
-  - Improve log readability for 2PC state changes and drbd-threads
-  - Updated compability code for Linux 6.9
+If you need to upgrade from Operator v1, check out our upgrade guide[2].
 
-https://pkg.linbit.com//downloads/drbd/9/drbd-9.2.11.tar.gz
-https://github.com/LINBIT/drbd/commit/f52e5a3545e17fafd548b6b9c483206c32754955
+Source code is, as always, available upstream[3].
 
-https://pkg.linbit.com//downloads/drbd/9/drbd-9.1.22.tar.gz
-https://github.com/LINBIT/drbd/commit/d7212a2eaeda23f8cb71be36ba52a5163f4dc694
+Best regards,
+Moritz
+
+[1]: https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-upgrade
+[2]: https://charts.linstor.io/migration/
+[3]: https://github.com/piraeusdatastore/piraeus-operator
+
+Operator v2.6.0 Changelog
+-------------------------
+### Added
+
+- Support wildcard patterns when referencing property values from node
+labels and annotations.
+
+### Changed
+
+- Updated images:
+  * LINSTOR 1.29.0
+  * DRBD 9.2.11
+  * Latest CSI Sidecars
