@@ -1,20 +1,22 @@
-Return-Path: <moritz.wanzenboeck@linbit.com>
-Received: from mail-ot1-f52.google.com (mail-ot1-f52.google.com
-	[209.85.210.52])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id C3DF04201EE
+Return-Path: <christoph.boehmwalder@linbit.com>
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com
+	[209.85.218.43])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id B0158420471
 	for <drbd-announce@lists.linbit.com>;
-	Mon,  9 Sep 2024 08:24:33 +0200 (CEST)
-Received: by mail-ot1-f52.google.com with SMTP id
-	46e09a7af769-7093ba310b0so2051012a34.2
+	Thu, 12 Sep 2024 17:50:36 +0200 (CEST)
+Received: by mail-ej1-f43.google.com with SMTP id
+	a640c23a62f3a-a8d60e23b33so146251166b.0
 	for <drbd-announce@lists.linbit.com>;
-	Sun, 08 Sep 2024 23:24:33 -0700 (PDT)
+	Thu, 12 Sep 2024 08:50:36 -0700 (PDT)
+Message-ID: <e98ac07d-4241-431c-94f3-8dcd292da22c@linbit.com>
+Date: Thu, 12 Sep 2024 17:50:33 +0200
 MIME-Version: 1.0
-From: =?UTF-8?Q?Moritz_Wanzenb=C3=B6ck?= <moritz.wanzenboeck@linbit.com>
-Date: Mon, 9 Sep 2024 08:24:21 +0200
-Message-ID: <CAKnz9xKV5_0Od40OFgVxjyzSZ23HhuT7EMtib82o7PMPNSsyPA@mail.gmail.com>
-Subject: LINSTOR Operator v2.6.0
+From: =?UTF-8?Q?Christoph_B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>
+Content-Language: en-US
 To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Content-Type: text/plain; charset="UTF-8"
+Subject: LINSTOR GUI v1.8.0 -- Open Source Release
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,52 +28,27 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Dear LINBIT SDS on Kubernetes users,
+Hello,
 
-We've recently released version 2.6.0 of our Kubernetes Operator.
+we are excited to announce the first open source version of LINSTOR GUI,
+a web-based graphical user interface for the LINBIT SDS stack.
 
-This release contains a new way to map Kubernetes Node labels and
-annotations to LINSTOR properties: It is now possible to use a
-wildcard pattern to map one or more labels to one or more properties
-at once. For example, you might want to assign the
-node-role.kubernetes.io/* labels to a single Aux/role property in
-LINSTOR.
+This project has been in closed-source development for a while, and we
+have now decided to publicly release the source code on GitHub.
 
-Other than that, the release includes updates for LINSTOR and DRBD,
-matching the latest upstream release.
+    https://github.com/LINBIT/linstor-gui
 
-To upgrade, either point your kustomization.yaml at the new manifest:
+Feel free to try it out, and please report any issues you may find via
+GitHub. If you have any general questions or comments, you can use the
+"Discussions" tab on GitHub.
 
-  https://charts.linstor.io/static/v2.6.0.yaml
+Have fun using the GUI, and thanks for helping us with the development
+process.
 
-Or, if using helm, upgrade the linstor-operator chart:
+Regards,
+Christoph
 
-  helm repo update
-  helm upgrade linstor-operator linstor/linstor-operator --wait
-
-To get specific instructions to apply the update, check our users guide[1].
-
-If you need to upgrade from Operator v1, check out our upgrade guide[2].
-
-Source code is, as always, available upstream[3].
-
-Best regards,
-Moritz
-
-[1]: https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-upgrade
-[2]: https://charts.linstor.io/migration/
-[3]: https://github.com/piraeusdatastore/piraeus-operator
-
-Operator v2.6.0 Changelog
--------------------------
-### Added
-
-- Support wildcard patterns when referencing property values from node
-labels and annotations.
-
-### Changed
-
-- Updated images:
-  * LINSTOR 1.29.0
-  * DRBD 9.2.11
-  * Latest CSI Sidecars
+-- 
+Christoph Böhmwalder
+LINBIT | Keeping the Digital World Running
+DRBD HA —  Disaster Recovery — Software defined Storage
