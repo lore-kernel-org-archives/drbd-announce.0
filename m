@@ -1,22 +1,21 @@
-Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com
-	[209.85.208.178])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 08E5C4202C2
+Return-Path: <christoph.boehmwalder@linbit.com>
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com
+	[209.85.218.53])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 43BF842006B
 	for <drbd-announce@lists.linbit.com>;
-	Fri, 18 Oct 2024 12:18:14 +0200 (CEST)
-Received: by mail-lj1-f178.google.com with SMTP id
-	38308e7fff4ca-2fb3c3d5513so21205981fa.1
+	Tue, 22 Oct 2024 14:46:09 +0200 (CEST)
+Received: by mail-ej1-f53.google.com with SMTP id
+	a640c23a62f3a-a7aa086b077so664653866b.0
 	for <drbd-announce@lists.linbit.com>;
-	Fri, 18 Oct 2024 03:18:14 -0700 (PDT)
-Date: Fri, 18 Oct 2024 12:18:09 +0200
-From: Roland Kammerer <roland.kammerer@linbit.com>
+	Tue, 22 Oct 2024 05:46:09 -0700 (PDT)
+Date: Tue, 22 Oct 2024 14:46:07 +0200
+From: Christoph =?utf-8?Q?B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>
 To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Subject: drbd-utils v9.29.0-rc.1
-Message-ID: <ZxI14db2R5TMw1oH@arm64>
+Subject: LINSTOR GUI v1.8.4
+Message-ID: <20241022124607.MIigV%christoph.boehmwalder@linbit.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="I7wKeTHJWFXaHDJf"
-Content-Disposition: inline
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -28,61 +27,40 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
+Hello,
 
---I7wKeTHJWFXaHDJf
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+a new version of LINSTOR GUI has just been released: v1.8.4
 
-Dear DRBD users,
+https://github.com/LINBIT/linstor-gui/releases/tag/v1.8.4
 
-this is RC1 of the upcoming 9.29.0 release. It contains many fixes and
-improvements ranging from fixed segfaults, fixed undefined behavior,
-fixes for bugs that only triggered on arm64 to improvements for our
-systemd templates and new features in drbdmon. If you have not been
-bitten by any of the bugs, there is no too urgent need to upgrade,
-still, the fixes and improvements are worth it.
+Here is the relevant excerpt from the changelog:
 
-Please test, if we don't find any bugs I will do the final release in
-about a week from now.
+-----------------------------------
+# 1.8.4 - 2024-10-22
 
-Regards, rck
+### Added
 
-GIT: https://github.com/LINBIT/drbd-utils/commit/1bbd986336341b753b0613e9306067a8dfb062c0
-TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-utils-9.29.0-rc.1.tar.gz
-PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+- Support for creating storage pools with the ZFS device provider
+- Loading status for node adding
 
-Changelog:
+### Fixed
 
-9.29.0-rc.1
------------
- * drbdmeta: fix initialization for external md
- * build: allow disabling keyutils
- * tests: export sanitized environment
- * drbdmon: various improvements
- * build: add cyclonedx
- * drbsetup,v9: fix multiple paths drbdsetup show --json
-   strictly speaking breaking change, but maily used internally
- * events2: expose if device is open
- * drbdadm: fix undefined behavior that triggered on amd64
- * shared: fix out-of-bounds access in parsing
- * drbsetup,v9: event consistency with peer devices
- * drbdadm: fix parsing of v8.4 configs for compatibility
- * drbdmeta: fix segfault for check-resize on intentionally diskless
- * drbd-promote@.service: check if ExecCondition is available
+- Debounced request for gateway host check
+- Node edit page blank error
+- Capacity on Storage Pools displaying NaN in some cases
+- Refetching list when a Storage Pool is created
+- Support status check for open-sourced LINSTOR GUI
+- Installation instructions for LINSTOR GUI on a LINSTOR controller node
 
---I7wKeTHJWFXaHDJf
-Content-Type: application/pgp-signature; name="signature.asc"
+### Changed
 
------BEGIN PGP SIGNATURE-----
+- Reduced bundle size
+-----------------------------------
 
-iQEzBAEBCAAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmcSNdQACgkQRgmezyI6
-myLxCgf9HdGio2UAZdLPQ+kDwdWVlJ1llmxliiL9zKqckqEtedoh/oOeGQIoPCeX
-tomHJtNoaA87t5FPjbTjolskYD0Z0q03kiMbBggXB5gg1P9iVet1FR0VUnYdujdW
-D4cwiTcKRNLAP2BcCKjGBZxavjKIy+DjJjaR5DLCT4qC+oqGj+xnreyT6gY7c5uC
-mwfo2DvsTo1Okql4vFDXbFLkPRotjxjoFvK6mr8Vjo63OLLBp3prxrpfla9zx/1I
-MKIHGWNqrC/I+zmqmWx3W1b3c1RmeKnsKBnyGI1n3LlokPrW98SA8hNxbsjKPoYK
-5CKRfj3UT+Rv62t9H39E76ENROnqhA==
-=PN+X
------END PGP SIGNATURE-----
+Regards,
+Christoph
 
---I7wKeTHJWFXaHDJf--
+--
+Christoph B=C3=B6hmwalder
+LINBIT | Keeping the Digital World Running
+DRBD HA =E2=80=94  Disaster Recovery =E2=80=94 Software defined Storage
