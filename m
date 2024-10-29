@@ -1,21 +1,21 @@
 Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com
-	[209.85.167.46])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 43F6E420358
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com
+	[209.85.167.43])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id E2830420326
 	for <drbd-announce@lists.linbit.com>;
-	Fri, 25 Oct 2024 12:47:25 +0200 (CEST)
-Received: by mail-lf1-f46.google.com with SMTP id
-	2adb3069b0e04-539fe76e802so2407676e87.1
+	Tue, 29 Oct 2024 13:45:17 +0100 (CET)
+Received: by mail-lf1-f43.google.com with SMTP id
+	2adb3069b0e04-539e13375d3so6070881e87.3
 	for <drbd-announce@lists.linbit.com>;
-	Fri, 25 Oct 2024 03:47:25 -0700 (PDT)
-Date: Fri, 25 Oct 2024 12:47:19 +0200
+	Tue, 29 Oct 2024 05:45:17 -0700 (PDT)
+Date: Tue, 29 Oct 2024 13:45:12 +0100
 From: Roland Kammerer <roland.kammerer@linbit.com>
 To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Subject: linbit-keyring
-Message-ID: <Zxt3N5qWG6DI9PED@arm64>
+Subject: drbd-utils v9.29.0
+Message-ID: <ZyDY2E5rNLAujqNG@arm64>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="rJlMnm/OeFL/f3RN"
+	protocol="application/pgp-signature"; boundary="01DRqcKli1R9Ybb5"
 Content-Disposition: inline
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
@@ -29,40 +29,59 @@ List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
 
---rJlMnm/OeFL/f3RN
+--01DRqcKli1R9Ybb5
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
 Dear DRBD users,
 
-this is meant for our customers as well as FLOSS users that use any of
-our public repos (except the Ubuntu PPA).
+this is version 9.29.0 of drbd-utils. We did not find any bug since RC1.
+for your convenience the announcement of RC1:
 
-The short version: There is now a linbit-keyring package with our old
-key and our new key and we will start using the new one on November the
-15th to sign repo meta data. As the keyring contains both keys you can
-install that package now and change your repo config (if necessary),
-then you don't even notice the upcoming changes.
-
-Details are described here[1], if there are any questions, please ask.
-
-[1] https://kb.linbit.com/linbit-keyring-software-package
+It contains many fixes and improvements ranging from fixed segfaults,
+fixed undefined behavior, fixes for bugs that only triggered on arm64 to
+improvements for our systemd templates and new features in drbdmon. If
+you have not been bitten by any of the bugs, there is no too urgent need
+to upgrade, still, the fixes and improvements are worth it.
 
 Regards, rck
 
---rJlMnm/OeFL/f3RN
+GIT: https://github.com/LINBIT/drbd-utils/commit/28e2ab938fe5e99fdcb27c0c393a9f2a3fb8fdee
+TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-utils-9.29.0.tar.gz
+PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+
+Changelog:
+
+9.29.0
+-----------
+ * drbdmeta: fix initialization for external md
+ * build: allow disabling keyutils
+ * tests: export sanitized environment
+ * drbdmon: various improvements
+ * build: add cyclonedx
+ * drbsetup,v9: fix multiple paths drbdsetup show --json
+   strictly speaking breaking change, but maily used internally
+ * events2: expose if device is open
+ * drbdadm: fix undefined behavior that triggered on amd64
+ * shared: fix out-of-bounds access in parsing
+ * drbsetup,v9: event consistency with peer devices
+ * drbdadm: fix parsing of v8.4 configs for compatibility
+ * drbdmeta: fix segfault for check-resize on intentionally diskless
+ * drbd-promote@.service: check if ExecCondition is available
+
+--01DRqcKli1R9Ybb5
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCAAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmcbdzQACgkQRgmezyI6
-myJzrwgAnvX9JeS+c9XFyP47CCK3B2+sGsDFo5gpx7AK+F2fNs/PyXCY++Fi7PDJ
-rSxBZqUUJqX3Tf4fe1YH5RtsclxjQrdTx95C72m9vjWdbJwTW2dcem5s3j9Ee7uE
-fLbaZymI2vwtmKGVsxZWIBcGREGtOTzoSXQlJhgF3eern930KG7IUJxsUIDZya8R
-b2PVCVGgGx8+CblVWFk6T0MVQNcT+Vq+k5DDINulVRf+03mGGeTUYTxFdYzdtH1z
-2Uv9owZZCBgjFfWY4oagQ8+K2OM0O1EpZ7rX3+3rKzeg4W1vRHBJFboN/RHGJwk3
-nbc5tzsK9tU00NMuXgpif/UaXyaqfg==
-=CB7O
+iQEzBAEBCAAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmcg2NQACgkQRgmezyI6
+myICZgf/S6ucM8y7Rhbrf4SHaY0j0oqftYfkbC36bQ3FkPjKE42J/Hj/3ZYspgjc
+c2i2L+QeByvnU2/Ov2ZMYIxbHHpifu6q/ebSO69BYefFMe1lvKNMSXXTATaDc+a4
+biJPTr97VC9mOamr7ar2e79Y0js1DAJIJpnoSI5v1K/s3FyHXQZNp9ehzVPiVWhn
+/i4OUj8GBfPypRJGfx/gB7aCzAXvOPsk2SUu0PqlzNN631s/HcUgZ40l9xteTZid
+qcJiVJxELLXN2it/t3Bl0A+gLHKviBsmWqltUluatHhutlaQ12uW1F0ngyrHhn/V
+Wk7tCXkHWf856jaX3G/c5K0n3v4I5Q==
+=Lhdt
 -----END PGP SIGNATURE-----
 
---rJlMnm/OeFL/f3RN--
+--01DRqcKli1R9Ybb5--
