@@ -1,22 +1,20 @@
-Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com
-	[209.85.167.43])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id E2830420326
+Return-Path: <rene.peinthor@linbit.com>
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com
+	[209.85.210.174])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 55FEB420327
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 29 Oct 2024 13:45:17 +0100 (CET)
-Received: by mail-lf1-f43.google.com with SMTP id
-	2adb3069b0e04-539e13375d3so6070881e87.3
+	Tue,  5 Nov 2024 13:29:11 +0100 (CET)
+Received: by mail-pf1-f174.google.com with SMTP id
+	d2e1a72fcca58-72097a5ca74so5068025b3a.3
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 29 Oct 2024 05:45:17 -0700 (PDT)
-Date: Tue, 29 Oct 2024 13:45:12 +0100
-From: Roland Kammerer <roland.kammerer@linbit.com>
-To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Subject: drbd-utils v9.29.0
-Message-ID: <ZyDY2E5rNLAujqNG@arm64>
+	Tue, 05 Nov 2024 04:29:11 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="01DRqcKli1R9Ybb5"
-Content-Disposition: inline
+From: Rene Peinthor <rene.peinthor@linbit.com>
+Date: Tue, 5 Nov 2024 13:28:59 +0100
+Message-ID: <CAHmn2DNRAtd-hMBk1MfF59pTWGs0V0DCvEg6uTNM-5CQ2PcqOw@mail.gmail.com>
+Subject: linstor-server 1.29.2 release
+To: drbd-announce@lists.linbit.com, drbd-user <drbd-user@lists.linbit.com>
+Content-Type: multipart/alternative; boundary="0000000000005b37740626298cf9"
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -28,60 +26,71 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
+--0000000000005b37740626298cf9
+Content-Type: text/plain; charset="UTF-8"
 
---01DRqcKli1R9Ybb5
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Hi!
 
-Dear DRBD users,
+As it is still some time until we are ready for the next full feature
+release,
+we accumulated some bug fixes for various smaller issues and decided
+to do a release with them.
 
-this is version 9.29.0 of drbd-utils. We did not find any bug since RC1.
-for your convenience the announcement of RC1:
+## [1.29.2] - 2024-11-05
 
-It contains many fixes and improvements ranging from fixed segfaults,
-fixed undefined behavior, fixes for bugs that only triggered on arm64 to
-improvements for our systemd templates and new features in drbdmon. If
-you have not been bitten by any of the bugs, there is no too urgent need
-to upgrade, still, the fixes and improvements are worth it.
+### Changed
 
-Regards, rck
+- luksChangeKey is now also memory limited to 256MB
 
-GIT: https://github.com/LINBIT/drbd-utils/commit/28e2ab938fe5e99fdcb27c0c393a9f2a3fb8fdee
-TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-utils-9.29.0.tar.gz
-PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+### Fixed
 
-Changelog:
+- Fixed usage of FileSystemWatch to properly trigger when devices appear
+- Do not update disc granularity while resource is cloning
+- Drbd-layer should not try to adjust resource while still cloning
+- Fixed possible "access to deleted resource" in case of an issue during
+rsc-creation + manual delete
+- AutoPlaceAPI: remove unnecessary resource definition loading
+- Fixed bug that could be lead to violation of configured
+--x-replicas-on-different restriction
+- Query resource-connection didn't work if source and target node are
+reversed.
+- Fixed unit tests relying on current timezone offset instead of current
+timezone
 
-9.29.0
------------
- * drbdmeta: fix initialization for external md
- * build: allow disabling keyutils
- * tests: export sanitized environment
- * drbdmon: various improvements
- * build: add cyclonedx
- * drbsetup,v9: fix multiple paths drbdsetup show --json
-   strictly speaking breaking change, but maily used internally
- * events2: expose if device is open
- * drbdadm: fix undefined behavior that triggered on amd64
- * shared: fix out-of-bounds access in parsing
- * drbsetup,v9: event consistency with peer devices
- * drbdadm: fix parsing of v8.4 configs for compatibility
- * drbdmeta: fix segfault for check-resize on intentionally diskless
- * drbd-promote@.service: check if ExecCondition is available
+https://pkg.linbit.com//downloads/linstor/linstor-server-1.29.2.tar.gz
 
---01DRqcKli1R9Ybb5
-Content-Type: application/pgp-signature; name="signature.asc"
 
------BEGIN PGP SIGNATURE-----
+Linstor PPA:
+https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
-iQEzBAEBCAAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmcg2NQACgkQRgmezyI6
-myICZgf/S6ucM8y7Rhbrf4SHaY0j0oqftYfkbC36bQ3FkPjKE42J/Hj/3ZYspgjc
-c2i2L+QeByvnU2/Ov2ZMYIxbHHpifu6q/ebSO69BYefFMe1lvKNMSXXTATaDc+a4
-biJPTr97VC9mOamr7ar2e79Y0js1DAJIJpnoSI5v1K/s3FyHXQZNp9ehzVPiVWhn
-/i4OUj8GBfPypRJGfx/gB7aCzAXvOPsk2SUu0PqlzNN631s/HcUgZ40l9xteTZid
-qcJiVJxELLXN2it/t3Bl0A+gLHKviBsmWqltUluatHhutlaQ12uW1F0ngyrHhn/V
-Wk7tCXkHWf856jaX3G/c5K0n3v4I5Q==
-=Lhdt
------END PGP SIGNATURE-----
+Cheers,
+Rene
 
---01DRqcKli1R9Ybb5--
+--0000000000005b37740626298cf9
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">Hi!<div><br></div><div>As it is still some time until we a=
+re ready for the next full feature release,</div><div>we accumulated=C2=A0s=
+ome bug fixes for various smaller issues and decided</div><div>to do a rele=
+ase with them.</div><div><br></div><div>## [1.29.2] - 2024-11-05<br><br>###=
+ Changed<br><br>- luksChangeKey is now also memory limited to 256MB<br><br>=
+### Fixed<br><br>- Fixed usage of FileSystemWatch to properly trigger when =
+devices appear<br>- Do not update disc granularity while resource is clonin=
+g<br>- Drbd-layer should not try to adjust resource while still cloning<br>=
+- Fixed possible &quot;access to deleted resource&quot; in case of an issue=
+ during rsc-creation + manual delete<br>- AutoPlaceAPI: remove unnecessary =
+resource definition loading<br>- Fixed bug that could be lead to violation =
+of configured --x-replicas-on-different restriction<br>- Query resource-con=
+nection didn&#39;t work if source and target node are reversed.<br>- Fixed =
+unit tests relying on current timezone offset instead of current timezone</=
+div><div><br></div><div><div><a href=3D"https://pkg.linbit.com//downloads/l=
+instor/linstor-server-1.29.2.tar.gz">https://pkg.linbit.com//downloads/lins=
+tor/linstor-server-1.29.2.tar.gz</a><br></div><div><br></div><div><br></div=
+><div><div><div><div>Linstor PPA:<br><a href=3D"https://launchpad.net/~linb=
+it/+archive/ubuntu/linbit-drbd9-stack" rel=3D"noreferrer" target=3D"_blank"=
+>https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack</a></div>=
+</div><div><br></div><div>Cheers,<br></div><div>Rene</div></div></div></div=
+></div>
+
+--0000000000005b37740626298cf9--
