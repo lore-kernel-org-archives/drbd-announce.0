@@ -1,19 +1,22 @@
-Return-Path: <philipp.reisner@linbit.com>
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com
-	[209.85.128.51])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 2678A420109
+Return-Path: <roland.kammerer@linbit.com>
+Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com
+	[209.85.167.44])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id A5DD3420303
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 11 Nov 2024 15:44:20 +0100 (CET)
-Received: by mail-wm1-f51.google.com with SMTP id
-	5b1f17b1804b1-431688d5127so35701365e9.0
+	Fri, 15 Nov 2024 12:37:18 +0100 (CET)
+Received: by mail-lf1-f44.google.com with SMTP id
+	2adb3069b0e04-53d9ff8f1e4so1934838e87.2
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 11 Nov 2024 06:44:20 -0800 (PST)
-Date: Mon, 11 Nov 2024 15:44:18 +0100
-Message-Id: <861pzhj0e5.fsf@linbit.com>
-From: Philipp Reisner <philipp.reisner@linbit.com>
-To: drbd-announce@lists.linbit.com
-Subject: drbd-9.1.23-rc.1 and drbd-9.2.12-rc.1
-Cc: drbd-user@lists.linbit.com
+	Fri, 15 Nov 2024 03:37:18 -0800 (PST)
+Date: Fri, 15 Nov 2024 12:37:12 +0100
+From: Roland Kammerer <roland.kammerer@linbit.com>
+To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
+Subject: drbd-reactor v1.6.0-rc.1
+Message-ID: <ZzcyaNvToIPqp_2M@arm64>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="xS+0Lay3n5Z1nyKc"
+Content-Disposition: inline
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,35 +29,61 @@ List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
 
-Hello DRBD-users,
+--xS+0Lay3n5Z1nyKc
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-This DRBD release is about four weeks late compared to the usual
-release pace. The reasons for this are that the discovery of fresh
-bugs was a bit slow in this cycle, and those bugs were hard to
-crack. It took some time to understand both bugs to the extent that it
-allowed us to write reproducers for our test suite.
-By the way, the customer affected by one of these issues run more
-than 22,000 drbd resources in a linstor cluster stretching over more
-than 350 nodes, with about 7.9 PB under LINSTOR management.
-The DRBD RDMA transport depended on the behavior of the Melanox
-cards. We fixed that and verified the improvements by running it on
-intel RDMA cards.
-Last but not least, we invested quite some time in tracking all Linux
-upstream developments and have DRBD compatible with 6.11 and the
-not-yet-released 6.12 kernels.
-I intend to branch off a new series (e.g., 9.4.x) soon, and I will no
-longer do releases in the 9.1.x branch.
-We will discontinue support for RHEL7 kernels (and distros equally
-old) with the new branch. We will add performance improvements for the
-data path, features for multi-site deployments, and an optionally new
-way of doing resyncs.
+Dear DRBD users,
 
-Please help test the release candidates.
+this is the first RC of the upcoming 1.6.0 release. It has some
+additional features like only generating overrides when necessary
+instead of empty overrides. Due to recent changes in drbd-utils we no
+longer need to override ExecCondition to ExecStart unconditionally,
+which produces nicer status output on newer systems.
 
+The main reason for the release is that newer drbd-utils expose a new
+keyword (i.e., "open") in the events2 stream, and we now added that to
+reactor. Without that the reactor log is spammed with warnings which are
+actually harmless. We also changed these log messages from level warn to
+debug.
 
-https://pkg.linbit.com//downloads/drbd/9/drbd-9.2.12-rc.1.tar.gz
-https://github.com/LINBIT/drbd/commit/1eeb1fcfccbabfaf2d22a376c1f1a2a90eda3b2b
+As the changes are pretty minimal and the real reason for this release
+is to get the "open" keyword into the parser, this will probably be a
+short RC phase with a final release mid next week. So if you want to
+help testing, please do so early.
 
-https://pkg.linbit.com//downloads/drbd/9/drbd-9.1.23-rc.1.tar.gz
-https://github.com/LINBIT/drbd/commit/19a7625af848b7c310b1707060b00ca0773db109
+Regards, rck
 
+GIT: https://github.com/LINBIT/drbd-reactor/commit/1b0de0d6eba68d27f3f90603=
+0de67aa397503995
+TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-reactor-1.6.0-rc.1.t=
+ar.gz
+PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+
+Changelog:
+[ Moritz Wanzenb=F6ck ]
+* umh: fix wrong environment variable name
+* events: add "open" to device keywords
+
+[ Roland Kammerer ]
+* promoter: do not generate ExecStart override
+* promoter: write overrides if necessary
+* events: missing keywords -> debug
+
+--xS+0Lay3n5Z1nyKc
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmc3MmUACgkQRgmezyI6
+myLioAgAr36MReI1IsapcqV3zIZjNQfITHn4k/zUw5X6T7p3bu1KuWCffl76pynQ
+R0oJAE3f+5Cz1170mGxLcN80i0LlSGUt8HqZe7KlHWlVt0+r4aZ8IN7HNcZVdedf
+aLSTRXsiRfVaoPGIHw/EGF+6SVfgJiTMMubmS0SY8+n9eeiibUc6SE19ggTBh1ve
+D951zNs3KTv2SaDj/np8lYWkRM2eKeNb/ukrn8wPImZ+a4+RfN49OjrHJr3sqXtV
+wmX+MQdtFYTNvlmTzfAFIkPCF6JzpsqNQ4Y2UXXeoBtYboKm5d4rkwFKwRmow+PW
+8Rwt3AC747wE8GpWnKVjiJqiPJZHhw==
+=l5oK
+-----END PGP SIGNATURE-----
+
+--xS+0Lay3n5Z1nyKc--
