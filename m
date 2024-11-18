@@ -1,22 +1,21 @@
-Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com
-	[209.85.167.44])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id A5DD3420303
+Return-Path: <philipp.reisner@linbit.com>
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com
+	[209.85.218.51])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 6B9C142015E
 	for <drbd-announce@lists.linbit.com>;
-	Fri, 15 Nov 2024 12:37:18 +0100 (CET)
-Received: by mail-lf1-f44.google.com with SMTP id
-	2adb3069b0e04-53d9ff8f1e4so1934838e87.2
+	Mon, 18 Nov 2024 14:43:44 +0100 (CET)
+Received: by mail-ej1-f51.google.com with SMTP id
+	a640c23a62f3a-aa20944ce8cso761764866b.0
 	for <drbd-announce@lists.linbit.com>;
-	Fri, 15 Nov 2024 03:37:18 -0800 (PST)
-Date: Fri, 15 Nov 2024 12:37:12 +0100
-From: Roland Kammerer <roland.kammerer@linbit.com>
-To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Subject: drbd-reactor v1.6.0-rc.1
-Message-ID: <ZzcyaNvToIPqp_2M@arm64>
+	Mon, 18 Nov 2024 05:43:44 -0800 (PST)
+From: Philipp Reisner <philipp.reisner@linbit.com>
+To: drbd-announce@lists.linbit.com
+Subject: drbd-9.1.23 and drbd-9.2.12
+Date: Mon, 18 Nov 2024 14:43:42 +0100
+Message-ID: <86r078bqsx.fsf@linbit.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="xS+0Lay3n5Z1nyKc"
-Content-Disposition: inline
+Content-Type: text/plain
+Cc: drbd-user@lists.linbit.com
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -29,61 +28,61 @@ List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
 
---xS+0Lay3n5Z1nyKc
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Hello DRBD-users,
 
-Dear DRBD users,
+This DRBD release is about four weeks late compared to the usual
+release pace. The reasons for this are that the discovery of fresh
+bugs was a bit slow in this cycle, and those bugs were hard to
+crack. It took some time to understand both bugs to the extent that it
+allowed us to write reproducers for our test suite.
+By the way, the customer affected by one of these issues run more
+than 22,000 drbd resources in a linstor cluster stretching over more
+than 350 nodes, with about 7.9 PB under LINSTOR management.
+The DRBD RDMA transport depended on the behavior of the Melanox
+cards. We fixed that and verified the improvements by running it on
+intel RDMA cards.
+Last but not least, we invested quite some time in tracking all Linux
+upstream developments and have DRBD compatible with 6.11 and the
+yesterday-released 6.12 kernels.
+I intend to branch off a new series (e.g., 9.4.x) soon, and I will no
+longer do releases in the 9.1.x branch.
+We will discontinue support for RHEL7 kernels (and distros equally
+old) with the new branch. We will add performance improvements for the
+data path, features for multi-site deployments, and an optionally new
+way of doing resyncs.
 
-this is the first RC of the upcoming 1.6.0 release. It has some
-additional features like only generating overrides when necessary
-instead of empty overrides. Due to recent changes in drbd-utils we no
-longer need to override ExecCondition to ExecStart unconditionally,
-which produces nicer status output on newer systems.
+PS: That restores compatibility with the Debian Bookworm kernel. The
+    Debian kernel mainers cherry-picked a very recent upstream commit
+    from Linux 6.12.
 
-The main reason for the release is that newer drbd-utils expose a new
-keyword (i.e., "open") in the events2 stream, and we now added that to
-reactor. Without that the reactor log is spammed with warnings which are
-actually harmless. We also changed these log messages from level warn to
-debug.
 
-As the changes are pretty minimal and the real reason for this release
-is to get the "open" keyword into the parser, this will probably be a
-short RC phase with a final release mid next week. So if you want to
-help testing, please do so early.
+9.2.12 (api:genl2/proto:86-101,118-122/transport:19)
+--------
+ * Fix a complicated distributed deadlock corner case that caused
+   DRBD to being unable to reconnect after losing connection during
+   a resync
+ * Fix the RDMA transport for use with an intel card; fixed various
+   aspects where we depended on Mellanox cards' behavior
+ * Changes merged from 9.1.22
+  - Fix a corner case that can happen when DRBD establishes multiple
+    connections in parallel, which could lead one connection to end up in
+    an inconsistent replication state of WFBitMapT/Established
+  - Fix a corner case in which a reconciliation resync ends up in
+    WFBitMapT/Established
+  - Restrict protocol compatibility to the most recent 8.4 and 9.0 releases
+  - Fix a corner case causing a module ref leak on drbd_transport_tcp;
+    if it hits, you can not rmmod it
+  - rate-limit resync progress while resync is paused
+  - resync-target inherits history UUIDs when resync finishes,
+    this can prevent unexpected "unrelared data" events later
+  - Updated compatibility code for Linux 6.11 and 6.12
 
-Regards, rck
 
-GIT: https://github.com/LINBIT/drbd-reactor/commit/1b0de0d6eba68d27f3f90603=
-0de67aa397503995
-TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-reactor-1.6.0-rc.1.t=
-ar.gz
-PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+https://pkg.linbit.com//downloads/drbd/9/drbd-9.2.12.tar.gz
+https://github.com/LINBIT/drbd/commit/2da6f528dc4ab3fd25c511f7b03531100e54ab08
 
-Changelog:
-[ Moritz Wanzenb=F6ck ]
-* umh: fix wrong environment variable name
-* events: add "open" to device keywords
+https://pkg.linbit.com//downloads/drbd/9/drbd-9.1.23.tar.gz
+https://github.com/LINBIT/drbd/commit/6d015249702c93a0b937ab0b22f62d0da125cb55
 
-[ Roland Kammerer ]
-* promoter: do not generate ExecStart override
-* promoter: write overrides if necessary
-* events: missing keywords -> debug
-
---xS+0Lay3n5Z1nyKc
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmc3MmUACgkQRgmezyI6
-myLioAgAr36MReI1IsapcqV3zIZjNQfITHn4k/zUw5X6T7p3bu1KuWCffl76pynQ
-R0oJAE3f+5Cz1170mGxLcN80i0LlSGUt8HqZe7KlHWlVt0+r4aZ8IN7HNcZVdedf
-aLSTRXsiRfVaoPGIHw/EGF+6SVfgJiTMMubmS0SY8+n9eeiibUc6SE19ggTBh1ve
-D951zNs3KTv2SaDj/np8lYWkRM2eKeNb/ukrn8wPImZ+a4+RfN49OjrHJr3sqXtV
-wmX+MQdtFYTNvlmTzfAFIkPCF6JzpsqNQ4Y2UXXeoBtYboKm5d4rkwFKwRmow+PW
-8Rwt3AC747wE8GpWnKVjiJqiPJZHhw==
-=l5oK
------END PGP SIGNATURE-----
-
---xS+0Lay3n5Z1nyKc--
+cheers,
+ Philipp
