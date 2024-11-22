@@ -1,26 +1,22 @@
 Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com
-	[209.85.208.175])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 28A784207E6
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com
+	[209.85.167.49])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 79CEC4207C5
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 21 Nov 2024 12:47:32 +0100 (CET)
-Received: by mail-lj1-f175.google.com with SMTP id
-	38308e7fff4ca-2ff5d2b8f0eso6946821fa.3
+	Fri, 22 Nov 2024 10:53:14 +0100 (CET)
+Received: by mail-lf1-f49.google.com with SMTP id
+	2adb3069b0e04-53da6801c6dso1662983e87.0
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 21 Nov 2024 03:47:32 -0800 (PST)
-Date: Thu, 21 Nov 2024 12:47:30 +0100
+	Fri, 22 Nov 2024 01:53:14 -0800 (PST)
+Date: Fri, 22 Nov 2024 10:53:10 +0100
 From: Roland Kammerer <roland.kammerer@linbit.com>
-To: drbd-user@lists.linbit.com
-Subject: Re: linbit-keyring, new LINBIT Package and Repository Signing Key
-Message-ID: <Zz8d0i-PfwkuVbj6@arm64>
-References: <Zxt3N5qWG6DI9PED@arm64>
- <Zz8Vn0aYPBMBGuiX@grappa.linbit>
+To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
+Subject: drbd-reactor v1.6.0
+Message-ID: <Z0BUhmIzAp8QsOG-@arm64>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="DNA6RL/iU1f2vM14"
+	protocol="application/pgp-signature"; boundary="zTRW3+I+p0kQadIy"
 Content-Disposition: inline
-In-Reply-To: <Zz8Vn0aYPBMBGuiX@grappa.linbit>
-Cc: drbd-announce@lists.linbit.com
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -33,28 +29,57 @@ List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
 
---DNA6RL/iU1f2vM14
-Content-Type: text/plain; charset=us-ascii
+--zTRW3+I+p0kQadIy
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-and to sprinkle some extra trust, the linbit-keyring repo is now also on
-github: https://github.com/LINBIT/linbit-keyring
+Dear DRBD users,
+
+this is version 1.6.0 of drbd-reactor, for your convenience the
+announcement of the RC:
+
+It has some additional features like only generating overrides when
+necessary instead of empty overrides. Due to recent changes in
+drbd-utils we no longer need to override ExecCondition to ExecStart
+unconditionally, which produces nicer status output on newer systems.
+
+The main reason for the release is that newer drbd-utils expose a new
+keyword (i.e., "open") in the events2 stream, and we now added that to
+reactor. Without that the reactor log is spammed with warnings which are
+actually harmless. We also changed these log messages from level warn to
+debug.
 
 Regards, rck
 
---DNA6RL/iU1f2vM14
+GIT: https://github.com/LINBIT/drbd-reactor/commit/d79bf38540cb17f5084a778d=
+96b0d13fab7dabe9
+TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-reactor-1.6.0.tar.gz
+PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+
+Changelog:
+[ Moritz Wanzenb=F6ck ]
+* umh: fix wrong environment variable name
+* events: add "open" to device keywords
+
+[ Roland Kammerer ]
+* promoter: do not generate ExecStart override
+* promoter: write overrides if necessary
+* events: missing keywords -> debug
+
+--zTRW3+I+p0kQadIy
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCAAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmc/HcgACgkQRgmezyI6
-myLogAf+M4wU0gXS+5+Z0mk+Wd5PXgr1GzxrouYm/SDYEfvkM3jt+BBj1hnicrqR
-d3r1ak8YfsD72K+RjODx3Mh6Qg3lBi5Eo67eejZhlwankqhkzarl4Az1mHJp++P1
-hR0CYPf6VNHlPSWFJLx/+LFl/D930cWImgisJIiRyTtKWySU+uWXQESfy7jacyia
-kPOuRtw5oSLn0TUXjIoOU8UodmJ/IkQht+F8rcSLlEazflvy+IFzQ31YeonntrLR
-MO67hfx0SgYQ4lOZ/xOBqjFCgX9aLWDW4d8Jd7LkaL07S1AMbZFCpWHyKEvnVcZH
-AzEhQOTi/wzT045oxrYC1MwPOF5+KQ==
-=t/QD
+iQEzBAEBCAAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmdAVIIACgkQRgmezyI6
+myKsAwf6AkJuQckp+Q4MIkRusbYg3HjmIj8+8v993PvlF8f0tVig67TFrQKv6O9a
+QACnmjElzbH2BCeH59/7rIawTqBuCdK5PyyJykNlfGF2I86xohiXmMJsgHxOCUYu
+sQ1tXnLmBMJBM9lf7jNUkxhNoeNsCj+b8g/HdoCPVfOn3se26zxmEXhwO2++q8Pi
+MHZMS1bkDdKgw8LYnmKx2DRQS8Wdd8AgiY0QllRnNYG4OJ6qyCkmu7SwVFDPDaN0
+SniY/KZigwgkOvteZXicOTgdzUKegXBzr44lE/YjubaR98WCXm9ij5o0WqxVKgZ5
+61ZwcNQ4UuG38XKmdJe/W/0NAUQfRA==
+=HYUE
 -----END PGP SIGNATURE-----
 
---DNA6RL/iU1f2vM14--
+--zTRW3+I+p0kQadIy--
