@@ -1,20 +1,21 @@
-Return-Path: <moritz.wanzenboeck@linbit.com>
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com
-	[209.85.128.43])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 992E242006B
+Return-Path: <christoph.boehmwalder@linbit.com>
+Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com
+	[209.85.208.174])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 25B3F4202D7
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 25 Nov 2024 13:38:34 +0100 (CET)
-Received: by mail-wm1-f43.google.com with SMTP id
-	5b1f17b1804b1-43169902057so38688965e9.0
+	Tue, 26 Nov 2024 11:49:31 +0100 (CET)
+Received: by mail-lj1-f174.google.com with SMTP id
+	38308e7fff4ca-2fb4af0b6beso87131871fa.3
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 25 Nov 2024 04:38:34 -0800 (PST)
-MIME-Version: 1.0
-From: =?UTF-8?Q?Moritz_Wanzenb=C3=B6ck?= <moritz.wanzenboeck@linbit.com>
-Date: Mon, 25 Nov 2024 13:38:22 +0100
-Message-ID: <CAKnz9xKRRPLQn3Hpi-azhBeNTpbJp44aEES3eDZ0gaxgbbFOvw@mail.gmail.com>
-Subject: LINSTOR Operator v2.7.1
+	Tue, 26 Nov 2024 02:49:31 -0800 (PST)
+Date: Tue, 26 Nov 2024 11:49:29 +0100
+From: Christoph =?utf-8?Q?B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>
 To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Content-Type: text/plain; charset="UTF-8"
+Subject: LINSTOR Gateway v1.7.0
+Message-ID: <20241126104929.yJEh4%christoph.boehmwalder@linbit.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,37 +27,27 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-We've recently released version 2.7.1 of our Kubernetes Operator.
+Hello,
 
-This patch release bumps the default versions for DRBD and DRBD
-Reactor. There are no other changes compared to the 2.7.0 release.
+a new version of LINSTOR Gateway has just been released: v1.7.0
 
-To upgrade, either point your kustomization.yaml at the new manifest:
+https://github.com/LINBIT/linstor-gateway/releases/tag/v1.7.0
 
-  https://charts.linstor.io/static/v2.7.1.yaml
+Here is the relevant excerpt from the changelog:
 
-Or, if using helm, upgrade the linstor-operator chart:
+-----------------------------------
+## [1.7.0] - 2024-11-26
 
-  helm repo update
-  helm upgrade linstor-operator linstor/linstor-operator --wait
+### Changes
 
-To get specific instructions to apply the update, check our users guide[1].
+* Change the `scsi_sn` and `product_id` calculations so that they are both =
+unique per volume. (0d144af9)
+-----------------------------------
 
-If you need to upgrade from Operator v1, check out our upgrade guide[2].
+Regards,
+Christoph
 
-Source code is, as always, available upstream[3].
-
-Best regards,
-Moritz
-
-[1]: https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-upgrade
-[2]: https://charts.linstor.io/migration/
-[3]: https://github.com/piraeusdatastore/piraeus-operator
-
-Operator v2.7.1 Changelog
--------------------------
-### Changed
-
-- Updated images:
-  * DRBD 9.2.12
-  * DRBD Reactor 1.6.0
+--
+Christoph B=C3=B6hmwalder
+LINBIT | Keeping the Digital World Running
+DRBD HA =E2=80=94  Disaster Recovery =E2=80=94 Software defined Storage
