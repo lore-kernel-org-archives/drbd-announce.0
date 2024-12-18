@@ -1,21 +1,20 @@
-Return-Path: <christoph.boehmwalder@linbit.com>
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com
-	[209.85.218.41])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id F0B9516098B
+Return-Path: <rene.peinthor@linbit.com>
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com
+	[209.85.215.171])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 03DF7160992
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 18 Dec 2024 14:32:05 +0100 (CET)
-Received: by mail-ej1-f41.google.com with SMTP id
-	a640c23a62f3a-a9a0ec0a94fso1018758366b.1
+	Wed, 18 Dec 2024 16:44:46 +0100 (CET)
+Received: by mail-pg1-f171.google.com with SMTP id
+	41be03b00d2f7-7f46d5d1ad5so4801496a12.3
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 18 Dec 2024 05:32:05 -0800 (PST)
-Date: Wed, 18 Dec 2024 14:32:03 +0100
-From: Christoph =?utf-8?Q?B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>
-To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Subject: LINSTOR GUI v1.8.7
-Message-ID: <20241218133203.wXtsj%christoph.boehmwalder@linbit.com>
+	Wed, 18 Dec 2024 07:44:46 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+From: Rene Peinthor <rene.peinthor@linbit.com>
+Date: Wed, 18 Dec 2024 16:44:35 +0100
+Message-ID: <CAHmn2DMNA3HyaHMU1Lv-G4MxYObDw-5RQXdcTUusd_Z2NBWCUA@mail.gmail.com>
+Subject: linstor-server 1.30.2 release
+To: drbd-user <drbd-user@lists.linbit.com>, drbd-announce@lists.linbit.com
+Content-Type: multipart/alternative; boundary="0000000000000338fe06298d4b23"
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -27,36 +26,44 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Hello,
+--0000000000000338fe06298d4b23
+Content-Type: text/plain; charset="UTF-8"
 
-a new version of LINSTOR GUI has just been released: v1.8.7
+Hi!
 
-https://github.com/LINBIT/linstor-gui/releases/tag/v1.8.7
+We have found a missing SequenceNumber snapshot property migration and
+double checked again if we migrated all of them now.
 
-Here is the relevant excerpt from the changelog:
-
------------------------------------
-# 1.8.7 - 2024-12-18
-
-### Added
-
-- Added a new Resource Overview page to display resource-related information
-- Service IP input validation for iSCSI and NVMe-oF
-- Prompt users to change their password when using default credentials
-
+## [1.30.2] - 2024-12-18
 ### Fixed
 
-- Large sizes were displayed as "Infinity PiB"
+- Migration: Fixed splitSnapProps bug not properly handling additional
+properties
 
-### Changed
+https://pkg.linbit.com//downloads/linstor/linstor-server-1.30.2.tar.gz
 
-- Updated the icon for list actions
------------------------------------
 
-Regards,
-Christoph
+Linstor PPA:
+https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
---
-Christoph B=C3=B6hmwalder
-LINBIT | Keeping the Digital World Running
-DRBD HA =E2=80=94  Disaster Recovery =E2=80=94 Software defined Storage
+Cheers,
+Rene
+
+--0000000000000338fe06298d4b23
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">Hi!<div><br></div><div>We have found a missing SequenceNum=
+ber snapshot property migration and</div><div>double checked again if we mi=
+grated all of them now.</div><div></div><div><br></div><div>## [1.30.2] - 2=
+024-12-18<br>### Fixed<br><br>- Migration: Fixed splitSnapProps bug not pro=
+perly handling additional properties</div><div><br></div><div><div><a href=
+=3D"https://pkg.linbit.com//downloads/linstor/linstor-server-1.30.2.tar.gz"=
+>https://pkg.linbit.com//downloads/linstor/linstor-server-1.30.2.tar.gz</a>=
+<br></div><div><br></div><div><br></div><div><div><div><div>Linstor PPA:<br=
+><a href=3D"https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stac=
+k" rel=3D"noreferrer" target=3D"_blank">https://launchpad.net/~linbit/+arch=
+ive/ubuntu/linbit-drbd9-stack</a></div></div><div><br></div><div>Cheers,<br=
+></div><div>Rene</div></div></div></div></div>
+
+--0000000000000338fe06298d4b23--
