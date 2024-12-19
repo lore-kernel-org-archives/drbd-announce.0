@@ -1,20 +1,22 @@
-Return-Path: <rene.peinthor@linbit.com>
-Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com
-	[209.85.215.171])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 03DF7160992
+Return-Path: <roland.kammerer@linbit.com>
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com
+	[209.85.167.42])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id E80AB16098E
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 18 Dec 2024 16:44:46 +0100 (CET)
-Received: by mail-pg1-f171.google.com with SMTP id
-	41be03b00d2f7-7f46d5d1ad5so4801496a12.3
+	Thu, 19 Dec 2024 15:50:24 +0100 (CET)
+Received: by mail-lf1-f42.google.com with SMTP id
+	2adb3069b0e04-54024ecc33dso927889e87.0
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 18 Dec 2024 07:44:46 -0800 (PST)
+	Thu, 19 Dec 2024 06:50:24 -0800 (PST)
+Date: Thu, 19 Dec 2024 15:50:20 +0100
+From: Roland Kammerer <roland.kammerer@linbit.com>
+To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
+Subject: drbd-reactor v1.7.0
+Message-ID: <Z2QyrAX8-Z467usz@arm64>
 MIME-Version: 1.0
-From: Rene Peinthor <rene.peinthor@linbit.com>
-Date: Wed, 18 Dec 2024 16:44:35 +0100
-Message-ID: <CAHmn2DMNA3HyaHMU1Lv-G4MxYObDw-5RQXdcTUusd_Z2NBWCUA@mail.gmail.com>
-Subject: linstor-server 1.30.2 release
-To: drbd-user <drbd-user@lists.linbit.com>, drbd-announce@lists.linbit.com
-Content-Type: multipart/alternative; boundary="0000000000000338fe06298d4b23"
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="0AAirOA6PyRBoKsZ"
+Content-Disposition: inline
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,44 +28,43 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
---0000000000000338fe06298d4b23
-Content-Type: text/plain; charset="UTF-8"
 
-Hi!
-
-We have found a missing SequenceNumber snapshot property migration and
-double checked again if we migrated all of them now.
-
-## [1.30.2] - 2024-12-18
-### Fixed
-
-- Migration: Fixed splitSnapProps bug not properly handling additional
-properties
-
-https://pkg.linbit.com//downloads/linstor/linstor-server-1.30.2.tar.gz
-
-
-Linstor PPA:
-https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
-
-Cheers,
-Rene
-
---0000000000000338fe06298d4b23
-Content-Type: text/html; charset="UTF-8"
+--0AAirOA6PyRBoKsZ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr">Hi!<div><br></div><div>We have found a missing SequenceNum=
-ber snapshot property migration and</div><div>double checked again if we mi=
-grated all of them now.</div><div></div><div><br></div><div>## [1.30.2] - 2=
-024-12-18<br>### Fixed<br><br>- Migration: Fixed splitSnapProps bug not pro=
-perly handling additional properties</div><div><br></div><div><div><a href=
-=3D"https://pkg.linbit.com//downloads/linstor/linstor-server-1.30.2.tar.gz"=
->https://pkg.linbit.com//downloads/linstor/linstor-server-1.30.2.tar.gz</a>=
-<br></div><div><br></div><div><br></div><div><div><div><div>Linstor PPA:<br=
-><a href=3D"https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stac=
-k" rel=3D"noreferrer" target=3D"_blank">https://launchpad.net/~linbit/+arch=
-ive/ubuntu/linbit-drbd9-stack</a></div></div><div><br></div><div>Cheers,<br=
-></div><div>Rene</div></div></div></div></div>
+Dear DRBD users,
 
---0000000000000338fe06298d4b23--
+this is version 1.7.0 of drbd-reactor. It adds bytes received and sent
+=66rom/to a DRBD peer-device to the Prometheus metrics. As this is a
+rather small and trivial change, I did not see the need for an RC.
+
+Changelog:
+[ Roland Kammerer ]
+* prometheus: add sent/received peer-device stats
+* prometheus: rm two pointless wrappers
+
+GIT: https://github.com/LINBIT/drbd-reactor/commit/30282134b39678d80bbffd7a=
+60d09bbc30ccab6c
+TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-reactor-1.7.0.tar.gz
+PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+
+Regards, rck
+
+--0AAirOA6PyRBoKsZ
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmdkMqIACgkQRgmezyI6
+myKG4ggAkTKAcztW5XjLPS9GAmg+TkYxitjw67YU2zK2z7tcQsVys3N+ndK+8H/J
+bF0WsJ1SXCatlY5hjXyIRDFCqNasJbTUvWcDxRt2Ms8HNswxMtXIBl/IXUGZzAA9
+plH2NnnQXPgRFwe90SvebNdV8sP2uY1Ka/AedH5vR3gX8rDqM5eeO/pDdVJ1vFJB
+ZrS8Y/AYzLMpm7lvwrQvB0pxCwjkqUetrmYpLe1PYaEN3V5L7htgmYfpSE3DxO8I
+B7WHu0p5/yl4NIVM1G24evBKJEwqeHA6GNE3lA1hOWyor6r5qb5E1ZaxgNG4yTkl
+wlU+434QrSFqOxoC65n1iE8z0RTDYw==
+=kSOv
+-----END PGP SIGNATURE-----
+
+--0AAirOA6PyRBoKsZ--
