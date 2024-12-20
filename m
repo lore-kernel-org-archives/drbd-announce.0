@@ -1,22 +1,21 @@
-Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com
-	[209.85.167.42])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id E80AB16098E
+Return-Path: <christoph.boehmwalder@linbit.com>
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com
+	[209.85.218.51])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 736C716096A
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 19 Dec 2024 15:50:24 +0100 (CET)
-Received: by mail-lf1-f42.google.com with SMTP id
-	2adb3069b0e04-54024ecc33dso927889e87.0
+	Fri, 20 Dec 2024 17:05:37 +0100 (CET)
+Received: by mail-ej1-f51.google.com with SMTP id
+	a640c23a62f3a-aae825412a4so44997966b.3
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 19 Dec 2024 06:50:24 -0800 (PST)
-Date: Thu, 19 Dec 2024 15:50:20 +0100
-From: Roland Kammerer <roland.kammerer@linbit.com>
+	Fri, 20 Dec 2024 08:05:37 -0800 (PST)
+Date: Fri, 20 Dec 2024 17:05:34 +0100
+From: Christoph =?utf-8?Q?B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>
 To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Subject: drbd-reactor v1.7.0
-Message-ID: <Z2QyrAX8-Z467usz@arm64>
+Subject: LINSTOR GUI v1.8.8
+Message-ID: <20241220160534.oHH68%christoph.boehmwalder@linbit.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="0AAirOA6PyRBoKsZ"
-Content-Disposition: inline
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -28,43 +27,29 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
+Hello,
 
---0AAirOA6PyRBoKsZ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+a new version of LINSTOR GUI has just been released: v1.8.8
 
-Dear DRBD users,
+https://github.com/LINBIT/linstor-gui/releases/tag/v1.8.8
 
-this is version 1.7.0 of drbd-reactor. It adds bytes received and sent
-=66rom/to a DRBD peer-device to the Prometheus metrics. As this is a
-rather small and trivial change, I did not see the need for an RC.
+Here is the relevant excerpt from the changelog:
 
-Changelog:
-[ Roland Kammerer ]
-* prometheus: add sent/received peer-device stats
-* prometheus: rm two pointless wrappers
+-----------------------------------
+# 1.8.8 - 2024-12-20
 
-GIT: https://github.com/LINBIT/drbd-reactor/commit/30282134b39678d80bbffd7a=
-60d09bbc30ccab6c
-TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-reactor-1.7.0.tar.gz
-PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+### Fixed
 
-Regards, rck
+- Corrected the display of all sizes
+- Resolved issues with incorrect connections status on the resource overvie=
+w page in certain cases
+- Fixed the resource group filtering issue on the resource overview page
+-----------------------------------
 
---0AAirOA6PyRBoKsZ
-Content-Type: application/pgp-signature; name="signature.asc"
+Regards,
+Christoph
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmdkMqIACgkQRgmezyI6
-myKG4ggAkTKAcztW5XjLPS9GAmg+TkYxitjw67YU2zK2z7tcQsVys3N+ndK+8H/J
-bF0WsJ1SXCatlY5hjXyIRDFCqNasJbTUvWcDxRt2Ms8HNswxMtXIBl/IXUGZzAA9
-plH2NnnQXPgRFwe90SvebNdV8sP2uY1Ka/AedH5vR3gX8rDqM5eeO/pDdVJ1vFJB
-ZrS8Y/AYzLMpm7lvwrQvB0pxCwjkqUetrmYpLe1PYaEN3V5L7htgmYfpSE3DxO8I
-B7WHu0p5/yl4NIVM1G24evBKJEwqeHA6GNE3lA1hOWyor6r5qb5E1ZaxgNG4yTkl
-wlU+434QrSFqOxoC65n1iE8z0RTDYw==
-=kSOv
------END PGP SIGNATURE-----
-
---0AAirOA6PyRBoKsZ--
+--
+Christoph B=C3=B6hmwalder
+LINBIT | Keeping the Digital World Running
+DRBD HA =E2=80=94  Disaster Recovery =E2=80=94 Software defined Storage
