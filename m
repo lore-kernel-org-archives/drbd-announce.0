@@ -1,18 +1,18 @@
 Return-Path: <christoph.boehmwalder@linbit.com>
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com
-	[209.85.218.51])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 736C716096A
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com
+	[209.85.218.48])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 581D6160930
 	for <drbd-announce@lists.linbit.com>;
-	Fri, 20 Dec 2024 17:05:37 +0100 (CET)
-Received: by mail-ej1-f51.google.com with SMTP id
-	a640c23a62f3a-aae825412a4so44997966b.3
+	Wed,  8 Jan 2025 11:32:31 +0100 (CET)
+Received: by mail-ej1-f48.google.com with SMTP id
+	a640c23a62f3a-aaeecbb7309so476086466b.0
 	for <drbd-announce@lists.linbit.com>;
-	Fri, 20 Dec 2024 08:05:37 -0800 (PST)
-Date: Fri, 20 Dec 2024 17:05:34 +0100
+	Wed, 08 Jan 2025 02:32:31 -0800 (PST)
+Date: Wed, 08 Jan 2025 11:32:30 +0100
 From: Christoph =?utf-8?Q?B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>
 To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Subject: LINSTOR GUI v1.8.8
-Message-ID: <20241220160534.oHH68%christoph.boehmwalder@linbit.com>
+Subject: LINSTOR GUI v1.8.9
+Message-ID: <20250108103230.Ejfvi%christoph.boehmwalder@linbit.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
@@ -29,21 +29,29 @@ List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hello,
 
-a new version of LINSTOR GUI has just been released: v1.8.8
+a new version of LINSTOR GUI has just been released: v1.8.9
 
-https://github.com/LINBIT/linstor-gui/releases/tag/v1.8.8
+https://github.com/LINBIT/linstor-gui/releases/tag/v1.8.9
 
 Here is the relevant excerpt from the changelog:
 
 -----------------------------------
-# 1.8.8 - 2024-12-20
+# 1.8.9 - 2025-01-07
+
+### Added
+
+- Pagination on the resource overview page
+- Display of the storage pool name on the resource overview page
 
 ### Fixed
 
-- Corrected the display of all sizes
-- Resolved issues with incorrect connections status on the resource overvie=
-w page in certain cases
-- Fixed the resource group filtering issue on the resource overview page
+- 404 error when accessing the resource group creation page
+
+### Changed
+
+- Page layout for better scrolling
+- Improved the search functionality on the resource overview page
+- Updated dependencies
 -----------------------------------
 
 Regards,
