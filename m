@@ -1,21 +1,22 @@
-Return-Path: <christoph.boehmwalder@linbit.com>
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com
-	[209.85.218.48])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 581D6160930
+Return-Path: <roland.kammerer@linbit.com>
+Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com
+	[209.85.167.51])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id C474716098E
 	for <drbd-announce@lists.linbit.com>;
-	Wed,  8 Jan 2025 11:32:31 +0100 (CET)
-Received: by mail-ej1-f48.google.com with SMTP id
-	a640c23a62f3a-aaeecbb7309so476086466b.0
+	Wed,  8 Jan 2025 14:51:14 +0100 (CET)
+Received: by mail-lf1-f51.google.com with SMTP id
+	2adb3069b0e04-54252789365so10571116e87.0
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 08 Jan 2025 02:32:31 -0800 (PST)
-Date: Wed, 08 Jan 2025 11:32:30 +0100
-From: Christoph =?utf-8?Q?B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>
+	Wed, 08 Jan 2025 05:51:14 -0800 (PST)
+Date: Wed, 8 Jan 2025 14:51:10 +0100
+From: Roland Kammerer <roland.kammerer@linbit.com>
 To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Subject: LINSTOR GUI v1.8.9
-Message-ID: <20250108103230.Ejfvi%christoph.boehmwalder@linbit.com>
+Subject: linstor-proxmox v8.1.0-rc.1
+Message-ID: <Z36CzmqSHG4_aSiA@arm64>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="BpSSJ9GMjPcb/eoN"
+Content-Disposition: inline
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -27,37 +28,44 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Hello,
 
-a new version of LINSTOR GUI has just been released: v1.8.9
+--BpSSJ9GMjPcb/eoN
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-https://github.com/LINBIT/linstor-gui/releases/tag/v1.8.9
+Dear DRBD on PVE users,
 
-Here is the relevant excerpt from the changelog:
+this is the first RC for the upcoming 8.1.0 release. So far the plugin
+did not announce "sparesinit" for volumes that are on backing devices
+that are guaranteed to read 0s. The effect was that disk clones to such
+resources became thick. Now such clones should be thin (i.e., when all
+backing devices are on LVM_THIN/ZFS_THIN storage providers in LINSTOR).
 
------------------------------------
-# 1.8.9 - 2025-01-07
+Please test, packages are available in our public staging repos. If we
+don't find any bugs, I will release 8.1.0 in about a week from now.
 
-### Added
+Regards, rck
 
-- Pagination on the resource overview page
-- Display of the storage pool name on the resource overview page
+GIT: https://github.com/LINBIT/linstor-proxmox/commit/405146e5c454273cd7fb1175114e6f55ce05206a
+TGZ: https://pkg.linbit.com//downloads/connectors/linstor-proxmox-8.1.0-rc.1.tar.gz
 
-### Fixed
+Changelog:
+ [ Roland Kammerer ]
+ * set 'sparseinit' feature
 
-- 404 error when accessing the resource group creation page
+--BpSSJ9GMjPcb/eoN
+Content-Type: application/pgp-signature; name="signature.asc"
 
-### Changed
+-----BEGIN PGP SIGNATURE-----
 
-- Page layout for better scrolling
-- Improved the search functionality on the resource overview page
-- Updated dependencies
------------------------------------
+iQEzBAEBCAAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmd+gskACgkQRgmezyI6
+myKfewf/dTYO0p2WiLOS3pgPw/7WtA/XTa2wxjuLG/L6+yd6SdX9UbBSh1gruClD
+L8JKQ0Q2eThZWaUbHvuVLKR685n7H7UGp3Kx7z6s7yRlkw76N4OBF31UhpbuGdfz
+1ZCqciAD2OgVWy3ABPKku8T5sAB+sllI1ic09mg/FZhYS9/nT4vLn1/6bHrai6gL
+kXV5rkGoARFqOvjFdibkerab7jiOBi7f41+ZBS8mgalR5HsX4mIrFrqh8SkAQdXK
+IwDn6XyvbHtckoS45Gk71+KwvoJWhYJiuYi5eZX+ATm6KOvbLTi7UQTZhBspLT5q
+Tq1rYjXpVDv8q1x42HHocxB1Q0KDWg==
+=reXy
+-----END PGP SIGNATURE-----
 
-Regards,
-Christoph
-
---
-Christoph B=C3=B6hmwalder
-LINBIT | Keeping the Digital World Running
-DRBD HA =E2=80=94  Disaster Recovery =E2=80=94 Software defined Storage
+--BpSSJ9GMjPcb/eoN--
