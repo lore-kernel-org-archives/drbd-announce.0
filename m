@@ -1,22 +1,20 @@
-Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com
-	[209.85.167.42])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 4C8D616092E
+Return-Path: <rene.peinthor@linbit.com>
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com
+	[209.85.216.54])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id EACF716091D
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 22 Jan 2025 11:31:18 +0100 (CET)
-Received: by mail-lf1-f42.google.com with SMTP id
-	2adb3069b0e04-53e399e3310so6888169e87.1
+	Thu, 23 Jan 2025 09:27:06 +0100 (CET)
+Received: by mail-pj1-f54.google.com with SMTP id
+	98e67ed59e1d1-2ee397a82f6so1275291a91.2
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 22 Jan 2025 02:31:18 -0800 (PST)
-Date: Wed, 22 Jan 2025 11:31:15 +0100
-From: Roland Kammerer <roland.kammerer@linbit.com>
-To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Subject: linstor-proxmox v8.1.0
-Message-ID: <Z5DI822r0Md7Ussg@arm64>
+	Thu, 23 Jan 2025 00:27:06 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="cvVI3ecuPodFJmE7"
-Content-Disposition: inline
+From: Rene Peinthor <rene.peinthor@linbit.com>
+Date: Thu, 23 Jan 2025 09:26:54 +0100
+Message-ID: <CAHmn2DMoE2pJCdt5r9FTkaKj0cUnQ82_2SVC55gXvUErUPjntg@mail.gmail.com>
+Subject: linstor-server 1.30.3 release
+To: drbd-user <drbd-user@lists.linbit.com>, drbd-announce@lists.linbit.com
+Content-Type: multipart/alternative; boundary="0000000000000f5975062c5b60a5"
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -28,41 +26,75 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
+--0000000000000f5975062c5b60a5
+Content-Type: text/plain; charset="UTF-8"
 
---cvVI3ecuPodFJmE7
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Hi!
 
-Dear DRBD on PVE users,
+Here is a boring patch release, with just a few smaller fixes and one new
+prometheus metrics
+to detect nodes that are reconnecting unusually often.
 
-this is version 8.1.0 of the linstor-proxmox plugin. So far the plugin
-did not announce "sparesinit" for volumes that are on backing devices
-that are guaranteed to read 0s. The effect was that disk clones to such
-resources became thick. Now such clones should be thin (i.e., when all
-backing devices are on LVM_THIN/ZFS_THIN storage providers in LINSTOR).
+## [1.30.3] - 2025-01-23
 
-Regards, rck
+### Added
 
-GIT: https://github.com/LINBIT/linstor-proxmox/commit/e941d1653fcf0eaad3d1f5134aa507e46800fdf5
-TGZ: https://pkg.linbit.com//downloads/connectors/linstor-proxmox-8.1.0.tar.gz
+- metrics: Added linstor_node_reconnnect_attempt_count
 
-Changelog:
- [ Roland Kammerer ]
- * set 'sparseinit' feature
+### Changed
 
---cvVI3ecuPodFJmE7
-Content-Type: application/pgp-signature; name="signature.asc"
+- gradle: support different java home in wrapper scripts
+- sos-report: add more controller json(resource-definitions, snapshots) and
+zfs list snapshots
+- /proc/crypto: Ignore invalid entries (i.e. entries with missing driver or
+type)
+- API: do not generate error reports if parent resources are not found
+- volume-definition resize: if current size is set, no satellite/data
+updates will be triggered
 
------BEGIN PGP SIGNATURE-----
+### Fixed
 
-iQEzBAEBCAAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmeQyOwACgkQRgmezyI6
-myKeWgf/fTeL9xj5mwsmGv1nDBs22KHse9FqrGrvcDKRDK+8JImRqXD/a8FFB5jl
-u9XbmYxrLKL0dVGk3w6zI2gsQiE5nMAhS7vuksKRPveTDEW76UF7b0OqSc9cCp6q
-RuxEld3eRNCMy2MctNf3upKLRRwHQB26zqsedjpe4++xrU6xS55WV0VrbqY97kXY
-oqcU0/MiBDGW820/+ThGUiTO0chNk+tOSZpthTauRNO0VlMt2Cw18xnecVJWFuyz
-PQ22xNezQwYtA6edq52XFihj0Rji9TBrt1pg+C+Qx0ofbrmtyBhUByzNnlI4wyJb
-OBVPz/hZzqWtx4zNwgaD4tQo9Lrviw==
-=uGn2
------END PGP SIGNATURE-----
+- metrics: don't create error-report on closing connection nodes
+- LVM: Correctly calculate extents with more than one stripes
+- RscDfn and SnapDfn: Properly restore layerStack (!= layerData) from
+backup and snapshot restore
+- BalanceResources: Only adjust selected rscDfn instead of entire rscGrp
 
---cvVI3ecuPodFJmE7--
+https://pkg.linbit.com//downloads/linstor/linstor-server-1.30.3.tar.gz
+
+
+Linstor PPA:
+https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+
+Cheers,
+Rene
+
+--0000000000000f5975062c5b60a5
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">Hi!<div><br></div><div>Here is a boring patch release, wit=
+h just a few smaller fixes and one new prometheus metrics</div><div>to dete=
+ct nodes that are reconnecting unusually=C2=A0often.</div><div></div><div><=
+br></div><div>## [1.30.3] - 2025-01-23<br><br>### Added<br><br>- metrics: A=
+dded linstor_node_reconnnect_attempt_count<br><br>### Changed<br><br>- grad=
+le: support different java home in wrapper scripts<br>- sos-report: add mor=
+e controller json(resource-definitions, snapshots) and zfs list snapshots<b=
+r>- /proc/crypto: Ignore invalid entries (i.e. entries with missing driver =
+or type)<br>- API: do not generate error reports if parent resources are no=
+t found<br>- volume-definition resize: if current size is set, no satellite=
+/data updates will be triggered<br><br>### Fixed<br><br>- metrics: don&#39;=
+t create error-report on closing connection nodes<br>- LVM: Correctly calcu=
+late extents with more than one stripes<br>- RscDfn and SnapDfn: Properly r=
+estore layerStack (!=3D layerData) from backup and snapshot restore<br>- Ba=
+lanceResources: Only adjust selected rscDfn instead of entire rscGrp</div><=
+div><br></div><div><div><a href=3D"https://pkg.linbit.com//downloads/linsto=
+r/linstor-server-1.30.3.tar.gz">https://pkg.linbit.com//downloads/linstor/l=
+instor-server-1.30.3.tar.gz</a><br></div><div><br></div><div><br></div><div=
+><div><div><div>Linstor PPA:<br><a href=3D"https://launchpad.net/~linbit/+a=
+rchive/ubuntu/linbit-drbd9-stack" rel=3D"noreferrer" target=3D"_blank">http=
+s://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack</a></div></div=
+><div><br></div><div>Cheers,<br></div><div>Rene</div></div></div></div></di=
+v>
+
+--0000000000000f5975062c5b60a5--
