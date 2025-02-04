@@ -1,22 +1,20 @@
-Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com
-	[209.85.208.176])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id DC340160994
+Return-Path: <rene.peinthor@linbit.com>
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com
+	[209.85.214.177])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 4F012160644
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 23 Jan 2025 14:49:39 +0100 (CET)
-Received: by mail-lj1-f176.google.com with SMTP id
-	38308e7fff4ca-30737db1ab1so8213471fa.1
+	Tue,  4 Feb 2025 09:50:39 +0100 (CET)
+Received: by mail-pl1-f177.google.com with SMTP id
+	d9443c01a7336-216728b1836so90048075ad.0
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 23 Jan 2025 05:49:39 -0800 (PST)
-Date: Thu, 23 Jan 2025 14:49:36 +0100
-From: Roland Kammerer <roland.kammerer@linbit.com>
-To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Subject: drbd-utils v9.30.0
-Message-ID: <Z5JI8LbLnE7MoJKw@arm64>
+	Tue, 04 Feb 2025 00:50:39 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="90Q0FBrQW/nFvDLk"
-Content-Disposition: inline
+From: Rene Peinthor <rene.peinthor@linbit.com>
+Date: Tue, 4 Feb 2025 09:50:27 +0100
+Message-ID: <CAHmn2DPo_7NKt87Ty_h0_F46XMgnetwBqrx8NPHrYX3uqK2BaQ@mail.gmail.com>
+Subject: linstor-server 1.30.4 release
+To: drbd-user <drbd-user@lists.linbit.com>, drbd-announce@lists.linbit.com
+Content-Type: multipart/alternative; boundary="00000000000061f4ae062d4d1af7"
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -28,60 +26,59 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
+--00000000000061f4ae062d4d1af7
+Content-Type: text/plain; charset="UTF-8"
 
---90Q0FBrQW/nFvDLk
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Hi!
 
-Dear DRBD users,
+Another smaller patch release, to mainly fix a potential incorrect
+resource-group property migration.
 
-this is drbd-utils release version 9.30.0. While there are highly
-appreciated contributions in the area of drbdmon and windrbd, the main
-reason for this release is some prepare work for the upcoming drbd-proxy
-v4 (written in Rust).
+## [1.30.4] - 2025-02-03
 
-One notable change is that we now default to the DRBD9 manpages. The old
-8.4 ones are still installed, and on Debian one can switch between
-versions via dpkg-reconfigure. On the RHEL side we had a bug in our
-preuninstall script which deletes the necessary symlinks. This bug is
-basically in all drbd-utils versions since we introduced these symlinks.
-Long story short, if you want the new man pages, you have to "dnf
-install drbd-utils" and then "dnf reinstall drbd-utils", or run the
-postinstall script yourself. This will fix itself the second time you
-installed fixed utils. What a nice bug!
+### Changed
 
-Regards, rck
+- Changed ext-tool-check command for "drbd-proxy" from "-v" to "--version"
+to support v3 and v4
 
-GIT: https://github.com/LINBIT/drbd-utils/commit/36ea199f38b543b2da92219109c2832e122e5bf9
-TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-utils-9.30.0.tar.gz
-PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+### Fixed
 
-Changelog:
+- Reconnect: Fixed rare NoSuchFileException triggered by multiple
+reconnects in quick succession
+- BackupShip: Fixed bug where shipment was not executed when previous
+shipping node was unavailable
+- Migration: Fixed incorrect usage of rscGrp's instanceName
+- VlmDfn,Resize: Only allow resize if all peers are online and UpToDate
 
-9.30.0
------------
- * drbdmon: various improvements
- * drbdadm: preparations for drbd-proxy v4
- * ocf: explicitly timeout crm_master IPC early
- * ocf: account for "recent" name change to "Promoted"
- * windrbd: various improvements
- * doc: switch to drbd9 manpages by default
- * init: reverse dependency for drbd-graceful-shutdown.service
-   drbd@.service now has an After dependency for it.
+https://pkg.linbit.com//downloads/linstor/linstor-server-1.30.4.tar.gz
 
---90Q0FBrQW/nFvDLk
-Content-Type: application/pgp-signature; name="signature.asc"
 
------BEGIN PGP SIGNATURE-----
+Linstor PPA:
+https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
-iQEzBAEBCAAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmeSSO0ACgkQRgmezyI6
-myLF6Af/R2z/8Vv+CA/7kzgded1Ld40bDYDUDjMguYUQipy7bCIZKj5lcaTGHVA8
-En744+htUxUhVRiM/yKXwmXGF4ZhZETerNlyXJ78CKUEf46VYZ73XCj5HyyAaWW5
-nGnsONqf/tQnr7Ty4sNssf3Y69+CUbznIUFlewbDwKepte8v2klyEPnCcaYa8n4U
-cbGq7l6/CJTLeaVZ8GcbJtdQ/9aI1etfw+DPBPHKrGMf475qcNgYjz4XaFoxJBln
-WeE/Vj20MrNAc/+4u1NdXjcD+KntGAwwwr0gNpNUB2XgSap24VXmIoCDTrB1I9WP
-IgJVv7jq3+aS7ukE7o5I1hpz+42xHw==
-=2EvP
------END PGP SIGNATURE-----
+Cheers,
+Rene
 
---90Q0FBrQW/nFvDLk--
+--00000000000061f4ae062d4d1af7
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">Hi!<div><br></div><div>Another smaller patch release, to m=
+ainly fix a potential incorrect resource-group property migration.</div><di=
+v></div><div><br></div><div>## [1.30.4] - 2025-02-03<br><br>### Changed<br>=
+<br>- Changed ext-tool-check command for &quot;drbd-proxy&quot; from &quot;=
+-v&quot; to &quot;--version&quot; to support v3 and v4<br><br>### Fixed<br>=
+<br>- Reconnect: Fixed rare NoSuchFileException triggered by multiple recon=
+nects in quick succession<br>- BackupShip: Fixed bug where shipment was not=
+ executed when previous shipping node was unavailable<br>- Migration: Fixed=
+ incorrect usage of rscGrp&#39;s instanceName<br>- VlmDfn,Resize: Only allo=
+w resize if all peers are online and UpToDate</div><div><br></div><div><div=
+><a href=3D"https://pkg.linbit.com//downloads/linstor/linstor-server-1.30.4=
+.tar.gz">https://pkg.linbit.com//downloads/linstor/linstor-server-1.30.4.ta=
+r.gz</a><br></div><div><br></div><div><br></div><div><div><div><div>Linstor=
+ PPA:<br><a href=3D"https://launchpad.net/~linbit/+archive/ubuntu/linbit-dr=
+bd9-stack" rel=3D"noreferrer" target=3D"_blank">https://launchpad.net/~linb=
+it/+archive/ubuntu/linbit-drbd9-stack</a></div></div><div><br></div><div>Ch=
+eers,<br></div><div>Rene</div></div></div></div></div>
+
+--00000000000061f4ae062d4d1af7--
