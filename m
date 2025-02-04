@@ -1,20 +1,22 @@
-Return-Path: <rene.peinthor@linbit.com>
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com
-	[209.85.214.177])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 4F012160644
+Return-Path: <johannes.thoma@linbit.com>
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com
+	[209.85.128.41])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 566B1160644
 	for <drbd-announce@lists.linbit.com>;
-	Tue,  4 Feb 2025 09:50:39 +0100 (CET)
-Received: by mail-pl1-f177.google.com with SMTP id
-	d9443c01a7336-216728b1836so90048075ad.0
+	Tue,  4 Feb 2025 13:33:33 +0100 (CET)
+Received: by mail-wm1-f41.google.com with SMTP id
+	5b1f17b1804b1-43621d27adeso37816115e9.2
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 04 Feb 2025 00:50:39 -0800 (PST)
+	Tue, 04 Feb 2025 04:33:33 -0800 (PST)
+Message-ID: <37f628a7-8fc3-48fd-8f4b-a75398d30f6d@linbit.com>
+Date: Tue, 4 Feb 2025 13:33:30 +0100
 MIME-Version: 1.0
-From: Rene Peinthor <rene.peinthor@linbit.com>
-Date: Tue, 4 Feb 2025 09:50:27 +0100
-Message-ID: <CAHmn2DPo_7NKt87Ty_h0_F46XMgnetwBqrx8NPHrYX3uqK2BaQ@mail.gmail.com>
-Subject: linstor-server 1.30.4 release
-To: drbd-user <drbd-user@lists.linbit.com>, drbd-announce@lists.linbit.com
-Content-Type: multipart/alternative; boundary="00000000000061f4ae062d4d1af7"
+To: "drbd-user@lists.linbit.com" <drbd-user@lists.linbit.com>,
+	drbd-announce@lists.linbit.com
+From: Johannes Thoma <johannes.thoma@linbit.com>
+Subject: WinDRBD 1.2.0-rc7 released
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,59 +28,53 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
---00000000000061f4ae062d4d1af7
-Content-Type: text/plain; charset="UTF-8"
+Dear WinDRBD community,
 
-Hi!
+We are proud to announce the first public testing version of the new brightly
+shining 1.2 branch of WinDRBD. Under the hood a lot has been changed
+in this branch. The most notable changes are:
 
-Another smaller patch release, to mainly fix a potential incorrect
-resource-group property migration.
+  * WinDRBD 1.2 supports DRBD 9.1, DRBD 9.2 and future DRBD branches
+as HA block storage backends.
 
-## [1.30.4] - 2025-02-03
+  * WinDRBD 1.2 can be built solely on Linux.
 
-### Changed
+  * You can specify the DRBD engine to build against at build time.
 
-- Changed ext-tool-check command for "drbd-proxy" from "-v" to "--version"
-to support v3 and v4
+  * There is a docker container containing all the build dependencies (still
+     you can also create the container yourself or install the build dependencies
+     on your host system).
 
-### Fixed
+  * WinDRBD 1.2 builds with MinGW instead of MS VC. This means that there
+    are far less patches to DRBD necessary (less than 1% of DRBD is patched).
 
-- Reconnect: Fixed rare NoSuchFileException triggered by multiple
-reconnects in quick succession
-- BackupShip: Fixed bug where shipment was not executed when previous
-shipping node was unavailable
-- Migration: Fixed incorrect usage of rscGrp's instanceName
-- VlmDfn,Resize: Only allow resize if all peers are online and UpToDate
+  * The patching system for DRBD has been completely reworked. Now manual
+     patches reside on branches inside the DRBD repository. For example
+     for DRBD 9.2 the current branch is win/windrbd-1.2-drbd-9.2.12. In
+     addition there are 2 cocci patches which are applied by the build system.
 
-https://pkg.linbit.com//downloads/linstor/linstor-server-1.30.4.tar.gz
+   * And more code cleanups, bug fixes, ... more to follow.
 
+There are downloadable installers at the Linbit website
+(https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/)
+built against DRBD 9.0, 9.1 and 9.2.
 
-Linstor PPA:
-https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+In addition, it is very easy to compile an installer yourself, to get started go to:
 
-Cheers,
-Rene
+https://github.com/LINBIT/windrbd/tree/windrbd-1.2
 
---00000000000061f4ae062d4d1af7
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+and follow the First things First instructions of the README.md.
 
-<div dir=3D"ltr">Hi!<div><br></div><div>Another smaller patch release, to m=
-ainly fix a potential incorrect resource-group property migration.</div><di=
-v></div><div><br></div><div>## [1.30.4] - 2025-02-03<br><br>### Changed<br>=
-<br>- Changed ext-tool-check command for &quot;drbd-proxy&quot; from &quot;=
--v&quot; to &quot;--version&quot; to support v3 and v4<br><br>### Fixed<br>=
-<br>- Reconnect: Fixed rare NoSuchFileException triggered by multiple recon=
-nects in quick succession<br>- BackupShip: Fixed bug where shipment was not=
- executed when previous shipping node was unavailable<br>- Migration: Fixed=
- incorrect usage of rscGrp&#39;s instanceName<br>- VlmDfn,Resize: Only allo=
-w resize if all peers are online and UpToDate</div><div><br></div><div><div=
-><a href=3D"https://pkg.linbit.com//downloads/linstor/linstor-server-1.30.4=
-.tar.gz">https://pkg.linbit.com//downloads/linstor/linstor-server-1.30.4.ta=
-r.gz</a><br></div><div><br></div><div><br></div><div><div><div><div>Linstor=
- PPA:<br><a href=3D"https://launchpad.net/~linbit/+archive/ubuntu/linbit-dr=
-bd9-stack" rel=3D"noreferrer" target=3D"_blank">https://launchpad.net/~linb=
-it/+archive/ubuntu/linbit-drbd9-stack</a></div></div><div><br></div><div>Ch=
-eers,<br></div><div>Rene</div></div></div></div></div>
+I would love to hear about your experiences with WinDRBD 1.2,
 
---00000000000061f4ae062d4d1af7--
+Thanks a lot,
+
+- Johannes
+
+PS: Last but not least, WinDRBD 1.2 supports ReactOS (32 bit) as target system.
+This is very handy because the MinGW gcc (the compiler we use to build the
+driver) cannot output debug information for Microsoft Windows windbg but
+only for the GNU debugger (gdb). So we use gdb to debug WinDRBD on ReactOS
+which works suprisingly well. If you want to try WinDRBD on ReactOS, try
+running make help for build instructions. I'd also be more than happy to
+help out getting WinDRBD running on ReactOS, just drop me an eMail.
