@@ -1,22 +1,22 @@
-Return-Path: <johannes.thoma@linbit.com>
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com
-	[209.85.128.41])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 566B1160644
+Return-Path: <roland.kammerer@linbit.com>
+Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com
+	[209.85.167.41])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 2FE3D16B867
 	for <drbd-announce@lists.linbit.com>;
-	Tue,  4 Feb 2025 13:33:33 +0100 (CET)
-Received: by mail-wm1-f41.google.com with SMTP id
-	5b1f17b1804b1-43621d27adeso37816115e9.2
+	Thu,  6 Feb 2025 10:47:25 +0100 (CET)
+Received: by mail-lf1-f41.google.com with SMTP id
+	2adb3069b0e04-54411e3c610so193005e87.1
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 04 Feb 2025 04:33:33 -0800 (PST)
-Message-ID: <37f628a7-8fc3-48fd-8f4b-a75398d30f6d@linbit.com>
-Date: Tue, 4 Feb 2025 13:33:30 +0100
+	Thu, 06 Feb 2025 01:47:25 -0800 (PST)
+Date: Thu, 6 Feb 2025 10:47:20 +0100
+From: Roland Kammerer <roland.kammerer@linbit.com>
+To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
+Subject: drbd-reactor v1.8.0-rc.1
+Message-ID: <Z6SFKGCHtKIgTTAv@arm64>
 MIME-Version: 1.0
-To: "drbd-user@lists.linbit.com" <drbd-user@lists.linbit.com>,
-	drbd-announce@lists.linbit.com
-From: Johannes Thoma <johannes.thoma@linbit.com>
-Subject: WinDRBD 1.2.0-rc7 released
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="ceYlgwwBIl+i7xJa"
+Content-Disposition: inline
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -28,53 +28,57 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Dear WinDRBD community,
 
-We are proud to announce the first public testing version of the new brightly
-shining 1.2 branch of WinDRBD. Under the hood a lot has been changed
-in this branch. The most notable changes are:
+--ceYlgwwBIl+i7xJa
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-  * WinDRBD 1.2 supports DRBD 9.1, DRBD 9.2 and future DRBD branches
-as HA block storage backends.
+Dear DRBD users,
 
-  * WinDRBD 1.2 can be built solely on Linux.
+this is RC1 of the upcoming drbd-reactor version 1.8.0. All in all
+reactor proved to do what it should, but there is one improvement for
+the promoter plugin: We had a user that "drbd-reactorctl disabled" a
+resource where the demotion of the DRBD device did not work for whatever
+reason. Then the user enabled the resource again, but the services on
+top were not started. The explanation is simple: The device was already
+Primary, so drbd-reactor never saw a "may_promote:yes" in the events2
+stream and well, did not react.
 
-  * You can specify the DRBD engine to build against at build time.
+New behavior: On plugin start we generate the systemd target templates
+as usual, but we also check if we are already local Primary. If so, we
+also start the systemd target unit. This does not hurt and might help in
+such "things half started" scenarios.
 
-  * There is a docker container containing all the build dependencies (still
-     you can also create the container yourself or install the build dependencies
-     on your host system).
+Please test, if we don't find any bugs the final release will happen in
+about a week from now.
 
-  * WinDRBD 1.2 builds with MinGW instead of MS VC. This means that there
-    are far less patches to DRBD necessary (less than 1% of DRBD is patched).
+Regards, rck
 
-  * The patching system for DRBD has been completely reworked. Now manual
-     patches reside on branches inside the DRBD repository. For example
-     for DRBD 9.2 the current branch is win/windrbd-1.2-drbd-9.2.12. In
-     addition there are 2 cocci patches which are applied by the build system.
+GIT: https://github.com/LINBIT/drbd-reactor/commit/7a6f9c29fdb3bae7324a76b5a82b65805b87abcb
+TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-reactor-1.8.0-rc.1.tar.gz
+PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
-   * And more code cleanups, bug fixes, ... more to follow.
+Changelog:
 
-There are downloadable installers at the Linbit website
-(https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/)
-built against DRBD 9.0, 9.1 and 9.2.
+[ Roland Kammerer ]
+* doc: mv on-{stop,drbd-demote}-failure
+* promoter: start services on activation
+* doc,promoter: note about LINSTOR
+* build: mv .cargo/config.{,toml}
 
-In addition, it is very easy to compile an installer yourself, to get started go to:
+--ceYlgwwBIl+i7xJa
+Content-Type: application/pgp-signature; name="signature.asc"
 
-https://github.com/LINBIT/windrbd/tree/windrbd-1.2
+-----BEGIN PGP SIGNATURE-----
 
-and follow the First things First instructions of the README.md.
+iQEzBAEBCAAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmekhSUACgkQRgmezyI6
+myKjLwgAtCeumEN3Kn/pOsx4y2j+9OyQ+3H38mhzL3q8k3j3P7qbIFLoBRTgMj+B
+SyJ3REMX7syKAvnArr6mAIRkftEIfwTOrA6gNCvIGLrFtX2wxPmoKEMpHLdppS6w
+S2QlXr+6v5/ZuUO1eadDJ+I7GJiMg8Ngrhs/t+K55dKKKDsEJJudEQlkbA2lTk73
+S5WIbl8kj3jkm7fMTDHyZGzdFUp1zBj9eWmRkU0IsDPodYas+7rIVHX/1+GgcyfO
+7OUOFAIySX8+JaNV6I5/O4P170JQOFTV6Ma/D7MR5Ajmae0B3P8pc8qSveUHDDW9
+EXEvBOHxY5K7i4VLMINWseC4QyA7zA==
+=cbAJ
+-----END PGP SIGNATURE-----
 
-I would love to hear about your experiences with WinDRBD 1.2,
-
-Thanks a lot,
-
-- Johannes
-
-PS: Last but not least, WinDRBD 1.2 supports ReactOS (32 bit) as target system.
-This is very handy because the MinGW gcc (the compiler we use to build the
-driver) cannot output debug information for Microsoft Windows windbg but
-only for the GNU debugger (gdb). So we use gdb to debug WinDRBD on ReactOS
-which works suprisingly well. If you want to try WinDRBD on ReactOS, try
-running make help for build instructions. I'd also be more than happy to
-help out getting WinDRBD running on ReactOS, just drop me an eMail.
+--ceYlgwwBIl+i7xJa--
