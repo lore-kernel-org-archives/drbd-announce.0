@@ -1,22 +1,20 @@
-Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com
-	[209.85.208.174])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id BFA60160938
+Return-Path: <moritz.wanzenboeck@linbit.com>
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com
+	[209.85.221.47])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id AAABF16091D
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 12 Feb 2025 09:29:15 +0100 (CET)
-Received: by mail-lj1-f174.google.com with SMTP id
-	38308e7fff4ca-30738a717ffso57298271fa.0
+	Mon, 17 Feb 2025 10:26:03 +0100 (CET)
+Received: by mail-wr1-f47.google.com with SMTP id
+	ffacd0b85a97d-38f2f783e4dso1972700f8f.3
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 12 Feb 2025 00:29:15 -0800 (PST)
-Date: Wed, 12 Feb 2025 09:29:10 +0100
-From: Roland Kammerer <roland.kammerer@linbit.com>
-To: drbd-announce@lists.linbit.com
-Subject: drbd-reactor v1.8.0
-Message-ID: <Z6xb1hdm8rS_JEtj@arm64>
+	Mon, 17 Feb 2025 01:26:03 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="cV9IFpB+6xD1eZaw"
-Content-Disposition: inline
+From: =?UTF-8?Q?Moritz_Wanzenb=C3=B6ck?= <moritz.wanzenboeck@linbit.com>
+Date: Mon, 17 Feb 2025 10:25:51 +0100
+Message-ID: <CAKnz9xLGkcOi3VBmdO9+qJ0YvUA2=f3+d2LjXP0kr7ChtM-buA@mail.gmail.com>
+Subject: LINSTOR Operator v2.8.0
+To: drbd-announce@lists.linbit.com
+Content-Type: text/plain; charset="UTF-8"
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -28,56 +26,66 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
+We've recently released version 2.8.0 of our Kubernetes Operator.
 
---cV9IFpB+6xD1eZaw
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+This release improves support for reusing existing LINSTOR clusters to
+provide storage for Kubernetes in a few different ways.
 
-Dear DRBD users,
+First, you can now specify multiple controller URLs when setting up
+the connection. This is commonly used when setting up a highly
+available LINSTOR Controller with DRBD Reactor: specify the possible
+IP addresses where the Controller is running, and the Operator and
+components will automatically connect to the right node.
 
-this is drbd-reactor version 1.8.0. There have not been any bug reports
-since the last RC. The initial announcement for convenience:
+Secondly, the Operator will now automatically try to determine the
+LINSTOR version from the external controller, and deploy the matching
+Satellite version by default.
 
-All in all reactor proved to do what it should, but there is one
-improvement for the promoter plugin: We had a user that "drbd-reactorctl
-disabled" a resource where the demotion of the DRBD device did not work
-for whatever reason. Then the user enabled the resource again, but the
-services on top were not started. The explanation is simple: The device
-was already Primary, so drbd-reactor never saw a "may_promote:yes" in
-the events2 stream and well, did not react.
+With the usual update of image versions, we also now support the
+x-replicas-on-different setting on StorageClasses[1]. For example, to
+deploy 2 replicas per zone, you can now set:
 
-New behavior: On plugin start we generate the systemd target templates
-as usual, but we also check if we are already local Primary. If so, we
-also start the systemd target unit. This does not hurt and might help in
-such "things half started" scenarios.
+parameters:
+  linstor.csi.linbit.com/xReplicasOnDifferent: |
+    topology.kubernetes.io/zone: 2
 
-Regards, rck
+To upgrade, either point your kustomization.yaml at the new manifest:
 
-GIT: https://github.com/LINBIT/drbd-reactor/commit/44c77aacc35a2a30f7c1000019c351b59c5189c5
-TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-reactor-1.8.0.tar.gz
-PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+  https://charts.linstor.io/static/v2.8.0.yaml
 
-Changelog:
+Or, if using helm, upgrade the linstor-operator chart:
 
-[ Roland Kammerer ]
-* doc: mv on-{stop,drbd-demote}-failure
-* promoter: start services on activation
-* doc,promoter: note about LINSTOR
-* build: mv .cargo/config.{,toml}
+  helm repo update
+  helm upgrade linstor-operator linstor/linstor-operator --wait
 
---cV9IFpB+6xD1eZaw
-Content-Type: application/pgp-signature; name="signature.asc"
+To get specific instructions to apply the update, check our users guide[2].
 
------BEGIN PGP SIGNATURE-----
+If you need to upgrade from Operator v1, check out our upgrade guide[3].
 
-iQEzBAEBCAAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmesW9EACgkQRgmezyI6
-myIuGQf9HtdcxLfZrhtPU5YjNBt9kIFD4Vq8kYDxh4ZaY02wJXsvEV/DoDp1dPCH
-WKtGAM5dajWczBukqbYUeD7TxpmU73/zgRyV4FQlmki+wy4YWgR/qIh+APiw/c3t
-ZFA+bKcwyqyXE7JTQXbyUs6SRdOZFfZ5jp3rBCnf+lKrrNtDFUB8o/aLVDkwIQOB
-/WJD7+Q2cw7z5TPpzj6O2lxysbEqbqHgVTYFkHLYdjU/ugPPwBw2Jt2gR5+V4HIB
-gLQnsevu5huumqyIWwTu2exMnFIciv7Lk65WGPoTE9WHzK19F33FaZjjg7zth7qN
-PDB0GfJWZdROcBjiKFnZCF34VXw8EQ==
-=cmVM
------END PGP SIGNATURE-----
+Source code is, as always, available upstream[4].
 
---cV9IFpB+6xD1eZaw--
+Best regards,
+Moritz
+
+[1]: https://linbit.com/blog/distributing-volume-replicas-for-high-availability-disaster-recovery-using-linstor/
+[2]: https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-upgrade
+[3]: https://charts.linstor.io/migration/
+[4]: https://github.com/piraeusdatastore/piraeus-operator
+
+Operator v2.8.0 Changelog
+-------------------------
+### Added
+
+- Automatically set the LINSTOR Satellite image version when using an
+external LINSTOR Controller.
+
+### Changed
+
+- Disable debug logging by default for the Operator.
+- Allow specifying multiple controller URLs for external LINSTOR clusters.
+- Updated images:
+    * LINSTOR 1.30.4
+    * LINSTOR CSI 1.7.0
+    * DRBD Reactor 1.8.0
+    * LINSTOR HA Controller 1.3.0
+    * Latest CSI sidecars
