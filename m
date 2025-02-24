@@ -1,20 +1,21 @@
-Return-Path: <moritz.wanzenboeck@linbit.com>
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com
-	[209.85.221.47])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id AAABF16091D
+Return-Path: <christoph.boehmwalder@linbit.com>
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com
+	[209.85.208.42])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 2054716095D
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 17 Feb 2025 10:26:03 +0100 (CET)
-Received: by mail-wr1-f47.google.com with SMTP id
-	ffacd0b85a97d-38f2f783e4dso1972700f8f.3
+	Mon, 24 Feb 2025 08:44:11 +0100 (CET)
+Received: by mail-ed1-f42.google.com with SMTP id
+	4fb4d7f45d1cf-5df07041c24so5981828a12.0
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 17 Feb 2025 01:26:03 -0800 (PST)
+	Sun, 23 Feb 2025 23:44:11 -0800 (PST)
+Date: Mon, 24 Feb 2025 08:44:09 +0100
+From: Christoph =?utf-8?Q?B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>
+To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
+Subject: LINSTOR GUI v1.9.0
+Message-ID: <20250224074409.3ymvo%christoph.boehmwalder@linbit.com>
 MIME-Version: 1.0
-From: =?UTF-8?Q?Moritz_Wanzenb=C3=B6ck?= <moritz.wanzenboeck@linbit.com>
-Date: Mon, 17 Feb 2025 10:25:51 +0100
-Message-ID: <CAKnz9xLGkcOi3VBmdO9+qJ0YvUA2=f3+d2LjXP0kr7ChtM-buA@mail.gmail.com>
-Subject: LINSTOR Operator v2.8.0
-To: drbd-announce@lists.linbit.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,66 +27,37 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-We've recently released version 2.8.0 of our Kubernetes Operator.
+Hello,
 
-This release improves support for reusing existing LINSTOR clusters to
-provide storage for Kubernetes in a few different ways.
+a new version of LINSTOR GUI has just been released: v1.9.0
 
-First, you can now specify multiple controller URLs when setting up
-the connection. This is commonly used when setting up a highly
-available LINSTOR Controller with DRBD Reactor: specify the possible
-IP addresses where the Controller is running, and the Operator and
-components will automatically connect to the right node.
+https://github.com/LINBIT/linstor-gui/releases/tag/v1.9.0
 
-Secondly, the Operator will now automatically try to determine the
-LINSTOR version from the external controller, and deploy the matching
-Satellite version by default.
+Here is the relevant excerpt from the changelog:
 
-With the usual update of image versions, we also now support the
-x-replicas-on-different setting on StorageClasses[1]. For example, to
-deploy 2 replicas per zone, you can now set:
+-----------------------------------
+# 1.9.0 - 2025-02-25
 
-parameters:
-  linstor.csi.linbit.com/xReplicasOnDifferent: |
-    topology.kubernetes.io/zone: 2
-
-To upgrade, either point your kustomization.yaml at the new manifest:
-
-  https://charts.linstor.io/static/v2.8.0.yaml
-
-Or, if using helm, upgrade the linstor-operator chart:
-
-  helm repo update
-  helm upgrade linstor-operator linstor/linstor-operator --wait
-
-To get specific instructions to apply the update, check our users guide[2].
-
-If you need to upgrade from Operator v1, check out our upgrade guide[3].
-
-Source code is, as always, available upstream[4].
-
-Best regards,
-Moritz
-
-[1]: https://linbit.com/blog/distributing-volume-replicas-for-high-availability-disaster-recovery-using-linstor/
-[2]: https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-upgrade
-[3]: https://charts.linstor.io/migration/
-[4]: https://github.com/piraeusdatastore/piraeus-operator
-
-Operator v2.8.0 Changelog
--------------------------
 ### Added
 
-- Automatically set the LINSTOR Satellite image version when using an
-external LINSTOR Controller.
+- new dashboard with more detailed information about storage pool and resou=
+rces
+
+### Fixed
+
+- Blank page error in VSAN mode
+- Used capacity exceeds 100 on node detail page
 
 ### Changed
 
-- Disable debug logging by default for the Operator.
-- Allow specifying multiple controller URLs for external LINSTOR clusters.
-- Updated images:
-    * LINSTOR 1.30.4
-    * LINSTOR CSI 1.7.0
-    * DRBD Reactor 1.8.0
-    * LINSTOR HA Controller 1.3.0
-    * Latest CSI sidecars
+- Actions styled on resource overview page
+- Property editor entries for RD on resource overview page
+-----------------------------------
+
+Regards,
+Christoph
+
+--
+Christoph B=C3=B6hmwalder
+LINBIT | Keeping the Digital World Running
+DRBD HA =E2=80=94  Disaster Recovery =E2=80=94 Software defined Storage
