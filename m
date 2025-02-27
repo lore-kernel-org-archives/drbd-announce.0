@@ -1,18 +1,18 @@
 Return-Path: <christoph.boehmwalder@linbit.com>
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com
-	[209.85.208.42])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 2054716095D
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com
+	[209.85.218.53])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id A96EA160644
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 24 Feb 2025 08:44:11 +0100 (CET)
-Received: by mail-ed1-f42.google.com with SMTP id
-	4fb4d7f45d1cf-5df07041c24so5981828a12.0
+	Thu, 27 Feb 2025 13:50:57 +0100 (CET)
+Received: by mail-ej1-f53.google.com with SMTP id
+	a640c23a62f3a-abb7f539c35so164673266b.1
 	for <drbd-announce@lists.linbit.com>;
-	Sun, 23 Feb 2025 23:44:11 -0800 (PST)
-Date: Mon, 24 Feb 2025 08:44:09 +0100
+	Thu, 27 Feb 2025 04:50:57 -0800 (PST)
+Date: Thu, 27 Feb 2025 13:50:55 +0100
 From: Christoph =?utf-8?Q?B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>
 To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Subject: LINSTOR GUI v1.9.0
-Message-ID: <20250224074409.3ymvo%christoph.boehmwalder@linbit.com>
+Subject: LINSTOR GUI v1.9.1
+Message-ID: <20250227125055.yYzbR%christoph.boehmwalder@linbit.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
@@ -29,29 +29,24 @@ List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hello,
 
-a new version of LINSTOR GUI has just been released: v1.9.0
+a new version of LINSTOR GUI has just been released: v1.9.1
 
-https://github.com/LINBIT/linstor-gui/releases/tag/v1.9.0
+https://github.com/LINBIT/linstor-gui/releases/tag/v1.9.1
 
 Here is the relevant excerpt from the changelog:
 
 -----------------------------------
-# 1.9.0 - 2025-02-25
-
-### Added
-
-- new dashboard with more detailed information about storage pool and resou=
-rces
+# 1.9.1 - 2025-02-27
 
 ### Fixed
 
-- Blank page error in VSAN mode
-- Used capacity exceeds 100 on node detail page
+- Fixed faulty resource list on the dashboard page
+- Fixed missing aux properties on the resource overview page
+- Fixed scrollbar issue on the dashboard page
 
 ### Changed
 
-- Actions styled on resource overview page
-- Property editor entries for RD on resource overview page
+- Use different colors for different resource types on the dashboard page
 -----------------------------------
 
 Regards,
