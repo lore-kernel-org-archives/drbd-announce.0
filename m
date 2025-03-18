@@ -1,18 +1,18 @@
 Return-Path: <christoph.boehmwalder@linbit.com>
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com
-	[209.85.218.47])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 7EE2516064F
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com
+	[209.85.218.43])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 07C1216097B
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 13 Mar 2025 13:56:03 +0100 (CET)
-Received: by mail-ej1-f47.google.com with SMTP id
-	a640c23a62f3a-ac2a089fbbdso182319266b.1
+	Tue, 18 Mar 2025 14:39:33 +0100 (CET)
+Received: by mail-ej1-f43.google.com with SMTP id
+	a640c23a62f3a-aaf0f1adef8so519219066b.3
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 13 Mar 2025 05:56:02 -0700 (PDT)
-Date: Thu, 13 Mar 2025 13:56:01 +0100
+	Tue, 18 Mar 2025 06:39:33 -0700 (PDT)
+Date: Tue, 18 Mar 2025 14:39:28 +0100
 From: Christoph =?utf-8?Q?B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>
-To: drbd-announce@lists.linbit.com, drbd-user@lists.linbit.com
-Subject: LINSTOR GUI v1.9.2
-Message-ID: <20250313125601.CypDc%christoph.boehmwalder@linbit.com>
+To: drbd-announce@lists.linbit.com
+Subject: LINSTOR Gateway v1.8.0
+Message-ID: <20250318133928.xzxmq%christoph.boehmwalder@linbit.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
@@ -29,26 +29,23 @@ List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hello,
 
-a new version of LINSTOR GUI has just been released: v1.9.2
+a new version of LINSTOR Gateway has just been released: v1.8.0
 
-https://github.com/LINBIT/linstor-gui/releases/tag/v1.9.2
+https://github.com/LINBIT/linstor-gateway/releases/tag/v1.8.0
 
 Here is the relevant excerpt from the changelog:
 
 -----------------------------------
-# 1.9.2 - 2025-03-12
+## [1.8.0] - 2025-03-18
 
-### Fixed
+### Changes
 
-- Display issue of SP chart on the dashboard
-- Display issue of aux properties on the resource overview
+* Add a health check for the `fuser` tool (20f28d80)
+* Disallow uppercase characters when creating iSCSI IQN (9754bf6d)
 
-### Changed
+### Fixes
 
-- New property editor
-- Replaced webpack with Vite as the build tool
-- Adjusted page layout
-- Removed PatternFly and other unnecessary dependencies
+* Fix a typo in a REST route (ae74e771)
 -----------------------------------
 
 Regards,
