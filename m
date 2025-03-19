@@ -1,21 +1,24 @@
-Return-Path: <christoph.boehmwalder@linbit.com>
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com
-	[209.85.218.47])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id C6AF316097B
+Return-Path: <philipp.reisner@linbit.com>
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com
+	[209.85.128.45])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id F21C516087F
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 18 Mar 2025 15:35:07 +0100 (CET)
-Received: by mail-ej1-f47.google.com with SMTP id
-	a640c23a62f3a-ac25d2b2354so974516466b.1
+	Wed, 19 Mar 2025 18:44:05 +0100 (CET)
+Received: by mail-wm1-f45.google.com with SMTP id
+	5b1f17b1804b1-43d0618746bso37783185e9.2
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 18 Mar 2025 07:35:07 -0700 (PDT)
-Date: Tue, 18 Mar 2025 15:35:05 +0100
-From: Christoph =?utf-8?Q?B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>
+	Wed, 19 Mar 2025 10:44:05 -0700 (PDT)
+Received: from ryzen9 (193-81-174-222.hdsl.highway.telekom.at.
+	[193.81.174.222]) by smtp.gmail.com with ESMTPSA id
+	ffacd0b85a97d-395cb7eb9d7sm21220812f8f.89.2025.03.19.10.44.04
+	for <drbd-announce@lists.linbit.com>
+	(version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+	Wed, 19 Mar 2025 10:44:04 -0700 (PDT)
+Date: Wed, 19 Mar 2025 18:44:03 +0100
+Message-Id: <865xk4rk4c.fsf@linbit.com>
+From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Subject: LINSTOR GUI v1.9.3
-Message-ID: <20250318143505.cuPOf%christoph.boehmwalder@linbit.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Subject: drbd-9.2.13-rc.2
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -29,26 +32,49 @@ List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hello,
 
-a new version of LINSTOR GUI has just been released: v1.9.3
+Due to a few last-minute fixes, I am doing a short rc.2 before the
+9.2.13 final release.
 
-https://github.com/LINBIT/linstor-gui/releases/tag/v1.9.3
+This is a release candidate.
+The final release will come on Monday, March 24, if everything goes as
+planned.
 
-Here is the relevant excerpt from the changelog:
 
------------------------------------
-# 1.9.3 - 2025-03-18
+9.2.13-rc.2 (api:genl2/proto:86-101,118-122/transport:19)
+--------
+ * Fix for a race condition between new writes getting submitted and a
+   connection getting abandoned due to a send error; when it triggered,
+   DRBD failed to complete a (or multiple) write request(s)
+ * Add a docker recipe for sles15
 
-### Fixed
+9.2.13-rc.1 (api:genl2/proto:86-101,118-122/transport:19)
+--------
+ * Fix a bug in the rs-discard-granularity feature; when having three
+   or more replicas and after a particular resync scenario in the
+   final consequence, it led to inconsistencies in the mirroring aka
+   data corruption
+ * Fix a bug that causes drbd not to finish a write request; DRBD
+   noticed that the request did not finish and abandoned the
+   connection; it happened only on resync-target primaries
+ * Fix a bug that causes machine freeze (without OOPS message) under
+   particular heavy network load conditions (a missing call to
+   skb_abort_seq_read())
+ * An up-to-date node no longer gets outdated by a far (not a
+   neighbor) primary that is incapable (I.e. has an inconsistent disk
+   and no access to up-to-date data)
+ * Fix a (never observed) race condition that causes false ping timeouts
+ * Fix a minor memory leak; it failed to free the memory allocated for
+   a specific class of state change log messages
+ * Fix a reference counting bug in the RDMA transport upon address or
+   route resolution errors
+ * Fix detecting dead peers on idle connections in the RDMA transport
+ * Enable TCP keepalive packets by default in the TCP transports
+ * Add a DKMS package for RPM-based Linux distributions
+ * Compatibility with coccinelle 1.2
+ * Compatibility with Linux 6.13
 
-- Fixed the loading indicator on the list pages
-- Fixed the 404 error when creating a resource definition
-- Fixed the white page error on the resource group creation page
------------------------------------
+https://pkg.linbit.com//downloads/drbd/9/drbd-9.2.13-rc.2.tar.gz
+https://github.com/LINBIT/drbd/commit/6146eb95546e5105f4fed617ae60c88249c75245
 
-Regards,
-Christoph
-
---
-Christoph B=C3=B6hmwalder
-LINBIT | Keeping the Digital World Running
-DRBD HA =E2=80=94  Disaster Recovery =E2=80=94 Software defined Storage
+cheers,
+ Phil
