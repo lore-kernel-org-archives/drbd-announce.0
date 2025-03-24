@@ -1,28 +1,26 @@
-Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com
-	[209.85.167.48])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 1E322160650
+Return-Path: <philipp.reisner@linbit.com>
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com
+	[209.85.221.49])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 23470160650
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 24 Mar 2025 10:53:40 +0100 (CET)
-Received: by mail-lf1-f48.google.com with SMTP id
-	2adb3069b0e04-5499e3ec54dso4744220e87.0
+	Mon, 24 Mar 2025 14:13:30 +0100 (CET)
+Received: by mail-wr1-f49.google.com with SMTP id
+	ffacd0b85a97d-3913fdd0120so2350320f8f.0
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 24 Mar 2025 02:53:40 -0700 (PDT)
-Received: from localhost (static.57.82.181.135.clients.your-server.de.
-	[135.181.82.57]) by smtp.gmail.com with ESMTPSA id
-	38308e7fff4ca-30d7d7c1bebsm13384461fa.5.2025.03.24.02.53.37
+	Mon, 24 Mar 2025 06:13:30 -0700 (PDT)
+Received: from ryzen9 (193-81-174-222.hdsl.highway.telekom.at.
+	[193.81.174.222]) by smtp.gmail.com with ESMTPSA id
+	5b1f17b1804b1-43d43f47196sm169633585e9.16.2025.03.24.06.13.29
 	for <drbd-announce@lists.linbit.com>
 	(version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-	Mon, 24 Mar 2025 02:53:38 -0700 (PDT)
-Date: Mon, 24 Mar 2025 10:53:36 +0100
-From: Roland Kammerer <roland.kammerer@linbit.com>
+	Mon, 24 Mar 2025 06:13:29 -0700 (PDT)
+From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Subject: drbd-utils v9.31.0-rc.1
-Message-ID: <Z-EroJWeaoUYJP3V@arm64>
+Subject: drbd-9.2.13
+Date: Mon, 24 Mar 2025 14:13:28 +0100
+Message-ID: <8634f2r2pz.fsf@linbit.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="OvFMxucoJdTxW2zH"
-Content-Disposition: inline
+Content-Type: text/plain
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -34,69 +32,66 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
+Hello DRBD users,
 
---OvFMxucoJdTxW2zH
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This release brings a bunch of important fixes. The first one affects
+only resources with three (or more) replicas when rs-discard-granularity
+is enabled and in a specific resync scenario.
 
-Dear DRBD users,
+     A-->B
+      \  |
+       \ |
+        vv
+         C
 
-this is the first release candidate of drbd-utils 9.31.0. It contains
-all kinds of cleanups and fixes. The important things first:
+A has active resyncs from A to B and from A to C, while the connection
+B to C is in a paused resync state.
 
-If you are using kmod version 8.4, but recent utils (>=3D 9.28.0) you
-probably want to install the new version. We fixed a regression for udev
-rules generation.=20
+LINSTOR enables quorum in a 3-node system. With quorum enabled, such
+a resync scenario can not occur during regular operations but only when
+"re-creating" a resource, e.g., restoring a backup. We discovered this
+while working on tests for our CI loop and will test this scenario as
+well moving forward.
 
-The second thing I want to mention is that VCS and XEN block-drbd got
-dropped as we don't think there are any users and/or there are better
-alternatives.
+The machine freezes mentioned below were a completely different story.
+Only a customer was able to reproduce them about once a day. With the
+information that drbd-9.1 does not produce these machine freezes, we
+finally identified a wrong use of a kernel function that led to such bad
+error behavior.
 
-The rest are smaller improvements all over the place, especially our
-systemd integration got some love where graceful shutdown for pacemaker
-got improved, we now consistently disable the old sysvint wrapper
-(drbd.service) and we added a drbd-configured.target which can be used
-as a synchronization point during boot-up.
+I recommend upgrading to this release from older 9.2.x or 9.1.x releases.
 
-Please test! If we don't find any bugs I will release the final version
-in about a week from now.
 
-Regards, rck
+9.2.13 (api:genl2/proto:86-101,118-122/transport:19)
+--------
+ * Fix a bug in the rs-discard-granularity feature; when having three
+   or more replicas and after a particular resync scenario in the
+   final consequence, it led to inconsistencies in the mirroring aka
+   data corruption
+ * Fix a bug that causes drbd not to finish a write request; DRBD
+   noticed that the request did not finish and abandoned the
+   connection; it happened only on resync-target primaries
+ * Fix a bug that causes machine freeze (without OOPS message) under
+   particular heavy network load conditions (a missing call to
+   skb_abort_seq_read())
+ * An up-to-date node no longer gets outdated by a far (not a
+   neighbor) primary that is incapable (I.e. has an inconsistent disk
+   and no access to up-to-date data)
+ * Fix for a race condition between new writes getting submitted and a
+   connection getting abandoned due to a send error; when it triggered,
+   DRBD failed to complete a (or multiple) write request(s)
+ * Fix a (never observed) race condition that causes false ping timeouts
+ * Fix a minor memory leak; it failed to free the memory allocated for
+   a specific class of state change log messages
+ * Fix a reference counting bug in the RDMA transport upon address or
+   route resolution errors
+ * Fix detecting dead peers on idle connections in the RDMA transport
+ * Enable TCP keepalive packets by default in the TCP transports
+ * Add a DKMS package for RPM-based Linux distributions
+ * Add a docker recipe for sles15
+ * Compatibility with coccinelle 1.2
+ * Compatibility with Linux 6.13
 
-GIT: https://github.com/LINBIT/drbd-utils/commit/2411ff2e4241716463b4afa853=
-0dc3c628c157ce
-TGZ: https://pkg.linbit.com/downloads/drbd/utils/drbd-utils-9.31.0-rc.1.tar=
-=2Egz
-PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
-Changelog:
-
-9.31.0-rc.1
------------
- * VCS: drop integration
- * XEN block-drbd: drop. if you think you want that,
-   look into the LINSTOR + xcp-ng integration instead
- * drbd-configured.target: new sync point
- * drbd.service: disable this old sysvinit/sh wrapper
-   (not to be confused with drbd@.service)
- * drbd-graceful-shutdown.service: improve handling
-   of pacemaker shutdown
- * drbdsetup,v8.4: fix udev command
-
---OvFMxucoJdTxW2zH
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmfhK5sACgkQRgmezyI6
-myLkuggAhvhwjh7c6dbtVBHkM/zx/MHBR+zbNG3VkD9zRlqRkrLVA9LOVUxzzsl8
-zKaF4oyrBvpZLmq1myz+9Va7mFUD/Ec5XpniJGaDdzIS8mqZU4FqqzTjL7fpY8XQ
-f2kzK+LjgUI3CPLJC1hxv27znfJufW9XW3m5KNwey9FfhGSAT/UIZFbd2Q51jWYu
-9om6oM/e7xebpZml4q9/RW4Vepb/fvISuwdoq2ptvMAnD8A9V4YQ1I3JUlqRNOI0
-z07noAmXjeDZiYQmd/jw7W4/9zaIWB08pOR/Ftc7ZHPyao6g6K63AaHf1TtmfvH6
-rm/nqH4daBTMMvrS41MW/IxLEfo8/g==
-=/jrg
------END PGP SIGNATURE-----
-
---OvFMxucoJdTxW2zH--
+https://pkg.linbit.com//downloads/drbd/9/drbd-9.2.13.tar.gz
+https://github.com/LINBIT/drbd/commit/0457237e0448663529fe161781873b356f17b3c5
