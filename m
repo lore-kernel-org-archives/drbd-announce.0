@@ -1,26 +1,27 @@
-Return-Path: <philipp.reisner@linbit.com>
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com
-	[209.85.221.49])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 23470160650
+Return-Path: <johannes.thoma@linbit.com>
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com
+	[209.85.218.49])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id ED002160930
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 24 Mar 2025 14:13:30 +0100 (CET)
-Received: by mail-wr1-f49.google.com with SMTP id
-	ffacd0b85a97d-3913fdd0120so2350320f8f.0
+	Thu,  3 Apr 2025 11:59:34 +0200 (CEST)
+Received: by mail-ej1-f49.google.com with SMTP id
+	a640c23a62f3a-ac297cbe017so343036566b.0
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 24 Mar 2025 06:13:30 -0700 (PDT)
-Received: from ryzen9 (193-81-174-222.hdsl.highway.telekom.at.
-	[193.81.174.222]) by smtp.gmail.com with ESMTPSA id
-	5b1f17b1804b1-43d43f47196sm169633585e9.16.2025.03.24.06.13.29
+	Thu, 03 Apr 2025 02:59:34 -0700 (PDT)
+Received: from [10.43.10.15] (62-99-137-214.static.upcbusiness.at.
+	[62.99.137.214]) by smtp.gmail.com with ESMTPSA id
+	a640c23a62f3a-ac7c01855c7sm67370066b.148.2025.04.03.02.59.32
 	for <drbd-announce@lists.linbit.com>
-	(version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-	Mon, 24 Mar 2025 06:13:29 -0700 (PDT)
-From: Philipp Reisner <philipp.reisner@linbit.com>
-To: drbd-announce@lists.linbit.com
-Subject: drbd-9.2.13
-Date: Mon, 24 Mar 2025 14:13:28 +0100
-Message-ID: <8634f2r2pz.fsf@linbit.com>
+	(version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+	Thu, 03 Apr 2025 02:59:33 -0700 (PDT)
+Message-ID: <c5c8fb7c-fefb-4597-8215-db8e870a42c9@linbit.com>
+Date: Thu, 3 Apr 2025 11:59:31 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
+To: drbd-announce@lists.linbit.com
+From: Johannes Thoma <johannes.thoma@linbit.com>
+Subject: WinDRBD 1.1.20 released
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -32,66 +33,29 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Hello DRBD users,
+Dear WinDRBD community,
 
-This release brings a bunch of important fixes. The first one affects
-only resources with three (or more) replicas when rs-discard-granularity
-is enabled and in a specific resync scenario.
+There is a new minor version of the stable WinDRBD 1.1 branch:
 
-     A-->B
-      \  |
-       \ |
-        vv
-         C
+     WinDRBD 1.1.20.
 
-A has active resyncs from A to B and from A to C, while the connection
-B to C is in a paused resync state.
+It fixes a problem with DRBD which caused drbdadm adjust to hang
+on a connected resource when a new volume is added to one node
+but not on the other node yet. This has been fixed in DRBD 9.1.15
+and has been backported to DRBD 9.0.32, the version of the WinDRBD
+1.1 branch.
 
-LINSTOR enables quorum in a 3-node system. With quorum enabled, such
-a resync scenario can not occur during regular operations but only when
-"re-creating" a resource, e.g., restoring a backup. We discovered this
-while working on tests for our CI loop and will test this scenario as
-well moving forward.
+In addition, the installer now checks if the virtual bus device can be
+accessed after installation and retries to install it when it cannot be
+accessed.
 
-The machine freezes mentioned below were a completely different story.
-Only a customer was able to reproduce them about once a day. With the
-information that drbd-9.1 does not produce these machine freezes, we
-finally identified a wrong use of a kernel function that led to such bad
-error behavior.
+If you are not affected by one of the above issues, there is no need
+to upgrade.
 
-I recommend upgrading to this release from older 9.2.x or 9.1.x releases.
+An eval version of WinDRBD can be found in the downloads section of
+the www.linbit.com site. LINBIT customers can find the new version in
+their WinDRBD repo using their API key.
 
+Best regards,
 
-9.2.13 (api:genl2/proto:86-101,118-122/transport:19)
---------
- * Fix a bug in the rs-discard-granularity feature; when having three
-   or more replicas and after a particular resync scenario in the
-   final consequence, it led to inconsistencies in the mirroring aka
-   data corruption
- * Fix a bug that causes drbd not to finish a write request; DRBD
-   noticed that the request did not finish and abandoned the
-   connection; it happened only on resync-target primaries
- * Fix a bug that causes machine freeze (without OOPS message) under
-   particular heavy network load conditions (a missing call to
-   skb_abort_seq_read())
- * An up-to-date node no longer gets outdated by a far (not a
-   neighbor) primary that is incapable (I.e. has an inconsistent disk
-   and no access to up-to-date data)
- * Fix for a race condition between new writes getting submitted and a
-   connection getting abandoned due to a send error; when it triggered,
-   DRBD failed to complete a (or multiple) write request(s)
- * Fix a (never observed) race condition that causes false ping timeouts
- * Fix a minor memory leak; it failed to free the memory allocated for
-   a specific class of state change log messages
- * Fix a reference counting bug in the RDMA transport upon address or
-   route resolution errors
- * Fix detecting dead peers on idle connections in the RDMA transport
- * Enable TCP keepalive packets by default in the TCP transports
- * Add a DKMS package for RPM-based Linux distributions
- * Add a docker recipe for sles15
- * Compatibility with coccinelle 1.2
- * Compatibility with Linux 6.13
-
-
-https://pkg.linbit.com//downloads/drbd/9/drbd-9.2.13.tar.gz
-https://github.com/LINBIT/drbd/commit/0457237e0448663529fe161781873b356f17b3c5
+- Johannes
