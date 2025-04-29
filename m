@@ -1,20 +1,21 @@
-Return-Path: <rene.peinthor@linbit.com>
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com
-	[209.85.216.53])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id ECD5116B8B8
+Return-Path: <christoph.boehmwalder@linbit.com>
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com
+	[209.85.208.41])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 76ACF160930
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 10 Apr 2025 14:21:03 +0200 (CEST)
-Received: by mail-pj1-f53.google.com with SMTP id
-	98e67ed59e1d1-3011737dda0so561672a91.1
+	Tue, 29 Apr 2025 14:29:03 +0200 (CEST)
+Received: by mail-ed1-f41.google.com with SMTP id
+	4fb4d7f45d1cf-5f624291db6so10299166a12.3
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 10 Apr 2025 05:21:03 -0700 (PDT)
-MIME-Version: 1.0
-From: Rene Peinthor <rene.peinthor@linbit.com>
-Date: Thu, 10 Apr 2025 14:20:50 +0200
-Message-ID: <CAHmn2DOrEpMYwihvqQf5k_PcooOc-65dV73LTgqj-8FkRNf+0g@mail.gmail.com>
-Subject: python-linstor/linstor-client 1.25.4(3) release
+	Tue, 29 Apr 2025 05:29:03 -0700 (PDT)
+Date: Tue, 29 Apr 2025 14:29:01 +0200
+From: Christoph =?utf-8?Q?B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>
 To: drbd-announce@lists.linbit.com
-Content-Type: multipart/alternative; boundary="0000000000007b3e2f06326b9e04"
+Subject: LINSTOR GUI v1.9.5
+Message-ID: <20250429122901.pL-f_%christoph.boehmwalder@linbit.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,63 +27,38 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
---0000000000007b3e2f06326b9e04
-Content-Type: text/plain; charset="UTF-8"
+Hello,
 
-Hi!
+a new version of LINSTOR GUI has just been released: v1.9.5
 
-Bug fix release with the error-report delete command and fixes for the
---curl option.
+https://github.com/LINBIT/linstor-gui/releases/tag/v1.9.5
 
-## linstor-client
-## [1.25.4] - 2025-04-10
+Here is the relevant excerpt from the changelog:
 
-### Fixed
-
-- rd clone: fix crash if --curl was set
-
-https://pkg.linbit.com//downloads/linstor/linstor_client-1.25.4.tar.gz
-
-## python-linstor
-## [1.25.3] - 2025-04-10
+-----------------------------------
+# 1.9.5 - 2025-04-29
 
 ### Added
 
-- Add TLS certificate options to "curl" debug output
+- Support for using a customized API host
+- Added schedule detail view
 
 ### Fixed
 
-- Correctly pass parameters in error_report_delete
-- resource_dfn_clone: Fix exception if curl option was set
+- Initial value not shown when editing resource group
+- Optimized create snapshot notification
+- Refetch after inputting pass phrase
 
-https://pkg.linbit.com//downloads/linstor/python_linstor-1.25.3.tar.gz
+### Changed
 
-Linstor PPA:
-https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+- Optimized the logic of the unofficial modal
+- Action style adjustment for all list pages
+-----------------------------------
 
-Best regards,
-Rene
+Regards,
+Christoph
 
---0000000000007b3e2f06326b9e04
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div>Hi!</div><div><br></div><div>Bug fix release with the=
- error-report delete command and fixes for the --curl option.</div><div><br=
-></div><div>## linstor-client</div><div>## [1.25.4] - 2025-04-10<br><br>###=
- Fixed<br><br>- rd clone: fix crash if --curl was set</div><div><br></div><=
-div><a href=3D"https://pkg.linbit.com//downloads/linstor/linstor_client-1.2=
-5.4.tar.gz">https://pkg.linbit.com//downloads/linstor/linstor_client-1.25.4=
-.tar.gz</a><br></div><br><div>## python-linstor</div><div>## [1.25.3] - 202=
-5-04-10<br><br>### Added<br><br>- Add TLS certificate options to &quot;curl=
-&quot; debug output<br><br>### Fixed<br><br>- Correctly pass parameters in =
-error_report_delete<br>- resource_dfn_clone: Fix exception if curl option w=
-as set</div><div><br></div><div><a href=3D"https://pkg.linbit.com//download=
-s/linstor/python_linstor-1.25.3.tar.gz">https://pkg.linbit.com//downloads/l=
-instor/python_linstor-1.25.3.tar.gz</a><br></div><div><br></div><div><div>L=
-instor=C2=A0PPA:<br></div><div><div><a href=3D"https://launchpad.net/~linbi=
-t/+archive/ubuntu/linbit-drbd9-stack" rel=3D"noreferrer" target=3D"_blank">=
-https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack</a><br></d=
-iv><div><br></div><div>Best regards,</div><div>Rene</div></div></div></div>
-
---0000000000007b3e2f06326b9e04--
+--
+Christoph B=C3=B6hmwalder
+LINBIT | Keeping the Digital World Running
+DRBD HA =E2=80=94  Disaster Recovery =E2=80=94 Software defined Storage
