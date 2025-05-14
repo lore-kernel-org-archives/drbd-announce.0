@@ -1,18 +1,18 @@
 Return-Path: <christoph.boehmwalder@linbit.com>
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com
-	[209.85.208.41])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 76ACF160930
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com
+	[209.85.218.54])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 02905160650
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 29 Apr 2025 14:29:03 +0200 (CEST)
-Received: by mail-ed1-f41.google.com with SMTP id
-	4fb4d7f45d1cf-5f624291db6so10299166a12.3
+	Wed, 14 May 2025 14:12:15 +0200 (CEST)
+Received: by mail-ej1-f54.google.com with SMTP id
+	a640c23a62f3a-ad1a87d93f7so1022287966b.0
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 29 Apr 2025 05:29:03 -0700 (PDT)
-Date: Tue, 29 Apr 2025 14:29:01 +0200
+	Wed, 14 May 2025 05:12:15 -0700 (PDT)
+Date: Wed, 14 May 2025 14:12:13 +0200
 From: Christoph =?utf-8?Q?B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>
 To: drbd-announce@lists.linbit.com
-Subject: LINSTOR GUI v1.9.5
-Message-ID: <20250429122901.pL-f_%christoph.boehmwalder@linbit.com>
+Subject: LINSTOR GUI v1.9.6
+Message-ID: <20250514121213.0XBf-%christoph.boehmwalder@linbit.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
@@ -29,30 +29,34 @@ List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 
 Hello,
 
-a new version of LINSTOR GUI has just been released: v1.9.5
+a new version of LINSTOR GUI has just been released: v1.9.6
 
-https://github.com/LINBIT/linstor-gui/releases/tag/v1.9.5
+https://github.com/LINBIT/linstor-gui/releases/tag/v1.9.6
 
 Here is the relevant excerpt from the changelog:
 
 -----------------------------------
-# 1.9.5 - 2025-04-29
+# 1.9.6 - 2025-05-14
 
 ### Added
 
-- Support for using a customized API host
-- Added schedule detail view
-
-### Fixed
-
-- Initial value not shown when editing resource group
-- Optimized create snapshot notification
-- Refetch after inputting pass phrase
+- Enhanced snapshot management:
+  - Added snapshot rollback functionality
+  - Added snapshot restore functionality
+- Unlock LINSTOR system with passphrase
+- Display creation status in backup list view
+- Added back-to-top functionality
+- Added PassphrasePrompt component for LINSTOR encryption
+- Hide popups in development environment
 
 ### Changed
 
-- Optimized the logic of the unofficial modal
-- Action style adjustment for all list pages
+- Changed "NFS Targets" text to "NFS Exports"
+- Reload page after unlock to update state
+
+### Fixed
+
+- Fixed back-to-top text display issue
 -----------------------------------
 
 Regards,
