@@ -1,26 +1,27 @@
-Return-Path: <philipp.reisner@linbit.com>
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com
-	[209.85.221.53])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 32BDA16095D
+Return-Path: <johannes.thoma@linbit.com>
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com
+	[209.85.128.49])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id C22E11609AF
 	for <drbd-announce@lists.linbit.com>;
-	Tue,  3 Jun 2025 17:48:09 +0200 (CEST)
-Received: by mail-wr1-f53.google.com with SMTP id
-	ffacd0b85a97d-3a3798794d3so4891604f8f.1
+	Wed,  4 Jun 2025 16:43:54 +0200 (CEST)
+Received: by mail-wm1-f49.google.com with SMTP id
+	5b1f17b1804b1-441d437cfaaso48544125e9.1
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 03 Jun 2025 08:48:09 -0700 (PDT)
-Received: from ryzen9 (192-164-20-231.hdsl.highway.telekom.at.
-	[192.164.20.231]) by smtp.gmail.com with ESMTPSA id
-	ffacd0b85a97d-3a4efe73fbcsm18563487f8f.48.2025.06.03.08.48.06
+	Wed, 04 Jun 2025 07:43:54 -0700 (PDT)
+Received: from [10.43.10.15] (62-99-137-214.static.upcbusiness.at.
+	[62.99.137.214]) by smtp.gmail.com with ESMTPSA id
+	ffacd0b85a97d-3a4efe73eebsm21681327f8f.44.2025.06.04.07.43.52
 	for <drbd-announce@lists.linbit.com>
-	(version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-	Tue, 03 Jun 2025 08:48:06 -0700 (PDT)
-From: Philipp Reisner <philipp.reisner@linbit.com>
-To: drbd-announce@lists.linbit.com
-Subject: drbd-9.2.14
-Date: Tue, 03 Jun 2025 17:48:05 +0200
-Message-ID: <86o6v4n7wq.fsf@linbit.com>
+	(version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+	Wed, 04 Jun 2025 07:43:52 -0700 (PDT)
+Message-ID: <67691b36-8d34-4cfb-aa91-119da87e4354@linbit.com>
+Date: Wed, 4 Jun 2025 16:43:51 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
+To: drbd-announce@lists.linbit.com
+From: Johannes Thoma <johannes.thoma@linbit.com>
+Subject: WinDRBD 1.2.0-rc15 released
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -32,46 +33,34 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
+Dear WinDRBD users,
 
-Hello DRBD users,
+A new version of WinDRBD 1.2 is out: WinDRBD 1.2.0-rc15
 
-I am pleased to announce the 9.2.14 release.
-What happened to 9.3.0? -- We discovered some test failures in our
-nightly endurance tests. So, the release process for 9.3 is on hold
-until we have a complete understanding of these failures.
-Among the bug fixes included in this release, the most critical one
-addresses a race condition between very short resyncs (empty resyncs)
-and application write requests. The window is small, so it is unlikely
-to hit, but the consequence is a write missing on the resync target
-node.
-The bug that is cured by the second fix on the list is triggered by a
-very slow network or a network hiccup with the correct timing and only
-when taking snapshots on the primary and secondary nodes concurrently
-(as LINSTOR does).
-The third item on the list is a bug fix for a range of kernels
-(4.19-6.x, where 1 < x < 12), where DRBD sometimes amplified a small
-memory leak significantly in a very low percentage of resync operations.
+The main reason for this release is that there is a new DRBD
+version: 9.2.14 (with DRBD 9.3.0 soon to follow). Other than
+that there are a few fixes in the networking and user mode
+helper code of the WinDRBD kernel compatibility layer.
 
-I recommend upgrading to 9.2.14.
+You can compile WinDRBD 1.2.0-rc15 either by yourself
+(see the README.md at
 
-9.2.14 (api:genl2/proto:86-101,118-122/transport:19)
---------
- * Fix a race condition between write requests and very short resyncs
-   that might cause DRBD to fail to resync that racing write.
- * Fix the suspend-IO command so that it waits until all pending
-   writes are completed before it returns. From now on, it can be used
-   to create consistent snapshots of the primary and the secondary.
- * Improve DRBD's pooling of buffer pages. The old implementation
-   stopped freeing any of those buffer pages if the kernel would leak
-   a single page reference.
- * Fix corner case CM leaks in the RDMA transport.
- * Fix a warning on recent kernels (RHEL10) regarding DRBD failing to
-   set queue parameters for zoned block devices.
- * Dockerfile for RHEL10
- * Compatibility with Linux 6.14 and 6.15
+     https://github.com/LINBIT/windrbd/tree/windrbd-1.2
 
-https://github.com/LINBIT/drbd/commit/a1e7c10e591a844b327da120d169df7da7c933b7
-https://pkg.linbit.com//downloads/drbd/9/drbd-9.2.14.tar.gz
+) or download an evaluation version from the Linbit website:
 
-cheers,
- Philipp
+https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/
+
+To use it on 64-bit Microsoft Windows you will have to put
+your machine into Test mode: do (from an elevated cmd prompt):
+
+     bcdedit /set TESTSIGNING ON
+
+and reboot Windows.
+
+Thank you for contributing to WinDRBD development by using it
+(and report any findings),
+
+Best regards,
+
+- Johannes
