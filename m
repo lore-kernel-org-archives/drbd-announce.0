@@ -1,27 +1,20 @@
-Return-Path: <johannes.thoma@linbit.com>
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com
-	[209.85.128.49])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id C22E11609AF
+Return-Path: <rene.peinthor@linbit.com>
+Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com
+	[209.85.215.174])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id A9724160912
 	for <drbd-announce@lists.linbit.com>;
-	Wed,  4 Jun 2025 16:43:54 +0200 (CEST)
-Received: by mail-wm1-f49.google.com with SMTP id
-	5b1f17b1804b1-441d437cfaaso48544125e9.1
+	Wed, 11 Jun 2025 15:03:59 +0200 (CEST)
+Received: by mail-pg1-f174.google.com with SMTP id
+	41be03b00d2f7-b2fca9dc5f8so474364a12.1
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 04 Jun 2025 07:43:54 -0700 (PDT)
-Received: from [10.43.10.15] (62-99-137-214.static.upcbusiness.at.
-	[62.99.137.214]) by smtp.gmail.com with ESMTPSA id
-	ffacd0b85a97d-3a4efe73eebsm21681327f8f.44.2025.06.04.07.43.52
-	for <drbd-announce@lists.linbit.com>
-	(version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-	Wed, 04 Jun 2025 07:43:52 -0700 (PDT)
-Message-ID: <67691b36-8d34-4cfb-aa91-119da87e4354@linbit.com>
-Date: Wed, 4 Jun 2025 16:43:51 +0200
+	Wed, 11 Jun 2025 06:03:59 -0700 (PDT)
 MIME-Version: 1.0
+From: Rene Peinthor <rene.peinthor@linbit.com>
+Date: Wed, 11 Jun 2025 15:03:47 +0200
+Message-ID: <CAHmn2DOtPJ6Qy6iTTnL=miizkgbu12u8rhybgUZ03PXp4AfiYw@mail.gmail.com>
+Subject: linstor-server 1.31.2 release
 To: drbd-announce@lists.linbit.com
-From: Johannes Thoma <johannes.thoma@linbit.com>
-Subject: WinDRBD 1.2.0-rc15 released
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/alternative; boundary="0000000000002f2ea606374b72c7"
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -33,34 +26,70 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Dear WinDRBD users,
+--0000000000002f2ea606374b72c7
+Content-Type: text/plain; charset="UTF-8"
 
-A new version of WinDRBD 1.2 is out: WinDRBD 1.2.0-rc15
+Hi!
 
-The main reason for this release is that there is a new DRBD
-version: 9.2.14 (with DRBD 9.3.0 soon to follow). Other than
-that there are a few fixes in the networking and user mode
-helper code of the WinDRBD kernel compatibility layer.
+Another bugfix release for the 1.31 series, we noticed that you could end up
+in a non-startable controller if you killed/stopped the controller while
+it was doing a rollback of a snapshot, additionally we fixed a few other
+smaller bugs.
 
-You can compile WinDRBD 1.2.0-rc15 either by yourself
-(see the README.md at
+## [1.31.2] - 2025-06-11
 
-     https://github.com/LINBIT/windrbd/tree/windrbd-1.2
+### Changed
 
-) or download an evaluation version from the Linbit website:
+- Snapshot rollback now allows and restores snapshots on nodes that don't
+have a local snapshot (with DRBD)
 
-https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/
+### Fixed
 
-To use it on 64-bit Microsoft Windows you will have to put
-your machine into Test mode: do (from an elevated cmd prompt):
+- Fixed "access to deleted storpool" of remote storage pool after deleting
+local storage pool
+- Fixed AutoplaceTarget property being ignored on controller level
+- Fixed AutoplaceTarget property that controller has higher priority than
+node
+- Fixed rare deadlock during shutdown
+- Fixed toggle-disk for cache, writecache, bcache, luks and nvme resources
+- Fixed order of resourceDefinitionConnected listener notifiers
+- Fixed restore/deletion of the safety-snap-* if a snapshot rollback was
+canceled too early
 
-     bcdedit /set TESTSIGNING ON
+https://pkg.linbit.com//downloads/linstor/linstor-server-1.31.2.tar.gz
 
-and reboot Windows.
 
-Thank you for contributing to WinDRBD development by using it
-(and report any findings),
+Linstor PPA:
+https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
-Best regards,
+Cheers,
+Rene
 
-- Johannes
+--0000000000002f2ea606374b72c7
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">Hi!<div><br></div><div>Another bugfix release for the 1.31=
+ series, we noticed that you could end up</div><div>in a non-startable cont=
+roller if you killed/stopped the controller while</div><div>it was doing a =
+rollback of a snapshot, additionally we fixed a few other smaller bugs.</di=
+v><div></div><div><br></div><div>## [1.31.2] - 2025-06-11<br><br>### Change=
+d<br><br>- Snapshot rollback now allows and restores snapshots on nodes tha=
+t don&#39;t have a local snapshot (with DRBD)<br><br>### Fixed<br><br>- Fix=
+ed &quot;access to deleted storpool&quot; of remote storage pool after dele=
+ting local storage pool<br>- Fixed AutoplaceTarget property being ignored o=
+n controller level<br>- Fixed AutoplaceTarget property that controller has =
+higher priority than node<br>- Fixed rare deadlock during shutdown<br>- Fix=
+ed toggle-disk for cache, writecache, bcache, luks and nvme resources<br>- =
+Fixed order of resourceDefinitionConnected listener notifiers<br>- Fixed re=
+store/deletion of the safety-snap-* if a snapshot rollback was canceled too=
+ early</div><div><br></div><div><div><a href=3D"https://pkg.linbit.com//dow=
+nloads/linstor/linstor-server-1.31.2.tar.gz">https://pkg.linbit.com//downlo=
+ads/linstor/linstor-server-1.31.2.tar.gz</a><br></div><div><br></div><div><=
+br></div><div><div><div><div>Linstor PPA:<br><a href=3D"https://launchpad.n=
+et/~linbit/+archive/ubuntu/linbit-drbd9-stack" rel=3D"noreferrer" target=3D=
+"_blank">https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack</=
+a></div></div><div><br></div><div>Cheers,<br></div><div>Rene</div></div></d=
+iv></div></div>
+
+--0000000000002f2ea606374b72c7--
