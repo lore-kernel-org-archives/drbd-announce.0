@@ -1,27 +1,20 @@
-Return-Path: <johannes.thoma@linbit.com>
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com
-	[209.85.128.53])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id D901D160983
+Return-Path: <moritz.wanzenboeck@linbit.com>
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com
+	[209.85.128.43])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 26BF2160912
 	for <drbd-announce@lists.linbit.com>;
-	Fri, 20 Jun 2025 11:25:18 +0200 (CEST)
-Received: by mail-wm1-f53.google.com with SMTP id
-	5b1f17b1804b1-450cb2ddd46so9459475e9.2
+	Mon, 23 Jun 2025 14:46:11 +0200 (CEST)
+Received: by mail-wm1-f43.google.com with SMTP id
+	5b1f17b1804b1-45365b1a897so19540705e9.0
 	for <drbd-announce@lists.linbit.com>;
-	Fri, 20 Jun 2025 02:25:18 -0700 (PDT)
-Received: from [10.43.10.15] (62-99-137-214.static.upcbusiness.at.
-	[62.99.137.214]) by smtp.gmail.com with ESMTPSA id
-	5b1f17b1804b1-4535e97ac4asm52391935e9.3.2025.06.20.02.25.16
-	for <drbd-announce@lists.linbit.com>
-	(version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-	Fri, 20 Jun 2025 02:25:17 -0700 (PDT)
-Message-ID: <dd287a50-d801-4ebc-90f0-ebd280963f49@linbit.com>
-Date: Fri, 20 Jun 2025 11:25:15 +0200
+	Mon, 23 Jun 2025 05:46:11 -0700 (PDT)
 MIME-Version: 1.0
+From: =?UTF-8?Q?Moritz_Wanzenb=C3=B6ck?= <moritz.wanzenboeck@linbit.com>
+Date: Mon, 23 Jun 2025 14:45:59 +0200
+Message-ID: <CAKnz9x+1HNsZTaoeKvRDnLvE7_85xzpZYNuTUWw7=OT3Gg-CpQ@mail.gmail.com>
+Subject: LINSTOR Operator v2.9.0
 To: drbd-announce@lists.linbit.com
-From: Johannes Thoma <johannes.thoma@linbit.com>
-Subject: WinDRBD 1.2.0 released
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="UTF-8"
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -33,48 +26,79 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-# WinDRBD 1.2.0 Released
+We've recently released version v2.9.0 of our Kubernetes Operator.
 
-The LINBIT&reg; team and I are proud to announce the general availability of WinDRBD 1.2.0, which is the first stable version of the WinDRBD 1.2 branch.
+This release brings a few new features and fixes.
 
-Notable changes from the latest version (1.1.20) of the WinDRBD 1.1 branch are:
+On the operator front, the two major changes are centred around
+tolations and Satellite deletions.
 
-* WinDRBD 1.2.x uses the latest DRBD&reg; engines which are, at the time of this
-   writing, DRBD 9.2.14 and DRBD 9.3.0. The LINBIT team will release WinDRBD
-   versions based on a 9.2 and a 9.3 DRBD engine in parallel.
-* Building WinDRBD 1.2.x is easier than building previous WinDRBD versions. You
-   can build WinDRBD 1.2.x entirely on a Linux system, compared to needing a
-   mixed setup (Windows and Linux) to build WinDRBD 1.1.
-* WinDRBD 1.2.x uses a different compiler than previous versions to build the
-   DRBD engine and the WinDRBD cross kernel compatibility layer. You can now
-   compile WinDRBD 1.2 with the GNU compiler collection (`gcc`) and debug WinDRBD
-   with GNU debugging tools (`gdb`). Because DRBD is a Linux kernel driver that
-   uses many `gcc`-specific extensions to the C language, compiling with `gcc` (in
-   contrast to compiling with Microsoft Visual C) requires significantly fewer
-   patches to the DRBD engine source code.
-* At build time, you can select the DRBD engine branch you want to use. This
-   works for DRBD 9.0, 9.1, 9.2 and 9.3 [^1].
-* Many subsystems of the WinDRBD compatibility layer have been re-enginieered.
-   This makes for better performing software and a smoother user experience.
-* WinDRBD 1.2 is integrated in the DRBD 9 test suite. This means that every
-   (pushed) commit is tested for software regressions (new defects not present
-   in a previous commit) and overall stability.
-* Patches to DRBD originating from WinDRBD development are now maintained in the DRBD repository itself. This happens on separate branches in the DRBD repository, where the branch naming follows this convention: `win/windrbd-1.2-drbd-9.2.14`. There are also two Coccinelle (spatch) generated patches remaining. These are applied when WinDRBD is built.
-* ReactOS (www.reactos.org) was added to the list of supported target platforms. This is interesting because it allows us to debug WinDRBD (and the ReactOS kernel) with GNU compatible tools such as `gdb`.
+First, previous versions of LINSTOR Operator would automatically try
+to evacuate a node when the LinstorSatellite resource was deleted.
+This caused many users issues, as often these deletions happend "by
+accident" due to misconfiguration, missing node labels and so on. This
+behaviour is now no longer the default, but is controlled by the
+deletionPolicy.
 
-LINBIT provides [pre-compiled installer packages](https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/) for modern 64-bit Windows versions on its website. To load the WinDRBD driver, you need to put the target Windows system into Test Mode.
+Secondly, previous versions of the Operator basically ignored the
+usual node taintsm trying to run the Satellite workloads on all nodes
+not excluded by some affinity or label selector. Control plane nodes
+are usually only excluded from scheduling based on their taints, which
+again caused confusion in many users. With this release we take the
+taints of a node into account, and won't try to schedule Satellites on
+tainted nodes, unless these taints are tolerated.
 
-LINBIT customers can access officially signed driver packages. You can install
-these driver packages without having to put the target system into Test Mode.
-For customer evaluation access, [contact the LINBIT team](https://linbit.com/contact-us).
+On the component side, LINSTOR CSI now automatically tries to
+reconcile VolumeSnapshotClass resources with LINSTOR Remotes, which
+bridges a gap when restoring snapshots from a remote location. DRBD
+9.2.14 fixes an issue that was most prevalent in Kubernetes setups,
+where restoring volumes from a snapshot in a typical 2 diskful + 1
+tiebreaker configuration could lead to corrupted filesystems on the
+restored volume.
 
-If you are still running WinDRBD 1.1, there is no urgent need to upgrade to a WinDRBD 1.2 version. If you have a new deployment, you should use WinDRBD 1.2.
+To upgrade, either point your kustomization.yaml at the new manifest:
 
-Thanks,
+  https://charts.linstor.io/static/v2.9.0.yaml
 
-Johannes Khoshnazar-Thoma
+Or, if using helm, upgrade the linstor-operator chart:
 
-LINBIT WinDRBD Lead Developer
+  helm repo update
+  helm upgrade linstor-operator linstor/linstor-operator --wait
 
-[^1]: Support for building WinDRBD based on DRBD 9.0 or DRBD 9.1 engines will likely drop, in favor of later versions, because the DRBD developers no longer maintain these older versions.
+To get specific instructions to apply the update, check our users guide[1].
 
+If you need to upgrade from Operator v1, check out our upgrade guide[2].
+
+Source code is, as always, available upstream[3].
+
+Best regards,
+Moritz
+
+[1]: https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-upgrade
+[2]: https://charts.linstor.io/migration/
+[3]: https://github.com/piraeusdatastore/piraeus-operator
+
+Operator v2.9.0 Changelog
+--------------------------
+---
+
+### Added
+
+- Support for different deletion policies on satellites.
+- Option to select taints that should be tolerated by LINBIT SDS.
+- Allow pinning images in the image configuration to a specific digest.
+- Support overriding image configuration directly on the Operator
+Deployment using RELATED_IMAGE_* environment variables.
+
+### Changed
+
+- Deletion of LinstorSatellite no longer causes a node evacuation by default.
+- LINBIT SDS no longer runs on control plane nodes by default.
+- "Inconsistent" resources no longer cause AlertManager notifications,
+as long as there is resync progress.
+- Updated images:
+  * LINSTOR 1.31.2
+  * LINSTOR CSI 1.8.0
+  * DRBD 9.2.14
+  * kTLS-utils 1.1.0
+  * Latest CSI sidecars
