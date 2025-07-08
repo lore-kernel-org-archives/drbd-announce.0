@@ -1,22 +1,21 @@
-Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com
-	[209.85.208.178])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 5C5DF16090D
+Return-Path: <christoph.boehmwalder@linbit.com>
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com
+	[209.85.218.50])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 4772716095D
 	for <drbd-announce@lists.linbit.com>;
-	Wed,  2 Jul 2025 12:33:11 +0200 (CEST)
-Received: by mail-lj1-f178.google.com with SMTP id
-	38308e7fff4ca-32aabfd3813so43253341fa.3
+	Tue,  8 Jul 2025 13:27:01 +0200 (CEST)
+Received: by mail-ej1-f50.google.com with SMTP id
+	a640c23a62f3a-ae0df6f5758so696078066b.0
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 02 Jul 2025 03:33:11 -0700 (PDT)
-Date: Wed, 2 Jul 2025 12:33:09 +0200
-From: Roland Kammerer <roland.kammerer@linbit.com>
+	Tue, 08 Jul 2025 04:27:01 -0700 (PDT)
+Date: Tue, 08 Jul 2025 13:26:59 +0200
+From: Christoph =?utf-8?Q?B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>
 To: drbd-announce@lists.linbit.com
-Subject: drbd-reactor v1.9.0-rc.1
-Message-ID: <aGUK5dieAg-VnTJF@arm64>
+Subject: LINSTOR Gateway v1.9.0
+Message-ID: <20250708112659.tHNJl%christoph.boehmwalder@linbit.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="3FX0BaYxYxvWjqGE"
-Content-Disposition: inline
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -28,65 +27,35 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
+Hello,
 
---3FX0BaYxYxvWjqGE
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+a new version of LINSTOR Gateway has just been released: v1.9.0
 
-Dear DRBD users,
+https://github.com/LINBIT/linstor-gateway/releases/tag/v1.9.0
 
-This is the first RC of the upcoming 1.9.0 release. It mainly contains
-one new feature related to what is known as automatic switch back:
+Here is the relevant excerpt from the changelog:
 
-So far when preferred-nodes were set they also were taken into account
-when a service was already running on a lower priority node and the
-higher priority node joined later. In this case the lower priority node
-stopped the local service and (most likely) the higher priority node
-took over.
+-----------------------------------
+## [1.9.0] - 2025-07-08
 
-It is a valid use case not wanting to switch back if services are
-running and a higher priority node joins. One might want to keep the
-running services on the lower priority node. This is now implemented via
-preferred-nodes-policy, which can be "always" (default and old
-behavior) or "start-only".
+### Changes
 
-If we don't find any issues we will release the final version in about a
-week from now.
+* Add a Server header to the REST API responses to identify the LINSTOR Gat=
+eway server. (82c9a4fe)
+* Generate Software Bill of Materials (SBOM) files for each release. (173ab=
+210)
+* Clarify a health check message about the `targetcli` package. (df6af21c)
 
-Regards, rck
+### Fixes
 
-GIT: https://github.com/LINBIT/drbd-reactor/commit/04cb730f6ba7c4d9b70f724b=
-a1acc5ec60f936d9
-TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-reactor-1.9.0-rc.1.t=
-ar.gz
-PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+* Make the first 8 bytes of the `product_id` unique so that VMware ESXi doe=
+s not consider two devices to be identical. (f9510879)
+-----------------------------------
 
-Changelog:
-[ Moritz Wanzenb=F6ck ]
-* ci: use git fetch instead of archive download
+Regards,
+Christoph
 
-[ Roland Kammerer ]
-* promoter: improve log message
-* promoter,doc: document uname -n
-* promoter: add preferred-nodes-policy
-
-[ ggqshr ]
-* Update promoter.md
-
---3FX0BaYxYxvWjqGE
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmhlCtsACgkQRgmezyI6
-myKhrQgAqkCXyGeKiZNI+VDPMpRKA/xvVVN2r9B3MgkSgx7UXpoz3a5KH1ff0JoI
-GRi3ev0OcvQHbMFkj0RV9W8hlp4yZk5sLLRFqJc9rZk3QozNRvXq7QvYj5m4dp4C
-ue0ogW6v8c2EwH+dTr92GAnGbImYJ7I0wppKb/DP8hA6kqUpI5ufGshtkcfTk0SP
-j+8QMwVVN3Q+9fC4TIQZtmQ988PKanPNW5h9n2xBWBRf0cY6ITNBSfv53mWGXYfB
-j1QvFuFh/dV77/B4q2An12by/oo27rf4Ga7GDAJ87WH4OoM5Igb48r+lPUeVQFRA
-ltXk8RcJS8Ktx5RGmmEkfGm3VtxQ2g==
-=dKM/
------END PGP SIGNATURE-----
-
---3FX0BaYxYxvWjqGE--
+--
+Christoph B=C3=B6hmwalder
+LINBIT | Keeping the Digital World Running
+DRBD HA =E2=80=94  Disaster Recovery =E2=80=94 Software defined Storage
