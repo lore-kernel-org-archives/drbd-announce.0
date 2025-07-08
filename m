@@ -1,21 +1,21 @@
-Return-Path: <christoph.boehmwalder@linbit.com>
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com
-	[209.85.218.51])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 1EA41160650
+Return-Path: <roland.kammerer@linbit.com>
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com
+	[209.85.167.47])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 65B6416098B
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 15 Jul 2025 18:52:35 +0200 (CEST)
-Received: by mail-ej1-f51.google.com with SMTP id
-	a640c23a62f3a-ae0a0cd709bso17329066b.0
+	Tue,  8 Jul 2025 09:52:15 +0200 (CEST)
+Received: by mail-lf1-f47.google.com with SMTP id
+	2adb3069b0e04-553bcf41440so4143761e87.3
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 15 Jul 2025 09:52:35 -0700 (PDT)
-Date: Tue, 15 Jul 2025 18:52:34 +0200
-From: Christoph =?utf-8?Q?B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>
+	Tue, 08 Jul 2025 00:52:15 -0700 (PDT)
+From: Roland Kammerer <roland.kammerer@linbit.com>
 To: drbd-announce@lists.linbit.com
-Subject: LINSTOR GUI v1.9.8
-Message-ID: <20250715165234.-XSR-%christoph.boehmwalder@linbit.com>
+Subject: linstor-proxmox v8.1.2-rc.1
+Message-ID: <aGzOLSJkrL2MxxIk@arm64>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="HVTh6hOkYCQhRpl9"
+Content-Disposition: inline
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,48 +26,47 @@ List-Post: <mailto:drbd-announce@lists.linbit.com>
 List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
+Date: Tue, 08 Jul 2025 07:52:16 -0000
 
-Hello,
 
-a new version of LINSTOR GUI has just been released: v1.9.8
+--HVTh6hOkYCQhRpl9
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-https://github.com/LINBIT/linstor-gui/releases/tag/v1.9.8
+Dear PVE users,
 
-Here is the relevant excerpt from the changelog:
+this is the first RC of the upcoming 8.1.2 release. The only change is
+that we now use LINSTOR's make-available API to create diskless
+assignments. This should not show any user visible changes except that
+make-available handles corner cases (e.g., if "unrelated" nodes are
+down) more benign.
 
------------------------------------
-# 1.9.8 - 2025-07-15=0D=0A=
-=0D=0A=
-### Added=0D=0A=
-=0D=0A=
-- Backup Count column to remote list=0D=0A=
-- Unit tests for key components (SizeInput, PropertyForm, utils)=0D=0A=
-- Snapshot restore to new resource functionality=0D=0A=
-- Request optimization on resource overview page=0D=0A=
-=0D=0A=
-### Fixed=0D=0A=
-=0D=0A=
-- Improve bulk delete UX and layout consistency=0D=0A=
-- Property form shows previous value on RG page=0D=0A=
-- Property editor incorrect item display after canceled deletion=0D=0A=
-- Correct error message for password reset failure=0D=0A=
-- Incorrect placement of user logo and add warning for oversized logos=0D=
-=0A=
-- Display backup count only for s3_remotes=0D=0A=
-- Chart container style on node detail page=0D=0A=
-- Add check for resource selection when creating backup=0D=0A=
-=0D=0A=
-### Changed=0D=0A=
-=0D=0A=
-- Show properties and auto select filters on resource group list page=0D=0A=
-- Improve StoragePool chart display logic and responsiveness=0D=0A=
-=0D=0A=
------------------------------------
+Please test, if we don't find any issues I will release the final
+version in about a week from now. Packages are available in the public
+testing repos.
 
-Regards,
-Christoph
+Regards, rck
 
---
-Christoph B=C3=B6hmwalder
-LINBIT | Keeping the Digital World Running
-DRBD HA =E2=80=94  Disaster Recovery =E2=80=94 Software defined Storage
+GIT: https://github.com/LINBIT/linstor-proxmox/commit/af23a51879ccc8e0cb264381fed76f92cf5b69fa
+TGZ: https://pkg.linbit.com//downloads/connectors/linstor-proxmox-8.1.2-rc.1.tar.gz
+
+Changelog:
+[ Roland Kammerer ]
+* use make-available in activate_resource
+
+--HVTh6hOkYCQhRpl9
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmhszh4ACgkQRgmezyI6
+myK0jQf/RDWgD0WlHp6W15Sjv8W1KA/leniIfsl2a+H4rv2ji1/K1E73hZ5dgQrq
+xP2SjpWd1cOfa3tGYZgpcEhjvS7/O9Nb59trSY4BMJ818UDm82TqQdwt6cLV0AHI
+7nSIrdy5pC1Mwubwc1xG1scH3/XhdhI5C0dZ1VKx3sHqwdKsMCqKomN6TOELOtJd
+c4MaLpGAsgt3OeBtFkc9y7dypr4mNenwaunulbTwUxo6y8Xo6VgT2gWvgHm6ehkW
+kEDb/UOLSuqhnT4q4788YIOnV0gdSphtf6zzr/Wq2oSSDmXXpoMQzMTfh8nDTOqq
+V4v6dhguorE5OhX2R02KB8dXU5KX+w==
+=ZLyL
+-----END PGP SIGNATURE-----
+
+--HVTh6hOkYCQhRpl9--
