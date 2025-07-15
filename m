@@ -1,20 +1,21 @@
 Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com
-	[209.85.208.179])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 2B7BB160982
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com
+	[209.85.167.45])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 05A2F160650
 	for <drbd-announce@lists.linbit.com>;
-	Tue,  8 Jul 2025 10:21:41 +0200 (CEST)
-Received: by mail-lj1-f179.google.com with SMTP id
-	38308e7fff4ca-32b7cf56cacso40291241fa.1
+	Tue, 15 Jul 2025 09:31:27 +0200 (CEST)
+Received: by mail-lf1-f45.google.com with SMTP id
+	2adb3069b0e04-556fd896c99so4432904e87.3
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 08 Jul 2025 01:21:41 -0700 (PDT)
+	Tue, 15 Jul 2025 00:31:27 -0700 (PDT)
+Date: Tue, 15 Jul 2025 09:31:24 +0200
 From: Roland Kammerer <roland.kammerer@linbit.com>
 To: drbd-announce@lists.linbit.com
-Subject: drbd-reactor v1.9.0
-Message-ID: <aGzVE6pQ4oyWoqX7@arm64>
+Subject: linstor-proxmox v8.1.2
+Message-ID: <aHYDzOe-HoiWz3zp@arm64>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="Q+XP573jFD4hFMND"
+	protocol="application/pgp-signature"; boundary="4AguOVYZC7GTgz44"
 Content-Disposition: inline
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
@@ -26,66 +27,44 @@ List-Post: <mailto:drbd-announce@lists.linbit.com>
 List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
-Date: Tue, 08 Jul 2025 08:21:43 -0000
 
 
---Q+XP573jFD4hFMND
-Content-Type: text/plain; charset=iso-8859-1
+--4AguOVYZC7GTgz44
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-Dear DRBD users,
+Dear PVE users,
 
-This is version 1.9.0 of drbd-reactor. We did not find any issues in the
-RC phase.
+this is version 8.1.2 of linstor-proxmox. We did not find any bugs in
+the RC.
 
-It mainly contains one new feature related to what is known as automatic
-switch back:
-
-So far when preferred-nodes were set they also were taken into account
-when a service was already running on a lower priority node and the
-higher priority node joined later. In this case the lower priority node
-stopped the local service and (most likely) the higher priority node
-took over.
-
-It is a valid use case not wanting to switch back if services are
-running and a higher priority node joins. One might want to keep the
-running services on the lower priority node. This is now implemented via
-preferred-nodes-policy, which can be "always" (default and old behavior)
-or "start-only".
+The only change is that we now use LINSTOR's make-available API to
+create diskless assignments. This should not show any user visible
+changes except that make-available handles corner cases (e.g., if
+"unrelated" nodes are down) more benign.
 
 Regards, rck
 
-GIT: https://github.com/LINBIT/drbd-reactor/commit/9dd420eb43a853a2e23e3aa7=
-2982a9eea65d54d0
-TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-reactor-1.9.0.tar.gz
-PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+GIT: https://github.com/LINBIT/linstor-proxmox/commit/5e740a54dd926c2f513d3c185fedbb95cc1415c8
+TGZ: https://pkg.linbit.com//downloads/connectors/linstor-proxmox-8.1.2.tar.gz
 
 Changelog:
-[ Moritz Wanzenb=F6ck ]
-* ci: use git fetch instead of archive download
-
 [ Roland Kammerer ]
-* promoter: improve log message
-* promoter,doc: document uname -n
-* promoter: add preferred-nodes-policy
+* use make-available in activate_resource
 
-[ ggqshr ]
-* Update promoter.md
-
---Q+XP573jFD4hFMND
+--4AguOVYZC7GTgz44
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCAAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmhs1Q8ACgkQRgmezyI6
-myIQbgf/TLaQ6JSGuN2QQX95WKWG8xYlbjCLPksCwEVGLMy8cZEs89YHYBXg3H4B
-z0dV6HcXmDv/iWh7hHK831p1SyZncV5wpjoc5zLTMcGVEwKfUzK53MusZb1MRdA7
-6ueX5BJIIrOSQ69OvhNCeWtKxU/AUjPaE2qZUFiq3kTw4Mb60kHivnxatnhFhNfc
-BOGVtQ+AzRB6mFTA22rIK0Gnv7wi4Dz6v7a5NrD/JYWYUoiVRPqujCSRNx4czx/6
-107BaChG0WGD8AISfRxj1PB4bvChsqgTHurOAQHVADdn1LqgRxqd/2J73EnmcY+/
-l3v1bH4B6gICdGbQYEdbIx7eBVi6FA==
-=8Mw0
+iQEzBAEBCAAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmh2A7cACgkQRgmezyI6
+myLa3Qf+JFduK0sf0+NRrhegBuJ3b+KBbws1A6CcjjSjFBHVmgoV4Zp831pLeoCs
+foieHedJOCRiS3q/WnMUv/oQVY1hEaOL159pNV8r7k2bmqeMIgr+fbWxgUPOMqEr
+9l25IV2awLq5r/DXMpFrVuaQiOT4C9squrv1wI5HgFIpF01h/w7lbHGIyqQ2gmjB
+Q54qh+ycwZuQfeQoXRlSBZd6X8JU8xMRKpMyLgGE1VMpXUdfbAcVacNZ5azK1Ftj
+3gF6tDkoTM/+USl1AHObF1/X1qIDFU2R8leg8h9+TsrioEaEhHAWt/9riulXUDhh
+b4IEKLy0v/LfSDw+yEL+NMA4C3MKHw==
+=cknj
 -----END PGP SIGNATURE-----
 
---Q+XP573jFD4hFMND--
+--4AguOVYZC7GTgz44--
