@@ -1,22 +1,21 @@
-Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com
-	[209.85.208.181])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 6B4E116090D
+Return-Path: <christoph.boehmwalder@linbit.com>
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com
+	[209.85.218.54])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 7E33A16064E
 	for <drbd-announce@lists.linbit.com>;
-	Fri,  1 Aug 2025 15:53:09 +0200 (CEST)
-Received: by mail-lj1-f181.google.com with SMTP id
-	38308e7fff4ca-33250b6be11so2565691fa.1
+	Tue,  5 Aug 2025 14:39:08 +0200 (CEST)
+Received: by mail-ej1-f54.google.com with SMTP id
+	a640c23a62f3a-af91a6b7a06so975363066b.2
 	for <drbd-announce@lists.linbit.com>;
-	Fri, 01 Aug 2025 06:53:09 -0700 (PDT)
-Date: Fri, 1 Aug 2025 15:53:06 +0200
-From: Roland Kammerer <roland.kammerer@linbit.com>
+	Tue, 05 Aug 2025 05:39:07 -0700 (PDT)
+Date: Tue, 05 Aug 2025 14:39:05 +0200
+From: Christoph =?utf-8?Q?B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>
 To: drbd-announce@lists.linbit.com
-Subject: drbd-utils v9.32.0-rc.1
-Message-ID: <aIzGwoiadXLQasEV@arm64>
+Subject: LINSTOR GUI v1.9.9
+Message-ID: <20250805123905.xnpdx%christoph.boehmwalder@linbit.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="2NeZanBSp1/vArpF"
-Content-Disposition: inline
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -28,65 +27,34 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
+Hello,
 
---2NeZanBSp1/vArpF
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+a new version of LINSTOR GUI has just been released: v1.9.9
 
-Dear DRBD users,
+https://github.com/LINBIT/linstor-gui/releases/tag/v1.9.9
 
-this is RC1 of the upcoming drbd-utils release 9.32.0. This is probably
-one of the bigger releases in the last years. It contains various fixes
-and improvements. All in all if everything works for you as of now
-there is no too urgent need to upgrade, projects that depend on the
-improvements (e.g., LINSTOR) will pull in the new version as a
-dependency anyways. For packagers it might be interesting that we
-deprecated some configure options: --with-{distro,rg-manager,heartbeat}.
-We also removed ocf.ra@.service and ocf.ra.wrapper.sh. These have been
-re-written in Rust for a long time and can be found in the drbd-reactor
-project. That should be it with the "breaking" changes.
+Here is the relevant excerpt from the changelog:
 
-Please test, if we don't find any bugs the final release will happen in
-about a week from now.
+-----------------------------------
+# 1.9.9 - 2025-08-05=0D=0A=
+=0D=0A=
+### Added=0D=0A=
+=0D=0A=
+- Translation support for 7 languages=0D=0A=
+- VM count display on node list page in CloudStack mode=0D=0A=
+=0D=0A=
+### Fixed=0D=0A=
+=0D=0A=
+- Don't show unsupport banner when the controller is unavailable=0D=0A=
+- Header tools in CloudStack mode=0D=0A=
+- Type warnings=0D=0A=
+=0D=0A=
+-----------------------------------
 
-Regards, rck
+Regards,
+Christoph
 
-GIT: https://github.com/LINBIT/drbd-utils/commit/529d38c7bfb1185280e7e590eb2344db06db6a95
-TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-utils-9.32.0-rc.1.tar.gz
-PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
-
-Changelog:
-9.32.0-rc.1
------------
- * drbdsetup,show: show device config
- * spec: obsolute drbd-xen; major cleanups
- * doc: various fixes and improvements
- * drbdadm: allow "dump minor-N" plus sh-list-config-file
- * drbdadm: aggregate multiple --config-to-test
- * drbdadm: introduce drbdadm sh-list-adjust
- * build: deprecate --with-{distro,rg-manager,heartbeat}
- * drbdadm,adjust: detect and drop options unsupported by kernel
- * se-linux: fix policy
- * drbdsetup: add compat mode for DRBD8
- * drbdmon: various fixes and improvements
- * drbdsetup: allow to override genl rcvbuf size
- * drbdadm,adjust: improve adjust for diskless primaries
- * drbdadm,adjust: adjust unconnected connections first
- * scripts: rm ocf ra shell wrapper
-
---2NeZanBSp1/vArpF
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iQEyBAEBCAAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmiMxpYACgkQRgmezyI6
-myKMVgf4hcLrUVlzW+qJXaMsF9QsNv6/O3p8o/xTUZEmjiaclZsJ9F5MIdqNOjBZ
-GVTrRrLx0YkKdTFxTSc8VCMc+DEaz8TaktRW7llYH5BV0ox4fjqsRBoDcV/KAol5
-aOyxSTfTNIl+aT73tfjcacEp3+WmxpFUTbGdN1K52pHVbJLvTpd9dzq9PnZI7idj
-XF6LUGdkQ2ZhypMV9RoTlblIB0VX41C0O2rJyevS1jZEMpequep6r7LHmgJ1LzM2
-mYkqYFr+GHL7F1rb6XwWRkIwT3UzgDkteOSLuPk5usvV0/+T339G9P9CfJ4ksx8Q
-5uN+OwHrcNeQYuHgajxsjnpv1S0l
-=TlAj
------END PGP SIGNATURE-----
-
---2NeZanBSp1/vArpF--
+--
+Christoph B=C3=B6hmwalder
+LINBIT | Keeping the Digital World Running
+DRBD HA =E2=80=94  Disaster Recovery =E2=80=94 Software defined Storage
