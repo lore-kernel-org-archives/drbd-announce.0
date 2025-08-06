@@ -1,21 +1,22 @@
-Return-Path: <christoph.boehmwalder@linbit.com>
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com
-	[209.85.218.54])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 7E33A16064E
+Return-Path: <roland.kammerer@linbit.com>
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com
+	[209.85.167.52])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id E8F27160651
 	for <drbd-announce@lists.linbit.com>;
-	Tue,  5 Aug 2025 14:39:08 +0200 (CEST)
-Received: by mail-ej1-f54.google.com with SMTP id
-	a640c23a62f3a-af91a6b7a06so975363066b.2
+	Wed,  6 Aug 2025 16:18:51 +0200 (CEST)
+Received: by mail-lf1-f52.google.com with SMTP id
+	2adb3069b0e04-555024588b1so6971592e87.1
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 05 Aug 2025 05:39:07 -0700 (PDT)
-Date: Tue, 05 Aug 2025 14:39:05 +0200
-From: Christoph =?utf-8?Q?B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>
+	Wed, 06 Aug 2025 07:18:51 -0700 (PDT)
+Date: Wed, 6 Aug 2025 16:18:48 +0200
+From: Roland Kammerer <roland.kammerer@linbit.com>
 To: drbd-announce@lists.linbit.com
-Subject: LINSTOR GUI v1.9.9
-Message-ID: <20250805123905.xnpdx%christoph.boehmwalder@linbit.com>
+Subject: linstor-proxmox v8.1.3
+Message-ID: <aJNkSNHh0b44cYRw@arm64>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="7ZxqaM4jQ7tAzJYU"
+Content-Disposition: inline
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -27,34 +28,41 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Hello,
 
-a new version of LINSTOR GUI has just been released: v1.9.9
+--7ZxqaM4jQ7tAzJYU
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-https://github.com/LINBIT/linstor-gui/releases/tag/v1.9.9
+Dear DRBD/LINSTOR users on PVE,
 
-Here is the relevant excerpt from the changelog:
+this is version 8.1.3 of the linstor-proxmox plugin. While 8.1.2 is
+compatible with the recently released PVE9 their API version got
+increased which results in the usual harmless warning. The only purpose
+of this release is to bump our supported API version as well.
 
------------------------------------
-# 1.9.9 - 2025-08-05=0D=0A=
-=0D=0A=
-### Added=0D=0A=
-=0D=0A=
-- Translation support for 7 languages=0D=0A=
-- VM count display on node list page in CloudStack mode=0D=0A=
-=0D=0A=
-### Fixed=0D=0A=
-=0D=0A=
-- Don't show unsupport banner when the controller is unavailable=0D=0A=
-- Header tools in CloudStack mode=0D=0A=
-- Type warnings=0D=0A=
-=0D=0A=
------------------------------------
+Regards, rck
 
-Regards,
-Christoph
+GIT: https://github.com/LINBIT/linstor-proxmox/commit/cd9ee8042f7a6c9fd5f668a9cbf8aaf35e810506
+TGZ: https://pkg.linbit.com//downloads/connectors/linstor-proxmox-8.1.3.tar.gz
 
---
-Christoph B=C3=B6hmwalder
-LINBIT | Keeping the Digital World Running
-DRBD HA =E2=80=94  Disaster Recovery =E2=80=94 Software defined Storage
+Changelog:
+
+[ Roland Kammerer ]
+* APIVER: 12
+
+--7ZxqaM4jQ7tAzJYU
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmiTZEQACgkQRgmezyI6
+myJnZggAiwgeEmYVwwDzVd/DkwLtpSEp6Sqacql8sex2PFnmQGE4QxwHtSD79pCN
+W8WLNLV8NZ0GrXLVQcbo43cZxo13xBTgtrv4ZcVG7EzyXS6blO2cYTEzDqRNYaIh
+40HGh4rb2K1WmiV/On31r5y5Z6CbNlIe9HIWQXAELDzW1zlM6kBVzQEFyZpdwxgr
+z/h891DRe0nd8nl1Ma9UD1THuRjeDAawdiG9t/V7NLSSdJKLwGuMaqHNFO5uPYam
+1J2YDWTwvPJHLwilOv5fu/D/KqVVwoFoha0SRO1MJG0ac1Qd7Uce8iMngY8zg0rR
+vU7eyc+rFLJDqbv8nICkRa+GyxnlhQ==
+=8dnf
+-----END PGP SIGNATURE-----
+
+--7ZxqaM4jQ7tAzJYU--
