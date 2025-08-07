@@ -1,22 +1,27 @@
-Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com
-	[209.85.167.52])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id E8F27160651
+Return-Path: <johannes.thoma@linbit.com>
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com
+	[209.85.208.47])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id E837F16225B
 	for <drbd-announce@lists.linbit.com>;
-	Wed,  6 Aug 2025 16:18:51 +0200 (CEST)
-Received: by mail-lf1-f52.google.com with SMTP id
-	2adb3069b0e04-555024588b1so6971592e87.1
+	Thu,  7 Aug 2025 15:07:20 +0200 (CEST)
+Received: by mail-ed1-f47.google.com with SMTP id
+	4fb4d7f45d1cf-6154655c8aeso1454646a12.3
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 06 Aug 2025 07:18:51 -0700 (PDT)
-Date: Wed, 6 Aug 2025 16:18:48 +0200
-From: Roland Kammerer <roland.kammerer@linbit.com>
-To: drbd-announce@lists.linbit.com
-Subject: linstor-proxmox v8.1.3
-Message-ID: <aJNkSNHh0b44cYRw@arm64>
+	Thu, 07 Aug 2025 06:07:20 -0700 (PDT)
+Received: from [10.43.10.15] (62-99-137-214.static.upcbusiness.at.
+	[62.99.137.214]) by smtp.gmail.com with ESMTPSA id
+	4fb4d7f45d1cf-615a8ffa17csm11602524a12.49.2025.08.07.06.07.18
+	for <drbd-announce@lists.linbit.com>
+	(version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+	Thu, 07 Aug 2025 06:07:19 -0700 (PDT)
+Content-Type: multipart/alternative;
+	boundary="------------5CXApnN6586xa6urKuKjGAJh"
+Message-ID: <57f7489b-d709-4871-b362-4588d58fa4e2@linbit.com>
+Date: Thu, 7 Aug 2025 15:07:17 +0200
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="7ZxqaM4jQ7tAzJYU"
-Content-Disposition: inline
+To: drbd-announce@lists.linbit.com
+From: Johannes Thoma <johannes.thoma@linbit.com>
+Subject: WinDRBD 1.1.21 released
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -28,41 +33,82 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
+This is a multi-part message in MIME format.
+--------------5CXApnN6586xa6urKuKjGAJh
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
---7ZxqaM4jQ7tAzJYU
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Dear WinDRBD community,
 
-Dear DRBD/LINSTOR users on PVE,
+I just released WinDRBD 1.1.21. The main difference to WinDRBD 1.1.20
+is that optionally, log rotation of the windrbdlog and windrbdumhelper
+services is supported. To enable it you have to edit the registry values:
 
-this is version 8.1.3 of the linstor-proxmox plugin. While 8.1.2 is
-compatible with the recently released PVE9 their API version got
-increased which results in the usual harmless warning. The only purpose
-of this release is to bump our supported API version as well.
+HKLM\System\CurrentControlSet\Services\windrbdlog\Parameters\AppArgs
+HKLM\System\CurrentControlSet\Services\windrbdumhelper\Parameters\AppArgs
 
-Regards, rck
+You can set them (for example) to
 
-GIT: https://github.com/LINBIT/linstor-proxmox/commit/cd9ee8042f7a6c9fd5f668a9cbf8aaf35e810506
-TGZ: https://pkg.linbit.com//downloads/connectors/linstor-proxmox-8.1.3.tar.gz
+windrbdlog C:\mydir\myfile 1
+windrbdumhelper C:\mydir\myumfile 1
 
-Changelog:
+to create a new logfile every hour (the timestamp is appended to the myfile).
+Files are created only if there are log messages in that time period.
 
-[ Roland Kammerer ]
-* APIVER: 12
+Many thanks to kasohrab <https://github.com/johannesthoma/drbd-utils/issues?q=is%3Apr+is%3Aopen+author%3Akasohrab>who contributed this feature.
 
---7ZxqaM4jQ7tAzJYU
-Content-Type: application/pgp-signature; name=signature.asc
+Best regards,
 
------BEGIN PGP SIGNATURE-----
+- Johannes
+--------------5CXApnN6586xa6urKuKjGAJh
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-iQEzBAEBCAAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmiTZEQACgkQRgmezyI6
-myJnZggAiwgeEmYVwwDzVd/DkwLtpSEp6Sqacql8sex2PFnmQGE4QxwHtSD79pCN
-W8WLNLV8NZ0GrXLVQcbo43cZxo13xBTgtrv4ZcVG7EzyXS6blO2cYTEzDqRNYaIh
-40HGh4rb2K1WmiV/On31r5y5Z6CbNlIe9HIWQXAELDzW1zlM6kBVzQEFyZpdwxgr
-z/h891DRe0nd8nl1Ma9UD1THuRjeDAawdiG9t/V7NLSSdJKLwGuMaqHNFO5uPYam
-1J2YDWTwvPJHLwilOv5fu/D/KqVVwoFoha0SRO1MJG0ac1Qd7Uce8iMngY8zg0rR
-vU7eyc+rFLJDqbv8nICkRa+GyxnlhQ==
-=8dnf
------END PGP SIGNATURE-----
+<!DOCTYPE html>
+<html>
+  <head>
 
---7ZxqaM4jQ7tAzJYU--
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    Dear WinDRBD community,<br>
+    <br>
+    I just released WinDRBD 1.1.21. The main difference to WinDRBD
+    1.1.20<br>
+    is that optionally, log rotation of the windrbdlog and
+    windrbdumhelper<br>
+    services is supported. To enable it you have to edit the registry
+    values:<br>
+    <br>
+    HKLM\System\CurrentControlSet\Services\windrbdlog\Parameters\AppArgs<br>
+HKLM\System\CurrentControlSet\Services\windrbdumhelper\Parameters\AppArgs<br>
+    <br>
+    You can set them (for example) to<br>
+     <br>
+    windrbdlog C:\mydir\myfile 1<br>
+    windrbdumhelper C:\mydir\myumfile 1<br>
+    <br>
+    to create a new logfile every hour (the timestamp is appended to the
+    myfile).<br>
+    Files are created only if there are log messages in that time
+    period.<br>
+    <br>
+    Many thanks to <span class="opened-by"><a class="Link--muted"
+        title="Open pull requests created by kasohrab"
+        data-hovercard-type="user"
+        data-hovercard-url="/users/kasohrab/hovercard"
+        data-octo-click="hovercard-link-click"
+        data-octo-dimensions="link_type:self"
+href="https://github.com/johannesthoma/drbd-utils/issues?q=is%3Apr+is%3Aopen+author%3Akasohrab"
+        aria-keyshortcuts="Alt+ArrowUp"
+        data-turbo-frame="repo-content-turbo-frame">kasohrab </a></span><span
+      class="d-none d-md-inline-flex"><span class="d-inline-block ml-1">who
+        contributed this feature.<br>
+        <br>
+        Best regards,<br>
+        <br>
+        - Johannes</span></span>
+  </body>
+</html>
+
+--------------5CXApnN6586xa6urKuKjGAJh--
