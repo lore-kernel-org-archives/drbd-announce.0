@@ -1,27 +1,22 @@
-Return-Path: <johannes.thoma@linbit.com>
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com
-	[209.85.208.47])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id E837F16225B
+Return-Path: <roland.kammerer@linbit.com>
+Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com
+	[209.85.208.174])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id E655F16064E
 	for <drbd-announce@lists.linbit.com>;
-	Thu,  7 Aug 2025 15:07:20 +0200 (CEST)
-Received: by mail-ed1-f47.google.com with SMTP id
-	4fb4d7f45d1cf-6154655c8aeso1454646a12.3
+	Tue, 12 Aug 2025 12:26:20 +0200 (CEST)
+Received: by mail-lj1-f174.google.com with SMTP id
+	38308e7fff4ca-32f1df58f21so52011361fa.3
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 07 Aug 2025 06:07:20 -0700 (PDT)
-Received: from [10.43.10.15] (62-99-137-214.static.upcbusiness.at.
-	[62.99.137.214]) by smtp.gmail.com with ESMTPSA id
-	4fb4d7f45d1cf-615a8ffa17csm11602524a12.49.2025.08.07.06.07.18
-	for <drbd-announce@lists.linbit.com>
-	(version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-	Thu, 07 Aug 2025 06:07:19 -0700 (PDT)
-Content-Type: multipart/alternative;
-	boundary="------------5CXApnN6586xa6urKuKjGAJh"
-Message-ID: <57f7489b-d709-4871-b362-4588d58fa4e2@linbit.com>
-Date: Thu, 7 Aug 2025 15:07:17 +0200
-MIME-Version: 1.0
+	Tue, 12 Aug 2025 03:26:20 -0700 (PDT)
+Date: Tue, 12 Aug 2025 12:26:18 +0200
+From: Roland Kammerer <roland.kammerer@linbit.com>
 To: drbd-announce@lists.linbit.com
-From: Johannes Thoma <johannes.thoma@linbit.com>
-Subject: WinDRBD 1.1.21 released
+Subject: drbd-utils v9.32.0
+Message-ID: <aJsWyl_Hv51IP2Hk@arm64>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="IjdmHvUHb2cuMpmI"
+Content-Disposition: inline
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -33,82 +28,65 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-This is a multi-part message in MIME format.
---------------5CXApnN6586xa6urKuKjGAJh
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-Dear WinDRBD community,
+--IjdmHvUHb2cuMpmI
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-I just released WinDRBD 1.1.21. The main difference to WinDRBD 1.1.20
-is that optionally, log rotation of the windrbdlog and windrbdumhelper
-services is supported. To enable it you have to edit the registry values:
+Dear DRBD users,
 
-HKLM\System\CurrentControlSet\Services\windrbdlog\Parameters\AppArgs
-HKLM\System\CurrentControlSet\Services\windrbdumhelper\Parameters\AppArgs
+This is drbd-utils version 9.32.0. We did not find any issues in RC1.
+The RC1 announce for your convenience:
 
-You can set them (for example) to
+this is RC1 of the upcoming drbd-utils release 9.32.0. This is probably
+one of the bigger releases in the last years. It contains various fixes
+and improvements. All in all if everything works for you as of now there
+is no too urgent need to upgrade, projects that depend on the
+improvements (e.g., LINSTOR) will pull in the new version as a
+dependency anyways. For packagers it might be interesting that we
+deprecated some configure options: --with-{distro,rg-manager,heartbeat}.
+We also removed ocf.ra at .service and ocf.ra.wrapper.sh. These have
+been re-written in Rust for a long time and can be found in the
+drbd-reactor project. That should be it with the "breaking" changes.
 
-windrbdlog C:\mydir\myfile 1
-windrbdumhelper C:\mydir\myumfile 1
+Regards, rck
 
-to create a new logfile every hour (the timestamp is appended to the myfile).
-Files are created only if there are log messages in that time period.
+GIT: https://github.com/LINBIT/drbd-utils/commit/74187fc01c6993b5ff40b797976c782d87c504d6
+TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-utils-9.32.0.tar.gz
+PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
-Many thanks to kasohrab <https://github.com/johannesthoma/drbd-utils/issues?q=is%3Apr+is%3Aopen+author%3Akasohrab>who contributed this feature.
+Changelog:
+9.32.0
+-----------
+ * drbdsetup,show: show device config
+ * spec: obsolute drbd-xen; major cleanups
+ * doc: various fixes and improvements
+ * drbdadm: allow "dump minor-N" plus sh-list-config-file
+ * drbdadm: aggregate multiple --config-to-test
+ * drbdadm: introduce drbdadm sh-list-adjust
+ * build: deprecate --with-{distro,rg-manager,heartbeat}
+ * drbdadm,adjust: detect and drop options unsupported by kernel
+ * se-linux: fix policy
+ * drbdsetup: add compat mode for DRBD8
+ * drbdmon: various fixes and improvements
+ * drbdsetup: allow to override genl rcvbuf size
+ * drbdadm,adjust: improve adjust for diskless primaries
+ * drbdadm,adjust: adjust unconnected connections first
+ * scripts: rm ocf ra shell wrapper
 
-Best regards,
+--IjdmHvUHb2cuMpmI
+Content-Type: application/pgp-signature; name=signature.asc
 
-- Johannes
---------------5CXApnN6586xa6urKuKjGAJh
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+-----BEGIN PGP SIGNATURE-----
 
-<!DOCTYPE html>
-<html>
-  <head>
+iQEzBAEBCAAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmibFsYACgkQRgmezyI6
+myLZAAf+P4ngCsjF1QHLvVQCgVXMOZTx/rzIbSWrw4a75p4CxNuam24pSVEGcDfg
+8X+Qx0cogiu+qwwVSRT/SASSAqSQ6AEqYo8lqTcXLUVJzDN7ZRWyJ7N5U8uDAyHy
+x5CxB1k5AhD1ScIZbUI1wPJcF66THVNY/iCVxk/g15SohRWAL/FR0O4lzAt9cKm5
+0msTg3vBt5kR6rpMdYocByuwJ8rAa2xyIAhIuBUBoHYUD25VPqJfvhiHVjGcsPc7
+EvgdlwxV1YDW3mWMakmO3jmA0eNC12wI0ElAr1enxfM4g4HVI1eo0e+UZWbg+K+S
+vtx33JzrC0CtNjzdRKf0hkDmrZyzPw==
+=Pp96
+-----END PGP SIGNATURE-----
 
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    Dear WinDRBD community,<br>
-    <br>
-    I just released WinDRBD 1.1.21. The main difference to WinDRBD
-    1.1.20<br>
-    is that optionally, log rotation of the windrbdlog and
-    windrbdumhelper<br>
-    services is supported. To enable it you have to edit the registry
-    values:<br>
-    <br>
-    HKLM\System\CurrentControlSet\Services\windrbdlog\Parameters\AppArgs<br>
-HKLM\System\CurrentControlSet\Services\windrbdumhelper\Parameters\AppArgs<br>
-    <br>
-    You can set them (for example) to<br>
-     <br>
-    windrbdlog C:\mydir\myfile 1<br>
-    windrbdumhelper C:\mydir\myumfile 1<br>
-    <br>
-    to create a new logfile every hour (the timestamp is appended to the
-    myfile).<br>
-    Files are created only if there are log messages in that time
-    period.<br>
-    <br>
-    Many thanks to <span class="opened-by"><a class="Link--muted"
-        title="Open pull requests created by kasohrab"
-        data-hovercard-type="user"
-        data-hovercard-url="/users/kasohrab/hovercard"
-        data-octo-click="hovercard-link-click"
-        data-octo-dimensions="link_type:self"
-href="https://github.com/johannesthoma/drbd-utils/issues?q=is%3Apr+is%3Aopen+author%3Akasohrab"
-        aria-keyshortcuts="Alt+ArrowUp"
-        data-turbo-frame="repo-content-turbo-frame">kasohrab </a></span><span
-      class="d-none d-md-inline-flex"><span class="d-inline-block ml-1">who
-        contributed this feature.<br>
-        <br>
-        Best regards,<br>
-        <br>
-        - Johannes</span></span>
-  </body>
-</html>
-
---------------5CXApnN6586xa6urKuKjGAJh--
+--IjdmHvUHb2cuMpmI--
