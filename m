@@ -1,20 +1,27 @@
-Return-Path: <rene.peinthor@linbit.com>
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com
-	[209.85.216.45])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 4BC29160917
+Return-Path: <johannes.thoma@linbit.com>
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com
+	[209.85.218.42])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 05B68161233
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 26 Aug 2025 16:36:16 +0200 (CEST)
-Received: by mail-pj1-f45.google.com with SMTP id
-	98e67ed59e1d1-3253f2a7679so4326450a91.2
+	Tue,  2 Sep 2025 14:38:02 +0200 (CEST)
+Received: by mail-ej1-f42.google.com with SMTP id
+	a640c23a62f3a-b03fa5c5a89so422336166b.2
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 26 Aug 2025 07:36:16 -0700 (PDT)
+	Tue, 02 Sep 2025 05:38:02 -0700 (PDT)
+Received: from [10.43.10.15] (62-99-137-214.static.upcbusiness.at.
+	[62.99.137.214]) by smtp.gmail.com with ESMTPSA id
+	a640c23a62f3a-afefcbd9090sm1098418766b.69.2025.09.02.05.38.00
+	for <drbd-announce@lists.linbit.com>
+	(version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+	Tue, 02 Sep 2025 05:38:01 -0700 (PDT)
+Message-ID: <77de7730-9ad9-4875-b59b-f6a6a0fecff7@linbit.com>
+Date: Tue, 2 Sep 2025 14:37:59 +0200
 MIME-Version: 1.0
-From: Rene Peinthor <rene.peinthor@linbit.com>
-Date: Tue, 26 Aug 2025 16:36:04 +0200
-Message-ID: <CAHmn2DPgVUE2J2eq2K-pZfFLs_TDQ4jJqR8JiK6mhQcorb-zCQ@mail.gmail.com>
-Subject: python-linstor/linstor-client 1.26.1 release
 To: drbd-announce@lists.linbit.com
-Content-Type: multipart/alternative; boundary="0000000000002888f7063d459805"
+From: Johannes Thoma <johannes.thoma@linbit.com>
+Subject: WinDRBD 1.1.22 released
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,57 +33,23 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
---0000000000002888f7063d459805
-Content-Type: text/plain; charset="UTF-8"
+Dear WinDRBD community,
 
-Hi!
+There is a new release of the WinDRBD 1.1 branch. The change is that
+upon installing the WinDRBD driver the changes to the Windows registry
+are flushed explicitly (namely in the windrbd install-bus-device/remove-bus-device
+commands). This fixes some issues where the WinDRBD driver was reported
+as not being installed, which could happen if the machine was reset shortly
+after the WinDRBD installer has finished.
 
-Small editions for changes in the linstor-server 1.32.0 release.
-For details read the changelog below:
+Note that since updates on Windows in general are not atomic you should
+make sure that, while a WinDRBD installer (as also any other installer) is
+running the machine, is not reset.
 
-## linstor-client
-## [1.26.1] - 2025-08-26
-
-### Added
-
-- Added --target-resorce-name to 'backup schedule enable'
-
-https://pkg.linbit.com//downloads/linstor/linstor_client-1.26.1.tar.gz
-
-## python-linstor
-## [1.26.1] - 2025-08-26
-
-### Added
-
-- Added optional dst_rsc_name to backup_schedule_enable
-
-https://pkg.linbit.com//downloads/linstor/python_linstor-1.26.1.tar.gz
-
-Linstor PPA:
-https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+If you are not affected by the not installed after reset issue there is no
+need to upgrade. Also the kernel module itself hasn't been changed
+(except for the reported version number).
 
 Best regards,
-Rene
 
---0000000000002888f7063d459805
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div>Hi!</div><div><br></div><div>Small editions for chang=
-es in the linstor-server 1.32.0 release.</div><div>For details read the cha=
-ngelog below:</div><div><br></div><div>##=C2=A0linstor-client</div><div>## =
-[1.26.1] - 2025-08-26<br><br>### Added<br><br>- Added --target-resorce-name=
- to &#39;backup schedule enable&#39;</div><div><br></div><div><a href=3D"ht=
-tps://pkg.linbit.com//downloads/linstor/linstor_client-1.26.1.tar.gz">https=
-://pkg.linbit.com//downloads/linstor/linstor_client-1.26.1.tar.gz</a><br></=
-div><br><div>## python-linstor</div><div>## [1.26.1] - 2025-08-26<br><br>##=
-# Added<br><br>- Added optional dst_rsc_name to backup_schedule_enable</div=
-><div><br></div><div><a href=3D"https://pkg.linbit.com//downloads/linstor/p=
-ython_linstor-1.26.1.tar.gz">https://pkg.linbit.com//downloads/linstor/pyth=
-on_linstor-1.26.1.tar.gz</a><br></div><div><br></div><div><div>Linstor=C2=
-=A0PPA:<br></div><div><div><a href=3D"https://launchpad.net/~linbit/+archiv=
-e/ubuntu/linbit-drbd9-stack" rel=3D"noreferrer" target=3D"_blank">https://l=
-aunchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack</a><br></div><div><=
-br></div><div>Best regards,</div><div>Rene</div></div></div></div>
-
---0000000000002888f7063d459805--
+- Johannes
