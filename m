@@ -1,27 +1,26 @@
-Return-Path: <johannes.thoma@linbit.com>
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com
-	[209.85.218.49])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id DF57D160959
+Return-Path: <philipp.reisner@linbit.com>
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com
+	[209.85.221.53])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 2A1DC16228C
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 10 Sep 2025 18:24:06 +0200 (CEST)
-Received: by mail-ej1-f49.google.com with SMTP id
-	a640c23a62f3a-b04b55d5a2cso850295566b.2
+	Thu, 11 Sep 2025 16:56:32 +0200 (CEST)
+Received: by mail-wr1-f53.google.com with SMTP id
+	ffacd0b85a97d-3e2055ce973so479692f8f.0
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 10 Sep 2025 09:24:06 -0700 (PDT)
-Received: from [10.43.10.15] (62-99-137-214.static.upcbusiness.at.
-	[62.99.137.214]) by smtp.gmail.com with ESMTPSA id
-	a640c23a62f3a-b07853d6590sm176354466b.45.2025.09.10.09.24.04
+	Thu, 11 Sep 2025 07:56:32 -0700 (PDT)
+Received: from ryzen9 (193-80-33-59.hdsl.highway.telekom.at. [193.80.33.59])
+	by smtp.gmail.com with ESMTPSA id
+	ffacd0b85a97d-3e7607cd0a7sm2705286f8f.39.2025.09.11.07.56.30
 	for <drbd-announce@lists.linbit.com>
-	(version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-	Wed, 10 Sep 2025 09:24:05 -0700 (PDT)
-Message-ID: <15383521-3ab8-46ba-b877-d4faadb17cfe@linbit.com>
-Date: Wed, 10 Sep 2025 18:24:03 +0200
-MIME-Version: 1.0
+	(version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+	Thu, 11 Sep 2025 07:56:30 -0700 (PDT)
+From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-From: Johannes Thoma <johannes.thoma@linbit.com>
-Subject: WinDRBD 1.2.2 released
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Subject: drbd-9.2.15-rc.1
+Date: Thu, 11 Sep 2025 16:56:29 +0200
+Message-ID: <86frctdoma.fsf@linbit.com>
+MIME-Version: 1.0
+Content-Type: text/plain
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -33,24 +32,59 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Dear WinDRBD community,
 
-We just released WinDRBD 1.2.2 which fixes some minor bugs, namely:
+Hi DRBD-uses,
 
-  * When using RLE there were sometimes error messages (with a fall back
-     to a full bitmap exchange, note that this is not a full sync, only the bitmap
-     was transfered).
-  * Sometimes there were FIXME false positives in the log. This has been silenced.
+This release includes the usual number of fixes, triggered by various
+corner cases, each of which affected only a small part of our user
+base. As usual, we added tests covering such corner cases to our test
+suite where it seems reasonable.
 
-There were also some changes in the installer, for example the UM helper
-daemon is stopped later in the installation process which should speed up
-installation when there are many resources to take down.
+One of the larger changes is support for compatibility with drbd v8. We
+kept protocol compatibility since we forked off drbd v9. However, we
+intentionally broke the /proc/drbd interface and the drbdsetup command
+line, for good reasons. We are now reintroducing this compatibility, on
+an optional basis. You need to enable it at compile time by passing
+"CONFIG_DRBD_COMPAT_84=y" on the make command line. This is a
+preparation step for submitting drbd-9 as an update of drbd v8.4 in the
+upstream Linux kernel.
 
-Unless you are affected by the above (minor) issues, you don't need to
-(urgently) upgrade.
+I also need to mention that drbd-9.2.14 has a slight performance
+regression compared to drbd-9.2.13. The receiver thread can consume up
+to 5% more CPU (relative to earlier releases). This is a consequence of
+removing the 'open-coded custom page pool'. This is the first step in a
+larger plan to enable drbd to use compound pages as I/O buffers, and it
+will also enable zero-copy receive from TCP. With that, such a page pool
+becomes unnecessary, and it will reduce CPU usage below that of
+drbd-9.2.13.
+We did not address this slight performance regression in drbd-9.2.15 as
+I consider it temporarily acceptable.
 
-PS: don't confuse this with WinDRBD 1.1.22 which also was released recently :)
 
-Best regards,
+This is a release candidate.
+The final release is scheduled for September 22.
 
-- Johannes
+
+9.2.15-rc.1 (api:genl2/proto:86-101,118-122/transport:19)
+--------
+ * Fixed the regression introduced with 9.2.13, where a DRBD primary
+   resource never finishes a resync with a newly added peer
+ * Make DRBD's ability to discard(trim) blocks on a resync-target if
+   they are all zero on the sync source compatible with block devices
+   that have a lower max_hw_sectors_kb value than the rs-discard-granularity
+ * A bunch of fixes for the RDMA transport: A potential BUG() when
+   removing the transport_rdma module, a memory leak upon a send
+   failure, a race between re-creating rx descriptors and
+   disconnecting, and a NULL ptr deref as a consequence of a race
+   between removing a path and accepting a connection
+ * Add the kernel side of drbd v8 compatibility, which includes
+   drbdsetup command line compatibility, reading and writing of v8
+   metadata, and v8 style /proc/drbd. By default, this is not compiled in
+ * Verified compatibility for Linux-6.16 and 6.17-rc5
+
+
+https://pkg.linbit.com//downloads/drbd/9/drbd-9.2.15-rc.1.tar.gz
+https://github.com/LINBIT/drbd/commit/4eb73b3c9a03ea4d1b5a1ae8ab1bc1fc1797006f
+
+cheers,
+ Philipp
