@@ -1,27 +1,20 @@
-Return-Path: <johannes.thoma@linbit.com>
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com
-	[209.85.128.45])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 6746E16064F
+Return-Path: <moritz.wanzenboeck@linbit.com>
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com
+	[209.85.128.46])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 9DDCF16064F
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 24 Sep 2025 16:33:40 +0200 (CEST)
-Received: by mail-wm1-f45.google.com with SMTP id
-	5b1f17b1804b1-45df7dc1b98so43571705e9.1
+	Thu, 25 Sep 2025 15:36:36 +0200 (CEST)
+Received: by mail-wm1-f46.google.com with SMTP id
+	5b1f17b1804b1-46dfd711172so8257575e9.1
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 24 Sep 2025 07:33:40 -0700 (PDT)
-Received: from [10.43.10.15] (62-99-137-214.static.upcbusiness.at.
-	[62.99.137.214]) by smtp.gmail.com with ESMTPSA id
-	5b1f17b1804b1-46e2ab31ea3sm33609905e9.12.2025.09.24.07.33.38
-	for <drbd-announce@lists.linbit.com>
-	(version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-	Wed, 24 Sep 2025 07:33:38 -0700 (PDT)
-Message-ID: <71ebe7e8-224b-4b06-9872-b2dcadf8cb63@linbit.com>
-Date: Wed, 24 Sep 2025 16:33:37 +0200
+	Thu, 25 Sep 2025 06:36:36 -0700 (PDT)
 MIME-Version: 1.0
+From: =?UTF-8?Q?Moritz_Wanzenb=C3=B6ck?= <moritz.wanzenboeck@linbit.com>
+Date: Thu, 25 Sep 2025 15:36:24 +0200
+Message-ID: <CAKnz9xLkwHVtmiFn84uHfDCdaip9rgaKT6GQ+ZbiGMsGiYB5Uw@mail.gmail.com>
+Subject: LINSTOR Operator 2.9.1
 To: drbd-announce@lists.linbit.com
-From: Johannes Thoma <johannes.thoma@linbit.com>
-Subject: WinDRBD 1.2.3 released
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="UTF-8"
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -33,25 +26,53 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Dear WinDRBD community,
+We've recently released version v2.9.0 of our Kubernetes Operator.
 
-We just released WinDRBD 1.2.3. Besides the funny version number
-(does anybody remember Lotus 1-2-3?) it comes with 2 stability
-fixes in conjunction with disconnecting resources, one of them
-was actually a DRBD bug and is merged upstream.
+This release mainly fixes features we noticed with the new scheduling
+logic for Satellites. Namely, we now properly deal with ":NoSchedule"
+taints like a DaemonSet.
 
-This version is based on the newest DRBD 9.2.15 release which was
-released just 2 days ago and hence comes with all the improvements of
-DRBD 9.2.15.
+There are also fixes in the different components, such as LINSTOR CSI
+now properly validating the minimum volumes sizes and DRBD properly
+marking resources as resynced in certain cases.
 
-It also comes with clang as a build toolchain support which allows us
-to use the Microsoft WinDbg debugger, since clang is able to output
-Microsoft's PDB debugging symbols files. This eases development a lot.
+To upgrade, either point your kustomization.yaml at the new manifest:
 
-It is not super urgent to upgrade to this version since most of the
-defects fixed therein are corner cases but if you have a maintenance
-window it is recommended that you upgrade WinDRBD as well.
+  https://charts.linstor.io/static/v2.9.1.yaml
+
+Or, if using helm, upgrade the linstor-operator chart:
+
+  helm repo update
+  helm upgrade linstor-operator linstor/linstor-operator --wait
+
+To get specific instructions to apply the update, check our users guide[1].
+
+If you need to upgrade from Operator v1, check out our upgrade guide[2].
+
+Source code is, as always, available upstream[3].
 
 Best regards,
+Moritz
 
-- Johannes
+[1]: https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-upgrade
+[2]: https://charts.linstor.io/migration/
+[3]: https://github.com/piraeusdatastore/piraeus-operator
+
+Operator v2.9.1 Changelog
+--------------------------
+
+### Changed
+
+- Do not remove existing satellites for `*NoSchedule` taints.
+- Updated images:
+    * LINSTOR 1.32.1
+    * LINSTOR CSI 1.9.0
+    * DRBD 9.2.15
+    * DRBD Reactor 1.9.0
+    * kTLS-utils 1.2.1
+    * Latest CSI sidecars
+
+### Fixed
+
+- Fix a crash in the validation webhook when trying to change the type
+of storage pool.
