@@ -1,20 +1,20 @@
-Return-Path: <moritz.wanzenboeck@linbit.com>
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com
-	[209.85.128.46])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 9DDCF16064F
+Return-Path: <rene.peinthor@linbit.com>
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com
+	[209.85.216.42])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 314491608FF
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 25 Sep 2025 15:36:36 +0200 (CEST)
-Received: by mail-wm1-f46.google.com with SMTP id
-	5b1f17b1804b1-46dfd711172so8257575e9.1
+	Wed,  1 Oct 2025 10:41:37 +0200 (CEST)
+Received: by mail-pj1-f42.google.com with SMTP id
+	98e67ed59e1d1-330b4739538so7457083a91.3
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 25 Sep 2025 06:36:36 -0700 (PDT)
+	Wed, 01 Oct 2025 01:41:37 -0700 (PDT)
 MIME-Version: 1.0
-From: =?UTF-8?Q?Moritz_Wanzenb=C3=B6ck?= <moritz.wanzenboeck@linbit.com>
-Date: Thu, 25 Sep 2025 15:36:24 +0200
-Message-ID: <CAKnz9xLkwHVtmiFn84uHfDCdaip9rgaKT6GQ+ZbiGMsGiYB5Uw@mail.gmail.com>
-Subject: LINSTOR Operator 2.9.1
+From: Rene Peinthor <rene.peinthor@linbit.com>
+Date: Wed, 1 Oct 2025 10:41:24 +0200
+Message-ID: <CAHmn2DP7hE4Q4CpOgxboZ6d8mquKioKt2Zc_tSEZ2kYCv458iw@mail.gmail.com>
+Subject: linstor-server 1.32.2 release
 To: drbd-announce@lists.linbit.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/alternative; boundary="000000000000155170064014d666"
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,53 +26,71 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-We've recently released version v2.9.0 of our Kubernetes Operator.
+--000000000000155170064014d666
+Content-Type: text/plain; charset="UTF-8"
 
-This release mainly fixes features we noticed with the new scheduling
-logic for Satellites. Namely, we now properly deal with ":NoSchedule"
-taints like a DaemonSet.
+Hi!
 
-There are also fixes in the different components, such as LINSTOR CSI
-now properly validating the minimum volumes sizes and DRBD properly
-marking resources as resynced in certain cases.
+Apparently 1.32.0 introduced a deadlock in the Controller that is fixed
+with this version,
+we only got reports that this is happening with Mysql/Mariadb databases.
+Release contains also some smaller features and will most likely be the
+last 1.32.x release,
+as the first 1.33.0-rc is right around the corner.
 
-To upgrade, either point your kustomization.yaml at the new manifest:
+## NOTE
+With this release we also announce that we will remove etcd database
+support with Linstor 1.34.0, until then you will have time to migrate to
+(SQL or k8s-CRD) databases.
 
-  https://charts.linstor.io/static/v2.9.1.yaml
-
-Or, if using helm, upgrade the linstor-operator chart:
-
-  helm repo update
-  helm upgrade linstor-operator linstor/linstor-operator --wait
-
-To get specific instructions to apply the update, check our users guide[1].
-
-If you need to upgrade from Operator v1, check out our upgrade guide[2].
-
-Source code is, as always, available upstream[3].
-
-Best regards,
-Moritz
-
-[1]: https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-upgrade
-[2]: https://charts.linstor.io/migration/
-[3]: https://github.com/piraeusdatastore/piraeus-operator
-
-Operator v2.9.1 Changelog
---------------------------
+## [1.32.2] - 2025-10-01
 
 ### Changed
 
-- Do not remove existing satellites for `*NoSchedule` taints.
-- Updated images:
-    * LINSTOR 1.32.1
-    * LINSTOR CSI 1.9.0
-    * DRBD 9.2.15
-    * DRBD Reactor 1.9.0
-    * kTLS-utils 1.2.1
-    * Latest CSI sidecars
+- safety-snap: shorten safety-snap id length, to stay in LVM name limit
 
 ### Fixed
 
-- Fix a crash in the validation webhook when trying to change the type
-of storage pool.
+- Fixed potential deadlock on the controller introduced with 1.32.0
+- Clone api: errors are now indicated with HTTP status code 500
+- Fixed un-deletable failed clone resources
+- Res file regenerate check wasn't working anymore because of added header
+data
+
+https://pkg.linbit.com//downloads/linstor/linstor-server-1.32.2.tar.gz
+
+
+Linstor PPA:
+https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+
+Cheers,
+Rene
+
+--000000000000155170064014d666
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">Hi!<div><br></div><div>Apparently=C2=A01.32.0 introduced a=
+ deadlock in the Controller that is fixed with this version,</div><div>we o=
+nly got reports that this is happening with Mysql/Mariadb databases.</div><=
+div>Release contains also some smaller features and will most likely be the=
+ last 1.32.x release,</div><div>as the first 1.33.0-rc is right around the =
+corner.</div><div><br></div><div>## NOTE</div><div>With this release we als=
+o announce that we will remove etcd database support with Linstor 1.34.0, u=
+ntil then you will have time to migrate to (SQL or k8s-CRD) databases.=C2=
+=A0</div><div></div><div><br></div><div>## [1.32.2] - 2025-10-01<br><br>###=
+ Changed<br><br>- safety-snap: shorten safety-snap id length, to stay in LV=
+M name limit<br><br>### Fixed<br><br>- Fixed potential deadlock on the cont=
+roller introduced with 1.32.0<br>- Clone api: errors are now indicated with=
+ HTTP status code 500<br>- Fixed un-deletable failed clone resources<br>- R=
+es file regenerate check wasn&#39;t working anymore because of added header=
+ data</div><div><br></div><div><div><a href=3D"https://pkg.linbit.com//down=
+loads/linstor/linstor-server-1.32.2.tar.gz">https://pkg.linbit.com//downloa=
+ds/linstor/linstor-server-1.32.2.tar.gz</a><br></div><div><br></div><div><b=
+r></div><div><div><div><div>Linstor PPA:<br><a href=3D"https://launchpad.ne=
+t/~linbit/+archive/ubuntu/linbit-drbd9-stack" rel=3D"noreferrer" target=3D"=
+_blank">https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack</a=
+></div></div><div><br></div><div>Cheers,<br></div><div>Rene</div></div></di=
+v></div></div>
+
+--000000000000155170064014d666--
