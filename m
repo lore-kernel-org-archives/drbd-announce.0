@@ -1,20 +1,21 @@
-Return-Path: <rene.peinthor@linbit.com>
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com
-	[209.85.216.42])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 314491608FF
+Return-Path: <christoph.boehmwalder@linbit.com>
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com
+	[209.85.208.51])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 5D00A16094F
 	for <drbd-announce@lists.linbit.com>;
-	Wed,  1 Oct 2025 10:41:37 +0200 (CEST)
-Received: by mail-pj1-f42.google.com with SMTP id
-	98e67ed59e1d1-330b4739538so7457083a91.3
+	Thu,  2 Oct 2025 13:45:21 +0200 (CEST)
+Received: by mail-ed1-f51.google.com with SMTP id
+	4fb4d7f45d1cf-6364eb32535so1696732a12.1
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 01 Oct 2025 01:41:37 -0700 (PDT)
-MIME-Version: 1.0
-From: Rene Peinthor <rene.peinthor@linbit.com>
-Date: Wed, 1 Oct 2025 10:41:24 +0200
-Message-ID: <CAHmn2DP7hE4Q4CpOgxboZ6d8mquKioKt2Zc_tSEZ2kYCv458iw@mail.gmail.com>
-Subject: linstor-server 1.32.2 release
+	Thu, 02 Oct 2025 04:45:21 -0700 (PDT)
+Date: Thu, 02 Oct 2025 13:45:19 +0200
+From: Christoph =?utf-8?Q?B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>
 To: drbd-announce@lists.linbit.com
-Content-Type: multipart/alternative; boundary="000000000000155170064014d666"
+Subject: LINSTOR GUI v1.9.10
+Message-ID: <20251002114519.QtT0a%christoph.boehmwalder@linbit.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,71 +27,45 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
---000000000000155170064014d666
-Content-Type: text/plain; charset="UTF-8"
+Hello,
 
-Hi!
+a new version of LINSTOR GUI has just been released: v1.9.10
 
-Apparently 1.32.0 introduced a deadlock in the Controller that is fixed
-with this version,
-we only got reports that this is happening with Mysql/Mariadb databases.
-Release contains also some smaller features and will most likely be the
-last 1.32.x release,
-as the first 1.33.0-rc is right around the corner.
+https://github.com/LINBIT/linstor-gui/releases/tag/v1.9.10
 
-## NOTE
-With this release we also announce that we will remove etcd database
-support with Linstor 1.34.0, until then you will have time to migrate to
-(SQL or k8s-CRD) databases.
+Here is the relevant excerpt from the changelog:
 
-## [1.32.2] - 2025-10-01
+-----------------------------------
+# 1.9.10 - 2025-10-01=0D=0A=
+=0D=0A=
+### Added=0D=0A=
+=0D=0A=
+- Chunk splitting support to improve handling of large data payloads=0D=0A=
+- Option to skip the enforced admin password change in authentication workf=
+low (for automation / migration scenarios)=0D=0A=
+- CloudStack maintenance mode support=0D=0A=
+- CloudStack / NFS tags displayed on the node list page for clearer role id=
+entification=0D=0A=
+=0D=0A=
+### Fixed=0D=0A=
+=0D=0A=
+- Removed the DRBD port field from the resource overview page=0D=0A=
+- Pagination data now refreshes correctly when "Show default" is checked on=
+ the Storage Pool related listing (previously stale results could appear)=
+=0D=0A=
+=0D=0A=
+### Changed=0D=0A=
+=0D=0A=
+- Centralized KV store namespaces and admin credential constants to reduce =
+duplication and ease future maintenance (internal refactor)=0D=0A=
+- GUI users namespace changed from "users" to "\_\_gui_users"=0D=0A=
+=0D=0A=
+-----------------------------------
 
-### Changed
+Regards,
+Christoph
 
-- safety-snap: shorten safety-snap id length, to stay in LVM name limit
-
-### Fixed
-
-- Fixed potential deadlock on the controller introduced with 1.32.0
-- Clone api: errors are now indicated with HTTP status code 500
-- Fixed un-deletable failed clone resources
-- Res file regenerate check wasn't working anymore because of added header
-data
-
-https://pkg.linbit.com//downloads/linstor/linstor-server-1.32.2.tar.gz
-
-
-Linstor PPA:
-https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
-
-Cheers,
-Rene
-
---000000000000155170064014d666
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr">Hi!<div><br></div><div>Apparently=C2=A01.32.0 introduced a=
- deadlock in the Controller that is fixed with this version,</div><div>we o=
-nly got reports that this is happening with Mysql/Mariadb databases.</div><=
-div>Release contains also some smaller features and will most likely be the=
- last 1.32.x release,</div><div>as the first 1.33.0-rc is right around the =
-corner.</div><div><br></div><div>## NOTE</div><div>With this release we als=
-o announce that we will remove etcd database support with Linstor 1.34.0, u=
-ntil then you will have time to migrate to (SQL or k8s-CRD) databases.=C2=
-=A0</div><div></div><div><br></div><div>## [1.32.2] - 2025-10-01<br><br>###=
- Changed<br><br>- safety-snap: shorten safety-snap id length, to stay in LV=
-M name limit<br><br>### Fixed<br><br>- Fixed potential deadlock on the cont=
-roller introduced with 1.32.0<br>- Clone api: errors are now indicated with=
- HTTP status code 500<br>- Fixed un-deletable failed clone resources<br>- R=
-es file regenerate check wasn&#39;t working anymore because of added header=
- data</div><div><br></div><div><div><a href=3D"https://pkg.linbit.com//down=
-loads/linstor/linstor-server-1.32.2.tar.gz">https://pkg.linbit.com//downloa=
-ds/linstor/linstor-server-1.32.2.tar.gz</a><br></div><div><br></div><div><b=
-r></div><div><div><div><div>Linstor PPA:<br><a href=3D"https://launchpad.ne=
-t/~linbit/+archive/ubuntu/linbit-drbd9-stack" rel=3D"noreferrer" target=3D"=
-_blank">https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack</a=
-></div></div><div><br></div><div>Cheers,<br></div><div>Rene</div></div></di=
-v></div></div>
-
---000000000000155170064014d666--
+--
+Christoph B=C3=B6hmwalder
+LINBIT | Keeping the Digital World Running
+DRBD HA =E2=80=94  Disaster Recovery =E2=80=94 Software defined Storage
