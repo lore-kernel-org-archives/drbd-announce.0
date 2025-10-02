@@ -1,21 +1,27 @@
-Return-Path: <christoph.boehmwalder@linbit.com>
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com
-	[209.85.208.51])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 5D00A16094F
+Return-Path: <johannes.thoma@linbit.com>
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com
+	[209.85.218.43])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id F402D162709
 	for <drbd-announce@lists.linbit.com>;
-	Thu,  2 Oct 2025 13:45:21 +0200 (CEST)
-Received: by mail-ed1-f51.google.com with SMTP id
-	4fb4d7f45d1cf-6364eb32535so1696732a12.1
+	Thu,  2 Oct 2025 15:45:35 +0200 (CEST)
+Received: by mail-ej1-f43.google.com with SMTP id
+	a640c23a62f3a-b40f11a1027so200421666b.2
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 02 Oct 2025 04:45:21 -0700 (PDT)
-Date: Thu, 02 Oct 2025 13:45:19 +0200
-From: Christoph =?utf-8?Q?B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>
-To: drbd-announce@lists.linbit.com
-Subject: LINSTOR GUI v1.9.10
-Message-ID: <20251002114519.QtT0a%christoph.boehmwalder@linbit.com>
+	Thu, 02 Oct 2025 06:45:35 -0700 (PDT)
+Received: from [10.43.10.15] (62-99-137-214.static.upcbusiness.at.
+	[62.99.137.214]) by smtp.gmail.com with ESMTPSA id
+	a640c23a62f3a-b486970b422sm211718166b.54.2025.10.02.06.45.34
+	for <drbd-announce@lists.linbit.com>
+	(version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+	Thu, 02 Oct 2025 06:45:34 -0700 (PDT)
+Message-ID: <8f93c581-8117-415c-9f9f-7c2af3caa271@linbit.com>
+Date: Thu, 2 Oct 2025 15:45:33 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+To: drbd-announce@lists.linbit.com
+From: Johannes Thoma <johannes.thoma@linbit.com>
+Subject: WinDRBD 1.2.4 released!
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -27,45 +33,21 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Hello,
+Dear WinDRBD users,
 
-a new version of LINSTOR GUI has just been released: v1.9.10
+We just release WinDRBD 1.2.4. The reason for that release is the
+bugfix in the way how (Linux kernel) completions are implemented
+in the cross kernel interface. There was a race which eventually
+could lead to a corner case. We found this bug in our endurance
+test which disconnects/connects from/to a node that does I/O
+for 3 days (5000+ iterations). So it is not very common but
+it can eventually happen.
 
-https://github.com/LINBIT/linstor-gui/releases/tag/v1.9.10
+Since this is (kind of) a corner case (due the seldomness of the
+trigger) there is no urgent need to upgrade, but if you have a
+maintenance windows it is recommended to upgrade to the
+1.2.4 release.
 
-Here is the relevant excerpt from the changelog:
+Best regards,
 
------------------------------------
-# 1.9.10 - 2025-10-01=0D=0A=
-=0D=0A=
-### Added=0D=0A=
-=0D=0A=
-- Chunk splitting support to improve handling of large data payloads=0D=0A=
-- Option to skip the enforced admin password change in authentication workf=
-low (for automation / migration scenarios)=0D=0A=
-- CloudStack maintenance mode support=0D=0A=
-- CloudStack / NFS tags displayed on the node list page for clearer role id=
-entification=0D=0A=
-=0D=0A=
-### Fixed=0D=0A=
-=0D=0A=
-- Removed the DRBD port field from the resource overview page=0D=0A=
-- Pagination data now refreshes correctly when "Show default" is checked on=
- the Storage Pool related listing (previously stale results could appear)=
-=0D=0A=
-=0D=0A=
-### Changed=0D=0A=
-=0D=0A=
-- Centralized KV store namespaces and admin credential constants to reduce =
-duplication and ease future maintenance (internal refactor)=0D=0A=
-- GUI users namespace changed from "users" to "\_\_gui_users"=0D=0A=
-=0D=0A=
------------------------------------
-
-Regards,
-Christoph
-
---
-Christoph B=C3=B6hmwalder
-LINBIT | Keeping the Digital World Running
-DRBD HA =E2=80=94  Disaster Recovery =E2=80=94 Software defined Storage
+- Johannes
