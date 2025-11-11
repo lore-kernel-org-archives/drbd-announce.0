@@ -1,20 +1,20 @@
-Return-Path: <moritz.wanzenboeck@linbit.com>
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com
-	[209.85.128.42])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 96DD31622C8
+Return-Path: <rene.peinthor@linbit.com>
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com
+	[209.85.214.178])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 069051608F2
 	for <drbd-announce@lists.linbit.com>;
-	Wed,  5 Nov 2025 16:18:19 +0100 (CET)
-Received: by mail-wm1-f42.google.com with SMTP id
-	5b1f17b1804b1-47755a7652eso16199845e9.0
+	Tue, 11 Nov 2025 15:40:25 +0100 (CET)
+Received: by mail-pl1-f178.google.com with SMTP id
+	d9443c01a7336-297e264528aso31777845ad.2
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 05 Nov 2025 07:18:19 -0800 (PST)
+	Tue, 11 Nov 2025 06:40:25 -0800 (PST)
 MIME-Version: 1.0
-From: =?UTF-8?Q?Moritz_Wanzenb=C3=B6ck?= <moritz.wanzenboeck@linbit.com>
-Date: Wed, 5 Nov 2025 16:18:06 +0100
-Message-ID: <CAKnz9xJmZKTOti5Gw-Rr6CyWsLxrti=b6HB79eJLznXsMeDCfA@mail.gmail.com>
-Subject: LINSTOR Operator 2.10.0
+From: Rene Peinthor <rene.peinthor@linbit.com>
+Date: Tue, 11 Nov 2025 15:40:13 +0100
+Message-ID: <CAHmn2DPanAHkpNOBzT6EMz1BACy78a03Sw_jDyuQJoc=xarefw@mail.gmail.com>
+Subject: linstor-server 1.33.0-rc.1 release
 To: drbd-announce@lists.linbit.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/alternative; boundary="000000000000cfea88064352a0d1"
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,90 +26,121 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-We've recently released version 2.10.0 of our Kubernetes Operator.
+--000000000000cfea88064352a0d1
+Content-Type: text/plain; charset="UTF-8"
 
-This is the biggest release since the original Operator v2 back in
-2023! Version v2.10.0 brings long awaited support for ReadWriteMany
-(RWX) volumes, along with Volume Group Snapshot support, integrations
-for Cluster API and more.
+Hi!
 
-First, RWX support is finally here. In order to use it after upgrading
-to v2.10.0, create a new PersistentVolumeClaim with "ReadWriteMany"
-access mode. Internally, this will spawn a new NFS server process,
-managed and made highly available using DRBD Reactor. Since we use
-DRBD Reactor, the volume needs to be configured for quorum (or
-fencing), so generally, 2 replicas are required. In addition, since
-NFS is used, do not expect the matching performance compared to
-ReadWriteOnce volumes.
+After some delay here is the first release candidate of the next minor
+Linstor release.
+The big new feature in this release is the possibility to ship already
+existing snapshots to other Linstor clusters or a S3 remote.
+Also the Linstor master passphrase can now be provided more securely with
+systemd-creds.
 
-There are some things we expect to not fully work with RWX volumes,
-notably restoring a snapshot of such a volume. We are working on
-lifting this limitation, but we feel like the new feature already
-provides enough value to release right now.
+Another noteworthy change is that the LS_KEEP_RES is now obsolete as
+Linstor doesn't delete known .res files anymore and keeps them.
 
-Secondly, we now support the Volume Group Snapshot[1] feature. This
-allows you to take consistent snapshots of multiple volumes, even when
-they are not used on the same nodes.
+See the changelog below for all other changes and fixes.
 
-Thirdly, we now integrate with the Machine Deletion Process[2] of
-Cluster API. This ensures clean node evacuation while performing
-rolling updates, letting one node drain, ensuring data is fully moved
-off the node before deletion. This requires deployment of the LINSTOR
-Affinity Controller, which is now deployed automatically by the
-Operator. If you previously used to install it via the Helm Chart,
-please remove the Helm release.
+## NOTE
+With this release we also announce that we will remove etcd database
+support with Linstor 1.34.0, until then you will have time to migrate to
+(SQL or k8s-CRD) databases.
 
-Lastly, we improved the status output of various "kubectl" commands
-when viewing operator resources such as "LinstorCluster" and
-"LinstorSatelliteConfiguration".
+## [1.33.0-rc.1] - 2025-11-11
 
-To upgrade, either point your kustomization.yaml at the new manifest:
-
-  https://charts.linstor.io/static/v2.10.0.yaml
-
-Or, if using helm, upgrade the linstor-operator chart:
-
-  helm repo update
-  helm upgrade linstor-operator linstor/linstor-operator --wait
-
-To get specific instructions to apply the update, check our users guide[3].
-
-If you need to upgrade from Operator v1, check out our upgrade guide[4].
-
-Source code is, as always, available upstream[5].
-
-Best regards,
-Moritz
-
-[1]: https://kubernetes.io/blog/2024/12/18/kubernetes-1-32-volume-group-snapshot-beta/
-[2]: https://cluster-api.sigs.k8s.io/tasks/automated-machine-management/machine_deletions
-[3]: https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-upgrade
-[4]: https://charts.linstor.io/migration/
-[5]: https://github.com/piraeusdatastore/piraeus-operator
-
-Operator v2.10.0 Changelog
--------------------------------------
 ### Added
 
-- Deploy LINSTOR Affinity Controller as part of LINBIT SDS.
-- Add option to set replica count for Deployment components.
-- Integration with ClusterAPI to enable graceful node evacuation in
-case of rolling machine updates.
-- Additional status information on `LinstorCluster`,
-`LinstorSatelliteConfiguration` and `LinstorSatellite` resources.
-- Support for Volume Group Snapshots
-- Support for RWX file systems using regular LINSTOR CSI volumes.
+- physical-storage-api: allow passing pv/vg/lv/zpool create arguments
+- Encryption: Added systemd-creds support for masterpassphrase.
+- DRBD: Added Linstor/Drbd/auto-block-size
+- Backup: allow shipment of already existing snapshots
+- Node,evacuate: Added --target and --do-not-target options
 
 ### Changed
 
-- Set `shareProcessNamespace: true` on workloads to automatically reap
-orphaned processes.
-- LINSTOR CSI now uses `hostNetwork: true` so RWX mounts use a stable
-IP when connecting to NFS.
-- Updated images:
-    * LINSTOR 1.32.3
-    * LINSTOR CSI 1.10.1
-    * DRBD Reactor 1.10.0
-    * DRBD Shutdown Guard: 1.1.1
-    * LINSTOR HA Controller 1.3.1
-    * Latest CSI sidecars
+- Removed keep_res regular expression pattern from options
+- Instead of caching if a DRBD .res file exists, actually check if the file
+exists
+- Do not delete known Linstor drbd res files, LS_KEEP_RES is now obsolete
+- Increase max packet size 16M -> 64M
+- Increased timeout for tar during sos-report to an hour
+- Removed flywaydb dependency and do migrations (as with other "db"s)
+ourselves
+- ReconnectorTask: changed logging levels and added more logging
+- API: do not store error reports if required remote parameters are missing
+- Node evacuate: By default node evacuate also evacuates existing snapshots
+
+### Fixed
+
+- Attempt to fix race-condition "Received unknown storage resource from
+satellite"
+- Prometheus: fix using peerId as peer address in api call duration
+statistics (GitHub #466)
+- H2 db should no longer prematurely shutdown
+- DRBD: recreate ext-metadata after backing disk needed to be re-created
+- Fixed a bug where a failed clone leads to AccessToDeletedData bug
+- Cache: Properly flush to origin device when suspending
+- Fixed toggle-disk bug when evacuation target has already diskless resource
+- Fixed possible NPE when a satellite updates a storage pool (capacity,
+supports snapshots, etc)
+
+https://pkg.linbit.com//downloads/linstor/linstor-server-1.33.0-rc.1.tar.gz
+
+
+Linstor PPA:
+https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+
+Cheers,
+Rene
+
+--000000000000cfea88064352a0d1
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr">Hi!<div><br></div><div>After some delay=
+=C2=A0here is the first release candidate=C2=A0of the next minor Linstor re=
+lease.</div><div>The big new feature in this release is the possibility to =
+ship already existing snapshots to other Linstor clusters or a S3 remote.</=
+div><div>Also the Linstor master passphrase can now be provided more secure=
+ly with systemd-creds.</div><div><br></div><div>Another noteworthy change i=
+s that the LS_KEEP_RES is now obsolete=C2=A0as Linstor doesn&#39;t delete k=
+nown .res files anymore and keeps them.</div><div><br></div><div>See the ch=
+angelog below=C2=A0for all other changes and fixes.</div><div><br></div><di=
+v>## NOTE</div><div>With this release we also announce that we will remove =
+etcd database support with Linstor 1.34.0, until then you will have time to=
+ migrate to (SQL or k8s-CRD) databases.=C2=A0</div><div></div><div><br></di=
+v><div>## [1.33.0-rc.1] - 2025-11-11<br><br>### Added<br><br>- physical-sto=
+rage-api: allow passing pv/vg/lv/zpool create arguments<br>- Encryption: Ad=
+ded systemd-creds support for masterpassphrase.<br>- DRBD: Added Linstor/Dr=
+bd/auto-block-size<br>- Backup: allow shipment of already existing snapshot=
+s<br>- Node,evacuate: Added --target and --do-not-target options<br><br>###=
+ Changed<br><br>- Removed keep_res regular expression pattern from options<=
+br>- Instead of caching if a DRBD .res file exists, actually check if the f=
+ile exists<br>- Do not delete known Linstor drbd res files, LS_KEEP_RES is =
+now obsolete<br>- Increase max packet size 16M -&gt; 64M<br>- Increased tim=
+eout for tar during sos-report to an hour<br>- Removed flywaydb dependency =
+and do migrations (as with other &quot;db&quot;s) ourselves<br>- Reconnecto=
+rTask: changed logging levels and added more logging<br>- API: do not store=
+ error reports if required remote parameters are missing<br>- Node evacuate=
+: By default node evacuate also evacuates existing snapshots<br><br>### Fix=
+ed<br><br>- Attempt to fix race-condition &quot;Received unknown storage re=
+source from satellite&quot;<br>- Prometheus: fix using peerId as peer addre=
+ss in api call duration statistics (GitHub #466)<br>- H2 db should no longe=
+r prematurely shutdown<br>- DRBD: recreate ext-metadata after backing disk =
+needed to be re-created<br>- Fixed a bug where a failed clone leads to Acce=
+ssToDeletedData bug<br>- Cache: Properly flush to origin device when suspen=
+ding<br>- Fixed toggle-disk bug when evacuation target has already diskless=
+ resource<br>- Fixed possible NPE when a satellite updates a storage pool (=
+capacity, supports snapshots, etc)</div><div><br></div><div><div><a href=3D=
+"https://pkg.linbit.com//downloads/linstor/linstor-server-1.33.0-rc.1.tar.g=
+z" target=3D"_blank">https://pkg.linbit.com//downloads/linstor/linstor-serv=
+er-1.33.0-rc.1.tar.gz</a><br></div><div><br></div><div><br></div><div><div>=
+<div><div>Linstor PPA:<br><a href=3D"https://launchpad.net/~linbit/+archive=
+/ubuntu/linbit-drbd9-stack" rel=3D"noreferrer" target=3D"_blank">https://la=
+unchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack</a></div></div><div>=
+<br></div><div>Cheers,<br></div><div>Rene</div></div></div></div></div>
+</div>
+
+--000000000000cfea88064352a0d1--
