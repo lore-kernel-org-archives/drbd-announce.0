@@ -1,20 +1,20 @@
 Return-Path: <rene.peinthor@linbit.com>
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com
-	[209.85.214.178])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 069051608F2
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com
+	[209.85.216.51])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 2BB0E16278F
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 11 Nov 2025 15:40:25 +0100 (CET)
-Received: by mail-pl1-f178.google.com with SMTP id
-	d9443c01a7336-297e264528aso31777845ad.2
+	Tue, 11 Nov 2025 15:40:48 +0100 (CET)
+Received: by mail-pj1-f51.google.com with SMTP id
+	98e67ed59e1d1-3434700be69so5696966a91.1
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 11 Nov 2025 06:40:25 -0800 (PST)
+	Tue, 11 Nov 2025 06:40:48 -0800 (PST)
 MIME-Version: 1.0
 From: Rene Peinthor <rene.peinthor@linbit.com>
-Date: Tue, 11 Nov 2025 15:40:13 +0100
-Message-ID: <CAHmn2DPanAHkpNOBzT6EMz1BACy78a03Sw_jDyuQJoc=xarefw@mail.gmail.com>
-Subject: linstor-server 1.33.0-rc.1 release
+Date: Tue, 11 Nov 2025 15:40:35 +0100
+Message-ID: <CAHmn2DPDghNyW5_UJMOL1eCNW9k7ZYZjYprio9XzVswXA6uVSQ@mail.gmail.com>
+Subject: python-linstor/linstor-client 1.27.0 release
 To: drbd-announce@lists.linbit.com
-Content-Type: multipart/alternative; boundary="000000000000cfea88064352a0d1"
+Content-Type: multipart/alternative; boundary="000000000000234f62064352a22b"
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,121 +26,88 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
---000000000000cfea88064352a0d1
+--000000000000234f62064352a22b
 Content-Type: text/plain; charset="UTF-8"
 
 Hi!
 
-After some delay here is the first release candidate of the next minor
-Linstor release.
-The big new feature in this release is the possibility to ship already
-existing snapshots to other Linstor clusters or a S3 remote.
-Also the Linstor master passphrase can now be provided more securely with
-systemd-creds.
+Also a new python-linstor and linstor-client release, with adaptations for
+the new Linstor 1.33.0 release.
 
-Another noteworthy change is that the LS_KEEP_RES is now obsolete as
-Linstor doesn't delete known .res files anymore and keeps them.
-
-See the changelog below for all other changes and fixes.
-
-## NOTE
-With this release we also announce that we will remove etcd database
-support with Linstor 1.34.0, until then you will have time to migrate to
-(SQL or k8s-CRD) databases.
-
-## [1.33.0-rc.1] - 2025-11-11
+## linstor-client
+## [1.27.0] - 2025-11-11
 
 ### Added
 
-- physical-storage-api: allow passing pv/vg/lv/zpool create arguments
-- Encryption: Added systemd-creds support for masterpassphrase.
-- DRBD: Added Linstor/Drbd/auto-block-size
-- Backup: allow shipment of already existing snapshots
-- Node,evacuate: Added --target and --do-not-target options
-
-### Changed
-
-- Removed keep_res regular expression pattern from options
-- Instead of caching if a DRBD .res file exists, actually check if the file
-exists
-- Do not delete known Linstor drbd res files, LS_KEEP_RES is now obsolete
-- Increase max packet size 16M -> 64M
-- Increased timeout for tar during sos-report to an hour
-- Removed flywaydb dependency and do migrations (as with other "db"s)
-ourselves
-- ReconnectorTask: changed logging levels and added more logging
-- API: do not store error reports if required remote parameters are missing
-- Node evacuate: By default node evacuate also evacuates existing snapshots
+- Added new option to "backup ship": --source-snapshot
+- Added new option to "backup ship": --full
+- Added new alias for "backup create -s": --source-snapshot
+- Added --target and --do-not-target to 'node evacuate'
+- from-file parameter to resource-definition list and list-properties
+- from-file parameter to node lp and resource-group lp
 
 ### Fixed
 
-- Attempt to fix race-condition "Received unknown storage resource from
-satellite"
-- Prometheus: fix using peerId as peer address in api call duration
-statistics (GitHub #466)
-- H2 db should no longer prematurely shutdown
-- DRBD: recreate ext-metadata after backing disk needed to be re-created
-- Fixed a bug where a failed clone leads to AccessToDeletedData bug
-- Cache: Properly flush to origin device when suspending
-- Fixed toggle-disk bug when evacuation target has already diskless resource
-- Fixed possible NPE when a satellite updates a storage pool (capacity,
-supports snapshots, etc)
+- Fixed help-text for "backup restore --snapshot"
 
-https://pkg.linbit.com//downloads/linstor/linstor-server-1.33.0-rc.1.tar.gz
+https://pkg.linbit.com//downloads/linstor/linstor_client-1.27.0.tar.gz
 
+## python-linstor
+## [1.27.0] - 2025-11-11
+
+### Added
+
+- Added missing resource_dfn_clone() arguments to Resource.clone()
+- Added optional parameter snapshot to backup_abort
+- Added optional parameter force_full to backup_ship
+- Added optional parameter src_snap to backup_ship
+- Added optional parameter target to node_evacuate
+- Added optional parameter do_not_target to node_evacuate
+
+### Changed
+
+- Fixed handling of clone api error status codes
+
+https://pkg.linbit.com//downloads/linstor/python_linstor-1.27.0.tar.gz
 
 Linstor PPA:
 https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
-Cheers,
+Best regards,
 Rene
 
---000000000000cfea88064352a0d1
+--000000000000234f62064352a22b
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr"><div dir=3D"ltr">Hi!<div><br></div><div>After some delay=
-=C2=A0here is the first release candidate=C2=A0of the next minor Linstor re=
-lease.</div><div>The big new feature in this release is the possibility to =
-ship already existing snapshots to other Linstor clusters or a S3 remote.</=
-div><div>Also the Linstor master passphrase can now be provided more secure=
-ly with systemd-creds.</div><div><br></div><div>Another noteworthy change i=
-s that the LS_KEEP_RES is now obsolete=C2=A0as Linstor doesn&#39;t delete k=
-nown .res files anymore and keeps them.</div><div><br></div><div>See the ch=
-angelog below=C2=A0for all other changes and fixes.</div><div><br></div><di=
-v>## NOTE</div><div>With this release we also announce that we will remove =
-etcd database support with Linstor 1.34.0, until then you will have time to=
- migrate to (SQL or k8s-CRD) databases.=C2=A0</div><div></div><div><br></di=
-v><div>## [1.33.0-rc.1] - 2025-11-11<br><br>### Added<br><br>- physical-sto=
-rage-api: allow passing pv/vg/lv/zpool create arguments<br>- Encryption: Ad=
-ded systemd-creds support for masterpassphrase.<br>- DRBD: Added Linstor/Dr=
-bd/auto-block-size<br>- Backup: allow shipment of already existing snapshot=
-s<br>- Node,evacuate: Added --target and --do-not-target options<br><br>###=
- Changed<br><br>- Removed keep_res regular expression pattern from options<=
-br>- Instead of caching if a DRBD .res file exists, actually check if the f=
-ile exists<br>- Do not delete known Linstor drbd res files, LS_KEEP_RES is =
-now obsolete<br>- Increase max packet size 16M -&gt; 64M<br>- Increased tim=
-eout for tar during sos-report to an hour<br>- Removed flywaydb dependency =
-and do migrations (as with other &quot;db&quot;s) ourselves<br>- Reconnecto=
-rTask: changed logging levels and added more logging<br>- API: do not store=
- error reports if required remote parameters are missing<br>- Node evacuate=
-: By default node evacuate also evacuates existing snapshots<br><br>### Fix=
-ed<br><br>- Attempt to fix race-condition &quot;Received unknown storage re=
-source from satellite&quot;<br>- Prometheus: fix using peerId as peer addre=
-ss in api call duration statistics (GitHub #466)<br>- H2 db should no longe=
-r prematurely shutdown<br>- DRBD: recreate ext-metadata after backing disk =
-needed to be re-created<br>- Fixed a bug where a failed clone leads to Acce=
-ssToDeletedData bug<br>- Cache: Properly flush to origin device when suspen=
-ding<br>- Fixed toggle-disk bug when evacuation target has already diskless=
- resource<br>- Fixed possible NPE when a satellite updates a storage pool (=
-capacity, supports snapshots, etc)</div><div><br></div><div><div><a href=3D=
-"https://pkg.linbit.com//downloads/linstor/linstor-server-1.33.0-rc.1.tar.g=
-z" target=3D"_blank">https://pkg.linbit.com//downloads/linstor/linstor-serv=
-er-1.33.0-rc.1.tar.gz</a><br></div><div><br></div><div><br></div><div><div>=
-<div><div>Linstor PPA:<br><a href=3D"https://launchpad.net/~linbit/+archive=
-/ubuntu/linbit-drbd9-stack" rel=3D"noreferrer" target=3D"_blank">https://la=
-unchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack</a></div></div><div>=
-<br></div><div>Cheers,<br></div><div>Rene</div></div></div></div></div>
+<div dir=3D"ltr"><div dir=3D"ltr"><div>Hi!</div><div><br></div><div>Also a =
+new python-linstor and linstor-client release, with adaptations for the new=
+ Linstor 1.33.0 release.</div><div><br></div><div>##=C2=A0linstor-client</d=
+iv><div>## [1.27.0] - 2025-11-11<br><br>### Added<br><br>- Added new option=
+ to &quot;backup ship&quot;: --source-snapshot<br>- Added new option to &qu=
+ot;backup ship&quot;: --full<br>- Added new alias for &quot;backup create -=
+s&quot;: --source-snapshot<br>- Added --target and --do-not-target to &#39;=
+node evacuate&#39;<br>- from-file parameter to resource-definition list and=
+ list-properties<br>- from-file parameter to node lp and resource-group lp<=
+br><br>### Fixed<br><br>- Fixed help-text for &quot;backup restore --snapsh=
+ot&quot;</div><div><br></div><div><a href=3D"https://pkg.linbit.com//downlo=
+ads/linstor/linstor_client-1.27.0.tar.gz" target=3D"_blank">https://pkg.lin=
+bit.com//downloads/linstor/linstor_client-1.27.0.tar.gz</a><br></div><br><d=
+iv>##=C2=A0<span>python</span>-linstor</div><div>## [1.27.0] - 2025-11-11<b=
+r><br>### Added<br><br>- Added missing resource_dfn_clone() arguments to Re=
+source.clone()<br>- Added optional parameter snapshot to backup_abort<br>- =
+Added optional parameter force_full to backup_ship<br>- Added optional para=
+meter src_snap to backup_ship<br>- Added optional parameter target to node_=
+evacuate<br>- Added optional parameter do_not_target to node_evacuate<br><b=
+r>### Changed<br><br>- Fixed handling of clone api error status codes</div>=
+<div><br></div><div><a href=3D"https://pkg.linbit.com//downloads/linstor/py=
+thon_linstor-1.27.0.tar.gz" target=3D"_blank">https://pkg.linbit.com//downl=
+oads/linstor/python_linstor-1.27.0.tar.gz</a><br></div><div><br></div><div>=
+<div>Linstor=C2=A0PPA:<br></div><div><div><a href=3D"https://launchpad.net/=
+~linbit/+archive/ubuntu/linbit-drbd9-stack" rel=3D"noreferrer" target=3D"_b=
+lank">https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack</a><=
+br></div><div><br></div><div>Best regards,</div><div>Rene</div></div></div>=
+</div>
 </div>
 
---000000000000cfea88064352a0d1--
+--000000000000234f62064352a22b--
