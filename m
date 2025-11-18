@@ -1,26 +1,22 @@
-Return-Path: <philipp.reisner@linbit.com>
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com
-	[209.85.218.51])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 2F5FB1609AD
+Return-Path: <roland.kammerer@linbit.com>
+Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com
+	[209.85.208.181])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id BA92B1608F4
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 19 Nov 2025 00:29:24 +0100 (CET)
-Received: by mail-ej1-f51.google.com with SMTP id
-	a640c23a62f3a-b735487129fso973386566b.0
+	Tue, 18 Nov 2025 15:06:44 +0100 (CET)
+Received: by mail-lj1-f181.google.com with SMTP id
+	38308e7fff4ca-37a4e329a90so42915731fa.0
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 18 Nov 2025 15:29:24 -0800 (PST)
-Received: from ryzen9 (213-147-178-163.hdsl.highway.telekom.at.
-	[213.147.178.163]) by smtp.gmail.com with ESMTPSA id
-	a640c23a62f3a-b734fdae69fsm1426355966b.51.2025.11.18.15.29.23
-	for <drbd-announce@lists.linbit.com>
-	(version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-	Tue, 18 Nov 2025 15:29:23 -0800 (PST)
-From: Philipp Reisner <philipp.reisner@linbit.com>
+	Tue, 18 Nov 2025 06:06:44 -0800 (PST)
+Date: Tue, 18 Nov 2025 15:06:42 +0100
+From: Roland Kammerer <roland.kammerer@linbit.com>
 To: drbd-announce@lists.linbit.com
-Subject: drbd-9.2.16-rc.1 and drbd-9.3.0-rc.5
-Date: Wed, 19 Nov 2025 00:29:22 +0100
-Message-ID: <86346akjhp.fsf@linbit.com>
+Subject: linstor-proxmox v8.1.4
+Message-ID: <aRx9cpa4-43UOeua@arm64>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="rn+g3zmIwZZ7wNRU"
+Content-Disposition: inline
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -33,54 +29,34 @@ List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
 
-Hello drbd users,
+--rn+g3zmIwZZ7wNRU
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-The next releases are coming soon. Today I have the honour to announce
-the availability of release candidate 1 for drbd-9.2.16 and
-drbd-9.3.0-rc.5. The latter is already at 5, since we did some internal
-release candidates. This time it looks good.
-Regarding the fixes, everything is minor and boring.
+Dear LINSTOR on PVE users,
 
-drbd-9.3 is where the exciting new features are. This time, it got
-support for tunable bitmap granularity and for disabling the
-change-tracking bitmap entirely.
+this is another boring release bumping the tested PVE plugin API
+version. It is perfectly fine to use the older plugin and ignore the
+warning message it prints.
 
-Please help test the release candidates. I plan to do the final releases
-in one week if nobody finds a showstopper.
+Regards, rck
 
+GIT: https://github.com/LINBIT/linstor-proxmox/commit/8fb116a74956ae74c1c98dbfed33fc418218b294
+TGZ: https://pkg.linbit.com//downloads/connectors/linstor-proxmox-8.1.4.tar.gz
 
-9.2.16-rc.1 (api:genl2/proto:86-101,118-122/transport:19)
---------
- * Do not trigger the OOM-killer when allocating a too-big dirty
-   bitmap during attach; instead, fail the attach operation.
- * Do not flush half-created packets out while closing a connection
- * Fixed a bug that, in rare circumstances, when flapping between
-   Ahead and resync, can lead to a divide by zero error.
- * Fixed a bug that caused DRBD to send too many P_PEERS_IN_SYNC
-   packets when finishing a resync; on huge devices ( >10TB), that led
-   to temporarily higher I/O latencies.
- * Fixed an unhandled corner case to automatically reintegrate an I/O
-   frozen primary into a larger partition that created a newer data
-   generation
- * Compatibility with Linux-6.17
+--rn+g3zmIwZZ7wNRU
+Content-Type: application/pgp-signature; name=signature.asc
 
-https://github.com/LINBIT/drbd/commit/7e76d29637ec8118d94961fc6d7b00666a4364a0
-https://pkg.linbit.com//downloads/drbd/9/drbd-9.2.16-rc.1.tar.gz
+-----BEGIN PGP SIGNATURE-----
 
+iQEzBAEBCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmkcfW4ACgkQRgmezyI6
+myJJoAf+L7ZTg90k3b1N2HzOFOZ5vQtMpnL+ua6xp5/EXI/sbcUJ3U94D8wmaxm0
+b/InaugixyZaZm/oXzFXPqpjVyMSClOjLelqIWSJr0q/8fxXJe5t9XMU/ROlJHjz
+AeGxmXXKQcwLoE6J6TdHNt9k8E6Yy7QNG0kn7A6gJOoNsLPQuFvcvpa4hn1mc3I3
+58N1QTbPxALa0h9ytNXmamBgtSckepXEF8FCWvVzhcymyeMHzLiQ4dsmXSQlG8LN
+CeR55lvdaa5gz9Uv5Vmri/DVLkIL+oj8mjYRylgyoF1FakGSz3KJV4VMN7qDjqY6
+ld4aKoEDfnIbxkmx5bHBlfOuEswSOg==
+=Ll0G
+-----END PGP SIGNATURE-----
 
-9.3.0-rc.5 (api:genl2/proto:86-101,118-123/transport:19)
---------
- * Implemented support for bitmap granularity between 4k and 1M,
-   including exchanging bitmaps with peers with a different bitmap
-   block size
- * Add support for omitting bitmap allocation for standalone devices
- * Explicit config option for drbd8-api-compatibility mode
- * Fixes for resync without replication
- * All fixes from 9.2.14, 9.2.15 and 9.2.16
- * Compatibility with Linux-6.17
-
-https://github.com/LINBIT/drbd/commit/980eaa0401adf05726c5a609fb98f2e3c3382332
-https://pkg.linbit.com//downloads/drbd/9/drbd-9.3.0-rc.5.tar.gz
-
-cheers,
- philipp
+--rn+g3zmIwZZ7wNRU--
