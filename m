@@ -1,20 +1,26 @@
-Return-Path: <moritz.wanzenboeck@linbit.com>
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com
-	[209.85.128.49])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 6F2A516225C
+Return-Path: <philipp.reisner@linbit.com>
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com
+	[209.85.218.51])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 2F5FB1609AD
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 12 Nov 2025 16:59:52 +0100 (CET)
-Received: by mail-wm1-f49.google.com with SMTP id
-	5b1f17b1804b1-47778704516so5358685e9.3
+	Wed, 19 Nov 2025 00:29:24 +0100 (CET)
+Received: by mail-ej1-f51.google.com with SMTP id
+	a640c23a62f3a-b735487129fso973386566b.0
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 12 Nov 2025 07:59:52 -0800 (PST)
-MIME-Version: 1.0
-From: =?UTF-8?Q?Moritz_Wanzenb=C3=B6ck?= <moritz.wanzenboeck@linbit.com>
-Date: Wed, 12 Nov 2025 16:59:40 +0100
-Message-ID: <CAKnz9xJVcnGkuRxhen8WguASbR=6XBrLGqHE+vbd0mgT=JeYng@mail.gmail.com>
-Subject: LINSTOR Operator 2.10.1
+	Tue, 18 Nov 2025 15:29:24 -0800 (PST)
+Received: from ryzen9 (213-147-178-163.hdsl.highway.telekom.at.
+	[213.147.178.163]) by smtp.gmail.com with ESMTPSA id
+	a640c23a62f3a-b734fdae69fsm1426355966b.51.2025.11.18.15.29.23
+	for <drbd-announce@lists.linbit.com>
+	(version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+	Tue, 18 Nov 2025 15:29:23 -0800 (PST)
+From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-Content-Type: text/plain; charset="UTF-8"
+Subject: drbd-9.2.16-rc.1 and drbd-9.3.0-rc.5
+Date: Wed, 19 Nov 2025 00:29:22 +0100
+Message-ID: <86346akjhp.fsf@linbit.com>
+MIME-Version: 1.0
+Content-Type: text/plain
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,37 +32,55 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-We've just released a small bug fix for our Kubernetes Operator.
 
-The three issues fixed are:
-* A bug preventing the operator from making progress when running in a
-cluster with Cluster API labels, but without the Cluster API CRDs
-deployed
-* A bug that caused excessive load on the Operator by repeatedly
-updating the status conditions.
-* A bug preventing the snapshot creation on clusters without
-VolumeGroupSnapshot resources deployed.
+Hello drbd users,
 
-We recommend all users of release 2.10.0 to update to this latest release.
+The next releases are coming soon. Today I have the honour to announce
+the availability of release candidate 1 for drbd-9.2.16 and
+drbd-9.3.0-rc.5. The latter is already at 5, since we did some internal
+release candidates. This time it looks good.
+Regarding the fixes, everything is minor and boring.
 
-To upgrade, either point your kustomization.yaml at the new manifest:
+drbd-9.3 is where the exciting new features are. This time, it got
+support for tunable bitmap granularity and for disabling the
+change-tracking bitmap entirely.
 
-  https://charts.linstor.io/static/v2.10.1.yaml
+Please help test the release candidates. I plan to do the final releases
+in one week if nobody finds a showstopper.
 
-Or, if using helm, upgrade the linstor-operator chart:
 
-  helm repo update
-  helm upgrade linstor-operator linstor/linstor-operator --wait
+9.2.16-rc.1 (api:genl2/proto:86-101,118-122/transport:19)
+--------
+ * Do not trigger the OOM-killer when allocating a too-big dirty
+   bitmap during attach; instead, fail the attach operation.
+ * Do not flush half-created packets out while closing a connection
+ * Fixed a bug that, in rare circumstances, when flapping between
+   Ahead and resync, can lead to a divide by zero error.
+ * Fixed a bug that caused DRBD to send too many P_PEERS_IN_SYNC
+   packets when finishing a resync; on huge devices ( >10TB), that led
+   to temporarily higher I/O latencies.
+ * Fixed an unhandled corner case to automatically reintegrate an I/O
+   frozen primary into a larger partition that created a newer data
+   generation
+ * Compatibility with Linux-6.17
 
-To get specific instructions to apply the update, check our users guide[1].
+https://github.com/LINBIT/drbd/commit/7e76d29637ec8118d94961fc6d7b00666a4364a0
+https://pkg.linbit.com//downloads/drbd/9/drbd-9.2.16-rc.1.tar.gz
 
-If you need to upgrade from Operator v1, check out our upgrade guide[2].
 
-Source code is, as always, available upstream[3].
+9.3.0-rc.5 (api:genl2/proto:86-101,118-123/transport:19)
+--------
+ * Implemented support for bitmap granularity between 4k and 1M,
+   including exchanging bitmaps with peers with a different bitmap
+   block size
+ * Add support for omitting bitmap allocation for standalone devices
+ * Explicit config option for drbd8-api-compatibility mode
+ * Fixes for resync without replication
+ * All fixes from 9.2.14, 9.2.15 and 9.2.16
+ * Compatibility with Linux-6.17
 
-Best regards,
-Moritz
+https://github.com/LINBIT/drbd/commit/980eaa0401adf05726c5a609fb98f2e3c3382332
+https://pkg.linbit.com//downloads/drbd/9/drbd-9.3.0-rc.5.tar.gz
 
-[1]: https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-upgrade
-[2]: https://charts.linstor.io/migration/
-[3]: https://github.com/piraeusdatastore/piraeus-operator
+cheers,
+ philipp
