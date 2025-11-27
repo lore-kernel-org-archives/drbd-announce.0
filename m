@@ -1,20 +1,27 @@
-Return-Path: <moritz.wanzenboeck@linbit.com>
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com
-	[209.85.128.47])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 074E9162ED8
+Return-Path: <johannes.thoma@linbit.com>
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com
+	[209.85.221.44])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 036B6162EE3
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 27 Nov 2025 15:04:59 +0100 (CET)
-Received: by mail-wm1-f47.google.com with SMTP id
-	5b1f17b1804b1-477a2ab455fso8844415e9.3
+	Thu, 27 Nov 2025 18:09:47 +0100 (CET)
+Received: by mail-wr1-f44.google.com with SMTP id
+	ffacd0b85a97d-429c7869704so958791f8f.2
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 27 Nov 2025 06:04:59 -0800 (PST)
+	Thu, 27 Nov 2025 09:09:47 -0800 (PST)
+Received: from [10.43.10.15] (62-99-137-214.static.upcbusiness.at.
+	[62.99.137.214]) by smtp.gmail.com with ESMTPSA id
+	ffacd0b85a97d-42e1ca1a3f1sm4538396f8f.28.2025.11.27.09.09.45
+	for <drbd-announce@lists.linbit.com>
+	(version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+	Thu, 27 Nov 2025 09:09:46 -0800 (PST)
+Message-ID: <e99e09d8-8932-4e4a-98e2-8985c14fd64e@linbit.com>
+Date: Thu, 27 Nov 2025 18:09:44 +0100
 MIME-Version: 1.0
-From: =?UTF-8?Q?Moritz_Wanzenb=C3=B6ck?= <moritz.wanzenboeck@linbit.com>
-Date: Thu, 27 Nov 2025 15:04:48 +0100
-Message-ID: <CAKnz9xJ8nF6bQSbDuUOg5DXhe1AkV-Kp6-LZ-nV_XMqzEYX-Pg@mail.gmail.com>
-Subject: LINSTOR Operator 2.10.2
 To: drbd-announce@lists.linbit.com
-Content-Type: text/plain; charset="UTF-8"
+From: Johannes Thoma <johannes.thoma@linbit.com>
+Subject: WinDRBD 1.2.5 released
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,35 +33,18 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-We've just released another small bug fix for our Kubernetes Operator.
+Dear WinDRBD/DRBD community,
 
-We have updated DRBD to 9.2.16, and also updated LINSTOR CSI to 1.10.3
-to fix some small issues with the new "fsck" checks on mounts.
+We've just released WinDRBD 1.2.5. It comes with a DRBD engine version 9.2.16 and optional
+with DRBD engine 9.3.0-rc6. Also drbd-utils were upgraded. Other than that there were no
+changes (except for neccessary additions to our WinDRBD linux headers in order to make
+9.3.0-rc6 compile).
 
-In addition, we have added some configurable timeouts when using
-graceful evacuation, and fixed a bug that prevented the SELinux
-integration of LINSTOR CSI from working.
+As always, an installer for WinDRBD can be downloaded directly from the LINBIT homepage
+www.linbit.com
 
-We recommend all users of release 2.10.x to update to this latest release.
-
-To upgrade, either point your kustomization.yaml at the new manifest:
-
-  https://charts.linstor.io/static/v2.10.2.yaml
-
-Or, if using helm, upgrade the linstor-operator chart:
-
-  helm repo update
-  helm upgrade linstor-operator linstor/linstor-operator --wait
-
-To get specific instructions to apply the update, check our users guide[1].
-
-If you need to upgrade from Operator v1, check out our upgrade guide[2].
-
-Source code is, as always, available upstream[3].
+Have fun and happy hacking :)
 
 Best regards,
-Moritz
 
-[1]: https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-upgrade
-[2]: https://charts.linstor.io/migration/
-[3]: https://github.com/piraeusdatastore/piraeus-operator
+- Johannes
