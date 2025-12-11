@@ -1,21 +1,20 @@
-Return-Path: <christoph.boehmwalder@linbit.com>
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com
-	[209.85.218.48])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 6616E162EF9
+Return-Path: <rene.peinthor@linbit.com>
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com
+	[209.85.214.174])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 7A3DA160923
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 10 Dec 2025 22:39:39 +0100 (CET)
-Received: by mail-ej1-f48.google.com with SMTP id
-	a640c23a62f3a-b73161849e1so73042266b.2
+	Thu, 11 Dec 2025 13:15:58 +0100 (CET)
+Received: by mail-pl1-f174.google.com with SMTP id
+	d9443c01a7336-298145fe27eso243845ad.1
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 10 Dec 2025 13:39:39 -0800 (PST)
-Date: Wed, 10 Dec 2025 22:39:35 +0100
-From: Christoph =?utf-8?Q?B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>
-To: drbd-announce@lists.linbit.com
-Subject: LINSTOR GUI v2.1.0
-Message-ID: <20251210213935.PxoFC%christoph.boehmwalder@linbit.com>
+	Thu, 11 Dec 2025 04:15:58 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+From: Rene Peinthor <rene.peinthor@linbit.com>
+Date: Thu, 11 Dec 2025 13:15:45 +0100
+Message-ID: <CAHmn2DOPySyuPFqCFaYPzh-=H5+TRAT2iMhZQJsxd6o07kMUgw@mail.gmail.com>
+Subject: python-linstor/linstor-client 1.27.1 release
+To: drbd-announce@lists.linbit.com
+Content-Type: multipart/alternative; boundary="000000000000688bb10645ac1bfe"
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -27,40 +26,62 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Hello,
+--000000000000688bb10645ac1bfe
+Content-Type: text/plain; charset="UTF-8"
 
-a new version of LINSTOR GUI has just been released: v2.1.0
+Hi!
 
-https://github.com/LINBIT/linstor-gui/releases/tag/v2.1.0
+We released a small patch release for python-linstor and linstor-client.
 
-Here is the relevant excerpt from the changelog:
+## linstor-client
+## [1.27.1] - 2025-12-11
 
------------------------------------
-# 2.1.0 - 2025-12-09=0D=0A=
-=0D=0A=
-### Added=0D=0A=
-=0D=0A=
-- Time range selector on node detail page=0D=0A=
-- Description for Grafana dashboard=0D=0A=
-- 404 page=0D=0A=
-=0D=0A=
-### Fixed=0D=0A=
-=0D=0A=
-- Reset admin password by LINSTOR client=0D=0A=
-- Removed redundant states on resource overview page=0D=0A=
-- Dashboard chart scrollbar=0D=0A=
-=0D=0A=
-### Changed=0D=0A=
-=0D=0A=
-- Theme color=0D=0A=
-- Tag colors on resource overview page=0D=0A=
-=0D=0A=
------------------------------------
+### Added
 
-Regards,
-Christoph
+- Added new alias --drbd-diskless to command "r td" to mimic the option
+from "r c"
+- Added new sub-command "encryption status" to show the current
+locked-state of the controller
 
---
-Christoph B=C3=B6hmwalder
-LINBIT | Keeping the Digital World Running
-DRBD HA =E2=80=94  Disaster Recovery =E2=80=94 Software defined Storage
+https://pkg.linbit.com//downloads/linstor/linstor_client-1.27.1.tar.gz
+
+## python-linstor
+## [1.27.1] - 2025-12-10
+
+### Added
+
+- Added api method to check the controller's current encryption state
+(locked/unlocked/unset)
+
+https://pkg.linbit.com//downloads/linstor/python_linstor-1.27.1.tar.gz
+
+Linstor PPA:
+https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+
+Best regards,
+Rene
+
+--000000000000688bb10645ac1bfe
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">Hi!<br><div><br></div><div>We released a small patch relea=
+se for python-linstor and linstor-client.</div><div><br></div><div><div>##=
+=C2=A0linstor-client</div><div>## [1.27.1] - 2025-12-11<br><br>### Added<br=
+><br>- Added new alias --drbd-diskless to command &quot;r td&quot; to mimic=
+ the option from &quot;r c&quot;<br>- Added new sub-command &quot;encryptio=
+n status&quot; to show the current locked-state of the controller</div><div=
+><br></div><div><a href=3D"https://pkg.linbit.com//downloads/linstor/linsto=
+r_client-1.27.1.tar.gz">https://pkg.linbit.com//downloads/linstor/linstor_c=
+lient-1.27.1.tar.gz</a><br></div><br><div>##=C2=A0python-linstor</div><div>=
+## [1.27.1] - 2025-12-10<br><br>### Added<br><br>- Added api method to chec=
+k the controller&#39;s current encryption state (locked/unlocked/unset)</di=
+v><div><br></div><div><a href=3D"https://pkg.linbit.com//downloads/linstor/=
+python_linstor-1.27.1.tar.gz">https://pkg.linbit.com//downloads/linstor/pyt=
+hon_linstor-1.27.1.tar.gz</a><br></div><div><br></div><div><div>Linstor=C2=
+=A0PPA:<br></div><div><div><a href=3D"https://launchpad.net/~linbit/+archiv=
+e/ubuntu/linbit-drbd9-stack" rel=3D"noreferrer" target=3D"_blank">https://l=
+aunchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack</a><br></div><div><=
+br></div><div>Best regards,</div><div>Rene</div></div></div></div></div>
+
+--000000000000688bb10645ac1bfe--
