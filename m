@@ -1,21 +1,20 @@
-Return-Path: <christoph.boehmwalder@linbit.com>
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com
-	[209.85.208.42])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id DD429162251
+Return-Path: <rene.peinthor@linbit.com>
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com
+	[209.85.216.52])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 6E08E162773
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 18 Dec 2025 14:22:14 +0100 (CET)
-Received: by mail-ed1-f42.google.com with SMTP id
-	4fb4d7f45d1cf-64951939e1eso885817a12.1
+	Tue, 23 Dec 2025 10:03:34 +0100 (CET)
+Received: by mail-pj1-f52.google.com with SMTP id
+	98e67ed59e1d1-34c2f335681so3714371a91.1
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 18 Dec 2025 05:22:14 -0800 (PST)
-Date: Thu, 18 Dec 2025 14:22:12 +0100
-From: Christoph =?utf-8?Q?B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>
-To: drbd-announce@lists.linbit.com
-Subject: LINSTOR GUI v2.2.0
-Message-ID: <20251218132212.CYrOb%christoph.boehmwalder@linbit.com>
+	Tue, 23 Dec 2025 01:03:34 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+From: Rene Peinthor <rene.peinthor@linbit.com>
+Date: Tue, 23 Dec 2025 10:03:22 +0100
+Message-ID: <CAHmn2DPaqmvxRCm63OM27HZ=Aq3T21s4PReXc=XkK8RAhSvJig@mail.gmail.com>
+Subject: linstor-server 1.33.1 release
+To: drbd-announce@lists.linbit.com
+Content-Type: multipart/alternative; boundary="0000000000006ed68906469ad1ff"
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -27,36 +26,59 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Hello,
+--0000000000006ed68906469ad1ff
+Content-Type: text/plain; charset="UTF-8"
 
-a new version of LINSTOR GUI has just been released: v2.2.0
+Hi!
 
-https://github.com/LINBIT/linstor-gui/releases/tag/v2.2.0
+A small patch release before Christmas and the end of the year.
 
-Here is the relevant excerpt from the changelog:
+## NOTE
+With this release we also announce that we will remove etcd database
+support with Linstor 1.34.0, until then you will have time to migrate to
+(SQL or k8s-CRD) databases.
+Heads up: Linstor 1.34.0 will switch to java-21, so be prepared to have
+java-21 jre ready for the next minor upgrade
 
------------------------------------
-# 2.2.0 - 2025-12-18=0D=0A=
-=0D=0A=
-### Added=0D=0A=
-=0D=0A=
-- Add resource to node=0D=0A=
-- Resize volume=0D=0A=
-=0D=0A=
-### Changed=0D=0A=
-=0D=0A=
-- Colors and styles on some pages=0D=0A=
-=0D=0A=
-### Fixed=0D=0A=
-=0D=0A=
-- Volume state error for multiple volumes and faulty resource list=0D=0A=
-=0D=0A=
------------------------------------
+## [1.33.1] - 2025-12-22
 
-Regards,
-Christoph
+### Fixed
 
---
-Christoph B=C3=B6hmwalder
-LINBIT | Keeping the Digital World Running
-DRBD HA =E2=80=94  Disaster Recovery =E2=80=94 Software defined Storage
+- Fixed missing transaction-commits during evacuate's copy-snap
+- Make sure updateDiscGranularity is not called if only DRBD_DELETE is set
+- Also delete error-report text files on error delete api call
+- Properly exit on a CriticalError instead of running into a deadlock
+
+https://pkg.linbit.com//downloads/linstor/linstor-server-1.33.1.tar.gz
+
+
+Linstor PPA:
+https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+
+Cheers,
+Rene
+
+--0000000000006ed68906469ad1ff
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">Hi!<div><br></div><div>A small patch release before Christ=
+mas and the end of the year.</div><div><br></div><div>## NOTE<br>With this =
+release we also announce that we will remove etcd database support with Lin=
+stor 1.34.0, until then you will have time to migrate to (SQL or k8s-CRD) d=
+atabases.<br>Heads up: Linstor 1.34.0 will switch to java-21, so be prepare=
+d to have java-21 jre ready for the next minor upgrade</div><div></div><div=
+><br></div><div>## [1.33.1] - 2025-12-22<br><br>### Fixed<br><br>- Fixed mi=
+ssing transaction-commits during evacuate&#39;s copy-snap<br>- Make sure up=
+dateDiscGranularity is not called if only DRBD_DELETE is set<br>- Also dele=
+te error-report text files on error delete api call<br>- Properly exit on a=
+ CriticalError instead of running into a deadlock</div><div><br></div><div>=
+<div><a href=3D"https://pkg.linbit.com//downloads/linstor/linstor-server-1.=
+33.1.tar.gz">https://pkg.linbit.com//downloads/linstor/linstor-server-1.33.=
+1.tar.gz</a><br></div><div><br></div><div><br></div><div><div><div><div>Lin=
+stor PPA:<br><a href=3D"https://launchpad.net/~linbit/+archive/ubuntu/linbi=
+t-drbd9-stack" rel=3D"noreferrer" target=3D"_blank">https://launchpad.net/~=
+linbit/+archive/ubuntu/linbit-drbd9-stack</a></div></div><div><br></div><di=
+v>Cheers,<br></div><div>Rene</div></div></div></div></div>
+
+--0000000000006ed68906469ad1ff--
