@@ -1,21 +1,20 @@
-Return-Path: <christoph.boehmwalder@linbit.com>
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com
-	[209.85.218.51])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 06E58160884
+Return-Path: <moritz.wanzenboeck@linbit.com>
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com
+	[209.85.128.42])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 138AA160884
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 12 Jan 2026 18:08:54 +0100 (CET)
-Received: by mail-ej1-f51.google.com with SMTP id
-	a640c23a62f3a-b872de50c91so100721466b.2
+	Tue, 13 Jan 2026 13:08:12 +0100 (CET)
+Received: by mail-wm1-f42.google.com with SMTP id
+	5b1f17b1804b1-47ee0291921so1152085e9.3
 	for <drbd-announce@lists.linbit.com>;
-	Mon, 12 Jan 2026 09:08:54 -0800 (PST)
-Date: Mon, 12 Jan 2026 18:08:52 +0100
-From: Christoph =?utf-8?Q?B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>
-To: drbd-announce@lists.linbit.com
-Subject: LINSTOR GUI v2.3.0
-Message-ID: <20260112170852.J4Eiq%christoph.boehmwalder@linbit.com>
+	Tue, 13 Jan 2026 04:08:12 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+From: =?UTF-8?Q?Moritz_Wanzenb=C3=B6ck?= <moritz.wanzenboeck@linbit.com>
+Date: Tue, 13 Jan 2026 13:08:01 +0100
+Message-ID: <CAKnz9xLQf86cDpKbmKB741Ef8kXZdpL6jsEPdOsQKRp53FgC7w@mail.gmail.com>
+Subject: LINSTOR Operator 2.10.4
+To: drbd-announce@lists.linbit.com
+Content-Type: text/plain; charset="UTF-8"
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -27,36 +26,48 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Hello,
+We've just released another small bug fix for our Kubernetes Operator.
 
-a new version of LINSTOR GUI has just been released: v2.3.0
+This updates the LINSTOR CSI image to 1.10.5 to be compatible with
+LINSTOR 1.33. We have intentionally not updated the LINSTOR version
+itself to the latest 1.33.1, as that is left for the next feature
+release of our Operator.
 
-https://github.com/LINBIT/linstor-gui/releases/tag/v2.3.0
+We have also fixed the CSI Node container liveness probes not working
+as intended because of a name collision on the container ports.
 
-Here is the relevant excerpt from the changelog:
+When evacuating Satellites, we now no longer wait for other Satellites
+that are also evacuating, leading to a deadlock with Satellites
+waiting for each other to be evacuated without making progress.
 
------------------------------------
-# 2.3.0 - 2025-01-12=0D=0A=
-=0D=0A=
-### Changed=0D=0A=
-=0D=0A=
-- LINSTOR-Gateway UI improvements and fixes=0D=0A=
-  - Gateway create form updates=0D=0A=
-  - Gateway list content updates=0D=0A=
-=0D=0A=
-### Fixed=0D=0A=
-=0D=0A=
-- iSCSI add volume failure bug=0D=0A=
-- Check faulty resource regularly=0D=0A=
-- Customer logo style=0D=0A=
-- Modal styling=0D=0A=
-=0D=0A=
------------------------------------
+We recommend all users of release 2.10.x to update to this latest release.
 
-Regards,
-Christoph
+To upgrade, either point your kustomization.yaml at the new manifest:
 
---
-Christoph B=C3=B6hmwalder
-LINBIT | Keeping the Digital World Running
-DRBD HA =E2=80=94  Disaster Recovery =E2=80=94 Software defined Storage
+  https://charts.linstor.io/static/v2.10.4.yaml
+
+Or, if using helm, upgrade the linstor-operator chart:
+
+  helm repo update
+  helm upgrade linstor-operator linstor/linstor-operator --wait
+
+To get specific instructions to apply the update, check our users guide[1].
+
+Source code is, as always, available upstream[2].
+
+Best regards,
+Moritz
+
+[1]: https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-upgrade
+[2]: https://github.com/piraeusdatastore/piraeus-operator
+
+----
+### Fixed
+
+- Name collision for CSI Node container ports
+- Do not block evacuation on other satellites being evacuated.
+
+### Changed
+
+- Updated images:
+    * LINSTOR CSI 1.10.5
