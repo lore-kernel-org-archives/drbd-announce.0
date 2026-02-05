@@ -1,20 +1,21 @@
-Return-Path: <moritz.wanzenboeck@linbit.com>
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com
-	[209.85.128.42])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 138AA160884
+Return-Path: <christoph.boehmwalder@linbit.com>
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com
+	[209.85.128.49])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 18906160953
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 13 Jan 2026 13:08:12 +0100 (CET)
-Received: by mail-wm1-f42.google.com with SMTP id
-	5b1f17b1804b1-47ee0291921so1152085e9.3
+	Thu,  5 Feb 2026 18:59:08 +0100 (CET)
+Received: by mail-wm1-f49.google.com with SMTP id
+	5b1f17b1804b1-4801d7c72a5so10811855e9.0
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 13 Jan 2026 04:08:12 -0800 (PST)
-MIME-Version: 1.0
-From: =?UTF-8?Q?Moritz_Wanzenb=C3=B6ck?= <moritz.wanzenboeck@linbit.com>
-Date: Tue, 13 Jan 2026 13:08:01 +0100
-Message-ID: <CAKnz9xLQf86cDpKbmKB741Ef8kXZdpL6jsEPdOsQKRp53FgC7w@mail.gmail.com>
-Subject: LINSTOR Operator 2.10.4
+	Thu, 05 Feb 2026 09:59:08 -0800 (PST)
+Date: Thu, 05 Feb 2026 18:59:05 +0100
+From: Christoph =?utf-8?Q?B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>
 To: drbd-announce@lists.linbit.com
-Content-Type: text/plain; charset="UTF-8"
+Subject: LINSTOR Gateway v2.1.0
+Message-ID: <20260205175905.HOdS6%christoph.boehmwalder@linbit.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,48 +27,27 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-We've just released another small bug fix for our Kubernetes Operator.
+Hello,
 
-This updates the LINSTOR CSI image to 1.10.5 to be compatible with
-LINSTOR 1.33. We have intentionally not updated the LINSTOR version
-itself to the latest 1.33.1, as that is left for the next feature
-release of our Operator.
+a new version of LINSTOR Gateway has just been released: v2.1.0
 
-We have also fixed the CSI Node container liveness probes not working
-as intended because of a name collision on the container ports.
+https://github.com/LINBIT/linstor-gateway/releases/tag/v2.1.0
 
-When evacuating Satellites, we now no longer wait for other Satellites
-that are also evacuating, leading to a deadlock with Satellites
-waiting for each other to be evacuated without making progress.
+Here is the relevant excerpt from the changelog:
 
-We recommend all users of release 2.10.x to update to this latest release.
+-----------------------------------
+## [2.1.0] - 2026-02-05
 
-To upgrade, either point your kustomization.yaml at the new manifest:
+### Changes
 
-  https://charts.linstor.io/static/v2.10.4.yaml
+* Add configurable resource timeout for all operations. (31276c2)
+* Add CORS configuration for the gateway server. (722d7e6)
+-----------------------------------
 
-Or, if using helm, upgrade the linstor-operator chart:
+Regards,
+Christoph
 
-  helm repo update
-  helm upgrade linstor-operator linstor/linstor-operator --wait
-
-To get specific instructions to apply the update, check our users guide[1].
-
-Source code is, as always, available upstream[2].
-
-Best regards,
-Moritz
-
-[1]: https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-upgrade
-[2]: https://github.com/piraeusdatastore/piraeus-operator
-
-----
-### Fixed
-
-- Name collision for CSI Node container ports
-- Do not block evacuation on other satellites being evacuated.
-
-### Changed
-
-- Updated images:
-    * LINSTOR CSI 1.10.5
+--
+Christoph B=C3=B6hmwalder
+LINBIT | Keeping the Digital World Running
+DRBD HA =E2=80=94  Disaster Recovery =E2=80=94 Software defined Storage
