@@ -1,21 +1,27 @@
-Return-Path: <christoph.boehmwalder@linbit.com>
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com
-	[209.85.128.49])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 18906160953
+Return-Path: <johannes.thoma@linbit.com>
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com
+	[209.85.128.50])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 0DEED1622CC
 	for <drbd-announce@lists.linbit.com>;
-	Thu,  5 Feb 2026 18:59:08 +0100 (CET)
-Received: by mail-wm1-f49.google.com with SMTP id
-	5b1f17b1804b1-4801d7c72a5so10811855e9.0
+	Wed, 11 Feb 2026 17:16:25 +0100 (CET)
+Received: by mail-wm1-f50.google.com with SMTP id
+	5b1f17b1804b1-48334ee0aeaso21115955e9.1
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 05 Feb 2026 09:59:08 -0800 (PST)
-Date: Thu, 05 Feb 2026 18:59:05 +0100
-From: Christoph =?utf-8?Q?B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>
-To: drbd-announce@lists.linbit.com
-Subject: LINSTOR Gateway v2.1.0
-Message-ID: <20260205175905.HOdS6%christoph.boehmwalder@linbit.com>
+	Wed, 11 Feb 2026 08:16:25 -0800 (PST)
+Received: from [10.43.10.15] (62-99-137-214.static.upcbusiness.at.
+	[62.99.137.214]) by smtp.gmail.com with ESMTPSA id
+	ffacd0b85a97d-43783d46f9csm5359227f8f.10.2026.02.11.08.16.23
+	for <drbd-announce@lists.linbit.com>
+	(version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+	Wed, 11 Feb 2026 08:16:24 -0800 (PST)
+Message-ID: <316182a8-8d14-47fa-b373-f0e37a0c6c3b@linbit.com>
+Date: Wed, 11 Feb 2026 17:16:22 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+To: drbd-announce@lists.linbit.com
+From: Johannes Khoshnazar-Thoma <johannes.thoma@linbit.com>
+Subject: WinDRBD 1.2.7 released
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -27,27 +33,21 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Hello,
+Dear WinDRBD community,
 
-a new version of LINSTOR Gateway has just been released: v2.1.0
+We just released WinDRBD 1.2.7. The main reason for this release is that
+an issue with connecting to a Linux DRBD was fixed. If you are running
+cross-platform (Linux/Windows) clusters, then you should upgrade to
+WinDRBD 1.2.7.
 
-https://github.com/LINBIT/linstor-gateway/releases/tag/v2.1.0
+Other than that I would like to invite you to the next LINBIT community
+meeting on March 12 2026 at 5 PM (CET) / 8 AM (PT), where we have
+some exciting news regarding the WinDRBD ecosystem to share.
 
-Here is the relevant excerpt from the changelog:
+Details about the community meetings can be found at:
 
------------------------------------
-## [2.1.0] - 2026-02-05
+https://linbit.com/community-meeting/
 
-### Changes
+Best regards,
 
-* Add configurable resource timeout for all operations. (31276c2)
-* Add CORS configuration for the gateway server. (722d7e6)
------------------------------------
-
-Regards,
-Christoph
-
---
-Christoph B=C3=B6hmwalder
-LINBIT | Keeping the Digital World Running
-DRBD HA =E2=80=94  Disaster Recovery =E2=80=94 Software defined Storage
+- Johannes
