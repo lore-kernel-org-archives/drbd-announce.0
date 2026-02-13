@@ -1,27 +1,27 @@
-Return-Path: <johannes.thoma@linbit.com>
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com
-	[209.85.128.50])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 0DEED1622CC
+Return-Path: <roland.kammerer@linbit.com>
+Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com
+	[209.85.208.178])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id F242F160872
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 11 Feb 2026 17:16:25 +0100 (CET)
-Received: by mail-wm1-f50.google.com with SMTP id
-	5b1f17b1804b1-48334ee0aeaso21115955e9.1
+	Fri, 13 Feb 2026 13:23:08 +0100 (CET)
+Received: by mail-lj1-f178.google.com with SMTP id
+	38308e7fff4ca-387090ae5b1so6091631fa.0
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 11 Feb 2026 08:16:25 -0800 (PST)
-Received: from [10.43.10.15] (62-99-137-214.static.upcbusiness.at.
-	[62.99.137.214]) by smtp.gmail.com with ESMTPSA id
-	ffacd0b85a97d-43783d46f9csm5359227f8f.10.2026.02.11.08.16.23
+	Fri, 13 Feb 2026 04:23:08 -0800 (PST)
+Received: from localhost (static.57.82.181.135.clients.your-server.de.
+	[135.181.82.57]) by smtp.gmail.com with ESMTPSA id
+	38308e7fff4ca-387069066b8sm12347121fa.35.2026.02.13.04.23.07
 	for <drbd-announce@lists.linbit.com>
-	(version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-	Wed, 11 Feb 2026 08:16:24 -0800 (PST)
-Message-ID: <316182a8-8d14-47fa-b373-f0e37a0c6c3b@linbit.com>
-Date: Wed, 11 Feb 2026 17:16:22 +0100
-MIME-Version: 1.0
+	(version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+	Fri, 13 Feb 2026 04:23:07 -0800 (PST)
+Date: Fri, 13 Feb 2026 13:23:06 +0100
+From: Roland Kammerer <roland.kammerer@linbit.com>
 To: drbd-announce@lists.linbit.com
-From: Johannes Khoshnazar-Thoma <johannes.thoma@linbit.com>
-Subject: WinDRBD 1.2.7 released
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Subject: linstor-proxmox v8.2.0-rc.1
+Message-ID: <aY8Xqi_E44ebbIBJ@arm64>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -33,21 +33,30 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Dear WinDRBD community,
+Dear PVE users,
 
-We just released WinDRBD 1.2.7. The main reason for this release is that
-an issue with connecting to a Linux DRBD was fixed. If you are running
-cross-platform (Linux/Windows) clusters, then you should upgrade to
-WinDRBD 1.2.7.
+this is the first RC of the upcoming 8.2.0 release. We added NVMe-oF
+support, allowing LINSTOR-managed NVMe over Fabrics resources alongside
+existing DRBD setups. See the commit for requirements and limitations.
+We will update the official documentation soon. We also added a
+configurable allowtwoprimaries option that allows using DRBD replication
+protocols other than C (at the cost of disabling live migration), and
+fixed list_images to correctly show all volumes in the storage pool
+regardless of which node you query from.
 
-Other than that I would like to invite you to the next LINBIT community
-meeting on March 12 2026 at 5 PM (CET) / 8 AM (PT), where we have
-some exciting news regarding the WinDRBD ecosystem to share.
+Please test, if we don't find any issues I will release the final
+version in about a week from now. Packages are available in the public
+testing repos.
 
-Details about the community meetings can be found at:
+Regards, rck
 
-https://linbit.com/community-meeting/
+GIT: https://github.com/LINBIT/linstor-proxmox/commit/a61b58a765e12e8b411720c66af6b2eb79145aa8
+TGZ: https://pkg.linbit.com/downloads/connectors/linstor-proxmox-8.2.0-rc.1.tar.gz
 
-Best regards,
+Changelog:
+[ Roland Kammerer ]
+* Add configurable allow-two-primaries option
 
-- Johannes
+[ Tydus ]
+* Fix list_images to show all volumes in storage pool
+* Add NVMe-oF support
