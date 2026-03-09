@@ -1,27 +1,26 @@
-Return-Path: <johannes.thoma@linbit.com>
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com
-	[209.85.128.50])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 8D76C16095C
+Return-Path: <philipp.reisner@linbit.com>
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com
+	[209.85.221.47])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 2EF721622C4
 	for <drbd-announce@lists.linbit.com>;
-	Wed,  4 Mar 2026 16:31:21 +0100 (CET)
-Received: by mail-wm1-f50.google.com with SMTP id
-	5b1f17b1804b1-483770e0b25so59971235e9.0
+	Mon,  9 Mar 2026 18:36:25 +0100 (CET)
+Received: by mail-wr1-f47.google.com with SMTP id
+	ffacd0b85a97d-439c6fc2910so4118539f8f.0
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 04 Mar 2026 07:31:21 -0800 (PST)
-Received: from [10.43.10.15] (62-99-137-214.static.upcbusiness.at.
-	[62.99.137.214]) by smtp.gmail.com with ESMTPSA id
-	5b1f17b1804b1-4851acfbd1bsm18951155e9.6.2026.03.04.07.31.18
+	Mon, 09 Mar 2026 10:36:25 -0700 (PDT)
+Received: from ryzen9 (192-164-131-220.hdsl.highway.telekom.at.
+	[192.164.131.220]) by smtp.gmail.com with ESMTPSA id
+	ffacd0b85a97d-439dae2bdf8sm29501769f8f.25.2026.03.09.10.36.23
 	for <drbd-announce@lists.linbit.com>
-	(version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-	Wed, 04 Mar 2026 07:31:19 -0800 (PST)
-Message-ID: <43a34627-6503-4d1f-82a0-51f2a7e2a69a@linbit.com>
-Date: Wed, 4 Mar 2026 16:31:16 +0100
-MIME-Version: 1.0
+	(version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+	Mon, 09 Mar 2026 10:36:23 -0700 (PDT)
+From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-From: Johannes Khoshnazar-Thoma <johannes.thoma@linbit.com>
-Subject: WinDRBD 1.2.8 released
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Subject: drbd-9.3.1 and drbd-9.2.17
+Date: Mon, 09 Mar 2026 18:36:22 +0100
+Message-ID: <86bjgwx5ux.fsf@linbit.com>
+MIME-Version: 1.0
+Content-Type: text/plain
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -33,26 +32,71 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Dear WinDRBD community,
 
-We just released WinDRBD 1.2.8. The major change in this version is
-that the Linux crypto framework was imported into WinDRBD. This means
-that (currently) crc32c, sha1 and hmac(sha1) are available for crypto
-algorithms. Also, more crypto algorithms can be added easily, since
-the Linux kernel's crypto code is now also part of the WinDRBD source
-code.
+Hello DRBD-users,
 
-This eliminates the need for ugly patches in LINSTOR, which is why we
-did the release now. In addition an endless loop when updating WinDRBD
-was fixed.
+Here is the final release of drbd-9.2.17 and drbd-9.3.1.
 
-Once again please join us at the LINBIT community meeting on March 12
-where we have exciting news about the future of WinDRBD to share.
+This development cycle brought a slightly higher number of bug fixes
+than the previous cycles. In nature, they are following the trend we
+have seen for quite some time. It is the unusual corner cases.
 
-You can register at:
+The set of tests in the CI loop, nightly test stability tests, and I/O
+endurance tests is a good net that catches major bugs before I tag a
+release. Of course, we constantly add new tests to further improve the
+quality. Also in this cycle, we introduced a static analyzer to
+eliminate a whole class lifetime/locking bugs of the bitmap data
+structure. And since it checks every future commit, it also guarantees
+that we never ever introduce bugs of that class.
 
-https://linbit.com/community-meeting/
+The 9.3.1 brings fundamental modernization to how DRBD handles I/O. From
+now on, DRBD can allocate compound pages from the kernel as I/O
+buffers. When you make large I/O requests or streaming accesses, that
+can speed things up.
 
-All the best,
+Do not be shy about switching from the 9.2.x series to the 9.3.x
+series. We use 9.3.1 on our internal production system exclusively by
+now. As of today, I plan that the 9.2.x series sees its last release in
+September 2026.
 
-- Johannes
+
+9.3.1 (api:genl2/proto:86-101,118-124/transport:21)
+--------
+ * Use compound pages to optimize large I/O performance
+ * New option for setting the discard granularity exposed on
+   diskless nodes
+ * Add per-peer_device tiebreaker config flag for quorum
+ * Fix compat-8.4 /proc/drbd output for connected resources
+ * Fix a race that could lead that a resyncs stalls when it
+   should complete.
+ * All fixes from 9.2.17
+  - Fix a kernel crash triggered by a crafted/invalid netlink message
+  - Fix a crash when resyncing with a peer supporting proto 121,
+    e.g. drbd-9.1.23
+  - Fixed two corner case regressions regarding bitmap lifetime
+    (introduced with 9.2.16)
+  - Add a static analyzer that checks for correctly handling bitmap
+    object lifetime; it identified 6 bugs
+  - Correctly request BLK_FEAT_STABLE_WRITES from the kernel; Kernels
+    side changes lead to this queue flag not being active
+  - Fix lb-tcp to not corrupt data when it reassembles a data chunk, it
+    split for sending over multiple paths in parallel
+  - Add a special case to ensure LINSTOR re-provisioned nodes with thin
+    volumes get the necessary incremental resync
+  - Always do a two-phase-commit for attach, closes a race that could
+    lead to an inconsistent repl states
+  - Skip unnecessary resync when a missed end-of-resync has 0 bits;
+    before that fix, DRBD could end up in inconsistent repl states
+  - Fix a case where a send error was ignored on congested connections
+  - Make detection of missed end-of-resync symmetric; the bug led to
+    inconsistent repl states
+  - Make the RDMA transport compatible with RXE (software RoCE),
+    and some mainly performance-related fixes
+
+https://pkg.linbit.com//downloads/drbd/9/drbd-9.3.1.tar.gz
+https://github.com/LINBIT/drbd/commit/9eba01aed618878de06ea17f17deddf96ac54d42
+
+https://pkg.linbit.com//downloads/drbd/9/drbd-9.2.17.tar.gz
+https://github.com/LINBIT/drbd/commit/415cc5153c91efdf4a98bd29510c4921dda7bf24
+
+-Philipp
