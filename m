@@ -1,20 +1,27 @@
-Return-Path: <moritz.wanzenboeck@linbit.com>
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com
-	[209.85.128.49])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 990B2160876
+Return-Path: <johannes.thoma@linbit.com>
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com
+	[209.85.221.45])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id B2485162319
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 11 Mar 2026 15:13:57 +0100 (CET)
-Received: by mail-wm1-f49.google.com with SMTP id
-	5b1f17b1804b1-48334ee0aeaso117382915e9.1
+	Wed, 11 Mar 2026 18:10:04 +0100 (CET)
+Received: by mail-wr1-f45.google.com with SMTP id
+	ffacd0b85a97d-439f59dfda2so76160f8f.2
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 11 Mar 2026 07:13:57 -0700 (PDT)
+	Wed, 11 Mar 2026 10:10:04 -0700 (PDT)
+Received: from [10.43.10.15] (62-99-137-214.static.upcbusiness.at.
+	[62.99.137.214]) by smtp.gmail.com with ESMTPSA id
+	ffacd0b85a97d-439fe1affe9sm687195f8f.15.2026.03.11.10.10.03
+	for <drbd-announce@lists.linbit.com>
+	(version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+	Wed, 11 Mar 2026 10:10:03 -0700 (PDT)
+Message-ID: <76a549dd-c4d2-4a47-985b-a4316acefee8@linbit.com>
+Date: Wed, 11 Mar 2026 18:10:01 +0100
 MIME-Version: 1.0
-From: Moritz Tanner <moritz.wanzenboeck@linbit.com>
-Date: Wed, 11 Mar 2026 15:13:44 +0100
-Message-ID: <CAKnz9x+56xCHu1JgmXLuReqdFuM3dYpRD=Qu4ruvUkMZh4wJFA@mail.gmail.com>
-Subject: LINSTOR Operator 2.10.5
 To: drbd-announce@lists.linbit.com
-Content-Type: text/plain; charset="UTF-8"
+From: Johannes Khoshnazar-Thoma <johannes.thoma@linbit.com>
+Subject: LINBIT SDS For Windows 1.0.0 released
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -26,50 +33,35 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-We've just released another bug fix for our Kubernetes Operator.
+Dear WinDRBD community,
 
-This time, we have taken the plunge to update LINSTOR to 1.33.1, along
-with updating to the latest DRBD 9.2.17. These fix a number of bugs,
-so updating is recommended. In the next feature release, we will
-update DRBD to 9.3.x.
+We are happy and proud to announce the availability of LINBIT SDS For Windows.
+LINBIT SDS For Windows is a fully featured Software Defined Storage (SDS) solution
+for Windows clusters (or also for mixed Linux/Windows clusters).
 
-On the Kubernetes front, we have updated the CSI driver to 1.10.6,
-which brings some fixes for IPv6 only clusters, and better capacity
-calculation for storage pools with disabled overprovisioning.
+It comes with following components:
 
-We recommend all users of release 2.10.x to update to this latest release.
+   * WinDRBD: Replication engine (driver) that makes your data highly available
+   * LINSTOR: Storage orchestrator for large (100+ physical nodes) clusters
+   * LINSTOR GUI: Easy to use, intuitive web based GUI for LINSTOR
+   * LINSTOR Client: Command line client for LINSTOR
+   * DRBD Reactor / Promoter: Cluster manager: starts and stops
+     resources in response to events (node lost, ...)
 
-To upgrade, either point your kustomization.yaml at the new manifest:
+For Windows, LINBIT SDS comes with a single installer EXE that allows users
+to get started quickly. There is a community edition for evaluation purposes
+which requires nodes to be set to test mode but has no other restrictions
+in storage size or number of nodes. LINBIT SDS For Windows can be downloaded
+from the LINBIT website (www.linbit.com, it is currently filed under Windows
+DRBD driver).
 
-  https://charts.linstor.io/static/v2.10.5.yaml
+I will give an introduction and 3 demos tomorrow at the community meeting.
+I would like to invite you to join and ask any questions that may arise:
 
-Or, if using helm, upgrade the linstor-operator chart:
-
-  helm repo update
-  helm upgrade linstor-operator linstor/linstor-operator --wait
-
-To get specific instructions to apply the update, check our users guide[1].
-
-Source code is, as always, available upstream[2].
+https://linbit.com/community-meeting/
 
 Best regards,
-Moritz
 
-[1]: https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-upgrade
-[2]: https://github.com/piraeusdatastore/piraeus-operator
----
-### Fixed
+- Johannes
 
-- Updated NFS server template to work with NFS Ganesha instances with
-monitoring enabled.
-- Ensure Satellites are always rescheduled on NoScheduled nodes as
-long as the LinstorSatellite resource exists.
 
-### Changed
-
-- Updated images:
-    * LINSTOR 1.33.1
-    * LINSTOR CSI 1.10.6
-    * DRBD 9.2.17
-    * DRBD Reactor 1.11.0
-    * Latest CSI sidecars
