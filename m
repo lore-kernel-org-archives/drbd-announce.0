@@ -1,21 +1,20 @@
-Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com
-	[209.85.208.179])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 75EB5160876
+Return-Path: <moritz.wanzenboeck@linbit.com>
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com
+	[209.85.128.49])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 990B2160876
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 10 Mar 2026 14:05:27 +0100 (CET)
-Received: by mail-lj1-f179.google.com with SMTP id
-	38308e7fff4ca-38a40273544so31907861fa.2
+	Wed, 11 Mar 2026 15:13:57 +0100 (CET)
+Received: by mail-wm1-f49.google.com with SMTP id
+	5b1f17b1804b1-48334ee0aeaso117382915e9.1
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 10 Mar 2026 06:05:27 -0700 (PDT)
-Date: Tue, 10 Mar 2026 14:05:25 +0100
-From: Roland Kammerer <roland.kammerer@linbit.com>
-To: drbd-announce@lists.linbit.com
-Subject: drbd-utils v9.34.0-rc.1
-Message-ID: <abAXFb1M62JyRcvA@arm64>
+	Wed, 11 Mar 2026 07:13:57 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+From: Moritz Tanner <moritz.wanzenboeck@linbit.com>
+Date: Wed, 11 Mar 2026 15:13:44 +0100
+Message-ID: <CAKnz9x+56xCHu1JgmXLuReqdFuM3dYpRD=Qu4ruvUkMZh4wJFA@mail.gmail.com>
+Subject: LINSTOR Operator 2.10.5
+To: drbd-announce@lists.linbit.com
+Content-Type: text/plain; charset="UTF-8"
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -27,31 +26,50 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Dear DRBD users,
+We've just released another bug fix for our Kubernetes Operator.
 
-this is the first RC of the upcoming version 9.34.0. It contains
-improvements and fixes all over the place. The main reason for this
-release is the release of DRBD kernel module 9.3.1 which introduced two
-new parameters, namely "discard-granularity" and "tie-breaker".
+This time, we have taken the plunge to update LINSTOR to 1.33.1, along
+with updating to the latest DRBD 9.2.17. These fix a number of bugs,
+so updating is recommended. In the next feature release, we will
+update DRBD to 9.3.x.
 
-Please test, if we don't find any issues the final release will be about
-a week from now.
+On the Kubernetes front, we have updated the CSI driver to 1.10.6,
+which brings some fixes for IPv6 only clusters, and better capacity
+calculation for storage pools with disabled overprovisioning.
 
-Regards, rck
+We recommend all users of release 2.10.x to update to this latest release.
 
-GIT: https://github.com/LINBIT/drbd-utils/commit/696ee0fafa437f3b33b1e437cfc2741bf93604b2
-TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-utils-9.34.0-rc.1.tar.gz
-PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+To upgrade, either point your kustomization.yaml at the new manifest:
 
-Changelog:
-9.34.0-rc.1
------------
- * drbdadm: fix adjust for a v8 config with a v9 drbd kernel driver
- * drbdadm: fix segfault if we don't know about peer devices
- * drbdsetup,v9: suspend-io: add --bdev-freeze option
- * drbdadm,adjust: split disk-options into early/late stage
-   based on bitmap direction
- * drbdadm,adjust: fix segfault on _unknown options
- * drbdmeta: create-md: add --initialize-bitmap=set-all
- * drbd: add per-peer_device tiebreaker config flag for quorum
- * drbd-utils: add discard-granularity device option
+  https://charts.linstor.io/static/v2.10.5.yaml
+
+Or, if using helm, upgrade the linstor-operator chart:
+
+  helm repo update
+  helm upgrade linstor-operator linstor/linstor-operator --wait
+
+To get specific instructions to apply the update, check our users guide[1].
+
+Source code is, as always, available upstream[2].
+
+Best regards,
+Moritz
+
+[1]: https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-upgrade
+[2]: https://github.com/piraeusdatastore/piraeus-operator
+---
+### Fixed
+
+- Updated NFS server template to work with NFS Ganesha instances with
+monitoring enabled.
+- Ensure Satellites are always rescheduled on NoScheduled nodes as
+long as the LinstorSatellite resource exists.
+
+### Changed
+
+- Updated images:
+    * LINSTOR 1.33.1
+    * LINSTOR CSI 1.10.6
+    * DRBD 9.2.17
+    * DRBD Reactor 1.11.0
+    * Latest CSI sidecars
