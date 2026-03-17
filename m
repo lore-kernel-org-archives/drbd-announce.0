@@ -1,27 +1,22 @@
-Return-Path: <johannes.thoma@linbit.com>
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com
-	[209.85.221.45])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id B2485162319
+Return-Path: <roland.kammerer@linbit.com>
+Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com
+	[209.85.208.173])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id BF0DD16094D
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 11 Mar 2026 18:10:04 +0100 (CET)
-Received: by mail-wr1-f45.google.com with SMTP id
-	ffacd0b85a97d-439f59dfda2so76160f8f.2
+	Tue, 17 Mar 2026 09:34:23 +0100 (CET)
+Received: by mail-lj1-f173.google.com with SMTP id
+	38308e7fff4ca-38a42a0d7f7so4575001fa.1
 	for <drbd-announce@lists.linbit.com>;
-	Wed, 11 Mar 2026 10:10:04 -0700 (PDT)
-Received: from [10.43.10.15] (62-99-137-214.static.upcbusiness.at.
-	[62.99.137.214]) by smtp.gmail.com with ESMTPSA id
-	ffacd0b85a97d-439fe1affe9sm687195f8f.15.2026.03.11.10.10.03
-	for <drbd-announce@lists.linbit.com>
-	(version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-	Wed, 11 Mar 2026 10:10:03 -0700 (PDT)
-Message-ID: <76a549dd-c4d2-4a47-985b-a4316acefee8@linbit.com>
-Date: Wed, 11 Mar 2026 18:10:01 +0100
-MIME-Version: 1.0
+	Tue, 17 Mar 2026 01:34:23 -0700 (PDT)
+Date: Tue, 17 Mar 2026 09:34:21 +0100
+From: Roland Kammerer <roland.kammerer@linbit.com>
 To: drbd-announce@lists.linbit.com
-From: Johannes Khoshnazar-Thoma <johannes.thoma@linbit.com>
-Subject: LINBIT SDS For Windows 1.0.0 released
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Subject: drbd-utils v9.34.0
+Message-ID: <abkSDZLb2sx6Ib8S@arm64>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="3PShSInfYlZ2RjTE"
+Content-Disposition: inline
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -33,35 +28,55 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Dear WinDRBD community,
 
-We are happy and proud to announce the availability of LINBIT SDS For Windows.
-LINBIT SDS For Windows is a fully featured Software Defined Storage (SDS) solution
-for Windows clusters (or also for mixed Linux/Windows clusters).
+--3PShSInfYlZ2RjTE
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-It comes with following components:
+Dear DRBD users,
 
-   * WinDRBD: Replication engine (driver) that makes your data highly available
-   * LINSTOR: Storage orchestrator for large (100+ physical nodes) clusters
-   * LINSTOR GUI: Easy to use, intuitive web based GUI for LINSTOR
-   * LINSTOR Client: Command line client for LINSTOR
-   * DRBD Reactor / Promoter: Cluster manager: starts and stops
-     resources in response to events (node lost, ...)
+this is the drbd-utils version 9.34.0. Since RC1 we fixed a regression
+in drbd-meta introduced in 9.33.0. All users of 9.33.0 are encouraged to
+upgrade. Other than that, from the RC:
 
-For Windows, LINBIT SDS comes with a single installer EXE that allows users
-to get started quickly. There is a community edition for evaluation purposes
-which requires nodes to be set to test mode but has no other restrictions
-in storage size or number of nodes. LINBIT SDS For Windows can be downloaded
-from the LINBIT website (www.linbit.com, it is currently filed under Windows
-DRBD driver).
+It contains improvements and fixes all over the place. The main reason
+for this release is the release of DRBD kernel module 9.3.1 which
+introduced two new parameters, namely "discard-granularity" and
+"tie-breaker".
 
-I will give an introduction and 3 demos tomorrow at the community meeting.
-I would like to invite you to join and ask any questions that may arise:
+Regards, rck
 
-https://linbit.com/community-meeting/
+GIT: https://github.com/LINBIT/drbd-utils/commit/7fe34d56a7264cfc92fc5270471827bb3f7773e6
+TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-utils-9.34.0.tar.gz
+PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
-Best regards,
+Changelog:
+9.34.0
+-----------
+ * drbdadm: fix adjust for a v8 config with a v9 drbd kernel driver
+ * drbdadm: fix segfault if we don't know about peer devices
+ * drbdsetup,v9: suspend-io: add --bdev-freeze option
+ * drbdadm,adjust: split disk-options into early/late stage
+   based on bitmap direction
+ * drbdadm,adjust: fix segfault on _unknown options
+ * drbdmeta: create-md: add --initialize-bitmap=set-all
+ * drbd: add per-peer_device tiebreaker config flag for quorum
+ * drbd-utils: add discard-granularity device option
+ * drbdmeta: fix segfault during apply-al
 
-- Johannes
+--3PShSInfYlZ2RjTE
+Content-Type: application/pgp-signature; name=signature.asc
 
+-----BEGIN PGP SIGNATURE-----
 
+iQEzBAEBCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmm5EeoACgkQRgmezyI6
+myLRygf+KhhgbQtr+Pye/8w2/2k0QIJvsvCkZj9vgawWCn8jTiwnVi41R5CA/fzu
+HNFL/MrX+SgdXivM0misFR+qWGXpLL85J3p+0WZLalex3farBSWj/wEIFW77LbEh
+O6Z36NnhA3yNabiSxGTTQU+271AdrChaN++MbrNsg0vKopYYoOFOxyrH7dlpj7ty
+h9Rd/NCUSDm79YFe9OGx8ycfxj473D7Y9Y/awwAmIv4qOYqt7wek9K4mQF+K9pVb
+9289zRgdHoc4574nd3hDu4QokbwGw2DrQDX7DvFScm7jRix6zCiPhLbCFkPsaIoj
+aRm8S1Taz3+8Fs88UNWbnqElpMlrXg==
+=Aur4
+-----END PGP SIGNATURE-----
+
+--3PShSInfYlZ2RjTE--
