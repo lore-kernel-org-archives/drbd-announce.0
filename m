@@ -1,22 +1,21 @@
-Return-Path: <roland.kammerer@linbit.com>
-Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com
-	[209.85.208.173])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id BF0DD16094D
+Return-Path: <christoph.boehmwalder@linbit.com>
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com
+	[209.85.128.52])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 21111160878
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 17 Mar 2026 09:34:23 +0100 (CET)
-Received: by mail-lj1-f173.google.com with SMTP id
-	38308e7fff4ca-38a42a0d7f7so4575001fa.1
+	Mon, 30 Mar 2026 15:34:19 +0200 (CEST)
+Received: by mail-wm1-f52.google.com with SMTP id
+	5b1f17b1804b1-48700b1ba53so40065535e9.1
 	for <drbd-announce@lists.linbit.com>;
-	Tue, 17 Mar 2026 01:34:23 -0700 (PDT)
-Date: Tue, 17 Mar 2026 09:34:21 +0100
-From: Roland Kammerer <roland.kammerer@linbit.com>
+	Mon, 30 Mar 2026 06:34:19 -0700 (PDT)
+Date: Mon, 30 Mar 2026 15:34:17 +0200
+From: Christoph =?utf-8?Q?B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>
 To: drbd-announce@lists.linbit.com
-Subject: drbd-utils v9.34.0
-Message-ID: <abkSDZLb2sx6Ib8S@arm64>
+Subject: LINSTOR GUI v2.4.0
+Message-ID: <20260330133417.kPjaJ%christoph.boehmwalder@linbit.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="3PShSInfYlZ2RjTE"
-Content-Disposition: inline
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -28,55 +27,43 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
+Hello,
 
---3PShSInfYlZ2RjTE
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+a new version of LINSTOR GUI has just been released: v2.4.0
 
-Dear DRBD users,
+https://github.com/LINBIT/linstor-gui/releases/tag/v2.4.0
 
-this is the drbd-utils version 9.34.0. Since RC1 we fixed a regression
-in drbd-meta introduced in 9.33.0. All users of 9.33.0 are encouraged to
-upgrade. Other than that, from the RC:
+Here is the relevant excerpt from the changelog:
 
-It contains improvements and fixes all over the place. The main reason
-for this release is the release of DRBD kernel module 9.3.1 which
-introduced two new parameters, namely "discard-granularity" and
-"tie-breaker".
+-----------------------------------
+# 2.4.0 - 2026-03-30=0D=0A=
+=0D=0A=
+### Added=0D=0A=
+=0D=0A=
+- Platform info for node=0D=0A=
+=0D=0A=
+### Changed=0D=0A=
+=0D=0A=
+- Expand the sidebar by default=0D=0A=
+- Updated DRBD options and property definitions=0D=0A=
+- Improved Resource Group properties display=0D=0A=
+=0D=0A=
+### Fixed=0D=0A=
+=0D=0A=
+- Resource definition name validation in the create form=0D=0A=
+- Click area for actions on the resource overview and related list pages=0D=
+=0A=
+- Keep users logged in after a successful password change=0D=0A=
+- Prevent blinking on Storage Pool charts=0D=0A=
+- Correct DRBD options boolean mapping from `true/false` to `no/yes`=0D=0A=
+- Correct `diskless_on_remaining` value handling=0D=0A=
+=0D=0A=
+-----------------------------------
 
-Regards, rck
+Regards,
+Christoph
 
-GIT: https://github.com/LINBIT/drbd-utils/commit/7fe34d56a7264cfc92fc5270471827bb3f7773e6
-TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-utils-9.34.0.tar.gz
-PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
-
-Changelog:
-9.34.0
------------
- * drbdadm: fix adjust for a v8 config with a v9 drbd kernel driver
- * drbdadm: fix segfault if we don't know about peer devices
- * drbdsetup,v9: suspend-io: add --bdev-freeze option
- * drbdadm,adjust: split disk-options into early/late stage
-   based on bitmap direction
- * drbdadm,adjust: fix segfault on _unknown options
- * drbdmeta: create-md: add --initialize-bitmap=set-all
- * drbd: add per-peer_device tiebreaker config flag for quorum
- * drbd-utils: add discard-granularity device option
- * drbdmeta: fix segfault during apply-al
-
---3PShSInfYlZ2RjTE
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmm5EeoACgkQRgmezyI6
-myLRygf+KhhgbQtr+Pye/8w2/2k0QIJvsvCkZj9vgawWCn8jTiwnVi41R5CA/fzu
-HNFL/MrX+SgdXivM0misFR+qWGXpLL85J3p+0WZLalex3farBSWj/wEIFW77LbEh
-O6Z36NnhA3yNabiSxGTTQU+271AdrChaN++MbrNsg0vKopYYoOFOxyrH7dlpj7ty
-h9Rd/NCUSDm79YFe9OGx8ycfxj473D7Y9Y/awwAmIv4qOYqt7wek9K4mQF+K9pVb
-9289zRgdHoc4574nd3hDu4QokbwGw2DrQDX7DvFScm7jRix6zCiPhLbCFkPsaIoj
-aRm8S1Taz3+8Fs88UNWbnqElpMlrXg==
-=Aur4
------END PGP SIGNATURE-----
-
---3PShSInfYlZ2RjTE--
+--
+Christoph B=C3=B6hmwalder
+LINBIT | Keeping the Digital World Running
+DRBD HA =E2=80=94  Disaster Recovery =E2=80=94 Software defined Storage
