@@ -1,27 +1,26 @@
-Return-Path: <johannes.thoma@linbit.com>
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com
-	[209.85.128.42])
-	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id D7C71162267
+Return-Path: <philipp.reisner@linbit.com>
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com
+	[209.85.221.54])
+	by mail19.linbit.com (LINBIT Mail Daemon) with ESMTP id 881011627BB
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 16 Apr 2026 13:07:06 +0200 (CEST)
-Received: by mail-wm1-f42.google.com with SMTP id
-	5b1f17b1804b1-48896199cbaso81671505e9.1
+	Mon, 20 Apr 2026 21:57:16 +0200 (CEST)
+Received: by mail-wr1-f54.google.com with SMTP id
+	ffacd0b85a97d-43d70c30767so2577726f8f.0
 	for <drbd-announce@lists.linbit.com>;
-	Thu, 16 Apr 2026 04:07:06 -0700 (PDT)
-Received: from [10.43.10.15] (62-99-137-214.static.upcbusiness.at.
-	[62.99.137.214]) by smtp.gmail.com with ESMTPSA id
-	5b1f17b1804b1-488f0e9a770sm42504045e9.19.2026.04.16.04.07.04
+	Mon, 20 Apr 2026 12:57:16 -0700 (PDT)
+Received: from ryzen9 (192-164-131-220.hdsl.highway.telekom.at.
+	[192.164.131.220]) by smtp.gmail.com with ESMTPSA id
+	ffacd0b85a97d-43fe4e59f97sm34988727f8f.37.2026.04.20.12.57.14
 	for <drbd-announce@lists.linbit.com>
-	(version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-	Thu, 16 Apr 2026 04:07:04 -0700 (PDT)
-Message-ID: <ac76994d-5e10-490c-ba1b-b4476c23305d@linbit.com>
-Date: Thu, 16 Apr 2026 13:07:02 +0200
-MIME-Version: 1.0
+	(version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+	Mon, 20 Apr 2026 12:57:14 -0700 (PDT)
+From: Philipp Reisner <philipp.reisner@linbit.com>
 To: drbd-announce@lists.linbit.com
-From: Johannes Khoshnazar-Thoma <johannes.thoma@linbit.com>
-Subject: WinDRBD 1.2.9 released
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Subject: drbd-9.3.2 and drbd-9.2.18
+Date: Mon, 20 Apr 2026 21:57:13 +0200
+Message-ID: <86h5p5o15y.fsf@linbit.com>
+MIME-Version: 1.0
+Content-Type: text/plain
 Reply-To: drbd-user@lists.linbit.com
 List-Id: Announcements of new releases and critical bugs found
 	<drbd-announce.lists.linbit.com>
@@ -33,51 +32,58 @@ List-Help: <mailto:drbd-announce-request@lists.linbit.com?subject=help>
 List-Subscribe: <https://lists.linbit.com/mailman/listinfo/drbd-announce>,
 	<mailto:drbd-announce-request@lists.linbit.com?subject=subscribe>
 
-Dear WinDRBD community,
 
-WinDRBD 1.2.9 is out and available in the repositories. An evaluation version can
-be downloaded from:
+Hi,
 
-https://linbit.com/linbit-software-download-page-for-linstor-and-drbd-linux-driver/
+Another release coming. This time, it includes important fixes for
+large, dynamic LINSTOR clusters. Linstor 1.33.2 already contains fixes
+for most cases, but for disaggregated setups with diskless primary
+nodes, this DRBD update is also necessary.
 
-It fixes several minor issues that have piled up with the switch to the WinDRBD 1.2
-branch. Most notably, it fixes a problem with the driver not unloading and therefore
-making a reboot neccessary on upgrade.
+The bugs affect resources that got a replica added later, after creation
+time. It only affects thinly-provisioned volumes, and only if they never
+had a write request with a node absent and fully utilized peer
+slots.
+So, usually only a small percentage of all resources are
+affected. Unfortunately, the affected resources show UpToDate/UpToDate,
+but the younger replica misses some blocks.
 
-Another major change is that we now use the clang (instead of gcc) compiler to
-build the distribution packages. The advantage is that clang can generate Windows
-windbg compatible debug info (*.pdb) files, which eases analyzing a crash dump
-a lot. WinDRBD can still be built with gcc manually, only the packages are compiled
-with clang.
+Now we have tests for all those scenarios.
 
- From the WHATSNEW.md:
+As these fixes are important for such larger LINSTOR installations, I
+start this release cycle about two weeks earlier than usual.
 
-What's new in version 1.2.9
----------------------------
+During the release candidate phase, a regression in the RDMA transport
+in the drbd-9.3 branch was discovered and fixed. And a problem with
+attaching devices of ~100TiB or more was discovered and fixed.
 
-DRBD 9.2.17 / DRBD 9.3.1 support
+9.3.2 (api:genl2/proto:86-101,118-124/transport:21)
+--------
+ * Use genl pre_doit/post_doit for netlink request setup and teardown
+ * Handle recv returning 0 (EOF) in recv_bio
+ * Revert flush_send_buffer send error causing state change
+ * Fix a page leak in the RDMA transport's send-page path
+ * All fixes from 9.2.18
+  - Fix when a diskless primary creates a new current UUID,
+    fixing possible silent data divergence later
+  - Fix quorum calculation upon attach/detach operations
+  - Handle split-brain recovery strategies during attach
+    like they are handled during connect
+  - Hanle attaching of large devices (~100TiB) without triggering
+    the NMI watchdog
+  - Fix a race condition in the RDMA code that could lead to
+    leaking a cm object
+  - Skip new-region resync for zero-guarantee backends at attach
+  - drbdsetup attach waits for completion of disk state negotiation
+    before returning
+  - Fix missing disk line in drbdsetup show while in D_NEGOTIATING state
+  - A few fixes found by the static analyzer smatch
 
-Support compound pages (used by DRBD 9.3.1)
+https://pkg.linbit.com//downloads/drbd/9/drbd-9.3.2.tar.gz
+https://github.com/LINBIT/drbd/commit/0605140bf521251f4f362b5bad2eeaf33dba1e9f
 
-Fixed several memory leaks
+https://pkg.linbit.com//downloads/drbd/9/drbd-9.2.18.tar.gz
+https://github.com/LINBIT/drbd/commit/a7afc67e5873f3fedce8d944c89edf87ffb7c116
 
-Fixed use after free in drbd_destroy_device / workqueue
-
-Fixed start sector out of range check
-
-Fixed synchronize RCU if called before driver unload
-
-Fixed signal pending on task creation
-
-Compile binary packages with clang
-
----------------------------------------
-
-If you plan a maintenance window, it is recommended to update WinDRBD
-to 1.2.9 (or any later version). Note that there are packages built for
-DRBD 9.2 and DRBD 9.3, you can use either DRBD 9.2 (older codebase)
-or DRBD 9.3 (performs better in some cases).
-
-Best regards,
-
-- Johannes
+cheers,
+ Philipp
