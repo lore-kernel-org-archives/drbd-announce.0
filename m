@@ -1,75 +1,75 @@
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBC7A3B3C10
-	for <drbd-announce@lists.linux.dev>; Fri, 29 May 2026 08:02:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACE683B27E9
+	for <drbd-announce@lists.linux.dev>; Fri, 29 May 2026 08:36:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.48
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780041758; cv=pass; b=ffER4bYBF5Os/adjao3QAEGCKnwpbXlwgVeBh2snngEh3nnYyMKHdFk1lRB+wJQj6ZUYFiD8IgOH/5qgNXnK4L6ZQQAiP1y37zlRKNcl3INpj8t/sX4bNY/WjEkLzi/tsMt04OWjygS1Q+jCVWqhmMgIrKjPOUN6f8mjJGJySIc=
+	t=1780043797; cv=pass; b=Ci7cMcKwA48IJ+mZPh65S+MLuZLm/olJ03UXD8hDGTeymmaRBHSxDqNZnUHLuz4mihikGy7NONg0HJoP+rDivaRE/+nDXeodr8SoWTKFDKPZb+jMdsnKRH76xRM6VUKKbfBCRCtHOexFlEs+mAH1SOS1UHoQXB+wxeHtE7tbwEY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780041758; c=relaxed/simple;
-	bh=L+oHWqjM7jXD9o5U/4/gp6du9iTXKz5BKy5saTMZ310=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=IupvGXzHHh6e25accv+zNXuqxRvU8Cbw5sYpiFKhbyjpI7+OwXv1mhiA8CjsAxu57+FxfSibkDRvih7k4JusGfkwCc0N+XmSiDaO8jgFpp6uPzfanDmAOc7pnmOmU3T77eJeg9iMUcLHTiF1/+/GCKBBXJ/5LrgrLVtrwvnsV7Y=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linbit.com; spf=pass smtp.mailfrom=linbit.com; dkim=pass (2048-bit key) header.d=linbit-com.20251104.gappssmtp.com header.i=@linbit-com.20251104.gappssmtp.com header.b=LpYnAMBD; arc=pass smtp.client-ip=209.85.218.43
+	s=arc-20240116; t=1780043797; c=relaxed/simple;
+	bh=V64KifFayDXGYNYnuBo621EN9oEPhljYvQPZ+pxY6KQ=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=EJXOxk2gAIAlf6GZIJvFtiZpFC9fo118BFKuHIDwQlGtQGrIU4rW/6W77YnBsUv6xZDiZ9gVdyH4iT/E/rGYb2lGkPKt9nZhSe2VyzJvc/ok1GntjqnXi67AjS0SEsi/8D/QmoyOHhRLhTs0j9TiMDGPJ36ufdCYuDFE5Oj3mIU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linbit.com; spf=pass smtp.mailfrom=linbit.com; dkim=pass (2048-bit key) header.d=linbit-com.20251104.gappssmtp.com header.i=@linbit-com.20251104.gappssmtp.com header.b=0ROAwOZT; arc=pass smtp.client-ip=209.85.128.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linbit.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linbit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linbit-com.20251104.gappssmtp.com header.i=@linbit-com.20251104.gappssmtp.com header.b="LpYnAMBD"
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-bcc9fdc959cso2322867266b.2
-        for <drbd-announce@lists.linux.dev>; Fri, 29 May 2026 01:02:35 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780041754; cv=none;
+	dkim=pass (2048-bit key) header.d=linbit-com.20251104.gappssmtp.com header.i=@linbit-com.20251104.gappssmtp.com header.b="0ROAwOZT"
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-48e8132c6d0so86681325e9.1
+        for <drbd-announce@lists.linux.dev>; Fri, 29 May 2026 01:36:35 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780043794; cv=none;
         d=google.com; s=arc-20240605;
-        b=SI34xn1uHT5qlLTtRoSGQVSwAlapJe1xJUe1zC/CAsVF18NyNV+NiZxkMMe8jA3FO6
-         fWJlXu0Yvl91aj19LHrckmFTzWiSZWKoWOMTQz3Sp3DD65ngaGLvqfIF4xBJCtvGwT5d
-         rdvhKLlEpgOF3//Zlllk8MEvrxwCKUwDGTsQjrhmWU5PTROVZPu3zS4xuRqE5nltXFYl
-         38tQowb2Wqn88lEvPR8hlOKBzkK9gbttQ0frHPeIdVTGHCLwpJmbsZVsoW4b5fCwrT5r
-         0FYmuRmOkHxrKP/ZPog3YEqnh5toWEbVbEiXVwR5QXzeAR6IEqvUCRIlQ1Z++7ZCTU+R
-         195g==
+        b=LD/+KLriW9Vkh/SLhO9c5Omeu/uY3d/W+ezu23lZ5otSaf9geiTxiEkTf5cr1w//wL
+         02jcNnRF2+qqDfGr9HBUG4ZdRl4eIsvZ/Sq28NOB0sKRkih0tgqbfD1awVMeUfA80W4p
+         AcW/j1RLoHfLTpOM0zMv/Bs5B4TTKsxEetj6qbJQacEvFQqgTPBhbtbnPIo6suj3mLF7
+         Gz69HmaRwcyXXagsjZ65S7OMr8FBmJFjTKM3O4V8FTlF5kiWERR1eqjdufZeOZqr3PDK
+         bJ8uRn7z6IeKnWyPFrsduS0QNfN6uyc+N1h7F9W2XX0rGFOe08aX7AzElL6E1czsFdPe
+         VmLg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=XLlylCUNfUwz8XjivJoRQEZACwIkHS7BLcQ4AMItrao=;
+        bh=V64KifFayDXGYNYnuBo621EN9oEPhljYvQPZ+pxY6KQ=;
         fh=dd/d96l2eyAS5M83j8rEodEIA/JGxDx7Hy24xgjER3E=;
-        b=WIsF2zG07noYpZ+a1TdVihL5cPVmDpmpMZfwJlno78a9C1nD+yQhc3OePsQF6Y+hh0
-         01vQ3E4gHBhNK6mtCynRhwPE1BxUTor0tj4PPUhH7jFAXac8vrPFB/RIga9cMOrf9HYQ
-         qqan0Sw8n5vyJ0CCb+ESoJIZXNazsJZ72GSE/t07rg5VtUqQfeogg5LuZr/8AYZq3v2Z
-         uX7egST52vibMvhqqXUhr/csdKK9cUPzbNFbM+seer9TIVSHOgRHtYPIe1oTdHsCFhp0
-         gGDLMjg9cSpEOMIGtU7MdWBA1hThAEP09pPmO7lAKtWzF/uKM7zVCoYpgh5biEHeByyd
-         5LGA==;
+        b=HLquFUpzzMACPll2zPedaMEz+UHg5kaW147w5r1K0IWh8PPq1YCuvu4eNklkaZRRYx
+         LMphKeqxAthUmOfs3vhS1OIU33j4hp6a0WC2RqVZcOdwIiN/7bJQ3gHbjHlUlNc1qp1D
+         tjVu8QUnBGb41AgpKwBiAMq4iQW4YFFiaHAfOxeov97rSPk2vviPWlwdjVb03nL/X46C
+         /e1ZdS4Ls0qancMrMkOTzMak1SgbYkcIgDN/0xWCBftBXYH0BZZJVUiPIw0J0Ss9BlbI
+         niHYFY7+CCeKsQko/YPL/VdgMz1m9cCMpvg51+JFcoIqqT1fiBHS7Op4qRpBu2o2/Qm/
+         35pg==;
         darn=lists.linux.dev
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linbit-com.20251104.gappssmtp.com; s=20251104; t=1780041754; x=1780646554; darn=lists.linux.dev;
+        d=linbit-com.20251104.gappssmtp.com; s=20251104; t=1780043794; x=1780648594; darn=lists.linux.dev;
         h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=XLlylCUNfUwz8XjivJoRQEZACwIkHS7BLcQ4AMItrao=;
-        b=LpYnAMBDpzN9V5FbI0vWjC5+S7r1lXomeMXZ3/JoQLZ4OAdLnUkNsUZx8XwWIUn7ay
-         N3mUYuQG+AXkg6sLIYIb/ewEw6H92E7xtM02t07GilTe8dosKqd3pEQfRtdy7dF0XoKR
-         VMefpW4Tq4AVeX70EyHtbErX3sJQwbjH+47k3iIxEP+x5QUoHYu3zIDJ53L7GnLMnn/E
-         H1/Ohi3yrc0oXinn4tPGgrW2s/YoTVGdrwHlI+mJt9y9QHjbACXeqB9mzVhc4/kQBMNk
-         NU/ze1XLH5xCKDWAKZJW+hIjFhbW9vJZ6m3XF2Do4JfCKOUXE5lEh7UQGhbqN4TqIObo
-         H5xA==
+        bh=V64KifFayDXGYNYnuBo621EN9oEPhljYvQPZ+pxY6KQ=;
+        b=0ROAwOZTKcKhA6eRSo0+27DJm9WvKoUAjx8JMgUN3taOrnvRlQaLxQxerNos7pBl0B
+         eX9nCbI8kwLGY+LF4vIJIWcsFnSdypwQRwkdXFPXgrqRTis+V1Y1Axr9dHw0DWXU2CQE
+         Kus4LutL30VuNcMQU/XFKOSS2cpTBnvsBkzaeW/rQqBy+PMo25G/oDSIPVEslgI1N/Fs
+         DNwG4zZOeed830spRezHd4Uc8U+50mp52CwhOWzHTxTOYw6O7z49o8ckZM5u707TuFfu
+         OZhxGcaMiov2dhdGFTcnVHVQHgjlzl7BfF3/fw3He+R2mfk8o05FZ9aMJKytaXEeR5xV
+         2aQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780041754; x=1780646554;
+        d=1e100.net; s=20251104; t=1780043794; x=1780648594;
         h=to:subject:message-id:date:from:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=XLlylCUNfUwz8XjivJoRQEZACwIkHS7BLcQ4AMItrao=;
-        b=SfnrbsUk0v8Hp7NZZbnR6pRAw0p03Ag5L/7oHkMzw87bFjpr1vlcocAxvWB1aoX14K
-         2geHmGFgnbKWi6usiZPzq8ko/RDoMYvT9SvpTpbT5gqhaEHcFnfPPtRR6x/MLpeUpqCa
-         poFSpGovMu2XE97GWUntNflmghmgBUztAA6zSRGCd5ws/EgRq5sS1/u98PGeFt4/Oo84
-         FWsF5JFelx4/mopskzQadIRUoOWlVMHVJRO/rCjto3nDsZMfjFXVMfgOmQXsJedyk9la
-         feBu4IeWcOHFbMB+xbv7DIybr8YidFvK3eN7ux3SXRRRUoFY1uR44l49ubWa97NeVYnH
-         4tkQ==
-X-Gm-Message-State: AOJu0YwFAcskM589V3kt9gd/BscPmddzktpYVfaO0Y8T7EndSewWdxFJ
-	Q3hstaO5dsh1EBB3kt4+mjeNOuCd/qWX1nJdJtNo3NWsI8RaLqapqCe95Of8GxS2ZtZevxTGu29
-	iMYubhLMJ4kp+xXInJRRakBIe6ed/QQ602eufSiyq2BvVHMid/kG9evZGWw==
-X-Gm-Gg: Acq92OGVHNHe8tEAM/GZJ6x7PsZErjGPA2kYmRfIgMQiRBtJXUsnfSz98BGIyvS/WBf
-	3iWkxUnwomqflPNjm8wj4To76hLHUZWV7zYux4cDTC7YGeaDEuKlXL6cHGh+Jkc1YTR6DTryoNZ
-	LKo5TuysOttvsmtYjcSynBBdoug+MfuMQuKw0o1LOsXUYwZjA9U+Lefry6NaXAw5D2ec0tQnfX/
-	39z7yZ4dGsqeNDeorzavIL52Ga0dvcKdAv5zgL91G63h61eohZ7ivxNZ46d3oDq+oUCBkQEn8QU
-	X22OSW2LLpsAGiwwhA==
-X-Received: by 2002:a17:907:9612:b0:bd3:5e5d:7ea3 with SMTP id
- a640c23a62f3a-be9cd65ad7fmr93759566b.33.1780041753848; Fri, 29 May 2026
- 01:02:33 -0700 (PDT)
+        bh=V64KifFayDXGYNYnuBo621EN9oEPhljYvQPZ+pxY6KQ=;
+        b=oC0MpythB3NwPM6pJTdsAKoM8f5/Rtx1FTCiamo5fDDjXbwnc9k9UYf6HifRDSpwWR
+         gs9vyK3ZHZi/1KDMh+9WJtGGFx8S1FiUdTz4r+JViCTKaVuUJnMa0Zn6UCJIoy0gvUx6
+         jFFp19wj14AauGMbFbi8FNg4+jPVB+2CSu3fXTIYA1VQb1obzZ/K04qxlPYliQY6kwF/
+         JPHEtKHFTXuuPptPFy98XWzZdgTkbpAT7mzPYe+mmprAgqfoek2t2XMw8u2JuyYwD7ZC
+         0qocmKJnq0GqG4UW2QTj6gut8Fvv8Z8EvAUN69nO7eQwTs3ZMUJ8Tz1nvAVkDv6PdzuT
+         DvUQ==
+X-Gm-Message-State: AOJu0Yz3/Bn5iO+QeNgg/vQlDQ5A0vSDijfkpyfVNzrmoH5tuGTzABo1
+	687uHEoJDhOF8vtHHPVkv7fs/5DrSVqYQeMTb7mPZ4AIM2sKAlF0JbIt5DsAXIfx74JDw+vRm7z
+	ydLH0Ur71k2sOx1+ohDXWA+7sNDKQL2ts76LkwCOie9X1yhPBwgF9+Yo=
+X-Gm-Gg: Acq92OHKn/EP2DXCVUbetuSsH7nHbYHBbzFW/g8PSLSkexOhQEi8zt8yS1mZK3VKdh9
+	gFb7yNnRQdCxo1jYSCtedVNrTSlu7MvkEdyr3oo4dbIZt7ygojDN3u4J5T4h6sQQKTFvdlEekho
+	65FWje7+rDr2aEusJ8q///nkUBD5sFzgq2mttvcL0xFgSkOrv6DKaeb6SzSuh1wJaqXPpSFC8Ba
+	x4E/14GPwyIZsatuPmnOKHcczk4Q3ro04YILojIPFQnJshBeoS4zl3I+PngL3lgtQST7AiwGL1Q
+	cPR97cFCo2bNKwJXZ4JazWSx801y
+X-Received: by 2002:a05:600c:12d1:b0:48a:5970:1fe1 with SMTP id
+ 5b1f17b1804b1-4909c091fd2mr19827345e9.4.1780043793806; Fri, 29 May 2026
+ 01:36:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: drbd-announce@lists.linux.dev
 List-Id: <drbd-announce.lists.linux.dev>
@@ -77,107 +77,143 @@ List-Subscribe: <mailto:drbd-announce+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:drbd-announce+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 From: Rene Peinthor <rene.peinthor@linbit.com>
-Date: Fri, 29 May 2026 10:02:23 +0200
-X-Gm-Features: AVHnY4LjFrrfDaJ2FdUhyx0xYGkXTKY2dcBk_-_4gHflLSaK1_kDLDzu2HhCR7M
-Message-ID: <CAHmn2DP+B6zpJqrtKBNw1prA5_gbrwX9szWRE64eG1sjJt4BHA@mail.gmail.com>
-Subject: python-linstor/linstor-client 1.28.0 release
+Date: Fri, 29 May 2026 10:36:23 +0200
+X-Gm-Features: AVHnY4Juje-9nvffWkR-Ow1NHSwYqWhYXbnpT6KTLVXbx0d67t7Hs9XFcVaBXYs
+Message-ID: <CAHmn2DP38Uhu0eWrqmr0C6BAvYKu22YoutymqRJYZn7+K2qbnw@mail.gmail.com>
+Subject: linstor-server 1.34.0-rc.1 release
 To: drbd-announce@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 
 Hi!
 
-New release of our Linstor client tools, this one comes with support
-for API authentication tokens, has start time optimization (lazy
-loading and unecessary import removed)  and all sorts of other fixes
-and improvements. Finally also python2 support was removed.
+Here is finally the first release candidate for the next feature
+packed release of Linstor.
+Biggest new feature of this release is API token authentication, if
+enabled, it would restart the controller with a self-signed HTTPS
+certificate and any further requests need to provide a HTTP Bearer
+token in the headers. If setup through the client most of this will
+automatically done in the background, to have all plugins (opennebula,
+cloudstack, proxmox...) prepared to work with auth tokens, we will
+have a longer rc phase and plan the final release for end of June.
 
+Another "feature" is that we finally improved our timeout checks for
+external commands.
+As long as the external commands report some I/O usage, they will not
+strictly time out after 45s.
 
-# linstor-client
-## [1.28.0] - 2026-05-28
+Then we added a new Clone/BalanceAfterClone property, that allows the
+controller to place an additional resource during cloning. This will
+help distribute space in situation where you have a template that is
+often cloned from so it doesn't always end up on the same nodes, in
+the beginning it will take an additional resource, but as soon as the
+BalanceResourceTask runs it will remove the excessive resource from
+the most used node.
 
-### Added
+And finally Linstor now will detect blocked ports and add those ports
+to a blocked range list property, it is now also possible to define
+multiple TCP port ranges.
 
-- Added Satellite Platform to node list if the controller is reporting it
-- Added "linstor controller export-db [EXPORT_NAME]"
-- Added commands and support for linstor-controller token authentication
-- Added ", Corrupt Crypt Key" Warning to "resource list" and "volume
-list" if needed
-- Added --truncate flag to shrink table columns proportionally and
-truncate cells with an ellipsis when output exceeds terminal width;
-can also be enabled via the [global] section of the client config
-- Added --drbd-client (with aliases "--drbd-diskless-client", "-c",
-"--client") to
-  - resource create
-  - resource toggle-disk
-  - resource modify
-- Added new column to "resource list": "Vote" that shows if a given
-resource has a DRBD-quorum vote
-- Added (hidden by default) new column to "resource list": "Flags"
-that distinguishes Diskless/Tiebreaker/Client
+Also the linstor-controller is no longer started as root user, instead
+we leverage the DynamicUser functionallity from systemd.
 
-### Changed
+To mention it again, this build requires now java-21 AND we finally
+removed ETCD support from this version on.
 
-- Removed py2 support
-- Updated build system to use python build module
-- Reduced client startup overhead by lazily registering CLI subparsers
-- Pipe output through a pager when the terminal is interactive
-- By default "resource list" no longer shows "CreatedOn" column
-- "State" column in "resource list" no longer shows "Tiebreaker" (only
-"Diskless" instead)
-- Columns for "resource list" can now be selected via "-o" option
-- resource-group list now shows also properties
-- snapshot list: surface non-successful backup shipments in the State column,
-  read from snapDfn properties (one line per remote in flight or failed).
-  Successful shipments still display as "Successful". Requires
-linstor-server 1.33.0+
-- r l --faulty and --all will now show all resources that include a faulty one
-
-### Fixed
-
-- Table: groupby/sorting raised type error if sorting column only had
-numbers and natsort not installed
-- Fixed node interface modify defaulting communication-type to plain
-when not specified
-- Fixed missing node connection status in node list and improve
-handling of unknown connection status
-
-https://pkg.linbit.com//downloads/linstor/linstor_client-1.28.0.tar.gz
-
-# python-linstor
-## [1.28.0] - 2026-05-28
+## [1.34.0-rc.1] - 2026-05-28
 
 ### Added
 
-- Added controller_exportdb
-- Added platform property to responses.py
-- Added support for linstor-controller token authentication and also
-checking for token file in /var/lib/linstor.d
-- Added LUKSVolumeData.corrupted_key property
-- Added drbd_client to
-  - class "ResourceData"
-  - method "resource_create"
-  - method "resource_modify"
-  - method "resource_toggle_disk"
-  - class "DrbdResource" (exposed via "flags")
+- Toggle-disk can now be retried or aborted.
+- Added export-db API
+- Satellites report platform and OS variant and Controller exposes
+that on the REST API.
+- Added property "ExtCmd/WaitTimeout"
+- Added property "ExtCmd/TermTimeout"
+- Added property "ExtCmd/KillTimeout"
+- Added property "ExtCmd/IoStallTimeout"
+- Added property "ExtCmd/IoPollInterval"
+- Added "Linstor/Drbd/OutsideAddress" property for DRBD's
+outside-address for setups using a NAT
+- Added optional alternative suffixes for external files
+- Added status check (current path + content as expected) for external files
+- Added property "Rest/AutoHTTPs", if enabled will automatically
+create a SSL certificate and re-start SSL server
+- Added token authentication API and implementation, if enabled only
+allows Authentication Bearer token access
+- Added property "Clone/DdBlocksize" to configure the DD clone blocksize used
+- Added "BalanceResourcesSkipDiskLimit" property to skip balancing
+resources with more than X skipDisk resources (default 1)
+- Added property "Autoplacer/MinThinFreeSpace" that disqualifies
+storPools with less free space than specified
+- Added linstor-config disable-token-auth command
+- Property Clone/BalanceAfterClone to autoplace an extra diskful
+resource after a clone operation
+- Property Snapshot/BalanceAfterRestore to autoplace an extra diskful
+resource after a snapshot restore
+- Added property "Luks/AllowDiscards" to enable discard/TRIM
+pass-through on LUKS volumes; when LUKS sits below DRBD,
+rs-discard-granularity is also set automatically
+- Added "Client" as DRBD state (non-voting diskless peer)
+- Added property "TcpPortsBlocked" on node level
 
 ### Changed
 
-- Removed py2 support
-- Updated build system to use python build module
+- SOS report now uses export-db instead of non-JSON database dump
+- Minimum java version is now java-21, please upgrade if you want to
+continue building/running LINSTOR.
+- DRBD: create-md now only times out if there was no IO for 45s
+- mkfs: mkfs.ext4 and mkfs.xfs now only time out if there was no IO for 45s
+- Moved old property "ExtCmdWaitTimeout" -> "ExtCmd/WaitTimeout"
+- SOS report: 'tar' command now only times out if there was no IO for 45s
+- Don't call shred on ZFS devices as those are guaranteed to always read 0
+- Upated debian package compat version to 11
+- linstor-controller.service: switch to DynamicUser (i.e., execute as
+non-root user).
+- Systemd-notify: Use SDNotify library instead of calling "systemd-notify"
+- Thick LVM: New volumes are now placed on the least-used PVs by
+default. This behavior can be customized via the new
+"StorDriver/LvcreatePvSelection" property.
+- Check for valid storage pool names on resource-group select filter
+- Controller now ignores case when checking if a NetCom is enabled or not
+- Default evict timeout was increased from 1h to 12h
+- Property "TcpPortAutoRange" can now also be set on node level
+
+### Removed
+
+- ETCD database support is now removed, please convert to SQL or CRD
+DB, before upgrade
+- Removed K8s migrations older than 2023 / LINSTOR v1.21.0-rc1
+- Removed SQL migrations older than 2023 / LINSTOR v1.21.0-rc1
 
 ### Fixed
 
-- Fixed Combined+SSL nodes getting controller port (3371) instead of
-satellite port (3367) in node_create()
-- Fixed netinterface_modify() resetting encryption type when only port
-is changed
-- Fixed incorrect Volume.layer_data, .drbd_data, .luks_data and
-.storage_data property methods
+- Fixed incorrect default LUKS2 header size calculation
+- Parse errors during ctrl -> stlt authentication now result in
+"AUTHENTICATION_ERROR" instead of "OFFLINE" (regression introduced in
+1.32.0-rc.1)
+- Fixed free space reporting of thin storage spaces (Windows) pool
+- Fixed race condition where after a reconnect storage pools might not
+show correct capacities and freespaces.
+- Fixed PREPARE_SHIPPING backups didn't count as active shippings
+- If a satellite cannot decrypt a LUKS key it no longer goes into
+FULLSYNC_FAILED, but just marks the resource to have corrupted crypt
+key
+- Fixed auto-rs-discard-granularity staying set on devices that don't
+support discards (e.g. LUKS without AllowDiscards)
+- Throw a CriticalError(restart) if a JDK spawn helper exception was
+caught (usually a JDK version mismatch)
+- Fixed bug where taking a snapshot on a not-only-DRBD resource could
+hang indefinitely
+- Attempt to fix rare bug causing "shipping in progress" that can only
+be cleared by restarting the controller
+- Fixed rare race condition when changing the LUKS passphrase
+- Fixed bug where trying to start a backup shipment of a rsc that
+isn't UpToDate lead to an AccessToDeletedDataException
 
-https://pkg.linbit.com//downloads/linstor/python_linstor-1.28.0.tar.gz
+https://pkg.linbit.com//downloads/linstor/linstor-server-1.34.0-rc.1.tar.gz
 
 Linstor PPA:
 https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
-Best regards,
+Cheers,
 Rene
