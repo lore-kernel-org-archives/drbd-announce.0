@@ -1,157 +1,160 @@
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E2F1387347
-	for <drbd-announce@lists.linux.dev>; Thu,  9 Jul 2026 14:10:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783606246; cv=none; b=JME4Z/TTvnWoWYweIBwqDL3gcdNHPKf9OxDVgn3BMS5w5gj+AKiaSg8047LiOgsrqevIiFEQ9gycq1fou9FYckOLVNVEmZU4oGI8hr72UY8ZOh1cDJeRNb9vIsfScLSbbJ4cuIOMlsdhA7iHzNgiTY3W9vMtoIHi9dsvfizsAzI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783606246; c=relaxed/simple;
-	bh=0ZLQElO84u0nXQ9VD2dS4MHU4krOGgsMlyM3TJXiTJ8=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=jsNq0uGkh3d7J7YeQ4/W0KObfpkPrA9+RKFxvkXhohIx9hT96rjnz1gZKXsh7UFt5ChcJe8Mgh4rWc9l6okKnCh2DCaqM1NFMW2CteONm020QoEqPdlIsJWk1dgaQwDSbtoq2MfyzwXIs5d5HOB15PNOAp2eU4lT9siO8inNXRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linbit.com; spf=pass smtp.mailfrom=linbit.com; dkim=pass (2048-bit key) header.d=linbit-com.20251104.gappssmtp.com header.i=@linbit-com.20251104.gappssmtp.com header.b=j4JJclvz; arc=none smtp.client-ip=209.85.167.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43F12330D25
+	for <drbd-announce@lists.linux.dev>; Thu,  9 Jul 2026 14:21:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783606863; cv=pass; b=sqphNt4SPd/G6qGnnriQAusVsOsuyOObiJ1BuFEFZyxmFxZELGi3ukIrmZBwkGrfpHXkJq8j0VDRGpwN9ebJgh/VNCiFL1Rtrkz1sS/bwt2jKyBkALhAKhJ0r454tEZfXCUC2rP/7Zg7SMK3U0ivAFXo//eUACqsUV+w2AXbSzM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783606863; c=relaxed/simple;
+	bh=0ZDsI2rguovwNGPDypR7ZA6QOVvYAMIuJfcvC+BAuLw=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=JmyK+o0aOaftpE/xLgQAm3jeKbL6KxzXZD9J4wBndhIAKYN4rFQSmhwl/iYGLY1BMoZoKDhgpeL9O5Nkaymdb063DQYVS4tMo6mvkTjGWCK08YdrEvXS8EG6Nqxfm7rhFoqLVjxsM9l7w2dhgjm3l5lRrr1GrCNhazfl69p0V8c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linbit.com; spf=pass smtp.mailfrom=linbit.com; dkim=pass (2048-bit key) header.d=linbit-com.20251104.gappssmtp.com header.i=@linbit-com.20251104.gappssmtp.com header.b=AJo+m3SF; arc=pass smtp.client-ip=209.85.221.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linbit.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linbit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linbit-com.20251104.gappssmtp.com header.i=@linbit-com.20251104.gappssmtp.com header.b="j4JJclvz"
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-5aeb5e85378so1090607e87.1
-        for <drbd-announce@lists.linux.dev>; Thu, 09 Jul 2026 07:10:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linbit-com.20251104.gappssmtp.com header.i=@linbit-com.20251104.gappssmtp.com header.b="AJo+m3SF"
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-475881b9a4bso1685943f8f.3
+        for <drbd-announce@lists.linux.dev>; Thu, 09 Jul 2026 07:21:00 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783606859; cv=none;
+        d=google.com; s=arc-20260327;
+        b=qtDmVyZGAF1f2Q7gM3LyZ7zjCvLh7YtFOr4od6orIobXTsaJ4tyhLi8FBAZ3hss9Zr
+         Zy1wVyb9J064kGRxrgc1N0MjdiJg6CmcrLarDfSmdZWYx/ZJe6CMvi5y4666EpFqMuiZ
+         BwEtC3txShL7omZPoNClwb6blVOGdGM9SqWmv+tUXlbPcrwcLO/icaRgy+FIo1j88ohB
+         3fN5jiIUjMl+ZDfIWb4IWFIWX0LknmRCRE10cs7EhuiBbpd5dRZM+vXVAfO3enYhQoAV
+         LkfWYQB0UA/elJ7+lnFofQx+JlR35GU9MH1qSfxuhS3l2DiveYP4HqS5nxuU94zE4Rkl
+         9BwQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=0ZDsI2rguovwNGPDypR7ZA6QOVvYAMIuJfcvC+BAuLw=;
+        fh=dd/d96l2eyAS5M83j8rEodEIA/JGxDx7Hy24xgjER3E=;
+        b=ExHHoWvDycc1USoh9LbXIEmgem5iFDl8EfOxBSYTIpDJes0DDsbpvBqSveQvth+lsD
+         P9/+klRsia9D+L9GrrvBXGb3RlVDyfNnhK9epbM64qd6pCw9J2yFMjfeJ+C2hZusmxUC
+         FLG7pbWAGsRfM4/In3YOVyMWy4/mtuZaUZGcGeiEIkw1VWWf2h3mkanhOj8yJW/+YO8g
+         RnrZS8ER9XpKs7QOCd+INmLYaRoMNBPpH3sNNiiP3xquHquL4WNBpsch9MRyxGvY9DTw
+         zxj6AKwMHrvWXfSVN41ebOydMyh7NulaNE5ducD8eKyOYLN7C44ktNcuMpgisJAAsIis
+         5BAw==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linbit-com.20251104.gappssmtp.com; s=20251104; t=1783606242; x=1784211042; darn=lists.linux.dev;
-        h=user-agent:content-disposition:content-type:mime-version:message-id
-         :subject:to:from:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=0ZLQElO84u0nXQ9VD2dS4MHU4krOGgsMlyM3TJXiTJ8=;
-        b=j4JJclvz0NKbX7uUQG2AoE1puemBPssibSotNpiCOiZAmRjWyzECc1qqYHQrcXtuO2
-         rf2/Ttd2gN5duPd/K2hhCO8OEt7b//oR2AIXmksSUnk0mXi+w6k30BJ5Cut9GKq5ncnD
-         nnND7JCxB1FXBX9UulgU3RGzmorIU4PKkIggVlzwJMyDvgfwyoIN6w3QWsDMsQekNljI
-         g2EWy+lhFQWPU/dlLYMnQxI2Us0H1q7CO8GZhAgdXPOrBNMjYn41jpnBCctM3uOSS7j9
-         vQcz/vwOa0Qj4vK2PWavxvcdJmP4lQBssSGezcIw7GOp8gS49jJbVYLLgz2jNjvcgSvC
-         sXug==
+        d=linbit-com.20251104.gappssmtp.com; s=20251104; t=1783606859; x=1784211659; darn=lists.linux.dev;
+        h=content-type:to:subject:message-id:date:from:mime-version:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=0ZDsI2rguovwNGPDypR7ZA6QOVvYAMIuJfcvC+BAuLw=;
+        b=AJo+m3SF+LxcKB2h6jRyrPnLPS8BPke126AiyNJOu5vzTwbxy71CjytF/py8GFEJfJ
+         S9PYIK9sHthlxQjT9y8KeRndubR0ZgqVx4KD4BIKxZuIOgsoy7Tv73xJxJ9V9is/B1H5
+         M68DZSi2uIk8nZxsFwel+SD0tT02nn9JU9i5yRxw6RlY4V7kgxKNgEW1PSVU49c2JV1w
+         TA6ulNYdDZG9x1VKbOAvo63HwYbrL5etZwDC9pGyTJ/DyXeFMGG7jsnDvFuZB1eNpy0k
+         ZYkka21D4HAnTTG4Ed1lhuJasOzYUlOOPr9SF6hjksTkOtBUfntLocIgWG4XIdLCaiYA
+         Defw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783606242; x=1784211042;
-        h=user-agent:content-disposition:content-type:mime-version:message-id
-         :subject:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=0ZLQElO84u0nXQ9VD2dS4MHU4krOGgsMlyM3TJXiTJ8=;
-        b=nGjjyPahy0JxIh+B30PyXOx2X+H4alVNepcyv2IHJb7R6/TM0/Y9D/4A1G+jGgQuhR
-         eNQ0cYO6JHU/DMT26eRqvcu0XDkXII+NYi1xMNSb+HCGQVvCHTGZWkQKJ+1gAQggCxFc
-         FfuOtQVCbHCZeiEIpIMXcQUhbloQR+m+PucH60ebfhqCQrPBXT6YXAUfDdvEe2BP9dWv
-         PZ5IIsy37d3jjtB0kvTUYKBaC68I+Mc8jQxvf+cbVsEvS4v9+0ku7CHCMqxNorGwFNUo
-         FYCWbDARn2oe9wfw0HTsfjwbQ61+9hnZjRqsih1kNiCIQDfmiYeMnz7KurHRdwz9r9zk
-         JG4A==
-X-Gm-Message-State: AOJu0Ywk36VLcqRGvaj8ehMjw0+5t6N1TQ+F+adTe/XJ2sSMmEj9IQtr
-	5fLWk+H8DtIRNe8Icx668LAgV6uHG/mZ4IKK2+0hVp0GMQfI0CmlBVFni8mBu/znWwYL0KQ02Ms
-	s2CQoA6TPOw==
-X-Gm-Gg: AfdE7cknto86xGBy3D8IYFTB15k2BkUYHZ7BlnjpPXmDVo+UPeFCk2Pf1ogz1BciBqM
-	8R/yhpvx14sL6Ph5Ty0TPZZlO5ygIqiXJJcE3vbW7ayVeC+lK4RAHadUl14zgi3kzBQcC9W/jbc
-	Em5kLE4sQmKbxwFNhLSBztPUkYJR61WUigASCxw2ZJBShev5EXpfiRh6mbuxW5UD1NLk39JGDAT
-	zMJXVwUoFCItFWrcBqHAXNyxNa5cpL7qVwxbZikodIxd0tAncK/8oOJvCJ4PLlMBj3fsghMS26J
-	E1gOBx/y4C73UiG9tb+b4ZIXlpcSiLyd32RzWctD2mSS87U3MdAUhLRRjFlxzF1Z2fFNed5DinU
-	pOryHte6GpbX8fYHcAl2Cnsmuo2WGfe1Y5a40weTLGdvw2I3UBYK/8WA3WgVuNJ9eiH3sbjoAGg
-	ir/3lEovwzfyw7vinXNZtp2hEXKdlQAjhjKrCJfsp9y7kJp826OBRW3BH20I9Bm9dzYnS2tHQmV
-	sCA
-X-Received: by 2002:a05:6512:688d:20b0:5ae:a2ba:9525 with SMTP id 2adb3069b0e04-5b011417215mr1279087e87.0.1783606242119;
-        Thu, 09 Jul 2026 07:10:42 -0700 (PDT)
-Received: from localhost (static.57.82.181.135.clients.your-server.de. [135.181.82.57])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5aed13c3be4sm5357483e87.73.2026.07.09.07.10.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Jul 2026 07:10:41 -0700 (PDT)
-Date: Thu, 9 Jul 2026 16:10:40 +0200
-From: Roland Kammerer <roland.kammerer@linbit.com>
-To: drbd-announce@lists.linux.dev
-Subject: drbd-reactor v1.12.0-rc.1
-Message-ID: <ak-r4Bew1Z5oMjpV@arm64>
+        d=1e100.net; s=20251104; t=1783606859; x=1784211659;
+        h=content-type:to:subject:message-id:date:from:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=0ZDsI2rguovwNGPDypR7ZA6QOVvYAMIuJfcvC+BAuLw=;
+        b=AQPeX09DRRJE3VsPpnkJnqoQa424thVBz3WvqDlFlUKD9d13WUoRNeJ+X43pR23ll1
+         zDB/h655LZdEIb4nqPdtfn5KGPD4Iq+P4YHeZvWhgbkl5Bo7SetZ3NGWkHulDh40E0QM
+         blnA6gAFXzmWRjOcRCTuiMjJRFom6pxAecawwUliwdKWN1R8e6jloh+/hczPPWt2BoMd
+         SVTnKwGGtCzdHnIj0czQNbWwu7rLpKQExtfL1DVXBTAzDauTEneWZfBSzGEnnv2sCOJU
+         y1wVWJMi5oUKOg7t2xb3T3bNV/eyN1iGArIKe4cDByviL2X2ZvPfigGw/q4XwzEAkFS8
+         zOmA==
+X-Gm-Message-State: AOJu0YwCSYMEL8R/Sf8uyKZMYOOW7uNGoz0rGS4tPk6d7SG/9rsRz0K2
+	u2cP6WHk3ZOpHLf96Mub5TI/NgAcxI0+Y1iAqyOqa1oeMstZkVCLF7IDys0FulACmhKNMe9a14/
+	PeT3/QLRMTMtd0GciXTRY9KK1KwM2KkrtPyDTyL7q9Ig7WuQykQQ6HU1MJQ==
+X-Gm-Gg: AfdE7clT9R5b+d7wvLOJigqXTWo59f9Ll99Npr6ED+Z9CDPi9Jc+86B6z90ts2o0huz
+	mDtrXObTIH4jj/VWL7VRZ0ffXDUXr2RV19+dP+vcNKD2MBPEvNANcFJU9Le3BWipwKSBmjPfWEt
+	v9CR8Wc5+yeDOcNpLGHXShdcxwoaaXM1hbvxe0QL3ZRP/51qvK9A8skb0ihLFf5AxOY7Y9HlrZB
+	mdhE+2e8ADH7vYRHKvILE7tUgrC2XKzvPmd4KtmuqDvTbXL0xSVekhQ+6BJWSAcXZHuBIqP
+X-Received: by 2002:a5d:5f88:0:b0:475:2171:add with SMTP id
+ ffacd0b85a97d-47df072e297mr8028012f8f.22.1783606859319; Thu, 09 Jul 2026
+ 07:20:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: drbd-announce@lists.linux.dev
 List-Id: <drbd-announce.lists.linux.dev>
 List-Subscribe: <mailto:drbd-announce+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:drbd-announce+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="veGrINiw3jGrfIQr"
-Content-Disposition: inline
-User-Agent: Mutt/2.3.3 (2026-06-12)
+From: Rene Peinthor <rene.peinthor@linbit.com>
+Date: Thu, 9 Jul 2026 16:20:48 +0200
+X-Gm-Features: AUfX_mysL9TSEr3NPSAGlRJY1aHj9ImwCXS_0ooQvfJmqq5qVkGXDYCLuQ-1gBk
+Message-ID: <CAHmn2DNjuySqxscZcF6KjyE1HuPhHUw81Ehuzu=vzVsMXznoxA@mail.gmail.com>
+Subject: linstor-server 1.34.1 release
+To: drbd-announce@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
+Hi!
 
---veGrINiw3jGrfIQr
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Here are the first bug fixes for the 1.34 branch.
 
-Dear DRBD users,
+We fixed some shortcomings of the new AutoHTTPS feature, the
+generated certificate now includes SubjectAlternativeName entries and
+is automatically renewed on controller startup within 90 days of
+expiry (new certificates are now valid for 5 years).
 
-this is the first release candidate for drbd-reactor 1.12.0.
+The external command I/O monitoring introduced in 1.34.0 got another
+improvement: in addition to /proc/<pid>/io it now also watches the
+block device statistics, so commands no longer time out during large
+flush phases where the process itself doesn't report any I/O.
 
-The focus of this cycle was on the drbd-reactorctl management tool and
-on more robust core behavior. The status output now reports disabled
-promoter configs along with their DRBD role, and correctly handles
-resources that are not (yet) up. The core learned to dump the effective
-plugin configuration as TOML on SIGUSR1, which makes debugging live
-setups a lot easier, and it now reports plugin errors on exit instead of
-swallowing them. Spawning external commands gained proper error context,
-so failures are much easier to diagnose. The promoter got a fix for the
-shim path on SUSE/openSUSE and now warns about an empty start list.
+Resource creation on a setup that already violates the
+resource-group's autoplacer settings (like --replicas-on-same) no
+longer fails, and a tiebreaker will now ignore a violated
+--replicas-on-same limitation, "place anywhere is better than
+nowhere".
 
-As always, feedback and bug reports are very welcome. Please test this
-release candidate and report any issues you find before the final
-1.12.0. If we don't find any bugs the final release will be in about a
-week from now.
+And finally there is a new controller property Logging/ArchiveAgeDays
+to configure after how many days error-report log files are archived
+and compressed (default 60, 0 disables archiving).
 
-Changelog:
-[ Christoph B=F6hmwalder ]
-* debian: update mailing list address
+## [1.34.1] - 2026-07-09
 
-[ Joel Colledge ]
-* all: add context when spawning external commands
+### Added
 
-[ Moritz Tanner ]
-* ci: update virter and vmshed
+- Controller property `Logging/ArchiveAgeDays` to configure the
+minimum age in days after which error-report log files are archived
+and compressed (default 60, 0 disables archiving, always whole
+months); the value is also used by the satellites
 
-[ Roland Kammerer ]
-* .gitignore: add CLAUDE.local.md
-* core: convert Resource.devices to BTreeMap
-* core: convert Connection.peerdevices to BTreeMap
-* core: convert Connection.paths to BTreeMap
-* core: convert Resource.connections to BTreeMap
-* core: report plugin errors on core exit
-* README.md: focal -> jammy
-* README.md: fix heading hierarchy to have a single top-level heading
-* ctl,status: report disabled promoter configs and their DRBD role
-* ctl,ls: drop --disabled
-* promoter: warn on empty start list
-* ctl: refactor config snippet path handling
-* ctl,status: fix for DRBD resources not up
-* ctl: factor out per-snippet validation
-* core: dump plugin configs as TOML on SIGUSR1
-* ctl: improve status
+### Changed
 
-[ Ryan Ronnander ]
-* promoter: fix shim path for SUSE/openSUSE
+- SOS reports now include DRBD statistics (e.g. out-of-sync):
+`drbdsetup status` and `drbdsetup events2` are collected with
+`--statistics`, plus a new `drbd-status.json` from `drbdsetup status
+--json`
+- Improved trace logging of DevMgrRuns when creating/merging/deleting
+core objects
+- If resources already violate resource-group's autoplacer settings
+(like --replicas-on-same), a tiebreaker ignores the violated
+--replicas-on-same limitation. "Place anywhere is better than
+nowhere".
+- Extend ioProgressMode to additionally monitor
+/sys/[dev/]block/<dev>/stat in addition to the old /proc/<pid>/io to
+survive large flushes.
 
-GIT: https://github.com/LINBIT/drbd-reactor/commit/92f7a027c8730c613d837c4b=
-105e034bf99fecbe
-TGZ: https://pkg.linbit.com/downloads/drbd/utils/drbd-reactor-1.12.0-rc.1.t=
-ar.gz
-PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+### Fixed
 
-Regards, rck
+- Fixed ArrayIndexOutOfBoundsException in the file storage provider
+when parsing `losetup` output, which broke the device manager whenever
+a loop device was present
+- Fixed AutoHTTPS certificate missing SubjectAlternativeName entries
+- Fixed AutoHTTPS certificate never being renewed, now valid for 5
+years and automatically renews at controller startup within 90 days of
+expiry
+- Fixed missing 3370 -> 3371 redirect for the /ui endpoint with
+AutoHTTPS enabled
+- Fixed manual resource creation no longer fails during a setup which
+already violates resource-group's autoplacer settings (like
+--replicas-on-same)
+- Fixed controller package upgrade failing when `/var/lib/linstor` was
+set immutable (`chattr +i`); the immutable flag is now cleared before
+unpacking
 
---veGrINiw3jGrfIQr
-Content-Type: application/pgp-signature; name=signature.asc
+https://pkg.linbit.com//downloads/linstor/linstor-server-1.34.1.tar.gz
 
------BEGIN PGP SIGNATURE-----
+Linstor PPA:
+https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
-iQEzBAEBCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmpPq94ACgkQRgmezyI6
-myIdowgApB9frK38qFofbhKXBuRJsUNCsMCp7aKzqqEKoQ+KIezSz3+tnLfhrobE
-P5Jn/HWKc8GG1EqY1h6UOappHoykLgfbXitCNX9nhR3lAR6vW2fx6PJlIBBja1tq
-zwkMkoy93qfz2PhVtrnxHlgc+KCk++iUQBCz0Fe4VPlar1HgORzoEeyYCthq7Q/+
-Wsi0/tKxuL2yZmZolfWcCvJaExZ4sLH1KgsPiTuQ9mBJTZPOUpzWCRi1OOV1D0uv
-Zg+kE6voLGsrN6ER2dZcPDMGl8UzY/VJwI/YDy9M1YqbE83/XrHIBpKcgvxHuGon
-6c0cO3uq64Uyd/ugNTQD9FOUhFS4DA==
-=Ubpf
------END PGP SIGNATURE-----
-
---veGrINiw3jGrfIQr--
+Cheers,
+Rene
