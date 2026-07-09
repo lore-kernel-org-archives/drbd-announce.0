@@ -1,101 +1,157 @@
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C84CF40A93D
-	for <drbd-announce@lists.linux.dev>; Tue,  7 Jul 2026 12:28:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E2F1387347
+	for <drbd-announce@lists.linux.dev>; Thu,  9 Jul 2026 14:10:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783427285; cv=none; b=deXthp28VGLThVUkNGC1e46+Z1XMymgWdwILyL1AF8/wj2e178oAHlRFuNmGW0f82oMXQABhr/e4+v2UWnqsK3heKaH51RZBXtUIihRo5bNFtMucYTlMuwduuI4dQpbICAvXpyOULzUWehI8BiVQsO/A70w6Mk6pYstADZz20BI=
+	t=1783606246; cv=none; b=JME4Z/TTvnWoWYweIBwqDL3gcdNHPKf9OxDVgn3BMS5w5gj+AKiaSg8047LiOgsrqevIiFEQ9gycq1fou9FYckOLVNVEmZU4oGI8hr72UY8ZOh1cDJeRNb9vIsfScLSbbJ4cuIOMlsdhA7iHzNgiTY3W9vMtoIHi9dsvfizsAzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783427285; c=relaxed/simple;
-	bh=z9Fk1R7nAeWm0Xa/TVRHf5n/iYC9OgYgEelkfcKSH4w=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type; b=JcOvbPB02qi9dptBt+3sZslyO8dwax9PA3CDj49rwsXA6apSUduzhkvP/MLPhabA8fSFn32bQQ57F6l26ewiXGAEdb0kONYVv6aWGHSk06GfdjDRNngdgvF5JoFqMo5Bt1R5LsDq2v/ciMXsBdSxChk/M2WlMwAE5hKt1QtQWjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linbit.com; spf=pass smtp.mailfrom=linbit.com; dkim=pass (2048-bit key) header.d=linbit-com.20251104.gappssmtp.com header.i=@linbit-com.20251104.gappssmtp.com header.b=SEEZRvbn; arc=none smtp.client-ip=209.85.221.51
+	s=arc-20240116; t=1783606246; c=relaxed/simple;
+	bh=0ZLQElO84u0nXQ9VD2dS4MHU4krOGgsMlyM3TJXiTJ8=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=jsNq0uGkh3d7J7YeQ4/W0KObfpkPrA9+RKFxvkXhohIx9hT96rjnz1gZKXsh7UFt5ChcJe8Mgh4rWc9l6okKnCh2DCaqM1NFMW2CteONm020QoEqPdlIsJWk1dgaQwDSbtoq2MfyzwXIs5d5HOB15PNOAp2eU4lT9siO8inNXRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linbit.com; spf=pass smtp.mailfrom=linbit.com; dkim=pass (2048-bit key) header.d=linbit-com.20251104.gappssmtp.com header.i=@linbit-com.20251104.gappssmtp.com header.b=j4JJclvz; arc=none smtp.client-ip=209.85.167.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linbit.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linbit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linbit-com.20251104.gappssmtp.com header.i=@linbit-com.20251104.gappssmtp.com header.b="SEEZRvbn"
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-47ddf7b09aaso1525556f8f.3
-        for <drbd-announce@lists.linux.dev>; Tue, 07 Jul 2026 05:28:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linbit-com.20251104.gappssmtp.com header.i=@linbit-com.20251104.gappssmtp.com header.b="j4JJclvz"
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-5aeb5e85378so1090607e87.1
+        for <drbd-announce@lists.linux.dev>; Thu, 09 Jul 2026 07:10:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linbit-com.20251104.gappssmtp.com; s=20251104; t=1783427282; x=1784032082; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:user-agent:message-id
-         :subject:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=nJhLuwTsQyz17Vzu3ofv5bO/NkuJNYwmOHp3fs0q2zg=;
-        b=SEEZRvbn/6np+8b9oqK2jNVuM+JVoUG+osyhi6v0U+5mCiFx9RWWMWIjJSrtoDsflC
-         DLSG5kQXwghWzSDK2RFM7ooZjrlaLRJxbIbxbe2DlS4YER+DJeHngOvzp06oMccA8AlH
-         UdaAuzjrtsFXZA+f7qrEazq1tGmgTpqhnPw3b9nGdwx+9ctV8o4YH6CC48x2bHF4Py+f
-         9nbF/MCX5K7Zm6rUKgtyRJ/ms/2hxwALTaPsRcjeLvConOivE9MrHYytp5BGwIPnX70S
-         yf3iYbDW7yTnxNOXL8NJL1S3NXMn+am9hKl/GknxjSIaZnkTNzkzEiMxZJ2Eh41xlix6
-         FD3g==
+        d=linbit-com.20251104.gappssmtp.com; s=20251104; t=1783606242; x=1784211042; darn=lists.linux.dev;
+        h=user-agent:content-disposition:content-type:mime-version:message-id
+         :subject:to:from:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=0ZLQElO84u0nXQ9VD2dS4MHU4krOGgsMlyM3TJXiTJ8=;
+        b=j4JJclvz0NKbX7uUQG2AoE1puemBPssibSotNpiCOiZAmRjWyzECc1qqYHQrcXtuO2
+         rf2/Ttd2gN5duPd/K2hhCO8OEt7b//oR2AIXmksSUnk0mXi+w6k30BJ5Cut9GKq5ncnD
+         nnND7JCxB1FXBX9UulgU3RGzmorIU4PKkIggVlzwJMyDvgfwyoIN6w3QWsDMsQekNljI
+         g2EWy+lhFQWPU/dlLYMnQxI2Us0H1q7CO8GZhAgdXPOrBNMjYn41jpnBCctM3uOSS7j9
+         vQcz/vwOa0Qj4vK2PWavxvcdJmP4lQBssSGezcIw7GOp8gS49jJbVYLLgz2jNjvcgSvC
+         sXug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783427282; x=1784032082;
-        h=content-transfer-encoding:mime-version:user-agent:message-id
+        d=1e100.net; s=20251104; t=1783606242; x=1784211042;
+        h=user-agent:content-disposition:content-type:mime-version:message-id
          :subject:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=nJhLuwTsQyz17Vzu3ofv5bO/NkuJNYwmOHp3fs0q2zg=;
-        b=ZfXiQLlMVaF5XxHIckX3FBQGjpkeibHMrnzehtvbRa/c/TCh6gxR4GLDPp16vswZHG
-         L0f55J5YiS/xH6Ar+u0f8V3RDlSgSM1YkyBKZBpm5qWZch4hHWRps0uKRylvfZjN9fKL
-         8hohPUifajkOo+o+W3ngU5I3Qs2a5KM7pQu5VjusYeLT68cVRRWLhg8ndiDTq+CyVg+R
-         3+CzNLMHdFFAUnEhtlyni2Um3M7vIh7N6gjDfCkE5OKhISGWIKoHB6fUDRFSM7uIRje0
-         klX/YmSO8ju4g5duLj+1tTQJbEA1ezmk5wr6B8K8BNLHBjsQB13xg/0lwEOmqoy7U59s
-         hDuQ==
-X-Gm-Message-State: AOJu0YxpqJvWUMkevVcs/l1sXxtHpMnnTGWpcsKIG5pt8LriKpS638ZM
-	cAfq1gRukYPb4a4nMPJXLVCDC9VipbLrgc/o6drHsdwU1UrTAMM4QWECdBmK4e1XfQkr/BPxVpo
-	/QzWys8U=
-X-Gm-Gg: AfdE7clgimHDZw/6cHDA8kCKsTvNOJ8QAFMEDz6v0vnM35NhiU355C3jh8TOBiPRnHT
-	TVUblKD3T6U+8qb5vqkh5Wi88xdBErqC314USYjOq/kzts09SEOrSha4ytjEViiSXw4WODd0VUx
-	dGiti3sAW6HjAbcbEKGY6u4+ck86jQ862TEWs6saxDvaJjWC7iDMaTIrq8NMQK32enDt4LggUbr
-	2vcM9qPxdofRuJz2okviPppAnKOc43cWhNI6IR/ByUzwIYtcFKmhFw8AYp88RnFDSwCqaHJ+h+l
-	tZdkTPaekujkDC5ZYAFH4SNcmUKoweqp3CqIrOW7sFND5F1qtH79WzkLe768YcuwLMehIpmn4oc
-	fnLSj0to0S5ZBOF+I6BZMCSSpVTEe2QOYv4URII8se030bX7tGJKPzDF0XhGvGjqsOEPUMdPuFz
-	vyghGWZqp7NsFweVnEwVATtqTqq94qbXFV/w7JRgI62l5gCcSlnpOrPxFKtihTFTNMp4s=
-X-Received: by 2002:adf:e58f:0:b0:478:5710:464e with SMTP id ffacd0b85a97d-47de66b676emr4418507f8f.49.1783427282014;
-        Tue, 07 Jul 2026 05:28:02 -0700 (PDT)
-Received: from localhost (h082218129081.host.wavenet.at. [82.218.129.81])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47aa0f214d2sm32689661f8f.33.2026.07.07.05.28.00
+         :date:message-id:reply-to:content-type;
+        bh=0ZLQElO84u0nXQ9VD2dS4MHU4krOGgsMlyM3TJXiTJ8=;
+        b=nGjjyPahy0JxIh+B30PyXOx2X+H4alVNepcyv2IHJb7R6/TM0/Y9D/4A1G+jGgQuhR
+         eNQ0cYO6JHU/DMT26eRqvcu0XDkXII+NYi1xMNSb+HCGQVvCHTGZWkQKJ+1gAQggCxFc
+         FfuOtQVCbHCZeiEIpIMXcQUhbloQR+m+PucH60ebfhqCQrPBXT6YXAUfDdvEe2BP9dWv
+         PZ5IIsy37d3jjtB0kvTUYKBaC68I+Mc8jQxvf+cbVsEvS4v9+0ku7CHCMqxNorGwFNUo
+         FYCWbDARn2oe9wfw0HTsfjwbQ61+9hnZjRqsih1kNiCIQDfmiYeMnz7KurHRdwz9r9zk
+         JG4A==
+X-Gm-Message-State: AOJu0Ywk36VLcqRGvaj8ehMjw0+5t6N1TQ+F+adTe/XJ2sSMmEj9IQtr
+	5fLWk+H8DtIRNe8Icx668LAgV6uHG/mZ4IKK2+0hVp0GMQfI0CmlBVFni8mBu/znWwYL0KQ02Ms
+	s2CQoA6TPOw==
+X-Gm-Gg: AfdE7cknto86xGBy3D8IYFTB15k2BkUYHZ7BlnjpPXmDVo+UPeFCk2Pf1ogz1BciBqM
+	8R/yhpvx14sL6Ph5Ty0TPZZlO5ygIqiXJJcE3vbW7ayVeC+lK4RAHadUl14zgi3kzBQcC9W/jbc
+	Em5kLE4sQmKbxwFNhLSBztPUkYJR61WUigASCxw2ZJBShev5EXpfiRh6mbuxW5UD1NLk39JGDAT
+	zMJXVwUoFCItFWrcBqHAXNyxNa5cpL7qVwxbZikodIxd0tAncK/8oOJvCJ4PLlMBj3fsghMS26J
+	E1gOBx/y4C73UiG9tb+b4ZIXlpcSiLyd32RzWctD2mSS87U3MdAUhLRRjFlxzF1Z2fFNed5DinU
+	pOryHte6GpbX8fYHcAl2Cnsmuo2WGfe1Y5a40weTLGdvw2I3UBYK/8WA3WgVuNJ9eiH3sbjoAGg
+	ir/3lEovwzfyw7vinXNZtp2hEXKdlQAjhjKrCJfsp9y7kJp826OBRW3BH20I9Bm9dzYnS2tHQmV
+	sCA
+X-Received: by 2002:a05:6512:688d:20b0:5ae:a2ba:9525 with SMTP id 2adb3069b0e04-5b011417215mr1279087e87.0.1783606242119;
+        Thu, 09 Jul 2026 07:10:42 -0700 (PDT)
+Received: from localhost (static.57.82.181.135.clients.your-server.de. [135.181.82.57])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5aed13c3be4sm5357483e87.73.2026.07.09.07.10.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jul 2026 05:28:01 -0700 (PDT)
-Date: Tue, 07 Jul 2026 14:28:00 +0200
-From: Christoph =?utf-8?Q?B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>
+        Thu, 09 Jul 2026 07:10:41 -0700 (PDT)
+Date: Thu, 9 Jul 2026 16:10:40 +0200
+From: Roland Kammerer <roland.kammerer@linbit.com>
 To: drbd-announce@lists.linux.dev
-Subject: LINSTOR Gateway v2.3.0
-Message-ID: <20260707122800.7xVQ_%christoph.boehmwalder@linbit.com>
-User-Agent: s-nail v14.9.25
+Subject: drbd-reactor v1.12.0-rc.1
+Message-ID: <ak-r4Bew1Z5oMjpV@arm64>
 Precedence: bulk
 X-Mailing-List: drbd-announce@lists.linux.dev
 List-Id: <drbd-announce.lists.linux.dev>
 List-Subscribe: <mailto:drbd-announce+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:drbd-announce+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="veGrINiw3jGrfIQr"
+Content-Disposition: inline
+User-Agent: Mutt/2.3.3 (2026-06-12)
+
+
+--veGrINiw3jGrfIQr
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Hello,
+Dear DRBD users,
 
-a new version of LINSTOR Gateway has just been released: v2.3.0
+this is the first release candidate for drbd-reactor 1.12.0.
 
-https://github.com/LINBIT/linstor-gateway/releases/tag/v2.3.0
+The focus of this cycle was on the drbd-reactorctl management tool and
+on more robust core behavior. The status output now reports disabled
+promoter configs along with their DRBD role, and correctly handles
+resources that are not (yet) up. The core learned to dump the effective
+plugin configuration as TOML on SIGUSR1, which makes debugging live
+setups a lot easier, and it now reports plugin errors on exit instead of
+swallowing them. Spawning external commands gained proper error context,
+so failures are much easier to diagnose. The promoter got a fix for the
+shim path on SUSE/openSUSE and now warns about an empty start list.
 
-Here is the relevant excerpt from the changelog:
+As always, feedback and bug reports are very welcome. Please test this
+release candidate and report any issues you find before the final
+1.12.0. If we don't find any bugs the final release will be in about a
+week from now.
 
------------------------------------
-## [2.3.0] - 2026-07-07
+Changelog:
+[ Christoph B=F6hmwalder ]
+* debian: update mailing list address
 
-### Changes
+[ Joel Colledge ]
+* all: add context when spawning external commands
 
-* Support LINSTOR API token authentication. A bearer token can be configure=
-d via the new `linstor.token` and `linstor.token_file` configuration keys, =
-or the corresponding `--token` and `--token-file` flags on the `server`, `c=
-heck-health`, and `upgrade` commands. (941d772)
-* Include the LINSTOR Gateway version in the `/status` REST API response. (=
-91601b9)
------------------------------------
+[ Moritz Tanner ]
+* ci: update virter and vmshed
 
-Regards,
-Christoph
+[ Roland Kammerer ]
+* .gitignore: add CLAUDE.local.md
+* core: convert Resource.devices to BTreeMap
+* core: convert Connection.peerdevices to BTreeMap
+* core: convert Connection.paths to BTreeMap
+* core: convert Resource.connections to BTreeMap
+* core: report plugin errors on core exit
+* README.md: focal -> jammy
+* README.md: fix heading hierarchy to have a single top-level heading
+* ctl,status: report disabled promoter configs and their DRBD role
+* ctl,ls: drop --disabled
+* promoter: warn on empty start list
+* ctl: refactor config snippet path handling
+* ctl,status: fix for DRBD resources not up
+* ctl: factor out per-snippet validation
+* core: dump plugin configs as TOML on SIGUSR1
+* ctl: improve status
 
---
-Christoph B=C3=B6hmwalder
-LINBIT | Keeping the Digital World Running
-DRBD HA =E2=80=94  Disaster Recovery =E2=80=94 Software defined Storage
+[ Ryan Ronnander ]
+* promoter: fix shim path for SUSE/openSUSE
+
+GIT: https://github.com/LINBIT/drbd-reactor/commit/92f7a027c8730c613d837c4b=
+105e034bf99fecbe
+TGZ: https://pkg.linbit.com/downloads/drbd/utils/drbd-reactor-1.12.0-rc.1.t=
+ar.gz
+PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+
+Regards, rck
+
+--veGrINiw3jGrfIQr
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmpPq94ACgkQRgmezyI6
+myIdowgApB9frK38qFofbhKXBuRJsUNCsMCp7aKzqqEKoQ+KIezSz3+tnLfhrobE
+P5Jn/HWKc8GG1EqY1h6UOappHoykLgfbXitCNX9nhR3lAR6vW2fx6PJlIBBja1tq
+zwkMkoy93qfz2PhVtrnxHlgc+KCk++iUQBCz0Fe4VPlar1HgORzoEeyYCthq7Q/+
+Wsi0/tKxuL2yZmZolfWcCvJaExZ4sLH1KgsPiTuQ9mBJTZPOUpzWCRi1OOV1D0uv
+Zg+kE6voLGsrN6ER2dZcPDMGl8UzY/VJwI/YDy9M1YqbE83/XrHIBpKcgvxHuGon
+6c0cO3uq64Uyd/ugNTQD9FOUhFS4DA==
+=Ubpf
+-----END PGP SIGNATURE-----
+
+--veGrINiw3jGrfIQr--
