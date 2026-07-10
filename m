@@ -1,99 +1,137 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64A843019BA
-	for <drbd-announce@lists.linux.dev>; Thu,  9 Jul 2026 15:22:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783610547; cv=none; b=C1j/BzV4G8O708LCio2YyrurRBG4lYbGkEHNmEG+Z2sSV7Q6v6pOZ1jMojL629FR/Tk9YBr8sgg+NWtm3a7mnSie9nuto55B2AONGcJGCA89HqIo1WlhtFeOxGS8AJJF936LjvhnXm6TXw613H8Un4BzdhJp6JXTwNgagE1ecQE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783610547; c=relaxed/simple;
-	bh=4k+Gddsul28HOzAx8jv2JOu7fpkuZG+B/2viwIkrn6g=;
-	h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type; b=pGzaBQsSIXGncFq7g0cOi+waYyiLZfHESGELC+hPfgssZJPSLT0/L5z4wpKUvVhV236yO2y0W/+lFlmoQuFDxjNzxUocH5/yaSvBKw806Ka1S0V9z/2ofJVD9HIqZn9S5yM2mdSv4XVqAEkWbX0dOVoDRfe/p5U/J1AQSTctRgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linbit.com; spf=pass smtp.mailfrom=linbit.com; dkim=pass (2048-bit key) header.d=linbit-com.20251104.gappssmtp.com header.i=@linbit-com.20251104.gappssmtp.com header.b=DGjrI+i4; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F216C41C2F2
+	for <drbd-announce@lists.linux.dev>; Fri, 10 Jul 2026 11:42:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.47
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783683739; cv=pass; b=CfoeV7M8+ACK2PtNGzo7jOUpGGJVlXLcXDy7lPpSBVBjcUA/+X5gHtB0f8kLiIqyEfwQk20Vus4ZxUdyv0zvgTndvGsi6lDzYN7le5S+GhPPTj1XUAoZz7aynUtJaVN4fF+YoGHsLiwzDLqu1+0xYF7IY5+/YPHTtJQFIB6hG2Y=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783683739; c=relaxed/simple;
+	bh=eChGHH/AAFQJdg2XOrDIxVnA8VF0lICXwyffqYqu+Qk=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=RC5kI/caYEgc/kb6KA74yBQQXkUJL5NuhIwvcfIAwg5Exd8MGIxl9VZr+g3p/0oHwOPNCCFNfoF6Y4qvOuyGEQVqR9Jxun7ih+4ptiUF2rZY2jwNmBDwKvpJJW6ftXXoYHhMgGUSqXkXx300uKnOvr4+by3W271UJEjJJhZ4GgM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linbit.com; spf=pass smtp.mailfrom=linbit.com; dkim=pass (2048-bit key) header.d=linbit-com.20251104.gappssmtp.com header.i=@linbit-com.20251104.gappssmtp.com header.b=CpDVCzFJ; arc=pass smtp.client-ip=209.85.128.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linbit.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linbit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linbit-com.20251104.gappssmtp.com header.i=@linbit-com.20251104.gappssmtp.com header.b="DGjrI+i4"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-493d1e8aa46so15682225e9.0
-        for <drbd-announce@lists.linux.dev>; Thu, 09 Jul 2026 08:22:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linbit-com.20251104.gappssmtp.com header.i=@linbit-com.20251104.gappssmtp.com header.b="CpDVCzFJ"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-493f6de72faso1281785e9.0
+        for <drbd-announce@lists.linux.dev>; Fri, 10 Jul 2026 04:42:05 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783683722; cv=none;
+        d=google.com; s=arc-20260327;
+        b=f2V/sBIQH3Mfzifyk3ew+q1+cICy1T+gUKy65WXFYRGQyC+Ib89sGXBBz7ldW3KozY
+         tT37k1STW2YX1/RxFKGeqqhbBj/d4p0ijAVKf1hZPeGZnJtGhwGSS9wCqs9CsamzhWQS
+         tKVEZ05zAUTtBKYAuuvrD6pBzL+Dp4zqbWEPh6Wyx/rOzhATnpXDhivZVBiwGAH1l/em
+         KS7NEFN9uNTpMET2o/mBhljSq8piTxp+DSXQy5nJ2KFSXNG35uHEzs17XnvYFkrDSjlV
+         4I657NnM1ymMQ//udOIPs2X0d+e+NyGPjGumrVMJbdJHpO++wig4BReW9wX6TyTrwYwX
+         X1gQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=uPJl+GtMiBmno8nG4vLeBhbUmjQCji5rqek6ozGVtkU=;
+        fh=dd/d96l2eyAS5M83j8rEodEIA/JGxDx7Hy24xgjER3E=;
+        b=Ijx5yO14AYLeEWEDVlRMKhLnjFwRskl3liO06mRVY3YimNtoOnxZ0kDRw+yyJ+ggdF
+         qKAklNkx2hRcEl4o/rcRw5O1l6l79aqkbjB8SZKWWyG+uA7m/DeAQkZ7rZpiu92kLQos
+         gC15nwPXJ9JXq/CKsUd2fUEOBsjvcl0Ph0GyUHxLX9n56BTgpvEeJxuWIjGVVidANoe+
+         TeT1WnfZv6PfxmhNmGjEQYNgh32zZ373+5eelpJG4S3ru06jBmUYCGJcQSnoz0yhubYR
+         51DaKv+9fKy3Ls7qN1SBZUjPUVqu8bGqSzK7h5IZr+EcJN8kNPTlcjUOwXJEB92YbQq8
+         OUxw==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linbit-com.20251104.gappssmtp.com; s=20251104; t=1783610544; x=1784215344; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:subject:from:to:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=4k+Gddsul28HOzAx8jv2JOu7fpkuZG+B/2viwIkrn6g=;
-        b=DGjrI+i4PE9dSJZqB5kssxmayArsUUscc8u/quCgxk4vkv+VHtxYtq7uxfrJdXO+Rs
-         WkG033HSINIJW6wpC+4JvGc2fUcNwFK8bliIAjY51BnezCziNpNMp1fydc1O1OHCVB6c
-         ZnDZe2eE8yl6n8FtG0hrZ4TPtLfvZfegmNJer1CRkXetCUOAFBFCwhn1Lv7R7pdduchU
-         FbAh+p6kesrgSoqifoTpL7mgebYu7PaTqqfTtaNsNJn3/FBwSuNUxsALYuc7tvJerSoM
-         3rZLh15ex6vWAbOEWpUWo7BC+GcP1RiD7hdEL5Djx6GC1qrvI771ar3bhjouRRtlW7pt
-         Lwng==
+        d=linbit-com.20251104.gappssmtp.com; s=20251104; t=1783683722; x=1784288522; darn=lists.linux.dev;
+        h=content-type:to:subject:message-id:date:from:mime-version:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=uPJl+GtMiBmno8nG4vLeBhbUmjQCji5rqek6ozGVtkU=;
+        b=CpDVCzFJFopVivBhISbPB5/1NAdNwDQXe0dMz9X1cigbXsKSt9UGe4hqiQfkFvGUM4
+         1G7BIZir2/J9RfWVOiFgsNWIyFqI6BIUDgRFz+ZoM7qQ0ZS7MgHIbEuFd5RQBXxyN6rA
+         eLLjiEPLiF51WEuU6UKYP2lfrwoRIuSrmonOVDSDmgSYTaf54VG07stVm0Ubu/usG+KY
+         4/lb4k3UH4Ermi56zXQpMXayTHWb3uJn+H/DM+mE7LAFx6j23kVUp0pRas7681rqfsi6
+         0OMuE+RPIxqBGALQObDGPaDwfSsi6MiPCbUMG91qJUxqrFyWUWcTblRFBDo/fkRp465h
+         RDfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783610544; x=1784215344;
-        h=content-transfer-encoding:content-type:subject:from:to:user-agent
-         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=4k+Gddsul28HOzAx8jv2JOu7fpkuZG+B/2viwIkrn6g=;
-        b=gnx+VErlKc52nlQQvYxfip663pqD8tZb15uqhzVBljr3MMDpMaZEjmHkdoRcAdUkB2
-         LUAxwqI4xPxqqp7KMunqedHKIobXja23DLinBnZJ8KvoBmt9Lce4fs4H4k1i6SU/Jn3i
-         cRxkeSoHzWF96wd88qvB3mHTe1GvHTPdSxq/fRkij48hdLDzI0Gy91nK00NZyFS4FyHQ
-         uzKQVNI8gLM6yEzkneL7V3zuKE+FKSOYs2572JsUSGo9g1HYud2SHXMusT9LGSk301ip
-         bCGZ5SdbFCFXLlkcUfu1KeN/rxeQkSCX/aTwjvVZc/3grG2z0mTiEQFNzYGAtpxV3txr
-         UW+Q==
-X-Gm-Message-State: AOJu0YxKngirj0UvpDGYmi8/WyWDqFePE+los5QNZiGwKbvDsOMFTkWm
-	ACV4pTy2TbKO21dV5mQtE3QUMcffe9GUNWuOxtimMiDeOFC4CQOZLuTVVH9UoYd8ZeUF07HcY93
-	LCP8j
-X-Gm-Gg: AfdE7ckKWVExKsY+nRpUQbfOfYpPCmg4lATq42EeNqXRuJwaV1TigncHp/64EGG0MeE
-	wDm5QMqdPy1+bJ0WEdoEIq3qL76vjTli7uNJQKv4mREYj2SX+b6Iu4gQz5/K9xptBJQfEyfWwYD
-	LFwPdz+hwXMO2svLjF8eo8szyrp+jbUozdnfQOp8JUImlTNLw+aGI6H+yMfVFrAiIXOo6RU//l/
-	N5DFruHjxnVAihy3DJBAXI6BXzMQaL8WCzCrU6eV9aMJ8RgVUQmQagBHKFCg/zqL+lqRy0fpSF9
-	59Bu6zsYhVBSuwu0YkD2y8pdFoFukfetF0+BvJ+plZaP3wUCzTXb4uCbpQTEAFgf+L2icSNU5YG
-	hE4CWlqTho9r0XpKMVX6qp0V3bh1xV/bIeKgxXAuw65Bu2d8wuZ3FwGpaomRb87jJNN7aSoGcxY
-	SihQ/nbi12GaXvFepdg2N/4lLzra4g4wlL6BYSlOfqBHY/eWUWeba64iBxpp4YYrEXPVdrtrgdx
-	Ly2OSVM
-X-Received: by 2002:a05:600c:638d:b0:493:b962:4abe with SMTP id 5b1f17b1804b1-493e68f4c80mr71709615e9.36.1783610543732;
-        Thu, 09 Jul 2026 08:22:23 -0700 (PDT)
-Received: from [10.43.10.15] (62-99-137-214.static.upcbusiness.at. [62.99.137.214])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493eb742d0esm67688295e9.13.2026.07.09.08.22.22
-        for <drbd-announce@lists.linux.dev>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 09 Jul 2026 08:22:23 -0700 (PDT)
-Message-ID: <2d30d10b-ad82-49e8-877c-72ca7af62669@linbit.com>
-Date: Thu, 9 Jul 2026 17:22:22 +0200
+        d=1e100.net; s=20251104; t=1783683722; x=1784288522;
+        h=content-type:to:subject:message-id:date:from:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=uPJl+GtMiBmno8nG4vLeBhbUmjQCji5rqek6ozGVtkU=;
+        b=OxUHfYRzYTUsN2BUXkRPiQrm5+jgaZeHAh9hhgnToqLobNH+R/QUBJBroJngkpE8XO
+         Sbcg+3VXLwaLp4C8PWWmBr4n85Zzm2+gIACqhiSj9D7Tf6V9zF1GHyI/fTjg4Es0Ew8u
+         i3lWAdsaUOs8X5WgO8iwu6efHnGUvkWly9bTQmWhaHVfBtd6dUTG4YoSEspjAHQd+WOx
+         PpJH+EH/zsiAgBgPl/uWFV9Vp8xNDaDhz1Mj/e+mBnhiu1GZhZoUIXZr+Xo73MexxUSS
+         WB2hn5OXzgLz+BEYqKKAxIzGiQr7/wvmeG+8IdrWy8u4baHraT5T3ZMlrjhuLZyuE29l
+         wzLg==
+X-Gm-Message-State: AOJu0YxwV2Y4ysC6feYzdMDuufLqmAjay0HR87jeK5Im90EtiZpdRPIy
+	PQugv62GKESO7qiAiXaf1ImipdyCyw2JEFZasiI9i5RfSik2c0cIGsTc4Ej37IBgKeWcFSqeXZ4
+	box7kcFZgL7tB05CRKaxVmlyZP4f4S1q4AwO8WE8LqdwD29HUeb78ZcdbeA==
+X-Gm-Gg: AfdE7cmXSmAzB45/egDojFKtWrft+mut/6/oIzNBkMaK3tVO6CHfw8c2rrQhTmtxzBi
+	TV3frg3KmUwDbL2jaKJ/R/tamHMZTGhs84AGtKmJvsPr2E6TXaYwg6hQB9ekB3d1+8hoQnpqATj
+	/nto7yEe4ivgYasj5RrdoN88o7u33IJajNmDremEp8AiPdKTcx2iEDws+qGjZIW5OUea4s6eaqR
+	dEybHGkIYDFMCuHgDANRa3rwceMLhFvav+rUQzhIanrGriw45glSC/af7l0twD7/cq79lZ0Az83
+	s4P6EIU=
+X-Received: by 2002:a05:600d:6401:10b0:493:d117:18a8 with SMTP id
+ 5b1f17b1804b1-493f2b3376emr23218905e9.9.1783683722229; Fri, 10 Jul 2026
+ 04:42:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: drbd-announce@lists.linux.dev
 List-Id: <drbd-announce.lists.linux.dev>
 List-Subscribe: <mailto:drbd-announce+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:drbd-announce+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+From: Moritz Tanner <moritz.tanner@linbit.com>
+Date: Fri, 10 Jul 2026 13:41:50 +0200
+X-Gm-Features: AUfX_mxrWmuJ-lIcXJ_gGLuFzM0w-IniZeXKFfB9FD6x8Fwz2d7oLv1hL9lalhs
+Message-ID: <CAKnz9x+nk0jLb8sg-OrLWzi7Jbu28KtR27QYbnrKbHJ8CJOtWg@mail.gmail.com>
+Subject: LINSTOR Operator 2.10.8
 To: drbd-announce@lists.linux.dev
-From: Johannes Khoshnazar-Thoma <johannes.thoma@linbit.com>
-Subject: LINBIT SDS For Windows 1.0.3 released
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="UTF-8"
 
-Dear DRBD on Windows community,
+We've just released another patch release for our Kubernetes Operator.
 
-We just released LINBIT SDS For Windows version 1.0.3.
+This time, the Operator was enhanced to first check if the storage
+pools are set up before issuing the related LINSTOR commands,
+providing nicer error messages in case the devices are missing or
+pools not set up.
 
-It comes with WinDRBD 1.2.12 which (amongst other fixes) allows users to
-directly attach a WinDRBD disk to Hyper-V VMs also on Server 2022 and 2025
-hypervisors.
+In the components, we have updated LINSTOR CSI, which can now take
+periodic full backups in case of incremental backups, so you no longer
+have an endless chain of incremental backups clogging up your storage.
 
-Furthermore it is packaged with LINSTOR Server 1.34.0, LINSTOR GUI 2.5.0
-and LINSTOR client 1.28.1.
+The updated HA Controller contains fixes for bugs created by not
+accounting for manual DRBD suspension: LINSTOR suspends IO for
+snapshots, which should not be treated as an actionable event.
 
-An evaluation copy can be downloaded from:
+DRBD was updated to 9.2.19, including a number of bug fixes itself.
 
-https://linbit.com/downloads/
+To upgrade, either point your kustomization.yaml at the new manifest:
 
-If you have a LINBIT subscription, you can download a copy with a signed
-WinDRBD driver from the WinDRBD customer repository:
+  https://charts.linstor.io/static/v2.10.8.yaml
 
-https://packages.linbit.com/<your-API-key-here>/exe/windows/drbd-9/
+Or, if using helm, upgrade the linstor-operator chart:
+
+  helm repo update
+  helm upgrade linstor-operator linstor/linstor-operator --wait
+
+To get specific instructions to apply the update, check our users guide[1].
+
+Source code is, as always, available upstream[2].
 
 Best regards,
+Moritz
 
-- Johannes
+[1]: https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-upgrade
+[2]: https://github.com/piraeusdatastore/piraeus-operator
+
+---
+
+### Changed
+- Storage pools are only registered once their backing volume group or
+ZFS pool exists on the node, avoiding pools stuck in the `error`
+state.
+- Source devices are checked for existence before a storage pool is
+created from them, reporting any that are missing.
+- Updated images:
+    * DRBD 9.2.19
+    * LINSTOR CSI 1.11.3
+    * LINSTOR Affinity Controller 1.4.2
+    * HA Controller 1.3.3
+    * Latest CSI sidecars
