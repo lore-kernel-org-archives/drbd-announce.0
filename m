@@ -1,162 +1,160 @@
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91DC048E0C1
-	for <drbd-announce@lists.linux.dev>; Tue,  8 Sep 2026 19:45:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788896724; cv=none; b=lJfxUpJ3WL691QwAidLghxDUJWnks+8gAX/QDrXRMIHCjZ6+pG/3L2e6hdLhN35Y/0nKpImJRazaMfSJXMJhuqOJT4PhA+gFQkYjUYWBVC9MGs4FFl2XxQrP/SqRLkGX0XYVodLyNp874O1cDPzAHZ4IkK/XVQeZX07bNBYvYK0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788896724; c=relaxed/simple;
-	bh=BuyAjBDy6LANKedBbT6dAV6qXfPVm4jQWKXyDDaUDvs=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=HkB3dF6xjtklHLcxZAZdx8YPZkcX3+Dln14ZrRckW8OmQB2yaPoLJTPGwlZk/+TOteg+ovycWpIb8HbaGGkIAWliTpjMGI/MaCvBi5Ryzmv+HQxj84p2LUqpNJLTYpZ2vjCgv1Rtisu0Y2t8IRcsif2Qmldk2qzUVR7JIPFjZRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linbit.com; spf=pass smtp.mailfrom=linbit.com; dkim=pass (2048-bit key) header.d=linbit-com.20251104.gappssmtp.com header.i=@linbit-com.20251104.gappssmtp.com header.b=cGFqhrKs; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F16E4B148B
+	for <drbd-announce@lists.linux.dev>; Wed,  9 Sep 2026 10:58:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788951524; cv=pass; b=tx5C0V/Br64OErZdCxkC/AZlcmWk067XEs4QNi0jQyYtKomAtJ9sifjVJ9LFwEZQXAKJs42G0Sl2Oe9KFOzRwvLW1jIub5HrNVcusxbz81D/dhDtYiJvC05fhlbJdZvF7B/YEeGVjbANZF5U7+PloDWzs9hzrMG/je3sfm1KwjM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788951524; c=relaxed/simple;
+	bh=Z1HOcxYeXK3DpWQff7Mqz1c2DofzCST9PYa2e14lfPo=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=NpC6M9cB+i1MVT2NcuTSgw3Xo37msRS21z+TfhskIa844LL95KtZFCjSRsChW7LaYqwsBBpBH+H2ogaH2HcqnQ+fgc28lN/ByvhB0rBXhOxLj73B8nuhyg/SvlRXIpmNHnQjkhjOEW1O1LukX+cKWCDXJsFKcACNBgIukx6hxNw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linbit.com; spf=pass smtp.mailfrom=linbit.com; dkim=pass (2048-bit key) header.d=linbit-com.20251104.gappssmtp.com header.i=@linbit-com.20251104.gappssmtp.com header.b=uKjkRoGj; arc=pass smtp.client-ip=209.85.128.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linbit.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linbit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linbit-com.20251104.gappssmtp.com header.i=@linbit-com.20251104.gappssmtp.com header.b="cGFqhrKs"
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-49d0da752ffso29102285e9.3
-        for <drbd-announce@lists.linux.dev>; Tue, 08 Sep 2026 12:45:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linbit-com.20251104.gappssmtp.com header.i=@linbit-com.20251104.gappssmtp.com header.b="uKjkRoGj"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-498028b3d5eso54285035e9.1
+        for <drbd-announce@lists.linux.dev>; Wed, 09 Sep 2026 03:58:40 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788951519; cv=none;
+        d=google.com; s=arc-20260327;
+        b=AUulAesJnrjTSCEaQ1x48c1dD4Oro474phUavbHs5FY8LPVW31OtU88tNRNkGK4MEn
+         gpjqFzbwa8LH4tA1+CjrBy5oQwSAxnNjR2S6UYO9fRvsjPkkkRJNzBLXz90xp4fHx+Ik
+         t16R/ZkpFCCXf4pmulfyH2eXApBR604GapH50I2aLCGPji47ucvDnhy9UR6nVQBDUKnf
+         6GBvTXmFS42zvn3Rc6TNFKAMlVc3HIthBwXYbYayFAwQvZU3miz14Ua/40sJWSP3UM+8
+         aBazOIQwQKi6342NFHKMdYpczddkbQ3Zsq5nylAyMjwCzfKvtX4zJYuFTLizjqFmjC1x
+         55YQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=DjRpKHCqt1ilA5N+H/eSEnSUGqVDhcrpAueujrRujyw=;
+        fh=dd/d96l2eyAS5M83j8rEodEIA/JGxDx7Hy24xgjER3E=;
+        b=E2o+P5ADzUImLn/HZvHHzx40zkXLFZaxt5BR0OZv4erlGTrxgZ1k9YMGMNhDyvwvGM
+         +kXWgLpNpvOYhxcuxYBR3ABvjoDE2LwX0baVCyXPAk+FLHeKQXBQB/t5mM/WbbPwGfpl
+         kaRho6/ka/YsmP7T0DMGH/myxzjHP38kLfZ4Uum7yWrChdmdt0a3asJx8DfO0YUBCzrd
+         tz/sD12KXwm0COeh2XOw9oT7VXhf5NXzESQh8ragEnVcbxIFXqbtyRRxRNUjZyGmvt+I
+         vMynTjPq8BffAtThAeMH3m0S/p1DiT96aa0B2FukgWanHNfHSJ3smM/G5AzZVcxf3K8O
+         UG/w==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linbit-com.20251104.gappssmtp.com; s=20251104; t=1788896720; x=1789501520; darn=lists.linux.dev;
-        h=content-type:mime-version:message-id:date:subject:to:from:from:to
+        d=linbit-com.20251104.gappssmtp.com; s=20251104; t=1788951519; x=1789556319; darn=lists.linux.dev;
+        h=content-type:to:subject:message-id:date:from:mime-version:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=6bpHODIwyf98qDq0AvlzT3ewBiKY6O2iHfKhlCGzNVw=;
-        b=cGFqhrKsqtmUQx0DRNicEB3h5sZ77+LulAXpK8rITZ4sqCOm873tPtG9cJ5OizaKzI
-         lEZFbRg5gOrojGPd3qcHRXNSopCqCWUgtXytX+MSdoWgbmxUW4MV4AsTdMsos8z2zy0g
-         V7tlCUrE+yFLaa/rTjujdfBSFyj6NYaWkHBAz1GhZ5NMle3OyshquGSaj1yHw/6XqrHb
-         eu/8HytsW8NsD3CGSSblHbEYDUD6h9Obja3pHXNzZ5bWMHmikQ8Bsu0wGqkYhtEJcEJD
-         fhVf/SUmfXjrqpsGlx1VdBjp9bG3UV29Ge0QbV4pMpp++VrfP5iIs/7dIC9e9z34E8H0
-         D/qw==
+        bh=DjRpKHCqt1ilA5N+H/eSEnSUGqVDhcrpAueujrRujyw=;
+        b=uKjkRoGjtk3x+v1C1PfYAnR4Zecd7rApVkX44UCc0Hs1WzCsspnSQQQxFUW9PVdoVN
+         +b2woi0KvglP2ZKTWHTQdx0YHNh0j7HJMq1fv19Lk9IQ37gk0K1musHWDRjKfHBpfwzD
+         uZMtXdCIbiJaZR3pDeUGzMBImXufyzWyQL/DdY5fgy8hbeU6qFw0zyrOpz9KZgr6hh7m
+         +pVNvYjamNvah7bXZXKtUcoK3mNZVhXWYuP91lA+U9+GH3hUqaNLO+bVkM3Tlqyouabu
+         FfVkv8/g3IY86nwzD+OinSYvPUkR8E+HXI/dafZbpM/zlqE2Y4iJ962PBAbAAUcLVjQr
+         R0vg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788896720; x=1789501520;
-        h=content-type:mime-version:message-id:date:subject:to:from:x-gm-gg
+        d=1e100.net; s=20251104; t=1788951519; x=1789556319;
+        h=content-type:to:subject:message-id:date:from:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=6bpHODIwyf98qDq0AvlzT3ewBiKY6O2iHfKhlCGzNVw=;
-        b=J6/MbGeN+VRcs7rsDJvP0xfoi67MQTXsFi3bDz1FG3rMgUEv6K59kub6ZfC+6EhVHF
-         XdtLCFNEuK/e8AKTmD8hU/TwZcKhoC96QHWrmRxORmIdLyZuCaBznvhzRLVdgGzlfjq8
-         ESUqojyc5taA+caYchwd4zeYpShieO4xKnHMPWaoqbtUM/A9QLNf8mXCt2NXg7+ccpCx
-         XatmK+Z9GAPUmNzAjgJqyLpRql1vb0xHTGKcSfZ52z9szF7Vgu5APqgJmHcWb8/LtP4d
-         +UWIXnTnajEpo8ZSuqjQhHdnxXNzkit7UwRv+sl913P9urhXZjmIBCc+70jFIGZnS0E8
-         gwfQ==
-X-Gm-Message-State: AFuF++nktwo/dabwdKkqhm6y3h3x/c/yyzWny42hun+uui8jA0pqnS7d
-	xwoiLE16tbvuJQQLW6yQFKHLmX+ebsIKVDsryk2v2jharlxuL7UNc2lFmLlowYBZfaYvIGzCMY1
-	1VDmF/To=
-X-Gm-Gg: AYBFou31sEk7QpHknurlep7vLraNM+Z1mCT2oYHNp0e8JqjLyO6q984Yj7kUM7BSNfD
-	Wp3hon5RIF5VxxgcVbhUohcMX4z6VvjhlOFzu3wgxctmTofp4tSEPbgwXumfYoOxW13lkaa1dX1
-	4hDOYm0+iGmnh5CFFiDsJgcptLmAF68tNtGoRHMghkFoKTfrh2L/8wLiPu/FXcC9S35LS/TN9vm
-	ZEBhZMTTMRp7xiM+m5ipOwrSY7D9f8GfkcXh0e1oXswdNxrCQVPXmhiaqvKZ5ImUymmuEkIJdgI
-	DJ+hb44kXhrw4Hpk1Va7GZG+lDE1nIZ7Hocfbte7i+MKFhfQFN09o6oewv9Hta/rrP1D/0Ycab0
-	knerJtINT2j3hG4UFVuSVuogDGgbIg8dCK8bDx5gCknzxNMew1f5W1s2WSFBtAK7E/MfhbSU08C
-	fbANv1n6ilgU3rHOKRbXi6lyu8G5byXkH1YsreKFJp7fNc8PSXxR45ic1dQYT2fsOn5qmJNEKFD
-	ReP/gPju7/sUCIOyK3GtfYeFLBg+9cbDuc=
-X-Received: by 2002:a05:600c:354a:b0:49c:fc6e:8cb6 with SMTP id 5b1f17b1804b1-49cfc6e8f48mr289272095e9.26.1788896720455;
-        Tue, 08 Sep 2026 12:45:20 -0700 (PDT)
-Received: from ryzen9 (192-164-131-220.hdsl.highway.telekom.at. [192.164.131.220])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49d08144037sm326959045e9.7.2026.09.08.12.45.19
-        for <drbd-announce@lists.linux.dev>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Sep 2026 12:45:19 -0700 (PDT)
-From: Philipp Reisner <philipp.reisner@linbit.com>
-To: drbd-announce@lists.linux.dev
-Subject: drbd-9.3.4-rc.1
-Date: Tue, 08 Sep 2026 21:45:18 +0200
-Message-ID: <868q5bjzn5.fsf@linbit.com>
+        bh=DjRpKHCqt1ilA5N+H/eSEnSUGqVDhcrpAueujrRujyw=;
+        b=MIsCyJgF+ZVzfGqRSw2M/jfWWuU7fdESAUcd13Vl4XiGNJCSFlSAo1AFQjX/XxsSt1
+         12lUwKPebaj7Nfy4KjUKVDUmRNpY1qR0KOtjVN410yL/Bsm6uHkcIYyDnyzP3bteA5Fa
+         jN/u1qseWUDonu7TClTuVsyERiWFsQoi+dSbTuEPDvF22mETeqxdII8hcR1VXVi6Ce8B
+         YPy4rYMcOleQxfTV4c0YRjqjMqDZTmO3IA2/0tNfNcgoSAT3N87BQ/aO1bZUrHp+URWt
+         6+yhcf73VAv+Vo3BC1EyLuUor9M5FYRnO9gO4YyFRjW+2FpwClYyyOZvtjfTVaRwN3rt
+         BkQA==
+X-Gm-Message-State: AFuF++lrOgg8JcytwRS8iCzAZ9xBJ/RVOml+xBP3UL80CuWTnBjd1sWj
+	9X5aenEiUBsH8HdYUYXvAL6ey6s4v3zI1yiuJyXLDYIufKsMrcCePxrzyiHMgFkGS0OGby4PFM7
+	TFSDNyAgUdfaqTIGYpCzJgI4B+y4FEmuCrJbSogQjPCycw37SmJhf61s=
+X-Gm-Gg: AYBFou05X5+ipRs9JuhAOjKmxhc0Bo2BmcZBPJ148NI9lYNtt6uL9z/3X33ko+awVs0
+	cfSjnzoRauOGamPOgvuwc1VwtmM/RLmPMZmTG43zV53fbBZS4jyAwm8R442z8palrLm3LQlYap+
+	/owkExWP8p6UaKa+V1ZeoYAEteuZGfpaxx1MxdheWecEe7Y1x0s0wKmN8GO4gpfbKAmkU1hMITM
+	g5UxF1Lh353V704DGADFRqqvfygkboPSl5aFluXKUvE7H0AztpZ+TwD9nwKzGmlOQA9hPtN/h9e
+	LqNRHBvlbx0inKIxDOmqK89RpkRDWK7OFe71mmqBqhF+O9zlCE9lC/k=
+X-Received: by 2002:a05:600c:19d0:b0:49d:1840:4fd2 with SMTP id
+ 5b1f17b1804b1-49d18405074mr108554425e9.23.1788951518854; Wed, 09 Sep 2026
+ 03:58:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: drbd-announce@lists.linux.dev
 List-Id: <drbd-announce.lists.linux.dev>
 List-Subscribe: <mailto:drbd-announce+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:drbd-announce+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+From: Rene Peinthor <rene.peinthor@linbit.com>
+Date: Wed, 9 Sep 2026 12:58:27 +0200
+X-Gm-Features: AcwNN1V5XMAhX7SijxIEP6_K91BHLtibSia8leklPqwxSS4qU0gCunBaZplsqeU
+Message-ID: <CAHmn2DO6OehnmKiwMs8GGtLQ+Z38uZbT1=_L6Ai7v4oxX6qtQg@mail.gmail.com>
+Subject: linstor-server 1.35.1 release
+To: drbd-announce@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
+Hi!
 
-Hi,
+Here are the first bug fixes for the 1.35 branch.
 
-Following yesterday's 9.2.20-rc.1 release, here is the release in the
-9.3 series.
+New in this release are automatic database exports: the controller
+now exports its database once a day (default 4am) to /var/lib/linstor
+and keeps the last 7 exports. The schedule, number of kept exports,
+target path and compression can be configured via the new
+AutoDbExport/* controller properties, set AutoDbExport/Cron to "off"
+to disable the feature. Along with that `linstor-database export-db`
+now compresses the export if the target file name ends with ".gz" and
+`import-db` detects compressed exports automatically.
 
-The delay was, as so often, due to issues in the kernel compatibility
-system. Supporting such a broad range of kernel versions is
-challenging. Solved for this time.
+The import-db command also received a couple of fixes: it no longer
+fails with a "Foreign Key violation" when the export lists a snapshot
+definition before its resource definition, it now works against
+non-empty databases and reports a useful error message instead of
+"Unknown exception occurred".
 
-This is a release candidate. Please test it.
+Resizing a volume in a shared storage pool with external locking
+(e.g. lvmlockd) was refused because of the wrong lock mode, this is
+fixed now.
 
+And the block device info probe no longer races with udev: the
+temporary probe volume's device node is now awaited and the probe
+retried, so storage pools no longer silently miss their min/opt I/O
+size properties.
 
-9.3.4-rc.1 (api:genl2/proto:86-101,118-124/transport:22)
---------
- * Generate the netlink interface code with the upstream YNL generator
-   instead of the genl_magic macro system
- * Fix a ProtocolError disconnect loop ("BAD! BarrierAck received with
-   n_writes=...") when two volumes of one connection replicate and
-   resync without replication at the same time
- * Tolerate a verify-alg mismatch when connecting, and refuse to start
-   an online verify while the algorithms differ, instead of rejecting
-   the connection outright
- * Fix several bitmap lifetime bugs around attach and detach: a NULL
-   bitmap dereference in the peer device statistics, a missing bitmap
-   in drbd_set_sync(), concurrent drbd_bm_free() callers, and freeing
-   a bitmap that a later attach published
- * Fix a device reference leak and a NULL pointer dereference when a
-   peer request's bio allocation fails under memory pressure
- * Hold state_rwlock while walking the transfer log from debugfs
- * All fixes from 9.2.20
-  - Fix a sync target overwriting acknowledged writes with older resync
-    data when the sync source lost the diskless primary; such writes are
-    now held back or postponed (new feature flag WRITE_POSTPONE) instead
-    of being silently rolled back
-  - Fix data corruption when a peer bitmap that is being cleared by a
-    running resync was copied for a second peer
-  - Fix several ways a Primary lost its obligation to start a new data
-    generation after losing a peer, each ending in silent divergence,
-    and a spurious I/O error when a deferred generation resumes; the
-    obligation is now tracked per volume and logged
-  - Fix a diskless Primary losing a peer: rotate the current UUID so the
-    stale peer resyncs on return, outdate far-away members before
-    resuming I/O, and keep the sole UpToDate survivor UpToDate; also
-    fixes promotions freezing I/O on nodes not connected to every member
-  - Fix a resync target ending with stale data or an old data generation
-    when a crashed primary rejoins or a diskless primary announces a new
-    generation mid-resync
-  - Fix al-updates=no: honour it at attach time, and mark all bitmap
-    slots out of sync after a primary crash
-  - Fix kernel memory corruption by a malicious or man-in-the-middle
-    peer sending out-of-range payload, drain or digest sizes, and a
-    divide error caused by bogus peer block sizes
-  - Fix a use-after-free of the resource when a connections dump is
-    interrupted, and a refcount imbalance flooding the log with put_ldev
-    assertions after a resync request allocation failure
-  - Fix soft lockups: the sender thread pinning a CPU while its
-    connection is down, and IRQ-disabled bitmap scans on multi-TiB
-    volumes
-  - Fix several deadlocks and hangs: whole-bitmap IO vs clear_peer_slot()
-    or online resize, WFBitMapS on an equal-UUID reconnect with leftover
-    out-of-sync bits, demotion starved by a failing connect handshake,
-    and connection teardown blocked behind an unacknowledged resync
-    conflict
-  - Fix many two-phase-commit issues: stale replies answering the wrong
-    transaction, prepared peers that disconnected, forwarding node
-    handling, a state_sem leak on timeout, and unbounded connect
-    retries; log which volume a connect is waiting for
-  - Fix resyncs stalling short of completion, and a connection dropping
-    to StandAlone when a crashed primary rejoins during a resync
-  - Fix drbd_suspend_io() not waiting for in-flight writes; a detach
-    hanging on a dead backing device stays interruptible
-  - Fix restoring quorum after a reboot when the remaining members are
-    diskless
-  - Fix connection losses: online resize ending in ProtocolError,
-    volume-less connections reconnecting every ping-timeout, lb-tcp
-    "drbdadm down" stalling for a connect-int, and a TLS control socket
-    close going unnoticed
-  - Declare a connection broken where a two-phase-commit send failed,
-    and repeat a disconnect without delay and with a bound; together
-    they end a hanging "drbdadm disconnect"
-  - Do not account requests as waiting for the activity log while it is
-    suspended; the stale counters throttled resync to c-min-rate and
-    drained the epoch for every incoming peer write
+## [1.35.1] - 2026-09-09
 
-https://pkg.linbit.com//downloads/drbd/9/drbd-9.3.4-rc.1.tar.gz
-https://github.com/LINBIT/drbd/commit/e8a510108477b2c4bda30429487740ad2da1deaa
+### Added
 
--Phil
+- Added automatic database exports. Default: every day at 4am. Added
+configuration properties:
+  - "AutoDbExport/Cron": The cron when the auto-export should run.
+Default: "0 4 * * *". Use "off" to disable feature
+  - "AutoDbExport/Keep": How many exported database exports should be
+kept. Default: 7
+  - "AutoDbExport/Path": The path where the exported files should
+land. Default: "/var/lib/linstor"
+  - "AutoDbExport/Compress": True/False whether the export should be
+compressed or not
+
+### Changed
+
+- "linstor-database export-db" compresses the export if the target
+file name ends with ".gz"
+- "linstor-database import-db" detects compressed exports
+automatically
+
+### Fixed
+
+- Fixed resizing a volume in a shared storage pool with external
+locking, refused because of the wrong lock mode.
+- Fixed the block device info probe racing with udev: the temporary
+probe volume's device node is now awaited and the probe retried, so
+storage pools no longer silently miss their min/opt I/O size
+properties.
+- Fixed "import-db" failing with "Foreign Key violation" when the
+export lists a SnapDfn before its RscDfn.
+- Fixed "import-db" against non-empty databases.
+- Fixed "import-db" reporting "Unknown exception occurred" instead of
+a useful error message.
+- Satellite creating error-reports for parsing null bitmap block-size
+entries
+
+https://pkg.linbit.com//downloads/linstor/linstor-server-1.35.1.tar.gz
+
+Linstor PPA:
+https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+
+Cheers,
+Rene
