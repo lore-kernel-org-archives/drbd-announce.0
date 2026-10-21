@@ -1,197 +1,230 @@
-Received: from mail-lf2-f12.google.com (mail-lf2-f12.google.com [74.125.229.204])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.221.42
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792586899;
+	b=py9FjT1lhWYU0J+/2JkgHZEhB/GNXq4BlWCAuMQze5Ynmn4YARkbX00/vebvuvb+7OGL
+	 BLr/mupSElJRJFzrkC/9JFUI1sljhfOq6fC/dySc0DFjyw9TGw7O7RtchutS67qvcl8df
+	 3jEhCbT3lFHPNxe3BD8KqTO/F6llx9QvB14Zkgdo/ftva8X1sZfZknTecwpzbvIeeKy9T
+	 l+jIBCOUta3kxozxWMKKc0fypodr/zGu9/ulzmo5bz27jjIVd9ryFFmNw/NcGntYf4v1s
+	 mQOj2hyfRCCRkWUktEbRouco2VNaprW5x5x0UyhqH9Jx7ZTuIjJqbFVCoPTsEqBCbdg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792586899;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:From:Date:
+	 X-Gm-Features:Message-ID:Subject:To:Content-Type;
+	bh=bCBqjwPRgXfyjkTgMXY1Pkps2yjiLllHiimg95ZAnic=;
+	b=wTn8rb11sj0fYX2KSUOG4vTdSvWVGBguUgNo8UsFFkff7rdqyQbnMQubH0vA5JmZ3IBJ
+	 +4xnR+ZzgwZSfRTXxwFV+CtcLibQmnAhlBX9SPwJDEsQTRQVIcKA6pd41Dpnv+2MHsJqc
+	 hzH+EiExCOGdAfY9VXV2YqzGTM+wf20SQS/jryl8XQRKX34F7riQUyvPSfs3shQiNzLGz
+	 og8iyCVWYfRUHdf9/daYx/vNe/TUzRWPq5JvzVoTAa2NVf3PhkHDDMTziDPRjVapGhldG
+	 hAh4Be9jc/eZzTnupGC13I5TbIvGi5n7G/O7+p1Bjugk9KGoljHGV9mChPgXQp9C5kw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=linbit.com;
+	spf=pass smtp.mailfrom=linbit.com;
+	dkim=pass header.d=linbit.com header.i=@linbit.com header.a=rsa-sha256 header.s=google header.b=lrwj+9Sm;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.221.42
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 198C24CDDF7
-	for <drbd-announce@lists.linux.dev>; Wed, 30 Sep 2026 12:38:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.204
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790771917; cv=none; b=HgjDA/AUiCkRzlIn/Sk+QKSSH7aJTve1fkrMZ5jYxCRLt5pavsTykvhRrwlqogqYFxWZCUfaaUb0vDMEw7Iv4tiZfmo/ZMEJTvpXleZOqx1EHhhTQ2gPBkaAsHLiFWMhDqhzgTPPkQqIG9R0NP/K1Eyu7BoY/bcORGL2G3fMIdw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790771917; c=relaxed/simple;
-	bh=qgC+jJhvc4gKX/jDjoI5+sqdSmIlOvenBZ94AeHGKGQ=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=dsGZ1aWLierVorZmF7ahEOyvQOGZI24V6yjvu45N885PBEdpncEuUWno3i8O2XOQx+qkyX7r1YlR08Mt+eSXn6w4d+SPasAs8HMFff1Xha9QNuqD6MZKJbl2F56UNFt1G3yaGCkr8xUk8WjE21LJl1DGORuhiJAHmkwitPd27Cs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linbit.com; spf=pass smtp.mailfrom=linbit.com; dkim=pass (2048-bit key) header.d=linbit-com.20251104.gappssmtp.com header.i=@linbit-com.20251104.gappssmtp.com header.b=0UfHFU+L; arc=none smtp.client-ip=74.125.229.204
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A14D606A31A
+	for <drbd-announce@lists.linux.dev>; Wed, 21 Oct 2026 12:48:18 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5A14D606A31A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linbit.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linbit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linbit-com.20251104.gappssmtp.com header.i=@linbit-com.20251104.gappssmtp.com header.b="0UfHFU+L"
-Received: by mail-lf2-f12.google.com with SMTP id 2adb3069b0e04-5ba3add810eso925246e87.0
-        for <drbd-announce@lists.linux.dev>; Wed, 30 Sep 2026 05:38:34 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=linbit.com header.i=@linbit.com header.a=rsa-sha256 header.s=google header.b=lrwj+9Sm
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-48df4f540ebso406932f8f.3
+        for <drbd-announce@lists.linux.dev>; Wed, 21 Oct 2026 05:48:18 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792586897; cv=none;
+        d=google.com; s=arc-20260327;
+        b=p7Kw+vFB7iZLQihWCzfsgu/IXD/wA7udqNQUcyrYFEkM2Fe+wk4HYyyxJXvD/LPXTu
+         Hn0zexw3JzocuBwLHIsiRx4aLGqjmzQiviGN0L1sp2vRF+9+bH2rW4PTNQD5HQZvg/h3
+         l8sCFvHHZP46dksEFx64aBvg5081as8eGSYNGcQ/e86MEWJCm5NC3oRzyXGQtMOXS3DN
+         ZwUD6qd2VFgfoWer7YX3mCto8VHLH+QU3P8oI0tFubbha/6xmnvP19kRDqm3v7G1rSsw
+         6cEWy7ZCc9IOD0Yy0TMwmQZ/dGp2BVZ9lQ+d4npx97d6LKXK73I/rhVqeLaIRwqo8VBA
+         WlJA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=bCBqjwPRgXfyjkTgMXY1Pkps2yjiLllHiimg95ZAnic=;
+        fh=dd/d96l2eyAS5M83j8rEodEIA/JGxDx7Hy24xgjER3E=;
+        b=NaVVg8zOt1Mgbwf1KvFcCa+xv3owjgd0XKv90o6X2iHqXj3RiBF5VOCLvbFJ6lPrap
+         6WBO/qjrv9Nc4Wj5QiOlSOStAzwFj4zcE4Cp48MofnAbKF1OV4ISN3Ja7Gk1yjLlvoeF
+         nL2BlicYnUWxah5bCEEIHW84nItskoF0STnIRt9dEBIfezCB7dECfbO/x3TZjAtY1wBL
+         XLMvWLHy82qc+MGuftSVq6abOte12beaRm3pOOJoO/8hDmrE3R8nzKgcQPNICZiKnL0M
+         lW4fPIV+ycFHPyqiCV+Yw7IcuH9h1kcUBb/rxV5lvXbk9NIKorOTV3x90h6S/3KNWknu
+         oHBA==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linbit-com.20251104.gappssmtp.com; s=20251104; t=1790771913; x=1791376713; darn=lists.linux.dev;
-        h=user-agent:content-disposition:content-type:mime-version:message-id
-         :subject:to:from:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=7S7WvGCdebNHZWc7MgHtZVXCp3bGjDP9pjlq7k393Jg=;
-        b=0UfHFU+LT5FRIbrHbipBPiJXpFTTZRY/PHgWETgG9YN+JzsqzczzoZXtcIxkdGGSlR
-         5KhpsMgrXOPYOWoI/hYoTdSvA4lPSXKZ5y4mcjHx2LYpw33GJtV3cmsKC8GbOqe8II9Z
-         rnkzgA6WrO7WlsXviztriJqHe2yibEOzspsiHumPP4UkxQHzzYrqb6dnMrMEjY9xBfJ2
-         Gk51loIxuBTMe0YtPK1u075PClbjtlqe2ZDNIty+3sW+F5y2+9MW9TQVSTg/QJ3Cgm2W
-         A2VPIfromZDdY5JIeVm/AVztIfPbVKq2/SVlklfS4i7X/hAFQxUUB5+e4kHhQHcgct9t
-         Rahw==
+        d=linbit.com; s=google; t=1792586897; x=1793191697; darn=lists.linux.dev;
+        h=content-type:to:subject:message-id:date:from:mime-version:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=bCBqjwPRgXfyjkTgMXY1Pkps2yjiLllHiimg95ZAnic=;
+        b=lrwj+9SmNmHt5T366yz0KmwEsvZnI4GcXlDsyKv28FsEGZHeijskz5/iaxiGxy63aJ
+         Ji5ZOdDClBi3rmUgtVKNyNz/AkHL2YEZ+Ocn+PyN5c79pZERrcEbpnkKAgw/kgxkNxWA
+         wbz9nBPLMWlGBI7tP6GOlLHg9lD8+db8RvYalvIyWJX09L/LbfkjC3oQXm/+895Gb6i4
+         5ioBCJIvM49Hp0uqnsfDM2xOVWZN2mBgiZB2i2AMyN0zP7VnarkcpIpfEiafBptZe6ph
+         KywuOtyNj0U5JsPhcn6UyIu2LW0nMQnw0TIzfcXl43D/adchyF+uuCdqDhjc5Y8v8vYQ
+         JAHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790771913; x=1791376713;
-        h=user-agent:content-disposition:content-type:mime-version:message-id
-         :subject:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=7S7WvGCdebNHZWc7MgHtZVXCp3bGjDP9pjlq7k393Jg=;
-        b=VepNON0bYXy1Nl34OpLbLcW0RauxxGUoGpLfaGov8cZO3mjlHYj4jI1Bj4wbUZwE7Y
-         VQ34F6TDjB5eDLM0bwEGKkoHey4R0PrHGrPCwQFWMb6WFqRBtL1BM2HTs/DARuV4f7DK
-         mtu2LrhMfBRL/FThe2Fvcy5i3I3wtGUjb08NZ4tDvSQi7cw+gqF2otj7ib4vwwxpDuHA
-         Ic42x7W8qCrXdCu8PqXwLSYrCdE0US5cVTSP3/hDHJVeF6Xa630inLdRR3Tfgq8+eeaZ
-         gh7mqp8MfZmvv+/Lg4ai9e1/mOww4lZ8a7ecWHO6+SpquEvXV6DvvM1VhVOM5ptMTl/e
-         TrFQ==
-X-Gm-Message-State: AFq9FYLg4jzIyZNcIao12Lvgp7FTEbFSt6WGPoQ40yILRY4BukomDWaA
-	7d8WGfO3jV9Q8Wsnx692SJYNkP2jIXlAPYy7pxOTRGu/kCquu+okSFmB9IWvQz2xp3QsS5juq4Y
-	FVZ1PIA6eiQ==
-X-Gm-Gg: AYBFou1nxytAO3T336vQHyr5aBIxXc5FJWtzth3z7IbYT3ewQ/wrBtZ7t8GxPIwVtu0
-	3+bygAqPVhbBMI0ovRwo2skZUzkM3iWldvbxrhFtwdLL04PzR5+7aJwdGimC8KJv5QVJV7sethf
-	nDZvS66NCzAdW74Bp9uJFAFIztzE2WPXGNzyU4yGThOH7FHiRl+EFEjiPqcgCC52asUrIZ2srJz
-	nhmv85z9+Oxqf5wcd5qTX7qolbtQRx4V6VWAOKRYWWXoeegBwaw6ZOQ75fB317xQ4lHj8xHCG5J
-	oLfbGtxkOh7b5su/HMRmaXlLmW6Pzns2+DTIi2zgv3GvB+iV84KWCG2uiWOyYrvavBFiWgd3wKc
-	DKre8sW6Nyccw8ZY9Dy5LNtgDuEkq0Mf5Fr+hvOlSjNlTOB6b18UpSuY2lCg7kGxoItLB0o5gp9
-	o4nxXi7Ma1EraGUY2q8gifrw/kMp5PvIZjT1AsJxbz/ka1DTJWbTK9B28JQCw5la3YSCi2Jy+87
-	i+bwLi1Afd2NQX5vs27sYttyl0ujpMY4t60h5bGtDlNreWNU8E=
-X-Received: by 2002:a05:6512:4027:b0:5b0:eda:de25 with SMTP id 2adb3069b0e04-5ba402b3505mr625244e87.6.1790771912629;
-        Wed, 30 Sep 2026 05:38:32 -0700 (PDT)
-Received: from localhost (static.57.82.181.135.clients.your-server.de. [135.181.82.57])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5ba3fbfb884sm318673e87.54.2026.09.30.05.38.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Sep 2026 05:38:31 -0700 (PDT)
-Date: Wed, 30 Sep 2026 14:38:31 +0200
-From: Roland Kammerer <roland.kammerer@linbit.com>
-To: drbd-announce@lists.linux.dev
-Subject: drbd-utils v9.35.0
-Message-ID: <ar0Cxw1_d4upDcxx@arm64>
-Precedence: bulk
+        d=1e100.net; s=20260707; t=1792586897; x=1793191697;
+        h=content-type:to:subject:message-id:date:from:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=bCBqjwPRgXfyjkTgMXY1Pkps2yjiLllHiimg95ZAnic=;
+        b=Y7sxdsZCNpt/8wsd72SChqtfCt3G+vCHC52BPJFHE3XezmVEumu1vusgyfuRC9sVLo
+         zl8sq6OYu6ZXHQZr+Hr08ywMFFyzQM9zln629bUwWuxFpV6XK+r/GnEQ2hwwXFb1zG5G
+         lQ4uAiHZhqxo20rrQjxVQmgeB2oAN7jwdRqRz+bJQBhkR3J0eIQaJNLyjhT/b5qFIvtu
+         xFJqqfEiy5nA8ehzcGjckBkHKe4APmnVvGh220iuUhJdf58PQzju/FqQ/L+goDYToQz8
+         IDpJ5HlAOofTZEhotR+Nn8FGIKeVaJVhs5vOFxJmyz4rhsBxBpEIGC121HO8a0N+VBbK
+         zsGg==
+X-Gm-Message-State: AFq9FYI6vFgJOA7l+aVnhDGHIM9INHw5XJqmz5ujt/5zgUiBXY7bqugR
+	YoJXH7a1hBnDkz0auE6DFbZX0hSOGq3EOrcwRb3B1V/1KhDTbwYYzPkPBjj6z3416gYSmdh1QeE
+	kAXCV0B5k6apaK5DG+n0Hwo/paF/a59DjmkaQVOdCdnT084D8d0ARLWgcDw==
+X-Gm-Gg: AYBFou1QCWBm/z8/Q1iI+LUVciYsrR5qBuyYHvviB9GT84Xk8Nzny8072TzcVJRjshw
+	Fbfn4oYZ4Vg3S8buIucTIzZ9RL2Nahtqgi0hLdpQqNKaoot/mZN0tibHcIYxEKC4vrFy/8NMHfL
+	hu4osLbSvOm24oEtAl5H3SIpiSuyAdXtKy8QPWG2LazhgKUK8NvGG8k2mL4kO+AjAWNWL1IGeL6
+	0qNbmYiZriIF6Y0bEgrQg/ITaCAATirNW+Y4P0tcUbamBMnbBSj2bVGSobAM9GecmZuITQ1zj/C
+	KM5iYhO4sAG9dEXtcJGa2lat351JePK8CIf7YdlEVAUuwXpnpTM8nFKLz+HejlrSqCAk9GOB4CF
+	lecXnySxsV7yUzrL/fOUURVImaw+5Dsdkg53L
+X-Received: by 2002:a05:6000:160f:b0:48e:412:3827 with SMTP id
+ ffacd0b85a97d-48e264a306fmr3336412f8f.9.1792586896469; Wed, 21 Oct 2026
+ 05:48:16 -0700 (PDT)
 X-Mailing-List: drbd-announce@lists.linux.dev
 List-Id: <drbd-announce.lists.linux.dev>
+List-Post: <mailto:drbd-announce@lists.linux.dev>
+List-Help: <mailto:drbd-announce+help@lists.linux.dev>
 List-Subscribe: <mailto:drbd-announce+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:drbd-announce+unsubscribe@lists.linux.dev>
+List-Owner: <mailto:drbd-announce+owner@lists.linux.dev>
+Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="jW+NkgYhNkhZakdy"
-Content-Disposition: inline
-User-Agent: Mutt/2.3.3 (2026-06-12)
+From: Rene Peinthor <rene.peinthor@linbit.com>
+Date: Wed, 21 Oct 2026 14:48:04 +0200
+X-Gm-Features: AclHuK9KsjYETt_oMI2YFdoKsVF-C4nruEI0HCGXpm2GBfLH0jlQnABLdHPYI6Y
+Message-ID: <CAHmn2DOHuBQy77iidgBSGqNNV-LsJ3DrD3oShgu5DqU-dUgd-A@mail.gmail.com>
+Subject: linstor-server 1.35.3 release
+To: drbd-announce@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
+Hi!
 
---jW+NkgYhNkhZakdy
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+This is a bigger bug fix release for the 1.35 branch, with a few
+important fixes.
 
-Dear DRBD users,
+Since 1.34.0 snapshots and clones also suspended I/O on a LUKS layer
+below DRBD. With DRBD 9.3 or later this could stall snapshots and
+clones until DRBD's ko-count was reached, if the Primary replicates to
+a diskful LUKS replica on another node. Now only the topmost layer
+(and WRITECACHE/CACHE layers below it) is suspended again.
 
-this is version 9.35.0 of drbd-utils. There have not been any
-significant changes since RC1 except some noteworthy drbdmon changes
-that for example significantly reduce flickering. The release contains
-improvements and fixes all over the place. Highlights include a major
-DRBDmon update, various drbdmeta metadata conversion improvements, and
-SELinux improvements. This release contains a lot more code than any of
-the previous I remember the last ~10 years, so please test.
+Kubernetes (CRD) setups upgrading from 1.33.x or older could end up
+with a crash-looping controller, because the SpaceTracking service
+died on stale "SpaceHistory" entries. A migration now removes them.
 
-IMPORTANT - read before upgrading on Debian-based systems:
-==========================================================
-This release splits drbd-graceful-shutdown.service into separate
-disconnect and down services. Unfortunately, when upgrading from any
-previous version that ships drbd-graceful-shutdown.service (9.26.0 up
-to and including 9.34.0), the *old* package's prerm stops that service
-during the upgrade. Its ExecStop runs "drbdsetup down all", which takes
-down all DRBD resources on the live system in the middle of the package
-upgrade. RPM-based systems are not affected.
+Storage pools with LVM PVs on partitions no longer end up in a
+never-ending update loop causing high CPU load and constant
+DeviceManager cycles.
 
-Before upgrading drbd-utils on a Debian-based system, neutralize the
-ExecStop with a runtime drop-in:
+We also fixed a couple of race conditions: resource deletion vs. a
+concurrent restore or un-delete (satellites shut down with a UUID
+mismatch), the BalanceResourcesTask recreating a resource the user
+just deleted, and "Access to deleted Node" after a node deletion.
 
-  mkdir -p /run/systemd/system/drbd-graceful-shutdown.service.d
-  printf '[Service]\nExecStop=\n' >/run/systemd/system/drbd-graceful-shutdown.service.d/50-upgrade.conf
-  systemctl daemon-reload
-  # then upgrade drbd-utils
+Prometheus users get two new metrics, linstor_node_flag and
+linstor_resource_flag. linstor_resource_state now carries a "resource"
+label to join it with the linstor_volume_* metrics, and volumes
+without DRBD are now reported as Created instead of DUnknown.
 
-The drop-in lives in /run and is self-cleaning; it is gone after the
-next reboot. The service got split into 2 separate services
-(drbd-graceful-{down,disconnect}.service), so you can keep the override for
-the old one till you reboot, you don't need to remove the file or reboot
-immediately.
+DrbdOptions/auto-diskful can now also be set on nodes and resources,
+and a value of -1 disables it.
 
-If you upgraded without this step and your resources went down,
-"drbdadm up all" (or restarting linstor-satellite) brings them back up.
+## [1.35.3] - 2026-10-21
 
-Please test, if we don't find any issues the final release will be about
-a week from now.
+### Added
 
-Regards, rck
+- Prometheus: New metric `linstor_node_flag` exports the node flags
+`DELETE`, `EVICTED` and `EVACUATE` as 0/1 per node
+- Prometheus: New metric `linstor_resource_flag` exports the resource
+flags `INACTIVE` and `EVICTED` as 0/1
+- Controller: A controller-only node now reports the platform and OS
+variant of the host the controller runs on
 
-GIT: https://github.com/LINBIT/drbd-utils/commit/e1e02e77e6d068f626cef7c3998ed08b0fde7669
-TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-utils-9.35.0.tar.gz
-PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+### Changed
 
-Changelog:
-9.35.0
------------
- * drbdadm,adjust: fix ordering to run del-peer after connect;
-   avoids quorum-deadlocked resources when swapping a tiebreaker
- * drbdadm: fix segfaults and buffer overflows (config parser,
-   adjust with proxy without path, "_unknown" options)
- * drbdadm,adjust: support dedicated proxy nodes; name proxy
-   connections after DRBD node names
- * drbdadm: add dump-superblock command
- * drbdadm: skip diskless volumes when iterating "all"
- * drbdmeta: metadata conversion improvements: add convert-dump,
-   re-create the bitmap on v09 to v08 conversion, refuse v07,
-   restore-md handles changed bitmap slots/granularity and
-   activity log geometry
- * drbdmeta: create-md: add UUID control options (v09);
-   report by how much a file system is in the way
- * drbdmeta: resize: fix bitmap copy offset, fsync new metadata
-   and zero the old region
- * drbdmeta: mark all out of sync when the AL was disabled at
-   a crash; initialize the AL on restore-md
- * drbdmeta: add --quiet and --var-lib-drbd options
- * drbdmeta: various fixes: out-of-bounds read in apply-al,
-   memory leaks, 64 bit shift, reject foreign bitmap granularity
- * drbdsetup: fix events2 --now blocking forever
- * drbdsetup: fix "sequence mismatch in netlink reply" race in
-   wait-* commands
- * drbdsetup: handle ERR_PATH_COLLISION; hint at
-   DRBD_GENL_RCVBUF_SZ on rcvbuf errors
- * drbdsetup: show resync suspension by parallel-resync limit
- * userspace: switch from genl_magic macros to YNL-generated
-   netlink headers
- * libgenl: fix setsockopt sizes and unchecked realloc; no
-   SO_RCVBUF warning without CAP_NET_ADMIN
- * SELinux: allow usermode helper transition to drbd_t, module
-   loading on Oracle UEK, setpgid for Pacemaker; auto-label
-   /var/lib/linstor.d/
- * drbdmon: major update: selection filters, bulk actions,
-   export/import
- * drbdmon: faster, flicker-free display: only redraw changed
-   screen regions, single write() per update, use the
-   terminal's synchronized output; decode cursor keys in
-   application cursor key mode
- * scripts: add drbd-fence-peer.sh fence-peer handler and
-   find-resources-with-unrotated-uuids.sh
- * drbd-verify.py: report which files are affected by
-   out-of-sync blocks; new JSON schema and --report modes
- * systemd: split drbd-graceful-shutdown into disconnect and
-   down services
- * debian,spec: do not stop or restart units on upgrade; handle
-   drbd-configured.target; debian compat 9 to 12
- * doc: new mailing list address; fix disk shipping procedure
+- `DrbdOptions/auto-diskful` can also be set on nodes and resources,
+and `-1` disables it
+- Satellite: drbd-reactor is reloaded after one of its snippets is
+written, changed or deleted as an external file, so the
+drbd-reactor-reload.path unit is no longer needed for that
+- Satellite: The ErrorReport of a `drbdadm adjust` that fails after a
+.res file was regenerated now includes the regenerated content, which
+is otherwise lost when the previous file is restored from its backup
+- SOS report now includes the LVM devices file
+`/etc/lvm/devices/system.devices`
+- Prometheus: `linstor_resource_state` also carries the resource name
+as `resource` label, allowing joins with the `linstor_volume_*`
+metrics
+- `linstor-database export-db` refuses to export a database with
+pending migrations unless `--migrate-before-export` is given, instead
+of producing a mislabeled or failing export
 
---jW+NkgYhNkhZakdy
-Content-Type: application/pgp-signature; name=signature.asc
+### Fixed
 
------BEGIN PGP SIGNATURE-----
+- Externally locked shared storage pools: after moving a resource, its
+LV is locked exclusively again instead of shared, as inactive copies
+no longer count as users of the LV
+- Web UI: Requests no longer hang for about 30 seconds after the
+controller served a large web UI file again
+- Prometheus: `linstor_volume_state` reports volumes without DRBD as
+`Created` (2) instead of `DUnknown` (-1) (GitHub #420)
+- RPM: Start scripts now use the distribution's JVM directory, fixing
+startup on SLES/openSUSE 16
+- Satellite: Fixed a never-ending storage pool update loop (high CPU,
+constant DeviceManager cycles) when LVM PVs are partitions; block size
+and discard granularity of partition PVs are now read from their disk
+- Resource group create/modify and resource definition modify now
+reject invalid layer stacks instead of failing later when a resource
+definition is spawned or a resource is created
+- Fixed a race between a resource deletion and a concurrent restore or
+un-delete of the same resource, which made the affected satellites
+shut down (and restart) with a UUID mismatch
+- Satellite: Fixed .res file's 'disk' (drbd-peer-options) section not
+including controller properties when a resource-connection exists. Now
+node-connection and controller properties are also included.
+- Fixed rare race condition where after deleting a node the same node
+could cause "Access to deleted Node"
+- Fixed ConcurrentModificationException when serializing
+SatelliteVolumeState for /metrics and listing resources or volumes
+- Fixed "Storage pool '...' on node '...' not found" error when
+satellite tries to update props right after a storage pool was
+deleted. Instead of an ErrorReport only a warning is logged now
+- Token authentication: A token's IP filter now matches IPv6 clients
+in any notation; before, satellite tokens were always rejected on IPv6
+clusters
+- Satellite: Node-connection paths are no longer lost on reconnect if
+the satellite shares no resource with the other node, which made new
+resources fall back to the default interfaces
+- REST: Resource groups now also list their diskless storage pools and
+node list (`storage_pool_diskless_list`, `node_name_list`), which
+could be set but were never returned
+- Fixed rare race condition between BalanceResourcesTask and a user
+deleting a resource. The result was that a resource deleted by the
+user might have been recreated by the BalanceResourcesTask.
+- Controller (K8s CRD): Fixed the SpaceTracking service dying with
+"Resource SpaceHistory/... not found" and the controller crash-looping
+after an upgrade from 1.33.x or older; a migration removes the stale
+entries
+- Controller: Snapshots and clones only flag the topmost layer and
+WRITECACHE/CACHE layers below it for suspend-IO. Since 1.34.0 a LUKS
+layer below DRBD was suspended too, which with DRBD 9.3 or later
+stalled snapshots and clones until DRBD's ko-count when the Primary
+replicates to a diskful LUKS replica on another node
 
-iQEzBAEBCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmq9AsQACgkQRgmezyI6
-myK+1QgAgXahQeJH8Csf66s2vZ25400AJG2lYLnLeLSzWwXTfLAWKJnUCkuEXRzm
-KrtrfPWHoNWBnsvJFZs9C6pbjcetTrcnOIPsTgpKXFEpqVjtmxSfyRnJz09rRFRF
-6BOlO0zjGi4nAdZCYmdLb7KmLf52vAeplbOT3fA/f52hNEKhBVZq37OtVJv8Ved2
-NfSao3gly111qDckHuzwDh+BzWUGh2ljzluHohweC4q2f0s2cQBL06wAlaXzoAv0
-6ehg93OlzPTwseSJOirXp5ArsIxTMBcyKf7YmPLrDD35TK10bRz8NyuhoBeheW6y
-ABqNOLMGIzqs+/uGF7Svkr6pSiB4FA==
-=hD89
------END PGP SIGNATURE-----
+https://pkg.linbit.com//downloads/linstor/linstor-server-1.35.3.tar.gz
 
---jW+NkgYhNkhZakdy--
+Linstor PPA:
+https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
+
+Cheers,
+Rene
