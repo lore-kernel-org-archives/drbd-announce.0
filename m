@@ -1,89 +1,88 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.52
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.175
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793711560;
-	b=u2UySzlG8o+DTLrBklIAW+HxQw43NI130nu1WG1Z6mILm56/Y2/T3zj+uaSGSvULpaTA
-	 ySy9wRtOemOADsB0quJvayPpmpkFcQ8SS9ScM4zACY/9Ygr+yHI5yVaA5nh4eDEN3gA6O
-	 PMyFIwvZqFdYMjCrEOBayWVOld3BJLy1nsAePWkWOsSubNWaW9uz/LvCdeCiO6RfCKM9c
-	 7WyhqRrtkDB7JKjoufe0ufo2T3eVkxgzn+KAWNueiJqtQMe/FIw4CKEY5FZ803l1SbrZ3
-	 Y4O+GD7Y/XFmJjuK5aFQ0eurvI5qUMrDZJ/KKva95gJkYuJIKFYVsOxpU+03CfYSCPw==
+	t=1794408805;
+	b=aGZyAXtSMgSZwgjb/PPJGxbt2hj84HaoaSxFBfuFjggiEwkG5Qywxm4863+8ygRadINr
+	 DFcpdTU5DPCWZEwWPoTsxnrNddTelyyx9VLuNq52gFh3BspUqUQDRnxPAlwFCzT+Lf5AI
+	 0joyt6RVPHhxH/n8xkaw/rSasRXUdegQB4Pyur1jI4TlDNY4rFOLOPtU8pzmqj1Tcr26Q
+	 EhBucOeIafVx23Y1Xfy8pa83OqWLayfQuR+11mcx6O4yFRiQD0H+Yl7maGa0lLPBggrZl
+	 yHKn8Qzt1mdbbRlWNyY16t03donG35OtN6ZuE2IFgbGD6rl0pRigh3GSeI7ZOgeTZnA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793711560;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794408805;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Subject:
 	 Message-ID:MIME-Version:Content-Type:Content-Disposition:User-Agent;
-	bh=ZHQ1zGm1tTWjfMU9QGfQzVCVyVHbH72ZQQ/docm+n7Q=;
-	b=jvkqTmgtLqxV0qyPpCMsj+xAv2/4ad8UwtIfmnwrENFiE1W2yq/7HxhQ0z3Lgmk9ywrn
-	 V8L+eM0YF1x4SbFjslvHgyP7jXle6AzJNYZjtyc1H+d6wVS6KYHnzUJ6bvJ282QHjuq4g
-	 zydzWmetQYlpCuBHAxOD52IPF/dT4ygEi33RilFEl4+DHt/Gfod2OJUjyL1cBJQa2Ze1y
-	 IXox/mvlqZhGwM5SZ8ywnLYfss3dusRxVnIjW+BVt8JuHSFMRkCdmL1D4YNuScTg93UFK
-	 OyspotigCUOt93i8/jjrLXaYlMwbXEd611wyilz34PPF9sEgFaOYEwqZ7pq0YI0zuHQ==
+	bh=FokaK7I6E0J8cy6H3qpEMoc7clJ+8fg1tDiqF+vk7I4=;
+	b=HHlSIo8gJAzkiNxa0R2rnefQEDQu/gv+47FuAebj1olfmeOF7L3YkCHmxsn3Sf1G17Eq
+	 FMpYuX8bpYJRRaE4oYvyjbHjCW/M9C95JE2hxHujBoH3ULCqXrfJY58g6/ZsQQ3gsKf2k
+	 WB6OWeAr3CXU2jULq5vpTFvzE8zaxl3SG8jl7mwVn0sS1l386I6UKqWUhxeYWb4r9vqP9
+	 uCYrCQxzfUNpbSsZxqJRJ05Y50D67H+hJHvnQBAtCDMo6gihRFbV9Y6+J7jONe3hY9fkU
+	 VZKo0GoNzCI2fGKVX0/GDpglC88cqlWEQ7tLIJbnMfEqbtEb992lRAAnGFQd65bVp2Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linbit.com;
 	spf=pass smtp.mailfrom=linbit.com;
-	dkim=pass header.d=linbit.com header.i=@linbit.com header.a=rsa-sha256 header.s=google header.b=tXvXOmHl;
-	arc=none smtp.remote-ip=209.85.167.52
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
+	dkim=pass header.d=linbit.com header.i=@linbit.com header.a=rsa-sha256 header.s=google header.b=O4PrbzOS;
+	arc=none smtp.remote-ip=209.85.208.175
+Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4DFF606A324
-	for <drbd-announce@lists.linux.dev>; Tue,  3 Nov 2026 13:12:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A4DFF606A324
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA5ED606A326
+	for <drbd-announce@lists.linux.dev>; Wed, 11 Nov 2026 14:53:24 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BA5ED606A326
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linbit.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linbit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=linbit.com header.i=@linbit.com header.a=rsa-sha256 header.s=google header.b=tXvXOmHl
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-5bccb867d6fso3545541e87.0
-        for <drbd-announce@lists.linux.dev>; Tue, 03 Nov 2026 05:12:39 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=linbit.com header.i=@linbit.com header.a=rsa-sha256 header.s=google header.b=O4PrbzOS
+Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-3a1f628b1d1so24055871fa.0
+        for <drbd-announce@lists.linux.dev>; Wed, 11 Nov 2026 06:53:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linbit.com; s=google; t=1793711558; x=1794316358; darn=lists.linux.dev;
+        d=linbit.com; s=google; t=1794408803; x=1795013603; darn=lists.linux.dev;
         h=user-agent:content-disposition:content-type:mime-version:message-id
          :subject:to:from:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ZHQ1zGm1tTWjfMU9QGfQzVCVyVHbH72ZQQ/docm+n7Q=;
-        b=tXvXOmHlHqt0NFmFbQoILuivYc57ULPRAKfJdZQNOClhitd3gH95/806bAy6DetMWA
-         LHPHBmtpCQHHvIbwXZs3MCp8/5fzWMC6JnCbk+eIwmmrAJZElzWW31PsdKdmpWoGZ/Rn
-         0zDa9gZrGXbSMITB9I4dh0OzGJp9yYns9WAtyLhOmu25E3r14s+hfsQyitwHWaPNtkNL
-         4RKMbZoTF/fEjv+guq7Vb8JwH6fZixco0Gl3fcy9aL1AKj5Kl/L8yYdCHxkbwK5VHDtO
-         SHlwBaoH4Uc0pJaq8MTFtwOCBMfYQAsSy1pEAVdlLQDb3zly+B5EDuTN49r6tQKEuI92
-         GnBQ==
+        bh=FokaK7I6E0J8cy6H3qpEMoc7clJ+8fg1tDiqF+vk7I4=;
+        b=O4PrbzOSGa4fZsRvw99RUttWuEGKj6g95sKehKip3kJa0QAmqKqSehgDlvEv7doZBo
+         HPFOpty2RzkqElCs6rcrf8/u3xUWteza3GWaqSnoBEmgiFuspx58zH4jd2ZZMwp3RsD8
+         V/FlnQbw5tQipr8AJ9PeydO04NAAclQHhqQ5+42AfJdSKRD33obIXeZ0oyrK12TXaJZ+
+         5j1Z1QvX1JxXCLCbbpNt+sy/x+VVN597xjsPNdW8kD38RErOVoK9Bdc8FWBZORYZNNcv
+         pSkglk0fFzh1Cmv9vvY3CahA/RJD0x0FgyTyqYSMc1DejydQPlFckfJANo1oE2s+pPit
+         s8qA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793711558; x=1794316358;
+        d=1e100.net; s=20260707; t=1794408803; x=1795013603;
         h=user-agent:content-disposition:content-type:mime-version:message-id
          :subject:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=ZHQ1zGm1tTWjfMU9QGfQzVCVyVHbH72ZQQ/docm+n7Q=;
-        b=SoFtryt7kVh9L3i0AU2mGnni2cnui/+F6xBs+JHsK4REnfAAJ1YZ+EiEIKPlEQvsWp
-         UFZDHineqsV/YXOdrJmGZzW5SLq6B46OlSAJCqr1fUbYCfadPcQCWqS2cS6HpGb9sKG1
-         EOEqHC89HQSlIBr15kZKULSSm/P1UrvmTcyBv7N+pjmHCBJNaO6I4lMEEbleEldrXuVu
-         CCTOZk4mD7lyJLrDtwD7D3FOMgq01tPUYK7Cyn7lNmKIm2Gu2UQQCGSpLGxRXJFjSrv/
-         JfKhWeGeAavdzpFvGBxSz/zRAOQuxx9iXpzGUFlVYJ0SPbkDEr5bW69QRqzSA6jYCvYE
-         Ur/A==
-X-Gm-Message-State: APuU4Z/NOX26IyvDCVWCVTugwFjB0aUlpNWaT7R3+EEBUsEnFTXYLYIC
-	R01+xQpzrUHS+XbP0aN919bY/jrXtaoodpdo6BrX06TjaUA/9ccGo/5NizW4TdE3XSEbT5DQNi2
-	DV6aFJ2RAPw==
-X-Gm-Gg: AYBFou36SRorSQ2muOff1pzsndFpJRPvnh8Kh5cGGdyba2gopnSiTZ/PHIDHbnBPxGN
-	RCta86oG1EySHJphD36nFT45gcarMZtS0Osc4Erbqjj3zMWqI+WIDvb7hjMWUsIGYFl8oZr8EOS
-	+hsd7fnm2Adg5SMjDEKIhBBydf2aRB1nJB9mvRZEasJ0x8YX7qkf8LGqWJA805CqTBN5sYR0K5W
-	a66HX76kUdnMuSSNlgKmQkBg7pPekZfgT2kuSAXAsWMaa9WmdcNrvrXDLPfHROd4N9kbyv5onBX
-	r145pAgcw48pg8knRZfKRXTfwweKbiQyH72Z74LWBESfqHmjiXCwbdind/wc5zcwGVo9fqjzo8M
-	/7bYvCXE/wbrHTbLUl36Xjzi0hMH0Nh6cN9F75Jn6ktELFJWY/nTvoyFSYI85+L7v3V9yK8Kvzq
-	KcuJht8h3UyLF6NCYnIE1RMoThXwD2yk4uCoDzfUMz7yVpDQkKU62l7Mw3XezwrtPEwFaclf1Kc
-	iC5h4T3gICANf2lmuG6aOfZ0RUm8BF/Xtu87HfOldmsRbnJwN1vaD7gAWKVbOlkwOkUJuBTuLd/
-	5om+TzcX8apfHsZzCkIn28JOlX07N26nXTzws9Je30j3nWuz7uvj9U7lVnPkIvkmcBtLcLSJZjy
-	LyWU9/BOlvoJZZb0DXxaJ8ojr7g==
-X-Received: by 2002:a05:6512:239e:b0:5bf:e7af:2997 with SMTP id 2adb3069b0e04-5bfe7af2d29mr2532231e87.32.1793711557295;
-        Tue, 03 Nov 2026 05:12:37 -0800 (PST)
+        bh=FokaK7I6E0J8cy6H3qpEMoc7clJ+8fg1tDiqF+vk7I4=;
+        b=fHzF0efpUMBTq7nZ1yw7zgrHAJeWQml80pHZ58jv7g5Fw3YPj2DKvX3Nh+MBbN+F55
+         e5jqkLZZfj/fIRmSSzvSyMECuBeULSZVfDOZtOzhQ8jL4B+6DHuFbRpAowtS/RKrFxAW
+         kbcCUjFqhOFfuBNl9yrdCPnQ7QXe8ZA3Xs4HhgdZdXkjjk+yAKXbt01mITT28OrM6W31
+         ywMnMF1XbU1K0N8ASMq0FEdVvjXpCW/Tt2dz6PnEwVs+mzeciQf1P2SIh7/uy+cg5pbb
+         khjaNPGoRU6lI9pohcmzQCHnH+qaBcqRdTQrnL6wMbKxDHTsv9BX3QX3cCd2Nj7paLrB
+         Vg1Q==
+X-Gm-Message-State: APuU4Z+PAXFVlyjs0G46eILrXlim4IpdK7OrjEhdPY8dV/47W2vA+Bc7
+	0Qwk3jHFF2f01XQUWjaF0Ald+vl91mohCixjx+wKU+nu0axOUIFoRhHKnnmJVUGfT4hcwRtZIc/
+	VFeYK21khdg==
+X-Gm-Gg: AYBFou35bjFHw21/NHOaR1aeZXLAX10bLg5C/aQMVHcW/rFLNXqiDY4Hy0RIuSn2Gms
+	qzSAefVny8/wMpD7Bn49eBMF3thNknc8jTsjpeoVdA2PElXv9eFkLYbxtY+wTJv+pBMWB4P8Ttj
+	OoN346D3lMliT0avVmssCY38dmNVBQ/8S+ROd6RbV0NMsGx+5kXPeSujKiuikJia+exwQtpOn5k
+	OIC32ilo3JjIwjufqzGfG27eEhNpb5qr731UzS4ZT9rOI1twz7U1PnINnIYwC+41V7PgM0O3MGB
+	l5HQFhQ6r2LRfmG6lXTDNQE8HdvDv+zzE0pi01j8J97M7SxhRB4TTRcten2EboaknegFSd3taOt
+	Lxt55x/cnUsbBdH4EQ+ReVedNQkTA+LuBlqT/UeQekV5+X3HW3/IdptYx1zOXp5tfuyO1ISkPPr
+	auNZud59ko7gtxKDpgTNIslDePmPwtf2ReMfUfoUbfLBoNJmU1aKPErUhbKbVqVy+gJ9cH8KYRG
+	FkOKccDQA4oYRn7xCtHmhLQ1V9BPNqW7Ke+uNsG7M7GaGlTJjDtlxK1k4qp9zLnS2PJ69a2UgQV
+	mwlfExkPCmtjqo2yMLl5D0aKLD67UQsowJ3MNAp5vzT2yGf0gTgEXa2pfBwa/AStWb7SgnGl7sj
+	NqCWhNp1qsergkACO7EzMisbSMTs=
+X-Received: by 2002:a2e:a9a4:0:b0:3ac:48a0:e253 with SMTP id 38308e7fff4ca-3ae126b8daemr5890191fa.23.1794408802787;
+        Wed, 11 Nov 2026 06:53:22 -0800 (PST)
 Received: from localhost (static.57.82.181.135.clients.your-server.de. [135.181.82.57])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5bfe0748e52sm2113320e87.72.2026.11.03.05.12.36
-        for <drbd-announce@lists.linux.dev>
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3ae09172a8csm11194921fa.5.2026.11.11.06.53.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2026 05:12:36 -0800 (PST)
-Date: Tue, 3 Nov 2026 14:12:35 +0100
+        Wed, 11 Nov 2026 06:53:22 -0800 (PST)
+Date: Wed, 11 Nov 2026 15:53:21 +0100
 From: Roland Kammerer <roland.kammerer@linbit.com>
 To: drbd-announce@lists.linux.dev
-Subject: drbd-utils v9.36.0-rc.1
-Message-ID: <aundw5WPNkRz3E3o@arm64>
+Subject: drbd-utils v9.36.0-rc.2
+Message-ID: <avSBYSLIYXTqGR3z@arm64>
 X-Mailing-List: drbd-announce@lists.linux.dev
 List-Id: <drbd-announce.lists.linux.dev>
 List-Post: <mailto:drbd-announce@lists.linux.dev>
@@ -94,72 +93,78 @@ List-Owner: <mailto:drbd-announce+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="BUyVRaxfBUQACrcg"
+	protocol="application/pgp-signature"; boundary="jVVXFGcNHpmZmaa1"
 Content-Disposition: inline
 User-Agent: Mutt/2.3.3 (2026-06-12)
 
 
---BUyVRaxfBUQACrcg
+--jVVXFGcNHpmZmaa1
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
 Dear DRBD users,
 
-this is the first RC of the upcoming version 9.36.0. The main reason for
-this release is the upcoming DRBD kernel module release, which
-introduces the new "drbd2" netlink family and changed block tracking
-(CBT). drbdsetup uses "drbd2" when the kernel offers it and falls back
-to "drbd" otherwise, so the new utils keep working with the currently
-shipped kernel modules. Besides that, the release contains fixes for
-drbdadm adjust with proxies, the require-drbd-module-version
-comparisons, and v08 to v09 meta data conversion.
+this is the second RC of the upcoming version 9.36.0. Besides the
+changes already in rc.1, it fixes a drbdmeta apply-al bug present
+since 9.33.0, where the last activity log extent of a device was not
+resynced after a crash of the Primary, and keeps the bitmap provenance
+feature of recent kernel modules, which apply-al used to clear. The
+cbt commands now also work over the legacy "drbd" netlink family, and
+cbt-dump learned to report never written extents and to take the zero
+extents of a dm-thin volume from its pool. drbdsetup attach gained
+--discard-my-data to resolve a split brain detected on attach.
 
 Please test, if we don't find any issues the final release will be about
-a week from now.
+a week from now. The PPA build will follow, looks like it currently has
+problems out of our control.
 
 Regards, rck
 
-GIT: https://github.com/LINBIT/drbd-utils/commit/68b2fc3a9f9a59102c2277f10ce5576e781f92b7
-TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-utils-9.36.0-rc.1.tar.gz
+GIT: https://github.com/LINBIT/drbd-utils/commit/fb66d2599ae16b89cfe2fd51d5d7ec28918de487
+TGZ: https://pkg.linbit.com//downloads/drbd/utils/drbd-utils-9.36.0-rc.2.tar.gz
 PPA: https://launchpad.net/~linbit/+archive/ubuntu/linbit-drbd9-stack
 
 Changelog:
-9.36.0-rc.1
+9.36.0-rc.2
 -----------
- * drbdsetup: use the "drbd2" netlink family when the kernel offers
-   it, fall back to "drbd"; DRBD_NETLINK_FAMILY forces one
- * drbdsetup,drbdadm: drive a DRBD 9 module that advertises 8.4 over
-   drbd2; use the 8.4 tools only for a genuine DRBD 8.4 module
- * drbdsetup: hand drbd-8.4 command lines to drbdsetup-84 instead of
-   translating them to DRBD 9 requests
- * drbdsetup,drbdadm: add the changed block tracking commands
-   cbt-flush, cbt-start, cbt-stop, cbt-status and cbt-dump; suspend-io
-   waits for the last barrier ack, --flush-to-peers=no skips the wait
- * drbdmeta: keep the changed block tracking bookmark across
-   superblock rewrites, add cbt-dump
- * drbdmeta: converting v08 meta data of a crashed primary to v09 keeps
-   it a crashed primary, so DRBD 9 resyncs its activity log extents
- * drbdadm,adjust: fix a recreated proxied peer stuck in Connecting;
-   rebuild its proxy connection when a peer or path is new
- * drbdadm: fix require-drbd-module-version-{lt,le,gt,ge}; for example,
-   requiring 9.2.0 or later accepted a 9.1.0 or 8.4.11 module
- * libgenl: report the kernel's extended ACK text on netlink errors
- * spec: enable SELinux on SLES 16+; require bash-completion only
-   conditionally; no rich pacemaker dependency on SLES 12
+ * drbdadm: raise the default cmd-timeout-short from 5 to 10 seconds;
+   keep the medium and long defaults that were in effect (600, none)
+ * drbdadm: show changed cmd-timeout-* settings in the v9 dump
+ * drbdadm: fix adjust failing silently when a wait-connect lasted
+   longer than the remaining cmd-timeout of the preceding connect
+ * drbdmeta: keep the bitmap provenance feature of DRBD 9.2.20 and 9.3.4
+   when writing the superblock; apply-al after a crash cleared it, and
+   DRBD then counted a crashed Secondary's activity log bits as set for
+   blocks its peers lack
+ * drbdmeta: forget-peer makes the freed bitmap slot a day0 slot, a
+   copy of one or all bits set, as the kernel does
+ * drbdmeta: cbt-dump --mode=dirty|zero also reports the extents never
+   written since create-md, from the day0 bitmap; "format": 1; the
+   extents are start and length and cover the volume, as in ovirt-imageio
+ * drbdmeta: cbt-dump on a dm-thin volume takes the zero extents from
+   the mappings of the thin pool, which, unlike the day0 bitmap, know
+   about discards; with external meta data, --data-device (drbdadm:
+   --data-snapshot) names the snapshot of the backing device
+ * drbdmeta: fix apply-al skipping the last activity log extent of the
+   device as beyond the end of the bitmap, so that extent was not
+   resynced after a crash of the Primary; since 9.33.0
+ * drbdmeta: apply-al reports the amount it marked out of sync
+   correctly; it reported 0 KB with up to 128 KB per bitmap bit, and
+   counted bits past the end of the device
 
---BUyVRaxfBUQACrcg
+--jVVXFGcNHpmZmaa1
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmrp3cEACgkQRgmezyI6
-myIQpQf9FN7PsHUBBOImwXEF0BwhajIrahnOvwOJnjJUJ2PDXHUkQzLVI8kWb+zI
-Ex3OiaA/+RebKJIsVv6qJnne0ceDqXh6EXqT+ajYqhytif6f3v5ATr0rQHgGCZyo
-3GneJmrmcaDJdwjGeKVmZ0cMR2dY20lVk27g4gZoYsL78zKllPEUW6ggyOLH8GeI
-bZEt6SWnY9Lk2erwqZDzYFJnQ/HPo8WcDSJXL4tHHf7WntTCY/to3bKxNmUp6tgo
-f3sZ9vsv6TQLXsMqUHqG9/t3XnDpxMncLrpyhma2yieznLGu4asSMcIo1c4PY4M8
-sQ+sLAVR9++2V6jw0huxg0isIoSVjQ==
-=JK52
+iQEzBAEBCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmr0gV8ACgkQRgmezyI6
+myKZQwf/eHIKFRIDX42eyp1rhtL1clt+KNvGLcLYbn2lDH27C9Y/qwJs87BT6Ara
+jwMWn27dgHE5k4iBVqiDaLKtw8AryFP6+zcWnu/ZUfzX6a7VHHPrdlKIKniHVedU
+Bxzi12WbKZNSBf8Ld/NbE6YqVghRe9jPkJxO57W1tS20EQqOAhpz1jlK8ILk4s4d
+EJT/0e1S0MO6Y/xZMiW6vF2g1qQzOdz2BfRkgZYQVuKo3TvRzA9PGjH2iofy0liJ
+0QOyN4d/KFSWEgQqkIowtleh1oJvqoNiTVuQJxelZJ4qts3CDFzNL8pAVokKG2/C
+XZKHoczOzec9nKunqNoWr4Mc2FdKiw==
+=14vI
 -----END PGP SIGNATURE-----
 
---BUyVRaxfBUQACrcg--
+--jVVXFGcNHpmZmaa1--
