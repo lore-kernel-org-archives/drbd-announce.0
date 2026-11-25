@@ -1,88 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.53
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795622143;
-	b=dtjQ6Dy5FqQXzlRo6bxRRy1gjygeTfJFsyOQkMbOi+f5325LtxXiXfvZkR54yhC/ov3c
-	 W7IfqwtNxHY0qp6c/NnS9o3VZ7iL8xTqsqAbhl9ypkd31EAtPoPR4uR64p01t4fmq+Ya+
-	 OfHMC1Uw6lZNlb7QS5BIFJjkOzsqKfBxvYM+Wti2LXvBuffLkFFFGOYGj04QylqxD4oWK
-	 rNXyNvNYPEVsVB7HQhFGMvG/4fdGsvCrqAIcIQYHSNFc/zJNkwx0M6xQet7NenNDQYFUC
-	 MJd9YIPhNljkp4CfFutXi7W6gTaq+Lt5YrmwGtVm+KPqlUPSeqbVeNkb1ZzUEDOnMeQ==
+	t=1795623925;
+	b=SDaSPrtqmWf+/+fHhuFgSwBIZJ7dbK5aBcH8uLt0HPCnK4W52ciL8bI2YSs5v94f8VXP
+	 IYjzFczqE45F8dKncYtWOdSHVWl68xaI/C5R75sD46vg2kbJ2N8OcOdNVo1CQhz5mnWYy
+	 mOfbdG1zpqKASA9L2P9Ka2WRiwqwAY5YZHPfMgtNCTrYufilHjc8J8+ViakjpPFFqa0Iw
+	 Xks8sk7TLH+tP7MdOF4ZmvE1KDJbgLsQVYHxJGoQZrAcYXD/l5Bwm9CYJ8dhaeifjMTHL
+	 3cr4VZSoTjuAh20r3qD+BHiBbe7VGzQUGov8aBbi062YWLB18qQddQG3MV7JQogQHhg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795622143;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795623925;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Subject:
-	 Message-ID:MIME-Version:Content-Type:Content-Disposition:User-Agent;
-	bh=MzzSsvTy/s6NQuAthwFgMbP/8icFYpLHzCuWvEzWG2A=;
-	b=WiVZBC5rGc2JnvCjPE/Ov7OmrTNV8gaNPI2PVhFYcc+J6Y4raEUQagE8GjBQEfzWNPJ9
-	 rFWg5OiOxWpZiHRFY4FanwZqjGjd5GXj5SPsMYkHhXD4TfAeK8MeclNvZcSMvx6jfj3v4
-	 uEzp56vsSTcdAPMc5kBi4isYnMby317vcplKaGXkxWKFx4IK5xQe+PH19cY5Ysa+7OO+K
-	 Cw49mqbUFQYi25H4PBhqhlvFlRJ/KTlCpu8wSHf5MQX/QEdyyXeea1DPkHHSt6dwzEHqN
-	 IzvQ3N90OheSPF5FCYIYPmpAEeXG3p7CQulLg/A5h2z1zp72WeduUm7ajYG2bOvlSRg==
+	 Message-ID:User-Agent:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=65CM4CaFgRYJJ+4mQS6cQDv5PwdaCw6DmxXe+qo4kiY=;
+	b=NBVTVG1ysUAxQfDsOp7AzYRtMbrZbvAoc04vMSmNXuCnjkTd3P5cqUODb/OMHd6R7CSa
+	 Vtz4x4uVynPDz3giP1lNpcz30536ADD4cDNP+Ucl8pXVJ6RMmMNPQYlq/Wh2VcGgVUL/M
+	 EBfDFhsEzvi/pXxqbYJpjM28QsJ6f18pO1jTCQXE0s7nYXonkXbDiSxbe9KkfAUyTvYuJ
+	 10qplDg5/chKhqkmV5M1OmcdYQflTp1vf9tzdj2aFoCbMKNUEsD8oHx1/RgEeapKYi19x
+	 NBviW7ilEUWiKhEI/+0eQAdt+VuEEW25CAWAIL55VnarNknk79ln9LyAq289pbbWbsQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linbit.com;
 	spf=pass smtp.mailfrom=linbit.com;
-	dkim=pass header.d=linbit.com header.i=@linbit.com header.a=rsa-sha256 header.s=google header.b=zmFPHags;
-	arc=none smtp.remote-ip=209.85.208.172
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
+	dkim=pass header.d=linbit.com header.i=@linbit.com header.a=rsa-sha256 header.s=google header.b="Djp/BAsX";
+	arc=none smtp.remote-ip=209.85.221.53
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3452D606A327
-	for <drbd-announce@lists.linux.dev>; Wed, 25 Nov 2026 15:55:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3452D606A327
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10E8D606A31E
+	for <drbd-announce@lists.linux.dev>; Wed, 25 Nov 2026 16:25:24 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 10E8D606A31E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linbit.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linbit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=linbit.com header.i=@linbit.com header.a=rsa-sha256 header.s=google header.b=zmFPHags
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-3ae6a0ffb55so51638021fa.2
-        for <drbd-announce@lists.linux.dev>; Wed, 25 Nov 2026 07:55:41 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=linbit.com header.i=@linbit.com header.a=rsa-sha256 header.s=google header.b=Djp/BAsX
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-4a2f4ca0dcfso3436787f8f.1
+        for <drbd-announce@lists.linux.dev>; Wed, 25 Nov 2026 08:25:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linbit.com; s=google; t=1795622140; x=1796226940; darn=lists.linux.dev;
-        h=user-agent:content-disposition:content-type:mime-version:message-id
-         :subject:to:from:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=MzzSsvTy/s6NQuAthwFgMbP/8icFYpLHzCuWvEzWG2A=;
-        b=zmFPHagsmung4WQ50iBA/mU7ZcYgbOToRAp4v8FbBk1vbzu6M3EvnWfPppttIDcz7C
-         p04jj/OxD92M0qYngmY1A3AGR0G6TwUH6yG29Hon9YP2+n+K49yrmPX0lKC4ATiWFeAs
-         GlWMCnZKLJi5cutLkodBAdNANYUM6Jx+dyf+P4EeBdvvYdd3GxhNplkubfLqOKR82r3T
-         kNTkLwA73/cGix/d+A381eVJKVRnZisjNFpOVf76Z72rYbh2prKPvLtYz4dIsHODEyeS
-         vmNfLtc/7aCf5nakF0LaK1hpLUMmwVpvsImY87oJ9aryTi9Hc7jpWTcBDXXGVuXKD2Oi
-         sldQ==
+        d=linbit.com; s=google; t=1795623923; x=1796228723; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:mime-version:user-agent
+         :message-id:subject:to:from:date:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=65CM4CaFgRYJJ+4mQS6cQDv5PwdaCw6DmxXe+qo4kiY=;
+        b=Djp/BAsXQVSyF1WbR5ni+ocAE7tDK9MS8QK43cYfJFavE6c8Y34iUvY44I+LyAzFEn
+         Skyxb9AxGl6hChpMB3Wc+p+3lvJNAYxnKgM9wxVhXU5RSfTvah8H7+rMVk6M2IT9/pi7
+         t0YQXj+WWBL6s3WWxb2vlDMVZ2YIROOCknfv/ckZXPmGVB29WOevYWxpHn7dEvnqTbyt
+         QGJ+Cd5lYYZOto73sPqyYmFnG/aOsC5I4oD6iCk4n240zwY0KitBxz1QRuoi4TZ6+zKH
+         7Qe/W/341PInMr6EF5BbNBUP3r6js0aLa01F1ywNPbP+CD1YQZM+kL14SV2l4sEnHlDy
+         H5ZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795622140; x=1796226940;
-        h=user-agent:content-disposition:content-type:mime-version:message-id
-         :subject:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=MzzSsvTy/s6NQuAthwFgMbP/8icFYpLHzCuWvEzWG2A=;
-        b=tWghIJe+3dxTUDC2ACBzZ0En9PEqwnIzWSoJEtNSnK4KRhtLmGwjLUEVecgxsJ6v2g
-         aRrf+w8ln+zR3tcNxiVKP07PC1cRYfjbVReZzzxqCGAkfYnHs7LbQ94ISGOY+OICX2Zd
-         KDw7CnIPZSDfVAHi7CI6w0QPkpSnkekxl5n7xOvtagGMVY2L21n2Oa4X16F7Tr3rfHKQ
-         e0GIXl1ioTtqxRxyOED7Ch4Knbn9A+xY8rvSDEyhKe0Iu/9eI4wQKv0hL8gEP3YK9OMz
-         ouf52ZF6VrKyfQykaRIkasCu/YcDoTHuZxobCNT4u0Z0+ggmqhWcMkr+4+/i343PoxEK
-         z1Pw==
-X-Gm-Message-State: APuU4Z+fXCE+JJwLWHCvq9gc1a/wi8YOzVPJ+Fd82AiJH30hbac55324
-	d4UL0/UN8l1LA6vnlVJO3Fbx5sCxNI0SGUFXNV4znoqscO/80oBA0fZf9yPzFwMoomH7DdYBHXC
-	fBhsqkSeSmQ==
-X-Gm-Gg: AZFdTZcbtAzU+OrGVEwuxBOrpz4SwVajWa2EdlDPDnQZsv9+jYtdtH6zuJUVSSHoEAC
-	p6yRmsBgWCe+FOp7Mzt40MqGSUDUT9rbZgqYeM+3OZWLKZA8q30MEmh7I17hY9OsCvwUJNNX0kB
-	OiuUcx6NE28tlPrIMyQM+mFvplAV3iLhcXbBlLZIJdVppmCR4wBW1VvIv4r0mCqEVlZUwjMOd5Q
-	VI2WxHXgVOm5Y188Pz8Ib+T8e2oSttdV3NuhbsdXeMWtax0FZGlzXytXLloTP2XIb0NLSbyCJgO
-	zsetEfiCy3nKObMVgCVcURXG2X/BA9ES9F3tPX/I9ISDQuJe3kXu2x/V8BxBK9vh+qOK4Kh1XMp
-	RGzr1uIg5K2pMTTMxHSP+iCWr/D0kE0gjmHvBQ6euI+AJQOJxPTtupGx+8HYZWre8eXhqm0SM55
-	b723DyOc5qL7NT9bn3nEc+NP17wtR3NdzZ74q/4PtqqAk/b+Ml6YuMXsLRkCDu83HA6Yd/o0vV9
-	iMNKD9UESvWLFBMcE35UAJ5N3CpeFQrsNnzbaNQmaLaG32peGcaaMuV/Ef+dQrje+OP8t6XqDRt
-	fsA8INn6pKFBYhdjpHW10cIf15rOW1uhAe58CjySxqmqauwUtJ6e0R2Zk83au4KJtY64O0H5EYd
-	L0ANlngU=
-X-Received: by 2002:a2e:9a0d:0:b0:3ac:429f:6da8 with SMTP id 38308e7fff4ca-3ae7f9d8554mr60601311fa.10.1795622140095;
-        Wed, 25 Nov 2026 07:55:40 -0800 (PST)
-Received: from localhost (static.57.82.181.135.clients.your-server.de. [135.181.82.57])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3ae8050fddfsm48432281fa.16.2026.11.25.07.55.39
+        d=1e100.net; s=20260707; t=1795623923; x=1796228723;
+        h=content-transfer-encoding:content-type:mime-version:user-agent
+         :message-id:subject:to:from:date:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=65CM4CaFgRYJJ+4mQS6cQDv5PwdaCw6DmxXe+qo4kiY=;
+        b=xi2se3sTPIMdVQoAjBdxgtaE+lIv2yYSomSWeVzbLQVnyciraqpa0OTudt1dD5qp3u
+         0jrSIzmTFBgykbWILCc/AxHbnSzFxUV2nt/aY5qvBU8OsaFwJV+0EGUGlyL9Vod4YVDu
+         oVP3tV0xJ3K1TigLtRA+YjuFRzTfi5RdGjvhFsBicfRVSSf1igUAWSaKnInU6CC7o+bT
+         wDFTk1eG+A6XdZ6TzHWXbWl0vRdobVfrqbQPeDxadRPOBX+yfmLf94E8g/taONQp0vKb
+         RwYSfgTnSb249qxJqD9/df5ym6pnkapTbisAaq+xQYq3+QsbiqbYYx0UeqEV2+fyIRfi
+         EvLg==
+X-Gm-Message-State: APuU4Z9Dg2O3TcvXms18YwaTtGRtbE8tdnr9PLmUUN4BI1z9JVfK7zbB
+	uFJ4o2hU6NqOW/EDVrKNhz1RfU0YGOIUzNMJPPOpeJrYrZtnFDL4sVP8I7+Ewl4rB/bugffPBdu
+	c3uIZi6M=
+X-Gm-Gg: AZFdTZf+qZvTjbxaqQSUV8hwqWwW4OxKNsFzylLkPOaOz0V6a937Ut4UbUT23BdFWqU
+	REUQDl8IENcaYaOOQ/VmuRjeVS8j33dSk9FxrbsGaeE9bF5O18THu4QCLDkhoIE1iBKHUSnPTME
+	NC6NAt20ePyRFVr7sqS3OpEQliLQZ4H4WE1GrcDMVaJ6QCsxEOocz/dkSSWeeuHwuB/QSlPhUWB
+	wpyig6lP1piQqufflXLNPpENPBVUzhi07I1rAemaHabJ/Il6F7JohAvEfS7LHWJCCBR8OT067B0
+	6PyfmJAYC1RfvPBqn2YlFWjrcoV3xhIetV77qMhefJxktP31yl3TKacSbeVbGdZDa0LxmTx9N24
+	pu5A2Q71BzA6U1cM1Y3B+TaqGYbcxe2GV5Dpbq5jZyjUC0UN7Z4GIWMoRIG1WYP0xCgJIgzHrXT
+	DaCrQmF8Jra1gDceSqp3SXvf2RZsbeYE/EyQ1vIqxAVHEgMOwnxkXyV7Rq1/U1qCQ8fp/H0Nk2H
+	wwB7DxxOxwih40EWzji3jrqcrKNLdJv/d0ejq/OJdZMBASsACrgfjef1TtIVEUaEUXhqOTvst8g
+	ISrr4xuGgsW+CDg/IYlF6m27yR5uGjmUpCI91KZ9i3kaBzUW7C7pC0c4upmIDWAQOP1lAugr
+X-Received: by 2002:a05:6000:4704:b0:4a8:5a5b:3b7d with SMTP id ffacd0b85a97d-4abb5eacf4fmr36873765f8f.56.1795623923421;
+        Wed, 25 Nov 2026 08:25:23 -0800 (PST)
+Received: from localhost (h082218129081.host.wavenet.at. [82.218.129.81])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4ab6c61e53asm37260485f8f.59.2026.11.25.08.25.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Nov 2026 07:55:39 -0800 (PST)
-Date: Wed, 25 Nov 2026 16:55:38 +0100
-From: Roland Kammerer <roland.kammerer@linbit.com>
+        Wed, 25 Nov 2026 08:25:22 -0800 (PST)
+Date: Wed, 25 Nov 2026 17:25:22 +0100
+From: Christoph =?utf-8?Q?B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>
 To: drbd-announce@lists.linux.dev
-Subject: linstor-proxmox v8.4.0-rc.1
-Message-ID: <awcE-rSig6llMqnU@arm64>
+Subject: LINSTOR GUI v2.7.2
+Message-ID: <20261125162522.px8BU%christoph.boehmwalder@linbit.com>
+User-Agent: s-nail v14.9.25
 X-Mailing-List: drbd-announce@lists.linux.dev
 List-Id: <drbd-announce.lists.linux.dev>
 List-Post: <mailto:drbd-announce@lists.linux.dev>
@@ -92,80 +93,48 @@ List-Unsubscribe: <mailto:drbd-announce+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:drbd-announce+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="BMGpANxLn1kp6Qt3"
-Content-Disposition: inline
-User-Agent: Mutt/2.3.3 (2026-06-12)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
+Hello,
 
---BMGpANxLn1kp6Qt3
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+a new version of LINSTOR GUI has just been released: v2.7.2
 
-Dear PVE users,
+https://github.com/LINBIT/linstor-gui/releases/tag/v2.7.2
 
-this is release candidate 1 of version 8.4.0 of the plugin. Please test
-it and report any issues before the final release, which will happen in
-about a week from now.
+Here is the relevant excerpt from the changelog:
 
-The main feature of this release is integration into the PVE web UI.
-Starting with storage API version 17, PVE generates the add/edit dialog
-for third-party storage plugins from metadata the plugin provides. The
-plugin now does that, so LINSTOR storages can finally be created and
-edited in the GUI. For this to work, please make sure you use the latest
-PVE 9 packages. Rarely used options are in the advanced section of the
-dialog, and preferlocal and exactsize are not shown at all, but can
-still be set via storage.cfg or pvesm.
+-----------------------------------
+# 2.7.2 - 2026-11-25
 
-As part of that, preferlocal, exactsize and allowtwoprimaries became
-enums that only accept "yes" and "no" in lower case. So far values like
-"Yes" or "false" worked, they are now rejected. Please check your
-storage.cfg before you upgrade.
+### Changed
 
-The second feature is the new authtoken option ("API Token" in the UI),
-which allows setting a LINSTOR API token per storage. It has preference
-over the token in /var/lib/linstor.d/auth.json. It is a sensitive
-property, so it is not written to storage.cfg, but to
-/etc/pve/priv/storage/<storage>.linstor.json. Keep in mind that token
-based authentication is a global setting in LINSTOR: once it is enabled,
-every request needs a token. For the plugin this means that you have to
-add a valid authtoken to *all* your LINSTOR storage sections, not just
-to some of them (unless you rely on auth.json).
+- Dashboard shown before the chart library has loaded
+- Smaller download: lodash, axios, camelcase and bignumber.js no longer bun=
+dled
+- Update dependencies
 
-We also fixed a "Use of uninitialized value $owner" warning when listing
-images (e.g., "pvesm list") if the resource group contains a pm-*
-resource without the Aux/pm/vmid property. Such resources are now
-skipped silently.
+### Fixed
 
-This release bumps the supported API version (APIVER) to 17.
+- Storage pool form not saying when the chosen nodes have no device in comm=
+on
+- Resource Overview showing OK for a resource definition that is placed on =
+no node
+- Spawn on create leaving the new resource definition behind when placing f=
+ails, and allowing a place count above the usable nodes
+- Resource definition selects in Create Volume Definition and Create Resour=
+ce not filtering as you type, and Enter picking an unrelated definition
+- Resource Overview State showing OK while a replica disk is Inconsistent, =
+Outdated, Failed or unexpectedly Diskless
+- Resource Overview sync arrow with a made-up percentage for a volume DRBD =
+is not syncing
+- Storage Pool Overview tooltip showing raw <b> tags
+-----------------------------------
 
-Regards, rck
+Regards,
+Christoph
 
-GIT: https://github.com/LINBIT/linstor-proxmox/commit/9f156c4d4d8053893c17f30d7d0e63c515bf112d
-
-TGZ: https://pkg.linbit.com/downloads/connectors/linstor-proxmox-8.4.0-rc.1.tar.gz
-
-Changelog:
-[ Roland Kammerer ]
-* add web UI integration, APIVER: 17
-* list_images: skip pm-* resources without vmid property
-* add authtoken option
-* CHANGELOG.md: add released versions
-* authtoken: use "API Token" as title
-
---BMGpANxLn1kp6Qt3
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEdesqw/S/2vE9wNKDRgmezyI6myIFAmsHBPgACgkQRgmezyI6
-myJBRAgAhkcaKHeZmzRICPR2w3y2HBHRYD3ML03iFgVYCO8TmUBlvElYEWexTdWw
-8V2wwk+EdFo2zTe5LhD3p88i5ORDp+FeIzwOTle73ntopr5AQ0faFgRczsgKDwgs
-9TsZp+/kvwYj+7iDvcJ0OdY4D7JzmBMjmP3R5+Rh4/vaVo6xbfJT6kx1wWe9bUC5
-NK4Tpd5jYiZMIPBPs+ej0A7p5w9RWf9UlZL69YyAsdJ52IWFLfb1rF7bDj7nz7lP
-XpVvo2bF+VJS7HW1qVZMO6X5H6jvNxcptgJKX8UbQq/MZqzvlJey3HxVx48G25Fy
-TEH8iypZyWUKSRnhoiGmTWc46oxvYA==
-=OoIk
------END PGP SIGNATURE-----
-
---BMGpANxLn1kp6Qt3--
+--
+Christoph B=C3=B6hmwalder
+LINBIT | Keeping the Digital World Running
+DRBD HA =E2=80=94  Disaster Recovery =E2=80=94 Software defined Storage
